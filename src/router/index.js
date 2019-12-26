@@ -2,7 +2,7 @@
  * @Author: lk
  * @Date: 2019-02-01 17:36:33
  * @Last Modified by: lk
- * @Last Modified time: 2019-12-25 03:12:03
+ * @Last Modified time: 2019-12-26 10:19:04
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -35,7 +35,6 @@ import Layout from '../views/layout/Layout'
 **/
 export const constantRouterMap = [
   { path: '/login', component: _import('login/index'), hidden: true },
-  { path: '/authredirect', component: _import('login/authredirect'), hidden: true },
   { path: '/404', component: _import('errorPage/404'), hidden: true },
   { path: '/401', component: _import('errorPage/401'), hidden: true },
   { path: '*', redirect: '/404', hidden: true },
