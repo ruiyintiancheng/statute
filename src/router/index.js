@@ -2,7 +2,7 @@
  * @Author: lk
  * @Date: 2019-02-01 17:36:33
  * @Last Modified by: lk
- * @Last Modified time: 2019-12-26 10:19:04
+ * @Last Modified time: 2019-12-26 17:56:55
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -95,6 +95,17 @@ export const constantRouterMap = [
         name: 'policy',
         path: '/policy',
         component: _import('policy/index')
+      }
+    ]
+  },
+  {
+    path: '',
+    component: Layout,
+    children: [
+      {
+        name: 'explain',
+        path: '/explain',
+        component: _import('explain/index')
       }
     ]
   }

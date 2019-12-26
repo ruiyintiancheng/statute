@@ -2,8 +2,8 @@
  * @Author: lk 
  * @Date: 2019-11-02 16:39:31 
  * @Last Modified by: lk
- * @Last Modified time: 2019-12-26 17:58:04
- * @Description:  政策文章
+ * @Last Modified time: 2019-12-26 18:00:42
+ * @Description:  专家解读
  */
 <template>
     <div class="policy base-container clearfix" v-loading="loading">
@@ -23,21 +23,11 @@
       <div class="other-articles">
         <div class="article-items">
           <div class="other-type-name">
-            关联政策
-          </div>
-          <ul class="other-titles">
-            <li class="item-title" @click="getInfo(128)"><a>《关于军地建立无线电管理协议机制》</a></li>
-            <li class="item-title" @click="getInfo(128)"><a>《关于军地建立无线电管理协议机制》</a></li>
-            <li class="item-title" @click="getInfo(128)"><a>《关于军地建立无线电管理协议机制》</a></li>
-          </ul>
-        </div>
-        <div class="article-items">
-          <div class="other-type-name">
             相关专家解读(多条)
           </div>
           <el-carousel class="other-titles other-explains" trigger="click" height="160px" indicator-position="outside" arrow="never">
             <el-carousel-item v-for="(item,index) in this.explains" :key="item+index">
-                <li  class="item-title" v-for="(t,i) in item" :key="t+i"><router-link :to="{name:'explain',query:{crawlConId:128}}">{{t}}</router-link></li>
+                <li  class="item-title" v-for="(t,i) in item" :key="t+i" @click="getInfo(127)"><a>{{t}}</a></li>
             </el-carousel-item>
           </el-carousel>
         </div>
@@ -93,7 +83,7 @@ export default {
       let crawlConId = ''
       if (id) {
         crawlConId = id
-        this.$router.push({ name: 'policy', query: { crawlConId }})
+        this.$router.push({ name: 'explain', query: { crawlConId }})
       } else {
         crawlConId = this.$route.query.crawlConId
       }

@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 20:48:17 
  * @Last Modified by: lk
- * @Last Modified time: 2019-12-25 03:23:43
+ * @Last Modified time: 2019-12-26 15:40:11
  * @Description:  查询列表
  */
 <template>
@@ -58,7 +58,7 @@
 import { baseRequest } from '@/api/base'
 import Search from '@/components/Search'
 export default {
-  name: 'dashboard',
+  name: 'searchResult',
   components: {
     Search
   },
