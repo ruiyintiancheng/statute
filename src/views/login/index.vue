@@ -2,59 +2,55 @@
  * @Author: lk 
  * @Date: 2018-08-11 11:43:38
  * @Last Modified by: lk
- * @Last Modified time: 2019-12-24 18:28:19
+ * @Last Modified time: 2019-12-26 15:24:42
  * @Description:  登录页面
  */
 <template>
   <div class="login-container">
-    <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-      <div class="title-container clearfix">
-        <a class="logo" href="javascript:;" ></a>
-         <!-- <h3 class="title">锐银天成EAST系统</h3> -->
-        <!-- <lang-select class="set-language"></lang-select> -->
+    <div class="login-area clearfix">
+      <div class="login-image">
+        <img class="login-sign" :src="sign">
       </div>
-      <el-form-item prop="username">
-        <span class="svg-container svg-container_login">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input  name="username" type="text" v-model="loginForm.username"   placeholder="请输入用户名" clearable/>
-      </el-form-item>
+      <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
+        <h1 class="login-title">
+          军地政策法规智能辅助系统
+        </h1>
+        <el-form-item prop="username">
+          <i class="login-icon user" :style="{backgroundImage:'url('+cutter+')'}"></i>
+          <el-input  name="username" type="text" v-model="loginForm.username"   placeholder="请输入用户名" clearable/>
+          <div class="login-form-hr"></div>
+        </el-form-item>
 
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
-        <el-input name="password"  :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="请输入密码" clearable/>
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon icon-class="eye" />
-        </span>
-      </el-form-item>
-       <el-form-item prop="captcha" class="captcha">
-         <span class="svg-container">
-          <svg-icon icon-class="captcha" />
-        </span>
-         <el-input name="captcha" placeholder="请输入验证码" clearable v-model="loginForm.captcha" @keyup.enter.native="handleLogin"/>
-         <a><img height="50" width="100" :src="verifyCode"  @click="handleCaptcha"/></a>
-       </el-form-item>
-      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
-    </el-form>
+        <el-form-item prop="password">
+          <i class="login-icon passwd" :style="{backgroundImage:'url('+cutter+')'}"></i>
+          <el-input name="password"  :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="请输入密码" clearable/>
+          <div class="login-form-hr"></div>
+        </el-form-item>
+        <el-form-item prop="captcha" class="captcha">
+          <i class="login-icon cap" :style="{backgroundImage:'url('+cutter+')'}"></i>
+          <el-input name="captcha" placeholder="请输入验证码" clearable v-model="loginForm.captcha" @keyup.enter.native="handleLogin"/>
+          <a class="login-captcha" @click="handleCaptcha"><img :src="verifyCode" /></a>
+          <div class="login-form-hr"></div>
+        </el-form-item>
+        <el-button class="login-button" type="primary" :loading="loading" @click.native.prevent="handleLogin">登&nbsp;&nbsp;录</el-button>
+      </el-form>
+    </div>
   </div>
 </template>
 
 <script>
 // import { isvalidUsername } from '@/utils/validate'
 import { baseRequest } from '@/api/base'
-import LangSelect from '@/components/LangSelect'
-import SocialSign from './socialsignin'
 import { encrypt } from '@/utils/encryption'
 import { getToken } from '@/utils/auth'
+import sign from '@/assets/images/sign.jpg'
+import cutter from '@/assets/images/cutter.png'
 const errorMsg = {
   username: '',
   password: '',
   captcha: ''
 }
 export default {
-  components: { LangSelect, SocialSign },
   name: 'login',
   created() {
     if (getToken()) {
@@ -65,6 +61,8 @@ export default {
   },
   data() {
     return {
+      sign,
+      cutter,
       verifyCode: '',
       verifyRandom: '',
       loginForm: {
@@ -175,163 +173,133 @@ export default {
           return false
         }
       })
-    },
-    afterQRScan() {
-      // const hash = window.location.hash.slice(1)
-      // const hashObj = getQueryObject(hash)
-      // const originUrl = window.location.origin
-      // history.replaceState({}, '', originUrl)
-      // const codeMap = {
-      //   wechat: 'code',
-      //   tencent: 'code'
-      // }
-      // const codeName = hashObj[codeMap[this.auth_type]]
-      // if (!codeName) {
-      //   alert('第三方登录失败')
-      // } else {
-      //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-      //     this.$router.push({ path: '/' })
-      //   })
-      // }
     }
-  },
-  destroyed() {
-    // window.removeEventListener('hashchange', this.afterQRScan)
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-$bg:#2d3a4b;
-$inputBg:#012D46;
-$light_gray:#eee;
-
-/* reset element-ui css */
 .login-container {
-  .el-input {
-    display: inline-block;
-    height: 47px;
-    width: 85%;
-    input {
-      background: transparent;
-      border: 0px;
-      -webkit-appearance: none;
-      border-radius: 0px;
-      padding: 12px 5px 12px 15px;
-      color: $light_gray;
-      height: 47px;
-      &:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0px 1000px $inputBg inset !important;
-        box-shadow: 0 0 0px 1000px $inputBg inset !important;
-        -webkit-text-fill-color: #fff !important;
-      }
-    }
-  }
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: $inputBg;
-    border-radius: 5px;
-    color: #454545;
-  }
-}
-</style>
-
-<style rel="stylesheet/scss" lang="scss" scoped>
-// $bg:#2d3a4b;
-$bgTop:#000;
-$bgBottom:#0374B3;
-$dark_gray:#889aa4;
-$light_gray:#eee;
-.login-container {
-  position: fixed;
+  overflow: hidden;
   height: 100%;
-  width: 100%;
-  background: -webkit-linear-gradient($bgTop, $bgBottom); /* Safari 5.1 - 6.0 */
-  background: -o-linear-gradient($bgTop, $bgBottom); /* Opera 11.1 - 12.0 */
-  background: -moz-linear-gradient($bgTop, $bgBottom); /* Firefox 3.6 - 15 */
-  background: linear-gradient($bgTop, $bgBottom); /* 标准的语法（必须放在最后） */
-  .login-form {
+  position: relative;
+  .login-area{
+    height: 699px;
+    width: 1080px;
     position: absolute;
-    left: 0;
-    right: 0;
-    width: 520px;
-    padding: 35px 35px 15px 35px;
-    margin: 120px auto;
-    .captcha{
-      .el-input{
-        width: 69%;
-      }
-      a{
-        display:block;
-        float:right;
-        img{
-        display:block;
-      }
-      }
-    }
-  }
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-    span {
-      &:first-of-type {
-        margin-right: 16px;
-      }
-    }
-  }
-  .svg-container {
-    padding: 6px 5px 6px 15px;
-    color: $dark_gray;
-    vertical-align: middle;
-    width: 30px;
-    display: inline-block;
-    &_login {
-      font-size: 20px;
-    }
-  }
-  .title-container {
-    position: relative;
-    .logo{
-      display: block;
-      height: 80px;
-      width: 100%;
-      background-repeat: no-repeat;
-      background-size: 100% 75px;
-      font-size: 0;
-      margin-bottom: 10px;
-    }
-    .title {
-      font-size: 26px;
-      font-weight: 400;
-      color: $light_gray;
-      margin: 0;
-      text-align: center;
-      font-weight: bold;
-      line-height: 49.2px;
-      float: left;
-      margin-left: 5px;
-    }
-    .set-language {
-      color: #fff;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    .login-image{
+      width: 550px;
+      box-shadow: 20px 0px 40px 5px #c4d4ec;
+      border-radius: 10px;
+      overflow: hidden;
       position: absolute;
-      top: 5px;
-      right: 0px;
+      left: 0;
+      top: 0;
+      z-index: 2;
+      img{
+        width:100%;
+        display: block;
+      }
+    }
+    .login-form{
+      width: calc(100% - 550px);
+      background-color: #fff;
+      margin: 22px 0;
+      height: calc(100% - 44px);
+      padding:0 100px 0 88px;
+      border-radius: 10px;
+      position: absolute;
+      top: 0;
+      left: 550px;
+      box-shadow: 1px 0px 11px 0px #dde2ee;
+      .login-title{
+        line-height: 222px;
+        font-size: 20px;
+        font-weight: bold;
+        color:#4574be;
+        text-align: center;
+        letter-spacing: 2px;
+      }
+      .el-form-item{
+        position: relative;
+        .el-form-item__content{
+          .login-icon{
+            position: absolute;
+            top: 4px;
+            left: 0px;
+            width: 26px;
+            height: 26px;
+            &.user{
+              background-position: 55px 400px;
+            }
+            &.passwd{
+              background-position: 55px 334px;
+            }
+            &.cap{
+              background-position: 55px 272px;
+            }
+          }
+        }
+        .login-captcha{
+          position: absolute;
+          top:0;
+          right: 0;
+          img{
+            height: 35px;
+            display:block;
+          }
+        }
+      }
+      .login-form-hr{
+        height: 2px;
+        border-bottom: 1px solid #3164b7;
+        margin-bottom: 3px;
+      }
+      .login-button{
+        width: 100%;
+        margin-top:30px;
+        height: 47px;
+        border-radius: 10px;
+        background-image: linear-gradient(to right, #3264b7 , #7ca7ef);
+        // background-color: #3264b7;
+        border:none;
+        &:hover{
+          background-image: linear-gradient(to right, #3d6cb8 , #90b4f3);
+        }
+      }
+      .el-input {
+        display: inline-block;
+        padding-left: 26px;
+        input {
+          background: transparent;
+          border: 0px;
+          -webkit-appearance: none;
+          border-radius: 0px;
+          padding: 2px 5px;
+          color: #7ca6ee;
+          font-size: 12px;
+          &::-webkit-input-placeholder {
+            color: #7ca6ee;
+          }
+          &::-moz-input-placeholder {
+            color: #7ca6ee;
+          }
+          &::-ms-input-placeholder {
+            color: #7ca6ee;
+          }
+        }
+      }
     }
   }
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: $dark_gray;
-    cursor: pointer;
-    user-select: none;
-  }
-  .thirdparty-button {
-    position: absolute;
-    right: 35px;
-    bottom: 28px;
+  @media (max-width: 1517px){
+    height: auto;
+    position: static;
+    .login-area{
+      margin: 184px auto;
+    }
   }
 }
 </style>
