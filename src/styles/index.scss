@@ -1,0 +1,336 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './element-ui.scss';
+@import './btn.scss';
+@import './base.scss';
+@import './formSearch.scss';
+
+body {
+  height: 100%;
+  background-color: #f9faff;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+a, body, div, dl, h1, h2, h3, h4, h5, h6, html, li, ol, p, span, ul {
+  padding: 0;
+  margin: 0;
+}
+//浏览器适配
+// @media (min-width: 1000px) and (max-width: 1266px){
+//   .navbar > h1{
+//     display: none;
+//   }
+// }
+// @media (min-width: 0px) and (max-width: 1000px){
+//   .navbar  .top-menu{
+//     display: none;
+//   }
+// }
+// @media (min-width: 0px) and (max-width: 638px){
+//   .navbar > h1{
+//     display: none;
+//   }
+// }
+//不可选中文字
+.no-text-select{
+  -webkit-user-select:none;
+
+   -moz-user-select:none;
+
+   -ms-user-select:none;
+
+   user-select:none;
+}
+.dialog-default{
+  height:75%;
+}
+// .el-dialog__header{
+//   height: 10%;
+// }
+.el-dialog__body{
+  height: calc(100% - 120px);
+  padding: 0;
+}
+// .el-dialog__footer{
+//   height: 10%;
+// }
+.no-footer{
+  .el-dialog__body{
+    height: calc(100% - 60px);
+    padding: 0;
+  }
+}
+//弹框高度
+.dialog-default .dialog-contant-default{
+  height:100%;
+  padding: 10px;
+  overflow:auto;
+}
+
+label {
+  font-weight: 700;
+}
+// .sidebar-container .svg-icon{
+//   width: 1.5em !important;
+//   height: 1.5em !important;
+//   vertical-align: -0.35em !important;
+// }
+.sidebar-container .el-menu--collapse .svg-icon{
+  margin-left: -4px
+}
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app{
+  height: 100%;
+}
+
+.app-main{
+  padding: 0;
+  width: 100%;
+  // overflow: hidden;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.no-padding {
+  padding: 0px !important;
+}
+
+.padding-content {
+  padding: 4px 0;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+.el-loading-spinner{
+  top :300px !important;
+}
+
+div:focus{
+  outline: none;
+ }
+
+.fr {
+  float: right;
+}
+
+.fl {
+  float: left;
+}
+
+.pr-5 {
+  padding-right: 5px;
+}
+
+.pl-5 {
+  padding-left: 5px;
+}
+
+.block {
+  display: block;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.inlineBlock {
+  display: block;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+code {
+  background: #eef1f6;
+  padding: 15px 16px;
+  margin-bottom: 20px;
+  display: block;
+  line-height: 36px;
+  font-size: 15px;
+  font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+  a {
+    color: #337ab7;
+    cursor: pointer;
+    &:hover {
+      color: rgb(32, 160, 255);
+    }
+  }
+}
+
+.warn-content{
+  background: rgba(66,185,131,.1);
+  border-radius: 2px;
+  padding: 16px;
+  padding: 1rem;
+  line-height: 1.6rem;
+  word-spacing: .05rem;
+  a{
+    color: #42b983;
+    font-weight: 600;
+  }
+}
+
+//main-container全局样式
+.app-container {
+  padding: 0;
+}
+// ai上部条件选项
+.base-options{
+  height: 50px;
+  background-color: #fff;
+  border-bottom:1px solid #E4E4E4;
+  padding:0 20px;
+  overflow: hidden;
+  .base-left-options{ //左侧
+    float: left;
+    padding-top:8px;
+    & > a{
+      margin-right: 10px;
+    }
+    .el-button--text{
+      color:#000;
+    }
+  }
+  .base-right-options{ //右侧
+    float: right;
+    padding-top:8px;
+  }
+}
+
+.base-options-input{
+  width: 155px;
+}
+.ai-update-input{
+  width: 655px;
+}
+
+.ai-update-input-dialog{
+  width: 400px;
+}
+
+.ai-container{
+  margin:20px;
+  padding:0 20px;
+  border:1px solid #E4E4E4;
+  background-color: #fff;
+  .list-options{
+    height: 70px;
+    overflow: hidden;
+    .el-form-item{
+      margin-right: 20px;
+    }
+    .el-button{
+      margin-top:1.5px;
+    }
+  }
+}
+
+.components-container {
+  margin: 30px 50px;
+  position: relative;
+}
+
+.pagination-container {
+  margin-top: 10px;
+}
+
+.text-center {
+  text-align: center
+}
+
+.sub-navbar {
+  height: 50px;
+  line-height: 50px;
+  position: relative;
+  width: 100%;
+  text-align: right;
+  padding-right: 20px;
+  transition: 600ms ease position;
+  background: linear-gradient(90deg, rgba(32, 182, 249, 1) 0%, rgba(32, 182, 249, 1) 0%, rgba(33, 120, 241, 1) 100%, rgba(33, 120, 241, 1) 100%);
+  .subtitle {
+    font-size: 20px;
+    color: #fff;
+  }
+  &.draft {
+    background: #d0d0d0;
+  }
+  &.deleted {
+    background: #d0d0d0;
+  }
+}
+
+.link-type,
+.link-type:focus {
+  color: #337ab7;
+  cursor: pointer;
+  &:hover {
+    color: rgb(32, 160, 255);
+  }
+}
+
+.filter-container {
+  padding-bottom: 10px;
+  .filter-item {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 10px;
+    margin-left:10px;
+  }
+}
+.filter-item {
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: 10px;
+  margin-left:10px;
+}
+
+.input-label{
+  // font-size: 13px;
+  margin-left: 10px;
+  display: inline-block;
+  // vertical-align: middle;
+  width:89px;
+          font-size: 14px;
+    color: #606266;
+      text-align: center;
+}
+
+//refine vue-multiselect plugin
+.multiselect {
+  line-height: 16px;
+}
+
+.multiselect--active {
+  z-index: 1000 !important;
+}

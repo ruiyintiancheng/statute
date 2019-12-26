@@ -1,0 +1,108 @@
+//主体宽度
+.base-container{
+    width: 1200px;
+    margin: 0 auto;
+}
+//search
+.search {
+    width: 100%;
+    position: relative;
+    .text-search{
+        .el-input.is-active .el-input__inner, .el-input__inner:focus {
+            border-color: #dcdfe6;
+            outline: 0;
+        }
+    }
+    .searchForm {
+    background-color: #fff;
+    position: absolute;
+    z-index: 999;
+    padding: 30px 40px;
+    border: 1px solid #ccc;
+    border-top: none;
+      .el-form-item {
+        width: calc(50% - 15px);
+        .el-form-item__content {
+          width: calc(100% - 100px);
+        }
+        &.single-form-item {
+          width: calc(100% - 15px);
+        }
+      }
+    }
+  }
+
+.base-row{
+    border:1px solid #E4E4E4;
+    margin:5px 10px 0;
+    .el-table--border{
+        border-top: none;
+    }
+}
+.form-input,.el-date-editor.el-input.form-input{
+    width: 155px;
+}
+.baseUpdate-form{
+    // margin-left:calc(50% - 125px);
+    margin-left:calc(50% - 450px);
+    margin-top:20px;
+}
+.row-botton{
+    background-color: #F3F3F3;
+    // border-bottom: 1px solid #E4E4E4;
+    height: 50px;
+    line-height: 50px;
+    color: #9D9399;
+    padding:0 15px;
+    font-size: 14px;
+}
+.row-botton{
+    button{
+        // float:right;
+        margin:7px 5px;
+    }
+    .row-title{
+        float:left;
+    }
+    a{
+        margin:7px 5px;
+        -webkit-user-select:none;
+
+     -moz-user-select:none;
+
+     -ms-user-select:none;
+
+     user-select:none;
+    }
+    .row-option{
+        float:right;
+    }
+}
+.el-table--medium td{
+    padding: 5px 0;
+}
+//树形下拉框文字
+.vue-treeselect__label{
+    font-weight: normal;
+    color: #606266;
+  }
+
+//树形下拉框样式
+.app-container .vue-treeselect__multi-value-item{
+    background: #f0f2f5;
+    color: #909399;
+    background-color: #F0F2F5;
+    border-radius: 4px;
+}
+.app-container .vue-treeselect__value-remove{
+    border-left: 0;
+    color:#909399;
+}
+.app-container .vue-treeselect__limit-tip-text{
+    margin: 0;
+    padding: 3px 9px;
+    color: #909399;
+    font-weight: normal;
+    background-color: #f0f2f5;
+    border-radius: 4px;
+}

@@ -1,0 +1,39 @@
+@import './mixin.scss';
+.form-search{
+    padding:17px 0px 0px 0;
+    .demo-form-inline{
+        width:100%;
+        display: inline-block;
+      }
+      .input-both-2{
+        @include formSearch(50%)
+      }
+      .input-both-3{
+        @include formSearch(33.3333%)
+      }
+      .input-both-4{
+        @include formSearch(25%)
+      }
+      .form-input{
+          width:250px;
+      }
+      .form-input-range{
+          width:117.35px;
+          font-size: 12px;
+      }
+      .demo-table-expand .el-form-item {
+      margin-right: 0;
+      }
+      .input-label{
+        /* width:89px; */
+            font-size: 14px;
+      color: #606266;
+        text-align: center;
+        display: inline;
+            margin: 0 5px 0 0;
+      }
+      .input-label-range{
+        width:7px;
+        margin:0;
+      }
+}

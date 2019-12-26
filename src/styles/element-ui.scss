@@ -1,0 +1,105 @@
+ //覆盖一些element-ui样式
+
+  .el-table .ai-el-table-header{
+  color: #fff;
+  background-color: #2E4AA0;
+}
+.el-select-dropdown__item.selected {
+  color: $mainColor;
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active{
+  background-color: $mainColor;
+}
+
+ .el-breadcrumb__inner, .el-breadcrumb__inner a{
+  font-weight: 400!important;
+}
+
+ .el-upload {
+   input[type="file"] {
+     display: none !important;
+   }
+ }
+
+ .el-upload__input {
+   display: none;
+ }
+
+ .cell {
+   .el-tag {
+     margin-right: 0px;
+   }
+ }
+
+ .small-padding {
+   .cell {
+     padding-left: 5px;
+     padding-right: 5px;
+   }
+ }
+
+ .fixed-width{
+  .el-button--mini{
+    padding: 7px 10px;
+    width: 60px;
+  }
+ }
+
+ .status-col {
+   .cell {
+     padding: 0 10px;
+     text-align: center;
+     .el-tag {
+       margin-right: 0px;
+     }
+   }
+ }
+
+ //暂时性解决dialog 问题 https://github.com/ElemeFE/element/issues/2461
+ .el-dialog {
+   transform: none;
+   left: 0;
+   position: relative;
+   margin: 0 auto;
+ }
+  .el-dialog__header,.el-dialog__footer{
+    background-color: #F3F3F3;
+  }
+ //文章页textarea修改样式
+ .article-textarea {
+   textarea {
+     padding-right: 40px;
+     resize: none;
+     border: none;
+     border-radius: 0px;
+     border-bottom: 1px solid #bfcbd9;
+   }
+ }
+
+ //element ui upload
+ .upload-container {
+   .el-upload {
+     width: 100%;
+     .el-upload-dragger {
+       width: 100%;
+       height: 200px;
+     }
+   }
+ }
+
+//dropdown
+ .el-dropdown-menu{
+  a{
+    display: block
+  }
+}
+
+//date-picker 只选择小时
+.el-picker-panel.el-date-picker.el-popper.has-time.only-has-hour{
+  .el-time-panel.el-popper{
+    width:150px;
+    .el-time-spinner__wrapper.el-scrollbar{
+      width:100%;
+    }
+  }
+}
