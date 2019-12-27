@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-23 11:16:27 
  * @Last Modified by: lk
- * @Last Modified time: 2019-12-25 03:25:11
+ * @Last Modified time: 2019-12-27 14:36:35
  * @Description:  首页
  */
 <template>
@@ -126,7 +126,7 @@ export default {
         background-color: #96b4e1;
         border-radius: 8px;
         text-align: center;
-        // box-shadow: 0px 20px 20px -20px #111;
+        box-shadow: 0px 20px 20px -20px #111;
         transition: all .2s linear;
         &:hover{
           // -webkit-box-shadow: 0 15px 30px rgba(0,0,0,.1);

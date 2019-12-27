@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 20:48:17 
  * @Last Modified by: lk
- * @Last Modified time: 2019-12-26 15:40:11
+ * @Last Modified time: 2019-12-27 11:56:20
  * @Description:  查询列表
  */
 <template>
@@ -38,7 +38,7 @@
                        @current-change="handleCurrentChange"
                        :current-page="pageNo"
                        :total="total"
-                       style="margin-bottom:10px;text-align:center;"
+                       style="margin-bottom:10px;text-align:center;margin-top:44px;"
                        layout="total, sizes, prev, pager, next, jumper"
                        :page-sizes="[10,15,20]"
                        :page-size="pageSize">
