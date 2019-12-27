@@ -11,77 +11,64 @@
       <img :src="banner">
     </div>
     <div class="Learning-body">
-      <div class="Learning-center">
-        <el-row :gutter="20">
-          <el-col :span="6">
-            <div class="grid-content bg-purple baseitem">
-              <div class="item-frame">
-                <div class="item-title">在网络完全和信息化工作座谈会上的讲话</div>
-                <div class="item-date">(2016年4月19日)</div>
-                <div class="item-speaker">习近平</div>
-                <div class="item-speaker"
-                     style="margin-top:110px;font-size:4px">人民出版社</div>
-              </div>
-            </div>
-          </el-col>
+      <div class="Learning-center base-container">
 
-          <el-col :span="6">
-            <div class="grid-content bg-purple baseitem">
-              <div class="item-frame">
-                <div class="item-title">在网络完全和信息化工作座谈会上的讲话</div>
-                <div class="item-date">(2016年4月19日)</div>
-                <div class="item-speaker">习近平</div>
-                <div class="item-speaker"
-                     style="margin-top:110px;font-size:4px">人民出版社</div>
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="6">
-            <div class="grid-content bg-purple baseitem">
-              <div class="item-frame">
-                <div class="item-title">在网络完全和信息化工作座谈会上的讲话</div>
-                <div class="item-date">(2016年4月19日)</div>
-                <div class="item-speaker">习近平</div>
-                <div class="item-speaker"
-                     style="margin-top:110px;font-size:4px">人民出版社</div>
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="6">
-            <div class="grid-content bg-purple baseitem">
-              <div class="item-frame">
-                <div class="item-title">在网络完全和信息化工作座谈会上的讲话</div>
-                <div class="item-date">(2016年4月19日)</div>
-                <div class="item-speaker">习近平</div>
-                <div class="item-speaker"
-                     style="margin-top:110px;font-size:4px">人民出版社</div>
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="6">
-            <div class="grid-content bg-purple baseitem">
-              <div class="item-frame">
-                <div class="item-title">在网络完全和信息化工作座谈会上的讲话</div>
-                <div class="item-date">(2016年4月19日)</div>
-                <div class="item-speaker">习近平</div>
-                <div class="item-speaker"
-                     style="margin-top:110px;font-size:4px">人民出版社</div>
-              </div>
-            </div>
-          </el-col>
-
-        </el-row>
-        <div class="paging">
-          <el-pagination background
-                         @size-change="handleSizeChange"
-                         @current-change="handleCurrentChange"
-                         :current-page="pageNo"
-                         :total="total"
-                         layout="total, prev, pager, next, jumper"
-                         :page-sizes="[10,15,20]"
-                         :page-size="pageSize">
-          </el-pagination>
+        <div class=" baseitem">
+          <div class="item-frame">
+            <div class="item-title">在网络完全和信息化工作座谈会上的讲话</div>
+            <div class="item-date">(2016年4月19日)</div>
+            <div class="item-speaker">习近平</div>
+            <div class="item-speaker"
+                 style="margin-top:110px;font-size:4px">人民出版社</div>
+          </div>
         </div>
+        <div class=" baseitem">
+          <div class="item-frame">
+            <div class="item-title">在网络完全和信息化工作座谈会上的讲话</div>
+            <div class="item-date">(2016年4月19日)</div>
+            <div class="item-speaker">习近平</div>
+            <div class="item-speaker"
+                 style="margin-top:110px;font-size:4px">人民出版社</div>
+          </div>
+        </div>
+        <div class=" baseitem">
+          <div class="item-frame">
+            <div class="item-title">在网络完全和信息化工作座谈会上的讲话</div>
+            <div class="item-date">(2016年4月19日)</div>
+            <div class="item-speaker">习近平</div>
+            <div class="item-speaker"
+                 style="margin-top:110px;font-size:4px">人民出版社</div>
+          </div>
+        </div>
+        <div class=" baseitem">
+          <div class="item-frame">
+            <div class="item-title">在网络完全和信息化工作座谈会上的讲话</div>
+            <div class="item-date">(2016年4月19日)</div>
+            <div class="item-speaker">习近平</div>
+            <div class="item-speaker"
+                 style="margin-top:110px;font-size:4px">人民出版社</div>
+          </div>
+        </div>
+        <div class=" baseitem">
+          <div class="item-frame">
+            <div class="item-title">在网络完全和信息化工作座谈会上的讲话</div>
+            <div class="item-date">(2016年4月19日)</div>
+            <div class="item-speaker">习近平</div>
+            <div class="item-speaker"
+                 style="margin-top:110px;font-size:4px">人民出版社</div>
+          </div>
+        </div>
+      </div>
+      <div class="paging">
+        <el-pagination background
+                       @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="pageNo"
+                       :total="total"
+                       layout="total, prev, pager, next, jumper"
+                       :page-sizes="[10,15,20]"
+                       :page-size="pageSize">
+        </el-pagination>
       </div>
     </div>
   </div>
@@ -127,39 +114,13 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.el-row {
-  margin-bottom: 20px;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.el-col {
-  border-radius: 4px;
-}
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-}
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
-</style>
+
 
 <style lang="scss" scoped>
 .Learning {
   height: 100%;
   .Learning-head {
+    margin-bottom: -5px;
     img {
       width: 100%;
     }
@@ -167,14 +128,24 @@ export default {
   .Learning-body {
     background-color: #def5fb;
     padding: 30px 0;
-    .Learning-center {
-      width: 80%;
-      margin: 0 auto;
 
+    .Learning-center {
+      // width: 80%;
+      // margin: 0 auto;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      .baseitem:nth-child(4n) {
+        margin-right: 0px;
+      }
       .baseitem {
+        width: 274px;
+        display: inline-block;
         background: #fff;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
+        margin-right: 34px;
         padding: 10px;
+
         .item-frame {
           height: 100%;
           width: 100%;
@@ -182,22 +153,22 @@ export default {
           // min-height: 30px;
           border: 1px solid #aaaaaa;
           .item-title {
-            color: red;
+            color: #ed4d56;
             text-align: center;
-            font-size: 22px;
+            font-size: 20px;
             line-height: 26px;
             font-weight: 500;
             font-family: SimSun;
           }
           .item-date {
-            color: red;
+            color: #ed4d56;
             text-align: center;
             font-size: 4px;
             margin-top: 25px;
             letter-spacing: 2px;
           }
           .item-speaker {
-            color: red;
+            color: #ed4d56;
             text-align: center;
             font-size: 14px;
             margin-top: 38px;
@@ -205,9 +176,9 @@ export default {
           }
         }
       }
-      .paging {
-        text-align: center;
-      }
+    }
+    .paging {
+      text-align: center;
     }
   }
 }
