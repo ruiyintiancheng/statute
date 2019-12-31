@@ -103,6 +103,17 @@ export const constantRouterMap = [
     component: Layout,
     children: [
       {
+        name: 'verbiage',
+        path: '/verbiage',
+        component: _import('verbiage/index')
+      }
+    ]
+  },
+  {
+    path: '',
+    component: Layout,
+    children: [
+      {
         name: 'explain',
         path: '/explain',
         component: _import('explain/index')
