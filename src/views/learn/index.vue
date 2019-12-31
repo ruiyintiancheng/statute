@@ -2,7 +2,7 @@
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
  * @Last Modified by: 1k
- * @Last Modified time: 2019-12-31 16:06:41
+ * @Last Modified time: 2019-12-31 18:33:52
  * @Description:  学习路上
  */
 <template>
@@ -10,53 +10,20 @@
     <div class="Learning-head">
       <img :src="banner">
     </div>
-    <div class="Learning-body">
+    <div class="Learning-body"
+         v-loading="listLoading">
       <div class="Learning-center base-container">
 
         <div class=" baseitem"
-             @click="jumpDetails(1)">
+             v-for="item in configData"
+             :key="item.id"
+             @click="jumpDetails(item.id)">
           <div class="item-frame">
-            <div class="item-title">在网络完全和信息化工作座谈会上的讲话</div>
-            <div class="item-date">(2016年4月19日)</div>
+            <div class="item-title">{{item.docTittle}}</div>
+            <div class="item-date">{{item.docIssueTime | timeFiltering}}</div>
             <div class="item-speaker">习近平</div>
             <div class="item-speaker"
-                 style="margin-top:110px;font-size:4px">人民出版社</div>
-          </div>
-        </div>
-        <div class=" baseitem">
-          <div class="item-frame">
-            <div class="item-title">在网络完全和信息化工作座谈会上的讲话</div>
-            <div class="item-date">(2016年4月19日)</div>
-            <div class="item-speaker">习近平</div>
-            <div class="item-speaker"
-                 style="margin-top:110px;font-size:4px">人民出版社</div>
-          </div>
-        </div>
-        <div class=" baseitem">
-          <div class="item-frame">
-            <div class="item-title">在网络完全和信息化工作座谈会上的讲话</div>
-            <div class="item-date">(2016年4月19日)</div>
-            <div class="item-speaker">习近平</div>
-            <div class="item-speaker"
-                 style="margin-top:110px;font-size:4px">人民出版社</div>
-          </div>
-        </div>
-        <div class=" baseitem">
-          <div class="item-frame">
-            <div class="item-title">在网络完全和信息化工作座谈会上的讲话</div>
-            <div class="item-date">(2016年4月19日)</div>
-            <div class="item-speaker">习近平</div>
-            <div class="item-speaker"
-                 style="margin-top:110px;font-size:4px">人民出版社</div>
-          </div>
-        </div>
-        <div class=" baseitem">
-          <div class="item-frame">
-            <div class="item-title">在网络完全和信息化工作座谈会上的讲话</div>
-            <div class="item-date">(2016年4月19日)</div>
-            <div class="item-speaker">习近平</div>
-            <div class="item-speaker"
-                 style="margin-top:110px;font-size:4px">人民出版社</div>
+                 style="margin-top:110px;font-size:4px">{{item.docSource}}</div>
           </div>
         </div>
       </div>
@@ -84,15 +51,34 @@ export default {
   data() {
     return {
       banner,
+      searchData: {},
+      configData: {},
       pageNo: 1,
-      total: 40,
-      pageSize: 10
+      total: null,
+      pageSize: null,
+      listLoading: false
     }
+  },
+  filters: {
+    timeFiltering(val) {
+      if (val) {
+        let newdate = ''
+        const date = new Date(val).replace(/-/g, '/')
+        newdate = date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日'
+        return newdate
+      }
+    }
+  },
+  mounted() {
+    this.searchOption()
   },
   methods: {
     jumpDetails(id) { // 跳转讲话内容
       this.$router.push({
-        name: 'verbiage'
+        name: 'verbiage',
+        query: {
+          crawlConId: id
+        }
       })
     },
     searchOption(page) {
@@ -102,7 +88,7 @@ export default {
       }
       this.searchData.pageNo = this.pageNo
       this.searchData.pageSize = this.pageSize
-      baseSearch('/keywordInfos/selects', this.searchData).then(response => {
+      baseSearch('/bXjpBasic/selectBXjpBasicList', this.searchData).then(response => {
         this.configData = response.data.item
         this.total = response.data.total
         this.pageSize = response.data.pageSize

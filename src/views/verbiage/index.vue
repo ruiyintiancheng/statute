@@ -2,26 +2,26 @@
  * @Author: wk 
  * @Date: 2019-12-31 11:54:48 
  * @Last Modified by: 1k
- * @Last Modified time: 2019-12-31 16:20:22
+ * @Last Modified time: 2019-12-31 18:37:56
  * @Description:  讲话内容
  */
 <template>
   <div class="verbiage base-container clearfix"
        v-loading="loading">
     <div class="article">
-      <div class="article-title">{{articleDetail.conTitle}}</div>
+      <div class="article-title">{{articleDetail.docTittle}}</div>
       <div class="article-options">
-        <span>发布时间: {{articleDetail.publishDate}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-        <span>来源: {{articleDetail.publishOrg}}</span>
+        <span>发布时间: {{articleDetail.docIssueTime | timeFiltering}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>来源: {{articleDetail.docSource}}</span>
       </div>
       <div class="article-content"
-           v-html="articleDetail.fileContent">
+           v-html="articleDetail.content">
       </div>
-      <div class="ori-link">
+      <!-- <div class="ori-link">
         原文链接
         <a target="_blank"
            :href="articleDetail.conUrl">{{articleDetail.conUrl}}</a>
-      </div>
+      </div> -->
     </div>
     <!-- <div class="other-articles">
       <div class="article-items">
@@ -80,28 +80,16 @@ export default {
       }
     }
   },
-  mounted() {
-    this.getInfo()
-    const temp = [
-      '苗圩：1全面推进无线电管理工作再发多少大开发收到了',
-      '苗圩：2全面推进无线电管理工作再发多少大开发收到了',
-      '苗圩：3全面推进无线电管理工作再发多少大开发收到了',
-      '苗圩：4全面推进无线电管理工作再发多少大开发收到了',
-      '苗圩：5全面推进无线电管理工作再发多少大开发收到了',
-      '苗圩：6全面推进无线电管理工作再发多少大开发收到了',
-      '苗圩：7全面推进无线电管理工作再发多少大开发收到了',
-      '苗圩：8全面推进无线电管理工作再发多少大开发收到了',
-      '苗圩：9全面推进无线电管理工作再发多少大开发收到了',
-      '苗圩：10全面推进无线电管理工作再发多少大开发收到了'
-    ]
-    const pageSize = 4
-    if (temp && temp.length > 0) {
-      const pageCount = Math.ceil(temp.length / pageSize)
-      for (let x = 0; x < pageCount; x++) {
-        const children = temp.slice(x * 4, x * 4 + 4)
-        this.explains.push(children)
+  filters: {
+    timeFiltering(t) {
+      if (t) {
+        const newdate = t.substr(0, 10)
+        return newdate
       }
     }
+  },
+  mounted() {
+    this.getInfo()
   },
   methods: {
     getInfo(id) {
