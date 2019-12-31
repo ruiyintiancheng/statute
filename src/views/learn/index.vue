@@ -2,7 +2,7 @@
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
  * @Last Modified by: 1k
- * @Last Modified time: 2019-12-26 16:20:44
+ * @Last Modified time: 2019-12-31 16:06:41
  * @Description:  学习路上
  */
 <template>
@@ -13,7 +13,8 @@
     <div class="Learning-body">
       <div class="Learning-center base-container">
 
-        <div class=" baseitem">
+        <div class=" baseitem"
+             @click="jumpDetails(1)">
           <div class="item-frame">
             <div class="item-title">在网络完全和信息化工作座谈会上的讲话</div>
             <div class="item-date">(2016年4月19日)</div>
@@ -89,6 +90,11 @@ export default {
     }
   },
   methods: {
+    jumpDetails(id) { // 跳转讲话内容
+      this.$router.push({
+        name: 'verbiage'
+      })
+    },
     searchOption(page) {
       this.listLoading = true
       if (!page) {
