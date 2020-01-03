@@ -2,7 +2,7 @@
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
  * @Last Modified by: 1k
- * @Last Modified time: 2019-12-31 18:33:52
+ * @Last Modified time: 2020-01-02 13:38:27
  * @Description:  学习路上
  */
 <template>
@@ -22,8 +22,8 @@
             <div class="item-title">{{item.docTittle}}</div>
             <div class="item-date">{{item.docIssueTime | timeFiltering}}</div>
             <div class="item-speaker">习近平</div>
-            <div class="item-speaker"
-                 style="margin-top:110px;font-size:4px">{{item.docSource}}</div>
+            <div class=" source"
+                 style="font-size:4px">{{item.docSource}}</div>
           </div>
         </div>
       </div>
@@ -52,7 +52,7 @@ export default {
     return {
       banner,
       searchData: {},
-      configData: {},
+      configData: null,
       pageNo: 1,
       total: null,
       pageSize: null,
@@ -63,7 +63,8 @@ export default {
     timeFiltering(val) {
       if (val) {
         let newdate = ''
-        const date = new Date(val).replace(/-/g, '/')
+        const date = new Date(val)
+        // alert(date)
         newdate = date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日'
         return newdate
       }
@@ -132,6 +133,7 @@ export default {
       }
       .baseitem {
         width: 274px;
+        height: 380px;
         display: inline-block;
         background: #fff;
         margin-bottom: 20px;
@@ -141,10 +143,14 @@ export default {
         .item-frame {
           height: 100%;
           width: 100%;
-          padding: 90px 20px 30px 20px;
+          // padding: 0 20px 30px 20px;
           // min-height: 30px;
           border: 1px solid #aaaaaa;
+          position: relative;
           .item-title {
+            position: absolute;
+            top: 65px;
+            width: 100%;
             color: #ed4d56;
             text-align: center;
             font-size: 20px;
@@ -153,6 +159,9 @@ export default {
             font-family: SimSun;
           }
           .item-date {
+            position: absolute;
+            top: 145px;
+            width: 100%;
             color: #ed4d56;
             text-align: center;
             font-size: 4px;
@@ -160,6 +169,19 @@ export default {
             letter-spacing: 2px;
           }
           .item-speaker {
+            position: absolute;
+            top: 175px;
+            width: 100%;
+            color: #ed4d56;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 38px;
+            letter-spacing: 8px;
+          }
+          .source {
+            position: absolute;
+            bottom: 40px;
+            width: 100%;
             color: #ed4d56;
             text-align: center;
             font-size: 14px;

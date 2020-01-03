@@ -1,18 +1,17 @@
 /*
  * @Author: lk 
  * @Date: 2019-12-24 16:50:14 
- * @Last Modified by: lk
- * @Last Modified time: 2019-12-25 01:35:41
+ * @Last Modified by: 1k
+ * @Last Modified time: 2020-01-02 14:05:02
  * @Description:  数据统计
  */
 <template>
-  <div class="statistics-container"
-       >
+  <div class="statistics-container">
     <el-row :gutter="48">
       <el-col :sm="12"
               :lg="12">
         <div class="statistics-card top-card">
-          <div class="statistics-card-title">政策收录数量统计</div>
+          <div class="statistics-card-title">{{barTittle}}</div>
           <div class="statistics-card-context">
             <custom-echarts ref="baosongqingkuangChart"
                             propsHeight="400px"
@@ -24,7 +23,7 @@
       <el-col :sm="12"
               :lg="12">
         <div class="statistics-card top-card">
-          <div class="statistics-card-title">{{yearTitle}}</div>
+          <div class="statistics-card-title">{{lineTittle}}</div>
           <div class="statistics-card-context">
             <custom-echarts ref="fabuliangqushiChart"
                             propsHeight="400px"
@@ -36,7 +35,7 @@
       <el-col :sm="12"
               :lg="12">
         <div class="statistics-card">
-          <div class="statistics-card-title">各体系政策分布</div>
+          <div class="statistics-card-title">{{pieTittle}}</div>
           <div class="statistics-card-context">
             <custom-echarts ref="ziduanbaosongtongjiChart"
                             propsHeight="400px"
@@ -48,7 +47,7 @@
       <el-col :sm="12"
               :lg="12">
         <div class="statistics-card">
-          <div class="statistics-card-title">各领域政策分布</div>
+          <div class="statistics-card-title">{{piesTittle}}</div>
           <div class="statistics-card-context">
             <custom-echarts ref="wentitongjiChart"
                             propsHeight="400px"
@@ -103,34 +102,45 @@ export default {
       wentitongji: {}, // 问题统计
       ditu: {}, // 地图
       mapData: {}, // 地图数据
-      lineBar: {} // 折线柱状图
+      lineBar: {}, // 折线柱状图
+      barTittle: '',
+      lineTittle: '',
+      pieTittle: '',
+      piesTittle: ''
     }
   },
   created() {
 
   },
   mounted() {
-    baseRequest('/crawlConInfo/ministryPolicyRelease').then(response => {
-      this.histogramValue = response.data.item.seriesList
-      this.histogramName = response.data.item.xAxisList
+    baseRequest('expGroupAnalyse/selectDataStatistics').then(response => {
+      this.histogramValue = response.data.item.ministryPolicyReleaseMap.seriesList
+      this.histogramName = response.data.item.ministryPolicyReleaseMap.xAxisList
+      this.barTittle = response.data.item.ministryPolicyReleaseMap.title
+      this.brokenLineDiagramValue = response.data.item.policyeRleaseTrendMap.seriesList
+      this.brokenLineDiagramName = response.data.item.policyeRleaseTrendMap.xAxisList
+      this.lineTittle = response.data.item.policyeRleaseTrendMap.title
+      this.pieChartValue = response.data.item.docTypeStatisticsMap.seriesList
+      this.pieChartName = response.data.item.docTypeStatisticsMap.legendList
+      this.pieTittle = response.data.item.docTypeStatisticsMap.title
+      this.cakeLikeValue = response.data.item.issueOrgTypeStatisticsMap.seriesList
+      this.cakeLikeName = response.data.item.issueOrgTypeStatisticsMap.legendList
+      this.piesTittle = response.data.item.issueOrgTypeStatisticsMap.title
       this.histogram()
-    })
-    baseRequest('/crawlConInfo/policyeRleaseTrend', {}).then(response => {
-      this.brokenLineDiagramValue = response.data.item.seriesList
-      this.brokenLineDiagramName = response.data.item.xAxisList
-      this.yearTitle = '近' + response.data.item.xAxisList.length + '年政策发布量趋势'
       this.brokenLineDiagram()
-    })
-    baseRequest('/crawlConInfo/systemPolicyDistribution').then(response => {
-      this.pieChartValue = response.data.item.seriesList
-      this.pieChartName = response.data.item.legendList
       this.pieChart()
-    })
-    baseRequest('/crawlConInfo/domainPolicyDistribution').then(response => {
-      this.cakeLikeValue = response.data.item.seriesList
-      this.cakeLikeName = response.data.item.legendList
       this.cakeLike()
     })
+    // baseRequest('/crawlConInfo/policyeRleaseTrend', {}).then(response => {
+
+    //   this.yearTitle = '近' + response.data.item.xAxisList.length + '年政策发布量趋势'
+    // })
+    // baseRequest('/crawlConInfo/systemPolicyDistribution').then(response => {
+
+    // })
+    // baseRequest('/crawlConInfo/domainPolicyDistribution').then(response => {
+
+    // })
   },
   activated() {
     this.resizeChart()
@@ -322,16 +332,17 @@ export default {
 .statistics-container {
   background-color: #f9faff;
   padding: 0 15px 30px;
-.statistics-card {
+  .statistics-card {
     height: 400px;
     margin-top: 48px;
     border-radius: 5px;
     background-color: #fff;
-    box-shadow: 0px 0px 0px #e9f0fe,0px 0px 20px #e9f0fe,0 0px 10px #e9f0fe,0px 15px 10px #e9f0fe;
+    box-shadow: 0px 0px 0px #e9f0fe, 0px 0px 20px #e9f0fe, 0 0px 10px #e9f0fe,
+      0px 15px 10px #e9f0fe;
     position: relative;
-    &.top-card{
+    &.top-card {
       margin-top: 40px;
-      .statistics-card-context{
+      .statistics-card-context {
         width: 100%;
         position: absolute;
         top: 5px;
@@ -347,9 +358,9 @@ export default {
       margin-left: 40px;
       position: relative;
       letter-spacing: 1px;
-      &::before{
+      &::before {
         content: "";
-        width:6px;
+        width: 6px;
         height: 18px;
         background-color: #1f73f3;
         position: absolute;

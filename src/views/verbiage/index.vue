@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2019-12-31 11:54:48 
  * @Last Modified by: 1k
- * @Last Modified time: 2019-12-31 18:37:56
+ * @Last Modified time: 2020-01-02 16:30:00
  * @Description:  讲话内容
  */
 <template>
@@ -11,11 +11,12 @@
     <div class="article">
       <div class="article-title">{{articleDetail.docTittle}}</div>
       <div class="article-options">
-        <span>发布时间: {{articleDetail.docIssueTime | timeFiltering}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>发布时间: {{articleDetail.docIssueTime |timeFiltering}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
         <span>来源: {{articleDetail.docSource}}</span>
       </div>
-      <div class="article-content"
-           v-html="articleDetail.content">
+      <div class="article-content">
+        <p v-for="(item,index) in contentFormat(articleDetail.content)"
+           :key="index">{{item}}</p>
       </div>
       <!-- <div class="ori-link">
         原文链接
@@ -92,6 +93,10 @@ export default {
     this.getInfo()
   },
   methods: {
+    contentFormat(t) {
+      const str = t.trim().split(/\s+/)
+      return str
+    },
     getInfo(id) {
       let crawlConId = ''
       if (id) {
@@ -101,7 +106,7 @@ export default {
         crawlConId = this.$route.query.crawlConId
       }
       this.loading = true
-      baseRequest('/crawlConInfo/select', { crawlConId }).then(response => {
+      baseRequest('bXjpBasic/selectById', { id: crawlConId }).then(response => {
         this.articleDetail = response.data.item
         this.loading = false
       }, _ => {
