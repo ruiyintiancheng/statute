@@ -2,7 +2,7 @@
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
  * @Last Modified by: 1k
- * @Last Modified time: 2020-01-07 14:56:47
+ * @Last Modified time: 2020-01-07 16:42:14
  * @Description:  学习路上
  */
 <template>
@@ -55,7 +55,7 @@ export default {
       configData: null,
       pageNo: 1,
       total: null,
-      pageSize: null,
+      pageSize: 12,
       listLoading: false
     }
   },
