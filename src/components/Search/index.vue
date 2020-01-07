@@ -1,164 +1,163 @@
 /*
  * @Author: lk 
  * @Date: 2019-12-24 19:52:31 
- * @Last Modified by: lk
- * @Last Modified time: 2019-12-25 00:56:41
+ * @Last Modified by: 1k
+ * @Last Modified time: 2020-01-07 09:59:38
  * @Description:  高级搜索
  */
  <template>
-      <div class="search">
-            <el-input placeholder="请输入内容"
-                      class="text-search"
-                      ref="searchInput"
-                      @keyup.enter.native="seacrHandle"
-                      v-model="dataValue"
-                      >
-              <el-button slot="prepend"
-                        @click.stop="advancedSearch">高级搜索 <i class="el-icon-arrow-down"></i></el-button>
-              <el-button slot="append"
-                        v-if="generalSearch"
-                        icon="el-icon-search"
-                        @click="seacrHandle">搜索</el-button>
-            </el-input>
-            <!-- 高级搜索 -->
-            <el-form ref="form"
-                    v-if="seniorForm"
-                    :inline="true"
-                    @click.native.stop=""
-                    class="searchForm"
-                    :model="updateFormData"
-                    label-width="100px">
-              <el-form-item prop="archiveMode"
-                            class="single-form-item"
-                            label="发布机构">
-                <el-autocomplete v-model="updateFormData.publishingStructure"
-                                clearable
-                                style="width:100%"
-                                :fetch-suggestions="querySearchAsync"
-                                placeholder=""
-                                @select="handleSelect"></el-autocomplete>
-              </el-form-item>
-              <el-form-item prop="archiveMode"
-                            label="主题分类">
-                <el-select class="form-input"
-                          placeholder=""
-                          multiple
-                          @change="themeSelection"
-                          collapse-tags
-                          style="width:100%"
-                          v-model="updateFormData.subjectClassification"
-                          clearable>
-                  <el-option v-for="item in classification"
-                            :key="item"
-                            :label="item"
-                            :value="item"></el-option>
+  <div class="search">
+    <el-input placeholder="请输入内容"
+              class="text-search"
+              ref="searchInput"
+              @keyup.enter.native="seacrHandle"
+              v-model="dataValue">
+      <el-button slot="prepend"
+                 @click.stop="advancedSearch">高级搜索 <i class="el-icon-arrow-down"></i></el-button>
+      <el-button slot="append"
+                 v-if="generalSearch"
+                 icon="el-icon-search"
+                 @click="seacrHandle">搜索</el-button>
+    </el-input>
+    <!-- 高级搜索 -->
+    <el-form ref="form"
+             v-if="seniorForm"
+             :inline="true"
+             @click.native.stop=""
+             class="searchForm"
+             :model="updateFormData"
+             label-width="100px">
+      <!-- <el-form-item prop="archiveMode"
+                    class="single-form-item"
+                    label="发布机构">
+        <el-autocomplete v-model="updateFormData.publishingStructure"
+                         clearable
+                         style="width:100%"
+                         :fetch-suggestions="querySearchAsync"
+                         placeholder=""
+                         @select="handleSelect"></el-autocomplete>
+      </el-form-item> -->
+      <el-form-item prop="archiveMode"
+                    label="主题分类">
+        <el-select class="form-input"
+                   placeholder=""
+                   multiple
+                   @change="themeSelection"
+                   collapse-tags
+                   style="width:100%"
+                   v-model="updateFormData.subjectClassification"
+                   clearable>
+          <el-option v-for="item in classification"
+                     :key="item"
+                     :label="item"
+                     :value="item"></el-option>
 
-                </el-select>
-              </el-form-item>
-              <el-form-item prop="archiveMode"
-                            label="数据来源">
-                <el-select class="form-input"
-                          placeholder=""
-                          multiple
-                          collapse-tags
-                          style="width:100%"
-                          v-model="updateFormData.publishingUnit"
-                          clearable>
-                  <el-option v-for="item  in company"
-                            :key="item"
-                            :label="item"
-                            :value="item"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item prop="archiveMode"
+                    label="数据来源">
+        <el-select class="form-input"
+                   placeholder=""
+                   multiple
+                   collapse-tags
+                   style="width:100%"
+                   v-model="updateFormData.publishingUnit"
+                   clearable>
+          <el-option v-for="item  in company"
+                     :key="item"
+                     :label="item"
+                     :value="item"></el-option>
 
-                </el-select>
-              </el-form-item>
-              <el-form-item prop="archiveMode"
-                            label="相关体系">
-                <el-select class="form-input"
-                          placeholder=""
-                          multiple
-                          @change="systemWideSelection"
-                          collapse-tags
-                          style="width:100%"
-                          v-model="updateFormData.relatedSystem"
-                          clearable>
-                  <el-option v-for="item  in system"
-                            :key="item"
-                            :label="item"
-                            :value="item"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item prop="archiveMode"
+                    label="相关体系">
+        <el-select class="form-input"
+                   placeholder=""
+                   multiple
+                   @change="systemWideSelection"
+                   collapse-tags
+                   style="width:100%"
+                   v-model="updateFormData.relatedSystem"
+                   clearable>
+          <el-option v-for="item  in system"
+                     :key="item"
+                     :label="item"
+                     :value="item"></el-option>
 
-                </el-select>
-              </el-form-item>
-              <el-form-item prop="archiveMode"
-                            label="相关领域">
-                <el-select class="form-input"
-                          placeholder=""
-                          multiple
-                          @change="fieldSelection"
-                          collapse-tags
-                          style="width:100%"
-                          v-model="updateFormData.relatedFields"
-                          clearable>
-                  <el-option v-for="item in field"
-                            :key="item"
-                            :label="item"
-                            :value="item"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item prop="archiveMode"
+                    label="相关领域">
+        <el-select class="form-input"
+                   placeholder=""
+                   multiple
+                   @change="fieldSelection"
+                   collapse-tags
+                   style="width:100%"
+                   v-model="updateFormData.relatedFields"
+                   clearable>
+          <el-option v-for="item in field"
+                     :key="item"
+                     :label="item"
+                     :value="item"></el-option>
 
-                </el-select>
-              </el-form-item>
-              <el-form-item label="一带一路">
-                <el-checkbox-group v-model="updateFormData.type">
-                  <el-checkbox label=""
-                              name="type"></el-checkbox>
-                  <div style="width:300px;padding-right:290px"></div>
-                </el-checkbox-group>
-              </el-form-item>
-              <el-form-item prop="archiveMode"
-                            label="执行范围">
-                <el-select class="form-input"
-                          placeholder=""
-                          multiple
-                          @change="scopeSelection"
-                          collapse-tags
-                          style="width:100%"
-                          v-model="updateFormData.scopeOfExecution"
-                          clearable>
-                  <el-option v-for="item  in range"
-                            :key="item"
-                            :label="item"
-                            :value="item"></el-option>
+        </el-select>
+      </el-form-item>
+      <!-- <el-form-item label="一带一路">
+        <el-checkbox-group v-model="updateFormData.type">
+          <el-checkbox label=""
+                       name="type"></el-checkbox>
+          <div style="width:300px;padding-right:290px"></div>
+        </el-checkbox-group>
+      </el-form-item> -->
+      <el-form-item prop="archiveMode"
+                    label="执行范围">
+        <el-select class="form-input"
+                   placeholder=""
+                   multiple
+                   @change="scopeSelection"
+                   collapse-tags
+                   style="width:100%"
+                   v-model="updateFormData.scopeOfExecution"
+                   clearable>
+          <el-option v-for="item  in range"
+                     :key="item"
+                     :label="item"
+                     :value="item"></el-option>
 
-                </el-select>
-              </el-form-item>
-              <el-form-item prop="archiveMode"
-                            label="开始时间">
-                <el-date-picker v-model="updateFormData.startTime"
-                                type="date"
-                                value-format='yyyy-MM-dd'
-                                style="width:100%"
-                                :picker-options="pickerOptions1"
-                                placeholder="选择日期">
-                </el-date-picker>
-              </el-form-item>
-              <el-form-item prop="archiveMode"
-                            label="结束时间">
-                <el-date-picker v-model="updateFormData.endTime"
-                                type="date"
-                                value-format='yyyy-MM-dd'
-                                style="width:100%"
-                                :picker-options="pickerOptions2"
-                                placeholder="选择日期">
-                </el-date-picker>
-              </el-form-item>
-              <div class="dialog-footer"
-                  style="text-align: center;">
-                <el-button @click="resetForm">清除</el-button>
-                <el-button type="primary"
-                          @click="searchOperate()">搜索</el-button>
+        </el-select>
+      </el-form-item>
+      <el-form-item prop="archiveMode"
+                    label="开始时间">
+        <el-date-picker v-model="updateFormData.startTime"
+                        type="date"
+                        value-format='yyyy-MM-dd'
+                        style="width:100%"
+                        :picker-options="pickerOptions1"
+                        placeholder="选择日期">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item prop="archiveMode"
+                    label="结束时间">
+        <el-date-picker v-model="updateFormData.endTime"
+                        type="date"
+                        value-format='yyyy-MM-dd'
+                        style="width:100%"
+                        :picker-options="pickerOptions2"
+                        placeholder="选择日期">
+        </el-date-picker>
+      </el-form-item>
+      <div class="dialog-footer"
+           style="text-align: center;">
+        <el-button @click="resetForm">清除</el-button>
+        <el-button type="primary"
+                   @click="searchOperate()">搜索</el-button>
 
-              </div>
-            </el-form>
-        </div>
- </template>
+      </div>
+    </el-form>
+  </div>
+</template>
  
 <script>
 import { baseRequest } from '@/api/base'
@@ -166,7 +165,7 @@ export default {
   data() {
     return {
       updateFormData: {
-        publishingStructure: null,
+        // publishingStructure: null,
         subjectClassification: '',
         publishingUnit: '',
         relatedSystem: '',
@@ -278,15 +277,15 @@ export default {
       this.seniorForm = !this.seniorForm
       this.generalSearch = this.seniorForm !== true
     },
-    querySearchAsync(queryString, cb) { // 发布机构远程搜索
-      baseRequest('/crawlCode/getPublishMechanism', { codeName: queryString, codeType: '5' }).then(response => {
-        this.dropDown = response.data.item
-        cb(this.dropDown)
-      })
-    },
-    handleSelect(item) { // 下拉选中
-      this.updateFormData.publishingStructure = item.value
-    },
+    // querySearchAsync(queryString, cb) { // 发布机构远程搜索
+    //   baseRequest('/crawlCode/getPublishMechanism', { codeName: queryString, codeType: '5' }).then(response => {
+    //     this.dropDown = response.data.item
+    //     cb(this.dropDown)
+    //   })
+    // },
+    // handleSelect(item) { // 下拉选中
+    //   this.updateFormData.publishingStructure = item.value
+    // },
     themeSelection(val) { // 高级搜索所选选中
       for (const ts in val) {
         if (val[ts] === '全部主题') {

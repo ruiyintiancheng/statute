@@ -2,7 +2,7 @@
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
  * @Last Modified by: 1k
- * @Last Modified time: 2020-01-02 13:38:27
+ * @Last Modified time: 2020-01-07 14:56:47
  * @Description:  学习路上
  */
 <template>
@@ -129,7 +129,7 @@ export default {
       flex-direction: row;
       flex-wrap: wrap;
       .baseitem:nth-child(4n) {
-        margin-right: 0px;
+        margin-right: 1px;
       }
       .baseitem {
         width: 274px;

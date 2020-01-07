@@ -1,38 +1,42 @@
 /*
  * @Author: lk 
  * @Date: 2019-12-24 20:48:17 
- * @Last Modified by: lk
- * @Last Modified time: 2019-12-27 11:56:20
+ * @Last Modified by: 1k
+ * @Last Modified time: 2020-01-07 13:55:25
  * @Description:  查询列表
  */
 <template>
   <div class="search-result base-container">
     <div class="result-search base-container">
-        <search ref="resultSearch" @seacrHandle="seacrHandle" @searchOperate="searchOperate"></search>
+      <search ref="resultSearch"
+              @seacrHandle="seacrHandle"
+              @searchOperate="searchOperate"></search>
     </div>
     <div class="literalexcess"
-             v-if="literalexcess"><i class="el-icon-warning-outline"></i> 查询限制在38个汉字以内超出后省略。</div>
-    <div style='margin:20px 0;font-size:16px' v-if="total || total === 0">
-          当前关键词:<span style="color:#1f73f3;"
-                v-if="keyword">"{{keyword}}"</span>&nbsp;&nbsp;共<span style="color:#1f73f3;">{{total}}</span>条相关记录
-        </div>
-    <div class="searchBody"  v-loading="listLoading">
+         v-if="literalexcess"><i class="el-icon-warning-outline"></i> 查询限制在38个汉字以内超出后省略。</div>
+    <div style='margin:20px 0;font-size:16px'
+         v-if="total || total === 0">
+      当前关键词:<span style="color:#1f73f3;"
+            v-if="keyword">"{{keyword}}"</span>&nbsp;&nbsp;共<span style="color:#1f73f3;">{{total}}</span>条相关记录
+    </div>
+    <div class="searchBody"
+         v-loading="listLoading">
       <div class="query-results"
            v-if="hasData">
         <div class="data-bar"
              v-for="(item,index) in tabularData"
-             :key="index"
-             >
-          <a @click="$router.push({name:'policy',query:{crawlConId:item.crawlConId}})"
+             :key="index">
+          <a @click="$router.push({name:'policy',query:{crawlConId:item.id}})"
              style="color:#666">
-            <h4> <span v-html="item.publishOrg"></span>:<span v-html="item.conTitle  "></span></h4>
+            <h4> <span v-html="item.issueOrgText"></span>:<span v-html="item.docName  "></span></h4>
           </a>
-          <p class="bar-title" style="font-size:14px;color:#777"
-             v-html="item.fileContent"></p>
-          <p class="bar-date" style="font-size:12px;color:#999">{{item.publishDate==='null'?'':item.publishDate}}</p>
+          <p class="bar-title"
+             style="font-size:14px;color:#777"
+             v-html="item.docSummary"></p>
+          <p class="bar-date"
+             style="font-size:12px;color:#999">{{item.docIssueTime==='null'?'':item.docIssueTime}}</p>
         </div>
-        <el-pagination 
-                       v-if="total || total === 0"
+        <el-pagination v-if="total || total === 0"
                        background
                        @size-change="handleSizeChange"
                        @current-change="handleCurrentChange"
@@ -130,7 +134,7 @@ export default {
         params.wd = this.getParams()
       }
       this.listLoading = true
-      baseRequest('/esIndex/query', params).then(response => {
+      baseRequest('/esIndex/queryDoc', params).then(response => {
         this.tabularData = response.data.item.list
         this.total = response.data.item.total
         this.pageSize = response.data.item.pageSize
@@ -151,17 +155,17 @@ export default {
       param.systemCodeId = formItem.relatedSystem.toString()
       param.fieldCodeId = formItem.relatedFields.toString()
       param.impleScope = formItem.scopeOfExecution.toString()
-      param.publishOrg = formItem.publishingStructure ? formItem.publishingStructure : ''
+      // param.publishOrg = formItem.publishingStructure ? formItem.publishingStructure : ''
       param.webSite = formItem.publishingUnit.length === 0 ? '' : formItem.publishingUnit.toString()
       if (formItem.subjectClassification.length === 0) { param.themeType = '' }
       if (formItem.relatedSystem.length === 0) { param.systemCodeId = '' }
       if (formItem.relatedFields.length === 0) { param.fieldCodeId = '' }
       if (formItem.scopeOfExecution.length === 0) { param.impleScope = '' }
-      if (formItem.type.length === 0) {
-        param.beltRoad = '0'
-      } else {
-        param.beltRoad = '1'
-      }
+      // if (formItem.type.length === 0) {
+      //   param.beltRoad = '0'
+      // } else {
+      //   param.beltRoad = '1'
+      // }
       if (formItem.startTime || formItem.endTime) {
         param.publishDate = formItem.startTime + ',' + formItem.endTime
       } else {
@@ -197,26 +201,26 @@ export default {
 <style lang="scss">
 .search-result {
   padding: 30px 15px 15px;
-  .literalexcess{
+  .literalexcess {
     margin-top: 10px;
   }
-  .result-search{
-      width: 920px;
+  .result-search {
+    width: 920px;
   }
   .searchBody {
     .not-find {
       font-size: 14px;
       color: #666;
     }
-    .data-bar{
-      padding:0 40px;
-      h4{
+    .data-bar {
+      padding: 0 40px;
+      h4 {
         line-height: 30px;
         position: relative;
         padding: 28px 0 11px;
-        &::before{
+        &::before {
           content: "";
-          width:10px;
+          width: 10px;
           height: 10px;
           border-radius: 50%;
           background-color: #1f73f3;
@@ -225,19 +229,20 @@ export default {
           left: -18px;
         }
       }
-      .bar-title{
+      .bar-title {
         line-height: 28px;
-        padding:0 30px 0 5px;
-        border:1px dashed #ccc;
+        padding: 0 30px 0 5px;
+        border: 1px dashed #ccc;
       }
-      .bar-date{
+      .bar-date {
         height: 46px;
         line-height: 46px;
       }
-      h4,p{
-        margin:0;
+      h4,
+      p {
+        margin: 0;
       }
-      &:nth-of-type(2n-1){
+      &:nth-of-type(2n-1) {
         background-color: #fff;
       }
     }
