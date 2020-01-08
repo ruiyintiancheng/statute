@@ -1,8 +1,8 @@
 /*
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
- * @Last Modified by: 1k
- * @Last Modified time: 2020-01-08 15:49:22
+ * @Last Modified by: lk
+ * @Last Modified time: 2020-01-08 16:36:19
  * @Description:  学习路上
  */
 <template>
@@ -63,8 +63,7 @@ export default {
     timeFiltering(val) {
       if (val) {
         let newdate = ''
-        const date = new Date(val)
-        // alert(date)
+        const date = new Date(Date.parse(val.replace(/-/g, '/')))
         newdate = date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日'
         return newdate
       }
@@ -156,37 +155,39 @@ export default {
             font-size: 20px;
             line-height: 26px;
             font-weight: 500;
-            font-family: SimSun;
+            padding: 0px 15px;
+            font-family: SimHei;
           }
           .item-date {
             position: absolute;
-            top: 145px;
+            top: 150px;
             width: 100%;
             color: #ed4d56;
             text-align: center;
             font-size: 12px;
-            margin-top: 25px;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 black;
+            font-family: FangSong;
           }
           .item-speaker {
             position: absolute;
-            top: 175px;
+            top: 173px;
             width: 100%;
             color: #ed4d56;
             text-align: center;
-            font-size: 14px;
-            margin-top: 38px;
+            font-size: 12px;
             letter-spacing: 8px;
+            font-family: FangSong;
           }
           .source {
             position: absolute;
-            bottom: 40px;
+            bottom: 30px;
             width: 100%;
             color: #ed4d56;
             text-align: center;
             font-size: 14px;
-            margin-top: 38px;
-            letter-spacing: 5px;
+            letter-spacing: 3px;
+            font-family: FangSong;
           }
         }
       }
