@@ -2,12 +2,12 @@
  * @Author: wk 
  * @Date: 2019-10-17 19:59:27 
  * @Last Modified by: 1k
- * @Last Modified time: 2020-01-07 18:34:32
+ * @Last Modified time: 2020-01-08 11:18:00
  * @Description:  用户管理
  */
 <template>
   <div class="sys-config">
-    <div class="base-row">
+    <div class="">
       <div class="row-botton clearfix">
         <div class="row-title">
           <svg-icon icon-class="search" />
@@ -50,7 +50,7 @@
         </el-form>
       </div>
     </div>
-    <div class="base-row">
+    <div class="">
       <div class="row-botton clearfix">
         <div class="row-title">
           <svg-icon icon-class="ul" />
@@ -292,8 +292,8 @@ export default {
       this.$nextTick(_ => {
         const formDom = document.querySelector('.form-search')
         const formHeight = formDom ? formDom.offsetHeight : 0
-        this.tableHeight = this.$store.state.app.containHeight - formHeight - 100
-        // alert(formHeight)
+        this.tableHeight = document.body.offsetHeight - formHeight - 258
+        // alert()
       })
     },
     getConfigValue() {
@@ -434,3 +434,8 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.sys-config {
+  overflow: hidden;
+}
+</style>
