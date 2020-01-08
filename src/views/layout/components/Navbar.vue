@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2018-09-21 14:54:24 
  * @Last Modified by: 1k
- * @Last Modified time: 2020-01-07 11:24:40
+ * @Last Modified time: 2020-01-08 11:19:33
  * @Description:  
  */
 <template>
@@ -40,7 +40,7 @@
           <span class="log-out">
             <i class="log-user"
                @click="userManagement"
-               :style="{backgroundImage:'url('+cutter+')'}"></i>
+               :style="{backgroundImage:'url('+cutter+')',cursor:'pointer'}"></i>
             <a @click="logout">退出</a>
           </span>
         </li>
