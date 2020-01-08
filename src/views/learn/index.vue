@@ -2,7 +2,7 @@
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
  * @Last Modified by: 1k
- * @Last Modified time: 2020-01-07 17:15:01
+ * @Last Modified time: 2020-01-08 15:49:22
  * @Description:  学习路上
  */
 <template>
@@ -22,7 +22,7 @@
             <div class="item-date">{{item.docIssueTime | timeFiltering}}</div>
             <div class="item-speaker">习近平</div>
             <div class=" source"
-                 style="font-size:4px">{{item.docSource}}</div>
+                 style="font-size:12px">{{item.docSource}}</div>
           </div>
         </div>
       </div>
@@ -164,7 +164,7 @@ export default {
             width: 100%;
             color: #ed4d56;
             text-align: center;
-            font-size: 4px;
+            font-size: 12px;
             margin-top: 25px;
             letter-spacing: 2px;
           }
@@ -186,7 +186,7 @@ export default {
             text-align: center;
             font-size: 14px;
             margin-top: 38px;
-            letter-spacing: 8px;
+            letter-spacing: 5px;
           }
         }
       }
