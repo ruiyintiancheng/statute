@@ -2,18 +2,17 @@
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
  * @Last Modified by: 1k
- * @Last Modified time: 2020-01-07 16:42:14
+ * @Last Modified time: 2020-01-07 17:15:01
  * @Description:  学习路上
  */
 <template>
-  <div class="Learning">
+  <div class="Learning"
+       v-loading="listLoading">
     <div class="Learning-head">
       <img :src="banner">
     </div>
-    <div class="Learning-body"
-         v-loading="listLoading">
+    <div class="Learning-body">
       <div class="Learning-center base-container">
-
         <div class=" baseitem"
              v-for="item in configData"
              :key="item.id"
@@ -27,6 +26,7 @@
           </div>
         </div>
       </div>
+      <div> </div>
       <div class="paging">
         <el-pagination background
                        @size-change="handleSizeChange"

@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2019-10-17 19:59:27 
  * @Last Modified by: 1k
- * @Last Modified time: 2019-10-21 11:24:26
+ * @Last Modified time: 2020-01-07 18:34:32
  * @Description:  用户管理
  */
 <template>
@@ -292,7 +292,8 @@ export default {
       this.$nextTick(_ => {
         const formDom = document.querySelector('.form-search')
         const formHeight = formDom ? formDom.offsetHeight : 0
-        this.tableHeight = this.$store.state.app.containHeight - formHeight - 160
+        this.tableHeight = this.$store.state.app.containHeight - formHeight - 100
+        // alert(formHeight)
       })
     },
     getConfigValue() {
