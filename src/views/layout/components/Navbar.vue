@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2018-09-21 14:54:24 
  * @Last Modified by: 1k
- * @Last Modified time: 2020-01-08 11:19:33
+ * @Last Modified time: 2020-01-08 16:43:06
  * @Description:  
  */
 <template>
@@ -63,7 +63,7 @@ export default {
   methods: {
     userManagement() {
       this.$router.push({
-        name: 'sqlSearch'
+        name: 'user'
       })
     },
     searchHandle() {

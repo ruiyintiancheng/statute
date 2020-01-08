@@ -2,7 +2,7 @@
  * @Author: lk
  * @Date: 2019-02-01 17:36:33
  * @Last Modified by: 1k
- * @Last Modified time: 2020-01-07 10:47:37
+ * @Last Modified time: 2020-01-08 16:43:01
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -92,9 +92,9 @@ export const constantRouterMap = [
     component: Layout,
     children: [
       {
-        name: 'sqlSearch',
-        path: '/sqlSearch',
-        component: _import('sqlSearch/index')
+        name: 'user',
+        path: '/user',
+        component: _import('user/index')
       }
     ]
   },
