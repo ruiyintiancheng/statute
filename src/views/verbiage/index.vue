@@ -1,8 +1,8 @@
 /*
  * @Author: wk 
  * @Date: 2019-12-31 11:54:48 
- * @Last Modified by: 1k
- * @Last Modified time: 2020-01-07 18:34:35
+ * @Last Modified by: lk
+ * @Last Modified time: 2020-01-08 18:11:07
  * @Description:  讲话内容
  */
 <template>
@@ -109,10 +109,18 @@ export default {
       this.loading = true
       baseRequest('bXjpBasic/selectById', { id: crawlConId }).then(response => {
         this.articleDetail = response.data.item
+        this.articleDetail.content = this.getHtml(this.articleDetail.content)
         this.loading = false
       }, _ => {
         this.loading = false
       })
+    },
+    getHtml(content) {
+      let str = ''
+      if (content) {
+        str = content.replace(/\n/g, '<p>')
+      }
+      return str
     }
   }
 }
