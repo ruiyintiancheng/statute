@@ -1,8 +1,13 @@
 /*
  * @Author: wk 
  * @Date: 2019-10-17 19:59:27 
+<<<<<<< HEAD
+ * @Last Modified by: lk
+ * @Last Modified time: 2020-01-08 10:50:04
+=======
  * @Last Modified by: 1k
  * @Last Modified time: 2020-01-08 11:18:00
+>>>>>>> 1326c32a4f46cb9e7e1728c4820bb5948de8e2a6
  * @Description:  用户管理
  */
 <template>
