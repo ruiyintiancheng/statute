@@ -2,7 +2,7 @@
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
  * @Last Modified by: lk
- * @Last Modified time: 2020-01-08 16:36:19
+ * @Last Modified time: 2020-01-09 10:08:51
  * @Description:  学习路上
  */
 <template>
@@ -157,6 +157,8 @@ export default {
             font-weight: 500;
             padding: 0px 15px;
             font-family: SimHei;
+            height: 78px;
+            overflow: hidden;
           }
           .item-date {
             position: absolute;
