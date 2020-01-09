@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2019-12-24 20:48:17 
- * @Last Modified by: 1k
- * @Last Modified time: 2020-01-07 13:55:25
+ * @Last Modified by: lk
+ * @Last Modified time: 2020-01-09 16:30:48
  * @Description:  查询列表
  */
 <template>
@@ -149,28 +149,8 @@ export default {
       })
     },
     getParams() {
-      const param = {}
+      let param = {}
       const formItem = this.$refs.resultSearch.updateFormData
-      param.themeType = formItem.subjectClassification.toString()
-      param.systemCodeId = formItem.relatedSystem.toString()
-      param.fieldCodeId = formItem.relatedFields.toString()
-      param.impleScope = formItem.scopeOfExecution.toString()
-      // param.publishOrg = formItem.publishingStructure ? formItem.publishingStructure : ''
-      param.webSite = formItem.publishingUnit.length === 0 ? '' : formItem.publishingUnit.toString()
-      if (formItem.subjectClassification.length === 0) { param.themeType = '' }
-      if (formItem.relatedSystem.length === 0) { param.systemCodeId = '' }
-      if (formItem.relatedFields.length === 0) { param.fieldCodeId = '' }
-      if (formItem.scopeOfExecution.length === 0) { param.impleScope = '' }
-      // if (formItem.type.length === 0) {
-      //   param.beltRoad = '0'
-      // } else {
-      //   param.beltRoad = '1'
-      // }
-      if (formItem.startTime || formItem.endTime) {
-        param.publishDate = formItem.startTime + ',' + formItem.endTime
-      } else {
-        param.publishDate = ''
-      }
       if (this.keyword.length > 38) {
         this.literalexcess = true
         this.keyword = this.keyword.substr(0, 38)
@@ -178,6 +158,7 @@ export default {
         this.literalexcess = false
       }
       param.content = this.keyword
+      param = Object.assign(param, formItem)
       return param
     },
     routingQuery() { // 路由传参查询
