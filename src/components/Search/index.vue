@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 19:52:31 
  * @Last Modified by: lk
- * @Last Modified time: 2020-01-09 16:33:34
+ * @Last Modified time: 2020-01-09 17:38:01
  * @Description:  高级搜索
  */
  <template>
@@ -242,9 +242,6 @@ export default {
         this.updateFormData[prop] = this.updateFormData[prop].filter(item => item !== '全部')
       }
     },
-    removeTag(tag) {
-      console.log(tag)
-    },
     setText(val) {
       this.dataValue = val
     },
@@ -274,7 +271,7 @@ export default {
       this.updateFormData.docUseBroad = []
       this.updateFormData.issueOrgText = ''
       this.updateFormData.docSource = ''
-      this.updateFormData.orderby = '1'
+      this.updateFormData.orderby = '_score'
       this.updateFormData.starTime = ''
       this.updateFormData.endTime = ''
     },
