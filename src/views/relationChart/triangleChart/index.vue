@@ -55,7 +55,8 @@ export default {
   },
   props: {
     width: Number,
-    height: Number
+    height: Number,
+    id: Number
   },
   computed: {
     chart_width() {
@@ -69,10 +70,7 @@ export default {
     return {
       graph: null,
       chart_data: null,
-      messageData: [
-        { name: '政策法规名称', value: '关于申报2017年度军队后勤开放研究科研项目的通告' },
-        { name: '政策法规文号', value: '军民赛组办[2017]8号' }
-      ],
+      messageData: [],
       messageVisible: false
     }
   },
@@ -86,13 +84,10 @@ export default {
   methods: {
     getData() {
       const params = { id: this.id }
-      baseRequest('/gVertex/selectRegulatoryLevel', params).then(response => {
+      baseRequest('/gVertex/getRegulatoryLevel', params).then(response => {
         this.chart_data = response.data.item
         this.init(this.chart_data)
-
-        // this.listLoading = false
       }, _ => {
-        // this.listLoading = false
       })
     },
     init(data) {

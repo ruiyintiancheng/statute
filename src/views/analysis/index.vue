@@ -1,7 +1,7 @@
 <template>
   <div class="search-result base-container">
     <div class="result-search base-container">
-      <el-input placeholder="请输入内容"
+      <el-input placeholder="请输入政策法规名称"
                 class="text-search"
                 ref="searchInput"
                 v-model="dataValue"
@@ -18,7 +18,6 @@
              v-for="(item,index) in tabularData"
              :key="index"
              >
-             <!-- @click="$router.push({name:'policy',query:{crawlConId:item.crawlConId}})" -->
           <a style="color:#666">
             <h4> <span v-html="item.docName"></span></h4>
           </a>
@@ -32,9 +31,9 @@
             <span>发布时间: {{item.docIssueTime}}</span>
           </div>
           <div>
-            <el-button type="primary" @click="openChart(item.id, item.docName, 0)">法律法规关联分析 </el-button>
-            <el-button type="success" @click="openChart(item.id, item.docName, 1)">法律法规生命周期分析 </el-button>
-            <el-button type="warning" @click="openChart(item.id, item.docName, 2)">法律法规响应层级分析</el-button>
+            <el-button type="primary" @click="openChart(item.id, item.docName, 0)">政策法规关联分析 </el-button>
+            <el-button type="success" @click="openChart(item.id, item.docName, 1)">政策法规生命周期分析 </el-button>
+            <el-button type="warning" @click="openChart(item.id, item.docName, 2)">政策法规响应层级分析</el-button>
           </div>
 
           <!-- <p class="bar-title" style="font-size:14px;color:#777"
@@ -70,7 +69,7 @@ import { baseRequest } from '@/api/base'
 export default {
   data() {
     return {
-      dataValue: '军民两用',
+      dataValue: '',
       tabularData: null, // 列表数据
       pageNo: 1,
       total: null,
@@ -110,9 +109,11 @@ export default {
         return false
       }
       this.requestSearch()
-      // this.$emit('seacrHandle', { dataValue: this.dataValue })
     },
     requestSearch(page) {
+      if (!page) {
+        this.pageNo = 1
+      }
       const params = {
         pageNo: this.pageNo,
         pageSize: this.pageSize,
