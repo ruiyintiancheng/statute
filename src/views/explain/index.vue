@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2019-11-02 16:39:31 
- * @Last Modified by: 1k
- * @Last Modified time: 2020-01-02 15:51:40
+ * @Last Modified by: lk
+ * @Last Modified time: 2020-01-08 18:11:07
  * @Description:  专家解读
  */
 <template>
@@ -89,6 +89,7 @@ export default {
       this.loading = true
       baseRequest('/bDocBasic/selectById', { id: crawlConId }).then(response => {
         this.articleDetail = response.data.item
+        this.articleDetail.content = this.getHtml(this.articleDetail.content)
         const temp = response.data.item.listBDocBasicExplain
         const pageSize = 4
         if (temp && temp.length > 0) {
@@ -102,6 +103,13 @@ export default {
       }, _ => {
         this.loading = false
       })
+    },
+    getHtml(content) {
+      let str = ''
+      if (content) {
+        str = content.replace(/\n/g, '<p>')
+      }
+      return str
     }
   }
 }

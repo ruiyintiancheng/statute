@@ -1,15 +1,15 @@
 /*
  * @Author: lk 
  * @Date: 2018-09-21 14:54:24 
- * @Last Modified by: lk
- * @Last Modified time: 2019-12-25 03:03:27
+ * @Last Modified by: 1k
+ * @Last Modified time: 2020-01-08 16:43:06
  * @Description:  
  */
 <template>
-  <div :class="{navbar:true,'no-text-select':true,'currentColor':$route.name!=='home'}" >
+  <div :class="{navbar:true,'no-text-select':true,'currentColor':$route.name!=='home'}">
     <div class="base-container clearfix">
       <div class="logo">
-        <a href="javascript:;" >军地政策法规智能辅助系统</a>
+        <a href="javascript:;">军地政策法规智能辅助系统</a>
       </div>
       <ul class="left-menu clearfix">
         <li :class="{actived:$route.name==='home'}">
@@ -26,18 +26,24 @@
         </li>
       </ul>
       <ul class="right-menu clearfix">
-          <li class="right-menu-item" v-if="$route.name!=='home'">
-            <div class="search-input">
-              <i class="search-icon" :style="{backgroundImage:'url('+cutter+')'}" @click="searchHandle"></i>
-              <input type="text" v-model.trim="searchVal">
-            </div>
-          </li>
-          <li class="right-menu-item">
-            <span class="log-out"> 
-              <i class="log-user" :style="{backgroundImage:'url('+cutter+')'}"></i>
-              <a  @click="logout">退出</a>
-            </span>
-          </li>
+        <li class="right-menu-item"
+            v-if="$route.name!=='home'">
+          <div class="search-input">
+            <i class="search-icon"
+               :style="{backgroundImage:'url('+cutter+')'}"
+               @click="searchHandle"></i>
+            <input type="text"
+                   v-model.trim="searchVal">
+          </div>
+        </li>
+        <li class="right-menu-item">
+          <span class="log-out">
+            <i class="log-user"
+               @click="userManagement"
+               :style="{backgroundImage:'url('+cutter+')',cursor:'pointer'}"></i>
+            <a @click="logout">退出</a>
+          </span>
+        </li>
       </ul>
     </div>
   </div>
@@ -55,6 +61,11 @@ export default {
   components: {
   },
   methods: {
+    userManagement() {
+      this.$router.push({
+        name: 'user'
+      })
+    },
     searchHandle() {
       if (this.$route.name === 'search') {
         this.$parent.$refs.appMain.$children[0].$refs.resultSearch.dataValue = this.searchVal
@@ -86,40 +97,40 @@ export default {
 .navbar {
   height: 60px;
   line-height: 60px;
-  &.currentColor{
+  &.currentColor {
     background-color: $mainColor;
   }
-  .logo{
+  .logo {
     float: left;
     font-size: 20px;
     font-weight: bold;
     color: #fff;
     letter-spacing: 2px;
   }
-  .left-menu{
+  .left-menu {
     float: left;
-    margin-left:60px;
-    margin-top:18px;
-    li{
-      margin-left:10px;
+    margin-left: 60px;
+    margin-top: 18px;
+    li {
+      margin-left: 10px;
       height: 27px;
-      line-height:24px;
-      &.actived{
+      line-height: 24px;
+      &.actived {
         border-bottom: 2px solid #fff;
       }
-      a{
-        color:#fff;
+      a {
+        color: #fff;
         font-size: 14px;
-        padding:0 5px;
+        padding: 0 5px;
         height: 24px;
       }
     }
   }
-  .right-menu{
+  .right-menu {
     float: right;
-    .right-menu-item{
+    .right-menu-item {
       float: left;
-      .search-input{
+      .search-input {
         width: 270px;
         height: 28px;
         position: relative;
@@ -128,8 +139,8 @@ export default {
         border-radius: 20px;
         overflow: hidden;
         background-color: $mainColor;
-        border:1px solid #fff;
-        .search-icon{
+        border: 1px solid #fff;
+        .search-icon {
           position: absolute;
           top: 0px;
           right: 5px;
@@ -138,28 +149,28 @@ export default {
           background-position: 55px 112px;
           cursor: pointer;
         }
-        input{
-          position:absolute;
-          height:100%;
+        input {
+          position: absolute;
+          height: 100%;
           width: calc(100% - 30px);
-          top:0;
-          left:0;
+          top: 0;
+          left: 0;
           background-color: transparent;
           margin: 0;
           padding: 5px 0px 5px 10px;
           outline: none;
           border: none;
           font-size: 12px;
-          color:#fff;
+          color: #fff;
         }
       }
-      .log-out{
+      .log-out {
         font-size: 14px;
-        color:#fff;
+        color: #fff;
         position: relative;
-        .log-user{
+        .log-user {
           position: absolute;
-          top:-4px;
+          top: -4px;
           left: -40px;
           width: 26px;
           height: 26px;
@@ -168,10 +179,11 @@ export default {
       }
     }
   }
-  .left-menu,.right-menu{
+  .left-menu,
+  .right-menu {
     list-style: none;
-    li{
-      float:left;
+    li {
+      float: left;
     }
   }
 }

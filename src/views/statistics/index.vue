@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2019-12-24 16:50:14 
- * @Last Modified by: 1k
- * @Last Modified time: 2020-01-02 14:05:02
+ * @Last Modified by: lk
+ * @Last Modified time: 2020-01-08 15:58:56
  * @Description:  数据统计
  */
 <template>
@@ -290,7 +290,7 @@ export default {
           {
             name: '',
             type: 'pie',
-            radius: '55%',
+            radius: '50%',
             center: ['50%', '40%'],
             // roseType: 'area',
             data: this.cakeLikeValue,
@@ -333,7 +333,7 @@ export default {
   background-color: #f9faff;
   padding: 0 15px 30px;
   .statistics-card {
-    height: 400px;
+    height: 420px;
     margin-top: 48px;
     border-radius: 5px;
     background-color: #fff;

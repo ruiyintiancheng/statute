@@ -1,8 +1,8 @@
 /*
  * @Author: lk
  * @Date: 2019-02-01 17:36:33
- * @Last Modified by: lk
- * @Last Modified time: 2019-12-26 17:56:55
+ * @Last Modified by: 1k
+ * @Last Modified time: 2020-01-08 16:43:01
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -16,8 +16,8 @@ Vue.use(Router)
 import Layout from '../views/layout/Layout'
 
 /** note: submenu only apppear when children.length>=1
-*   detail see  https://panjiachen.github.io/vue-element-admin-site/#/router-and-nav?id=sidebar
-**/
+ *   detail see  https://panjiachen.github.io/vue-element-admin-site/#/router-and-nav?id=sidebar
+ **/
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -92,6 +92,17 @@ export const constantRouterMap = [
     component: Layout,
     children: [
       {
+        name: 'user',
+        path: '/user',
+        component: _import('user/index')
+      }
+    ]
+  },
+  {
+    path: '',
+    component: Layout,
+    children: [
+      {
         name: 'policy',
         path: '/policy',
         component: _import('policy/index')
@@ -147,5 +158,4 @@ export default new Router({
   routes: constantRouterMap
 })
 
-export const asyncRouterMap = [
-]
+export const asyncRouterMap = []

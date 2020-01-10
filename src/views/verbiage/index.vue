@@ -1,8 +1,8 @@
 /*
  * @Author: wk 
  * @Date: 2019-12-31 11:54:48 
- * @Last Modified by: 1k
- * @Last Modified time: 2020-01-02 16:30:00
+ * @Last Modified by: lk
+ * @Last Modified time: 2020-01-08 18:11:07
  * @Description:  讲话内容
  */
 <template>
@@ -15,8 +15,9 @@
         <span>来源: {{articleDetail.docSource}}</span>
       </div>
       <div class="article-content">
-        <p v-for="(item,index) in contentFormat(articleDetail.content)"
-           :key="index">{{item}}</p>
+        <!-- <p v-for="(item,index) in contentFormat(articleDetail.content)"
+           :key="index">{{item}}</p> -->
+        <div v-html="articleDetail.content"></div>
       </div>
       <!-- <div class="ori-link">
         原文链接
@@ -108,10 +109,18 @@ export default {
       this.loading = true
       baseRequest('bXjpBasic/selectById', { id: crawlConId }).then(response => {
         this.articleDetail = response.data.item
+        this.articleDetail.content = this.getHtml(this.articleDetail.content)
         this.loading = false
       }, _ => {
         this.loading = false
       })
+    },
+    getHtml(content) {
+      let str = ''
+      if (content) {
+        str = content.replace(/\n/g, '<p>')
+      }
+      return str
     }
   }
 }

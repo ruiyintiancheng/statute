@@ -1,19 +1,18 @@
 /*
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
- * @Last Modified by: 1k
- * @Last Modified time: 2020-01-02 13:38:27
+ * @Last Modified by: lk
+ * @Last Modified time: 2020-01-09 10:08:51
  * @Description:  学习路上
  */
 <template>
-  <div class="Learning">
+  <div class="Learning"
+       v-loading="listLoading">
     <div class="Learning-head">
       <img :src="banner">
     </div>
-    <div class="Learning-body"
-         v-loading="listLoading">
+    <div class="Learning-body">
       <div class="Learning-center base-container">
-
         <div class=" baseitem"
              v-for="item in configData"
              :key="item.id"
@@ -23,10 +22,11 @@
             <div class="item-date">{{item.docIssueTime | timeFiltering}}</div>
             <div class="item-speaker">习近平</div>
             <div class=" source"
-                 style="font-size:4px">{{item.docSource}}</div>
+                 style="font-size:12px">{{item.docSource}}</div>
           </div>
         </div>
       </div>
+      <div> </div>
       <div class="paging">
         <el-pagination background
                        @size-change="handleSizeChange"
@@ -55,7 +55,7 @@ export default {
       configData: null,
       pageNo: 1,
       total: null,
-      pageSize: null,
+      pageSize: 12,
       listLoading: false
     }
   },
@@ -63,8 +63,7 @@ export default {
     timeFiltering(val) {
       if (val) {
         let newdate = ''
-        const date = new Date(val)
-        // alert(date)
+        const date = new Date(Date.parse(val.replace(/-/g, '/')))
         newdate = date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日'
         return newdate
       }
@@ -129,7 +128,7 @@ export default {
       flex-direction: row;
       flex-wrap: wrap;
       .baseitem:nth-child(4n) {
-        margin-right: 0px;
+        margin-right: 1px;
       }
       .baseitem {
         width: 274px;
@@ -156,37 +155,41 @@ export default {
             font-size: 20px;
             line-height: 26px;
             font-weight: 500;
-            font-family: SimSun;
+            padding: 0px 15px;
+            font-family: SimHei;
+            height: 78px;
+            overflow: hidden;
           }
           .item-date {
             position: absolute;
-            top: 145px;
+            top: 150px;
             width: 100%;
             color: #ed4d56;
             text-align: center;
-            font-size: 4px;
-            margin-top: 25px;
-            letter-spacing: 2px;
+            font-size: 12px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 black;
+            font-family: FangSong;
           }
           .item-speaker {
             position: absolute;
-            top: 175px;
+            top: 173px;
             width: 100%;
             color: #ed4d56;
             text-align: center;
-            font-size: 14px;
-            margin-top: 38px;
+            font-size: 12px;
             letter-spacing: 8px;
+            font-family: FangSong;
           }
           .source {
             position: absolute;
-            bottom: 40px;
+            bottom: 30px;
             width: 100%;
             color: #ed4d56;
             text-align: center;
             font-size: 14px;
-            margin-top: 38px;
-            letter-spacing: 8px;
+            letter-spacing: 3px;
+            font-family: FangSong;
           }
         }
       }
