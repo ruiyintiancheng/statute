@@ -1,4 +1,4 @@
-import Rander from './render.js'
+// import Rander from './render.js'
 import * as d3 from 'd3'
 
 function canvas(cfg) {
@@ -28,18 +28,18 @@ function zoome(cfg) {
   * 节点拖拽
   * @param {*} cfg
   */
-function drag(cfg) {
-  const drag = d3.drag() // 拖拽
-    // .on('start', nodeEvent.dragStart)
-    .on('drag', d => {
-      // d.x = d3.event.x
-      d.y = d3.event.y
-      Rander.tick()
-    })
-  // .on('end', nodeEvent.dragEnd);
+// function drag(cfg) {
+//   const drag = d3.drag() // 拖拽
+//     // .on('start', nodeEvent.dragStart)
+//     .on('drag', d => {
+//       // d.x = d3.event.x
+//       d.y = d3.event.y
+//       Rander.tick()
+//     })
+//   // .on('end', nodeEvent.dragEnd);
 
-  cfg.g.selectAll('g.node').call(drag)
-}
+//   cfg.g.selectAll('g.node').call(drag)
+// }
 
 /**
  * 节点点击事件
@@ -104,7 +104,7 @@ const Event = {
   init: function(cfg) {
     canvas(cfg)
     zoome(cfg)
-    drag(cfg)
+    // drag(cfg)
     nodeClick(cfg)
     nodeMenu(cfg)
   },

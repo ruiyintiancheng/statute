@@ -11,8 +11,8 @@ function legend(graph, id) {
 
     ],
     links: [
-      { name: '发布', color: 'red', translate: 'translate(252)' },
-      { name: '被引用', color: 'green', translate: 'translate(313)' }
+      // { name: '发布', color: 'red', translate: 'translate(252)' },
+      { name: '被引用', color: 'green', translate: 'translate(252)' }
     ]
   }
 

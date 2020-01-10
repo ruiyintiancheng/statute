@@ -10,14 +10,14 @@
     <div class="dialog-contant-default file-download-log relation">
         <el-form ref="form" label-width="160px">
           <el-form-item label="定位:">
-            <el-checkbox-group v-model="options.dinwei" >
+            <el-checkbox-group v-model="options.docPositioning" >
               <el-checkbox label="具体操作"></el-checkbox>
               <el-checkbox label="指导原则"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
 
           <el-form-item label="适用范围:">
-            <el-checkbox-group v-model="options.syfw" >
+            <el-checkbox-group v-model="options.docUseBroad" >
               <el-checkbox label="全国"></el-checkbox>
               <el-checkbox label="地方"></el-checkbox>
               <el-checkbox label="部门"></el-checkbox>
@@ -27,7 +27,7 @@
           </el-form-item>
 
           <el-form-item label="军民融合相关度:">
-            <el-checkbox-group v-model="options.xgd" >
+            <el-checkbox-group v-model="options.docAbout" >
               <el-checkbox label="强相关"></el-checkbox>
               <el-checkbox label="有所涉及"></el-checkbox>
               <el-checkbox label="不相关"></el-checkbox>
@@ -36,7 +36,7 @@
           </el-form-item>
 
           <el-form-item label="可操作性:">
-            <el-checkbox-group v-model="options.kczx" >
+            <el-checkbox-group v-model="options.docOperability" >
               <el-checkbox label="强相关"></el-checkbox>
               <el-checkbox label="有所涉及"></el-checkbox>
               <el-checkbox label="不相关"></el-checkbox>
@@ -45,7 +45,7 @@
           </el-form-item>
 
           <el-form-item label="文章类型:">
-            <el-checkbox-group v-model="options.wzlx" >
+            <el-checkbox-group v-model="options.docType" >
               <el-checkbox label="法律法规"></el-checkbox>
               <el-checkbox label="法律修订"></el-checkbox>
               <el-checkbox label="通知公告"></el-checkbox>
@@ -60,7 +60,7 @@
           </el-form-item>
 
           <el-form-item label="评估重点:">
-            <el-checkbox-group v-model="options.pgzd" >
+            <el-checkbox-group v-model="options.docFocalPoint" >
               <el-checkbox label="参考法律法规"></el-checkbox>
               <el-checkbox label="基本法律法规"></el-checkbox>
               <el-checkbox label="军地数据资源交换共享"></el-checkbox>
@@ -86,12 +86,12 @@ export default {
       // tableHeight: 100,
       tableData: [],
       options: {
-        dinwei: [],
-        syfw: [],
-        xgd: [],
-        kczx: [],
-        wzlx: [],
-        pgzd: []
+        docPositioning: [],
+        docUseBroad: [],
+        docAbout: [],
+        docOperability: [],
+        docType: [],
+        docFocalPoint: []
       }
     }
   },

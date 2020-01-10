@@ -90,17 +90,17 @@ export default {
         this.chart_data = response.data.item
         this.init(this.chart_data)
 
-        this.listLoading = false
+        // this.listLoading = false
       }, _ => {
-        this.listLoading = false
+        // this.listLoading = false
       })
     },
     init(data) {
       const graph = new Chart.Graph({
         container: 'chart',
         width: this.chart_width,
-        height: this.chart_height,
-        contextMenu: 'contextMenu'
+        height: this.chart_height
+        // contextMenu: 'contextMenu'
       })
       graph.data(data)
       graph.render()
@@ -108,7 +108,8 @@ export default {
       // Chart.legend(graph, 'legend')
       this.graph = graph
       this.$nextTick(() => {
-        graph.moveCenter(-this.chart_width / 3, -20, 1)
+        // graph.moveCenter(-this.chart_width / 3, -15, 1)
+        graph.moveCenter(-(this.chart_width - this.chart_height) / 2, -50, 1)
       })
     },
     /**

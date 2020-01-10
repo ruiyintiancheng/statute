@@ -99,7 +99,7 @@ export default {
       this.$router.push({
         name: 'relationChart',
         params: {
-          id: 500007,
+          id: id, // 500166, 500007
           name: name,
           type: type
         }
@@ -109,7 +109,6 @@ export default {
       if (this.dataValue.length <= 0) {
         return false
       }
-      console.log(this.dataValue)
       this.requestSearch()
       // this.$emit('seacrHandle', { dataValue: this.dataValue })
     },

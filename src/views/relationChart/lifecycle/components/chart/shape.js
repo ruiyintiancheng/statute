@@ -1,7 +1,10 @@
 const Nodes = {
   default: {
     enter(selection, d) {
-      const color = d.docState === 'running' ? 'green' : 'gray'
+      let color = d.docState === 'running' ? 'green' : 'gray'
+      if (d.queryNode === true) {
+        color = 'red'
+      }
       const option = {
         name: d.docName,
         r: 30,
@@ -58,7 +61,12 @@ const Nodes = {
 
     node.append('text')
       .attr('y', option.r)
-      .text(d => d.docIssueTime)
+      .attr('dy', '1em')
+      .attr('text-anchor', 'middle')
+      .style('user-select', 'none')
+      .style('pointer-events', 'none')
+      .style('fill', 'blake')
+      .text(d => `(${d.docIssueTime})`)
   },
   /**
    * 修改元素

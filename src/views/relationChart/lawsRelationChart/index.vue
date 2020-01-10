@@ -3,7 +3,7 @@
 */
 <template>
   <div style="width: 100%; height:100%; position: relative">
-    <div>
+    <div v-loading="chartLoading">
         <div id="chart" :style="{'width': `${chart_width}px`, 'height': `${chart_height}px`}"></div>      
         <div id='brush'></div>
         <div id="legend"></div>
@@ -71,7 +71,8 @@ export default {
       graph: null,
       chart_data: null,
       messageData: [],
-      messageVisible: false
+      messageVisible: false,
+      chartLoading: true
     }
   },
   created() {
@@ -79,19 +80,6 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.getData()
-      // const data = JSON.parse(JSON.stringify(json))
-      // data.nodes.forEach(d => {
-      //   if (!d.docIssueTime) {
-      //     d.docIssueTime = '2020/1/9'
-      //   }
-      //   d.id += ''
-      // })
-      // data.links.forEach(d => {
-      //   d.source += ''
-      //   d.target += ''
-      // })
-      // this.chart_data = data
-      // this.init(data)
     })
   },
   methods: {
@@ -99,10 +87,10 @@ export default {
       const params = { id: this.id }
       baseRequest('/gVertex/selectLegalAssAnalysis', params).then(response => {
         response.data.item.nodes.forEach(d => {
-          if (!d.docIssueTime) {
-            d.docIssueTime = '2020/1/9'
-          }
           d.id += ''
+          if (d.id === (this.id + '')) {
+            d.queryNode = true
+          }
         })
         response.data.item.links.forEach(d => {
           d.source += ''
@@ -110,9 +98,9 @@ export default {
         })
         this.chart_data = response.data.item
         this.init(this.chart_data)
-        this.listLoading = false
+        this.chartLoading = false
       }, _ => {
-        this.listLoading = false
+        this.chartLoading = false
       })
     },
     init(data) {
@@ -177,7 +165,7 @@ export default {
     menuMessage() {
       const node = this.graph.get('contextMenuNode')
       this.messageData = [
-        { name: 'id', value: node.id },
+        // { name: 'id', value: node.id },
         { name: '政策法规名称', value: node.docName },
         { name: '政策法规文号', value: node.docNum },
         { name: '政策原文名称', value: node.docTittle },

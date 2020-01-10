@@ -8,7 +8,7 @@ class Layout {
 
   static init(data) {
     const padding = 10
-    const depth = (this.height - 20) / data.length - 10
+    const depth = 100 // (this.height - 20) / data.length - 10
 
     const nodes = []
 

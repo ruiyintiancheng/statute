@@ -14,7 +14,7 @@
     </div>
     <div class="graph-web-toolbar">
       <ul>
-        <li @click="refresh"><div class="text">重置</div></li>
+        <!-- <li @click="refresh"><div class="text">重置</div></li> -->
         <li @click="relation"><div class="text">筛选</div></li>
         <li @click="openNodesTable"><div class="text">顶点列表</div></li>
         <!-- <li @click="openLinksTable"><div class="text">关系列表</div></li> -->
@@ -24,7 +24,7 @@
       <ul>
         <li @click="menuMessage">查看详情</li>
         <!-- <li @click="menuSource">查看引用</li> -->
-        <!-- <li @click="menuText">查看原文</li> -->
+        <li @click="menuText">查看原文</li>
       </ul>
     </div>
     <div v-show="messageVisible" id="message" class="message">
@@ -49,7 +49,7 @@ import nodesTable from './components/nodesTable'
 import linksTable from './components/linksTable'
 import relation from './components/relation'
 import Chart from './components/chart/index.js'
-import json from './components/data.json'
+// import json from './components/data.json'
 import * as d3 from 'd3'
 export default {
   components: {
@@ -67,12 +67,13 @@ export default {
       return this.width
     },
     chart_height() {
-      return this.height
+      return this.height - 30
     }
   },
   data() {
     return {
       graph: null,
+      chart_data: null,
       messageData: [
         { name: '政策法规名称', value: '关于申报2017年度军队后勤开放研究科研项目的通告' },
         { name: '政策法规文号', value: '军民赛组办[2017]8号' }
@@ -91,7 +92,14 @@ export default {
     getData() {
       const params = { id: this.id }
       baseRequest('/gVertex/selectLegalLifeCycle', params).then(response => {
-        this.init(json)
+        const data = response.data.item
+        data.forEach(d => {
+          d.id += ''
+          if (d.id === (this.id + '')) {
+            d.queryNode = true
+          }
+        })
+        this.init(data)
 
         this.listLoading = false
       }, _ => {
@@ -105,13 +113,13 @@ export default {
         height: this.chart_height,
         contextMenu: 'contextMenu'
       })
-      graph.data(json)
+      graph.data(data)
       graph.render()
 
       // Chart.Brush.init(graph, 'brush')
-      // Chart.legend(graph, 'legend')
+      Chart.legend(graph, 'legend')
       this.$nextTick(() => {
-        graph.moveCenter(this.chart_width / 2 - 50, 0, 1)
+        graph.moveCenter(this.width / 2 - 60, 0, 1)
       })
 
       this.graph = graph
@@ -158,17 +166,33 @@ export default {
       // this.graph.relation({ related: ['强相关', '不相关'] })
     },
     /**
-       * 右键菜单--查看详情
-       */
+     * 右键菜单--查看详情
+     */
     menuMessage() {
       const node = this.graph.get('contextMenuNode')
-      if (node.label !== 'wenshu') {
-        return
-      }
       this.messageData = [
-        { name: '政策法规名称', value: node.name },
-        { name: '定位', value: node.dinwei },
-        { name: '军民融合相关度', value: node.xgd }
+        // { name: 'id', value: node.id },
+        { name: '政策法规名称', value: node.docName },
+        { name: '政策法规文号', value: node.docNum },
+        { name: '政策原文名称', value: node.docTittle },
+        { name: '定位', value: node.docPositioning },
+        { name: '发布时间', value: node.docIssueTime },
+        { name: '生效时间', value: node.docEffectiveTime },
+        { name: '废止时间', value: node.docAnnulTime },
+        { name: '发布单位类型', value: node.docIssueOrgType },
+        { name: '发布单位名称', value: node.docIssueOrgText },
+        { name: '发文方式', value: node.docIssueType },
+        { name: '适用范围', value: node.docUseBroad },
+        { name: '适用范围描述', value: node.docUseBroadText },
+        { name: '密级', value: node.docSecretClass },
+        { name: '内容体系', value: node.docContentSys },
+        { name: '文章类型', value: node.docType },
+        { name: '领域类型', value: node.docDomainType },
+        { name: '军民融合相关度', value: node.docAbout },
+        { name: '可操作性', value: node.docOperability },
+        { name: '评估重点', value: node.docFocalPoint },
+        { name: '军民融合条款摘录', value: node.docSummary },
+        { name: '关键词', value: node.docKeyWord }
       ]
       this.messageVisible = true
       d3.select('#contextMenu').style('display', 'none')
@@ -177,25 +201,18 @@ export default {
        * 右键菜单--查看引用
        */
     menuSource() {
-      const node = this.graph.get('contextMenuNode')
-      const data = {
-        nodes: [
-          { 'id': 'c1', 'label': 'wenshu', 'state': 'running', 'name': '添加测试1', 'dinwei': '指导原则', 'xgd': '不相关' },
-          { 'id': node.id, 'label': 'wenshu', 'state': 'running', 'name': '关于公布第二批国家新型工业化产业示范基地复核意见的通知', 'dinwei': '指导原则', 'xgd': '不相关' }
-        ],
-        links: [
-          { 'id': '11', 'label': 'yinyong', 'source': node.id, 'target': 'c1', 'name': '2015-02-05' }
-        ]
-      }
-      this.graph.addData(data)
+      // const node = this.graph.get('contextMenuNode')
+      // const data = {
+      // }
+      // this.graph.addData(data)
       d3.select('#contextMenu').style('display', 'none')
     },
     /**
-       * 右键菜单--查看原文
-       */
+     * 右键菜单--查看原文
+     */
     menuText() {
-      // const node = this.graph.get('contextMenuNode')
-      window.open('http://www.xinhuanet.com//mil/2017-03/10/c_129506655.htm', '_blank')
+      const node = this.graph.get('contextMenuNode')
+      window.open(node.docUri, '_blank')
     }
   }
 }
