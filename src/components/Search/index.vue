@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 19:52:31 
  * @Last Modified by: lk
- * @Last Modified time: 2020-01-09 17:38:01
+ * @Last Modified time: 2020-01-09 18:40:36
  * @Description:  高级搜索
  */
  <template>
@@ -61,7 +61,7 @@
         </el-select>
       </el-form-item>
       <el-form-item prop="docType"
-                    label="共文类型">
+                    label="公文类型">
         <el-select class="form-input"
                    placeholder=""
                    multiple
@@ -132,23 +132,23 @@
                          @select="handleSelect2"></el-autocomplete>
       </el-form-item>
       <el-form-item prop="startTime"
-                    label="开始时间">
+                    label="发布时间">
         <el-date-picker v-model="updateFormData.startTime"
                         type="date"
                         value-format='yyyy-MM-dd'
                         style="width:100%"
                         :picker-options="pickerOptions1"
-                        placeholder="选择日期">
+                        placeholder="开始日期">
         </el-date-picker>
       </el-form-item>
       <el-form-item prop="endTime"
-                    label="结束时间">
+                    label=" ">
         <el-date-picker v-model="updateFormData.endTime"
                         type="date"
                         value-format='yyyy-MM-dd'
                         style="width:100%"
                         :picker-options="pickerOptions2"
-                        placeholder="选择日期">
+                        placeholder="结束日期">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="排 序" prop="orderby" >
