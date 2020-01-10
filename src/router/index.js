@@ -119,6 +119,17 @@ export const constantRouterMap = [
         component: _import('explain/index')
       }
     ]
+  },
+  {
+    path: '',
+    component: Layout,
+    children: [
+      {
+        name: 'relationChart',
+        path: '/relationChart',
+        component: _import('relationChart/index')
+      }
+    ]
   }
 ]
 

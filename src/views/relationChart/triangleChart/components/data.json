@@ -1,0 +1,90 @@
+[
+  [
+    {
+      "count": 76,
+      "orgRank": 1,
+      "orgName": "中华人民共和国国务院"
+    },
+    {
+      "count": 3,
+      "orgRank": 1,
+      "orgName": "中国共产党中央委员会"
+    }
+  ],
+  [
+    {
+      "count": 11,
+      "orgRank": 2,
+      "orgName": "中华人民共和国财政部"
+    },
+    {
+      "count": 1,
+      "orgRank": 2,
+      "orgName": "中华人民共和国国家发展和改革委员会"
+    },
+    {
+      "count": 15,
+      "orgRank": 2,
+      "orgName": "中华人民共和国国务院办公厅"
+    },
+    {
+      "count": 1,
+      "orgRank": 2,
+      "orgName": "中华人民共和国退役军人事务部"
+    },
+    {
+      "count": 97,
+      "orgRank": 2,
+      "orgName": "中华人民共和国工业和信息化部"
+    },
+    {
+      "count": 8,
+      "orgRank": 2,
+      "orgName": "中华人民共和国人力资源和社会保障部"
+    },
+    {
+      "count": 2,
+      "orgRank": 2,
+      "orgName": "中华人民共和国民政部"
+    },
+    {
+      "count": 5,
+      "orgRank": 2,
+      "orgName": "中华人民共和国科学技术部"
+    },
+    {
+      "count": 1,
+      "orgRank": 2,
+      "orgName": "中华人民共和国公安部"
+    },
+    {
+      "count": 3,
+      "orgRank": 2,
+      "orgName": "中华人民共和国应急管理部"
+    },
+    {
+      "count": 11,
+      "orgRank": 2,
+      "orgName": "中华人民共和国交通运输部"
+    }
+  ],
+  [
+    {
+      "count": 55,
+      "orgRank": 3,
+      "orgName": "中华人民共和国国家国防科技工业局"
+    },
+    {
+      "count": 1,
+      "orgRank": 3,
+      "orgName": "中华人民共和国国家知识产权局"
+    }
+  ],
+  [
+    {
+      "count": 1,
+      "orgRank": 4,
+      "orgName": "中国共产党中央保密委员会办公室"
+    }
+  ]
+]
