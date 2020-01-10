@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 20:48:17 
  * @Last Modified by: lk
- * @Last Modified time: 2020-01-09 16:30:48
+ * @Last Modified time: 2020-01-10 15:31:28
  * @Description:  查询列表
  */
 <template>
@@ -32,7 +32,7 @@
           </a>
           <p class="bar-title"
              style="font-size:14px;color:#777"
-             v-html="item.docSummary"></p>
+             v-html="item.docContent"></p>
           <p class="bar-date"
              style="font-size:12px;color:#999">{{item.docIssueTime==='null'?'':item.docIssueTime}}</p>
         </div>

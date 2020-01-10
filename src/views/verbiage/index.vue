@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2019-12-31 11:54:48 
  * @Last Modified by: lk
- * @Last Modified time: 2020-01-08 18:11:07
+ * @Last Modified time: 2020-01-10 15:45:00
  * @Description:  讲话内容
  */
 <template>
@@ -14,7 +14,7 @@
         <span>发布时间: {{articleDetail.docIssueTime |timeFiltering}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
         <span>来源: {{articleDetail.docSource}}</span>
       </div>
-      <div class="article-content">
+      <div :class="{'article-content':true,'article-indent':articleDetail.indent}">
         <!-- <p v-for="(item,index) in contentFormat(articleDetail.content)"
            :key="index">{{item}}</p> -->
         <div v-html="articleDetail.content"></div>
@@ -109,7 +109,12 @@ export default {
       this.loading = true
       baseRequest('bXjpBasic/selectById', { id: crawlConId }).then(response => {
         this.articleDetail = response.data.item
-        this.articleDetail.content = this.getHtml(this.articleDetail.content)
+        if (response.data.item.contentType !== 'doc') {
+          this.articleDetail.content = this.getHtml(this.articleDetail.content)
+          this.articleDetail.indent = true
+        } else {
+          this.articleDetail.indent = false
+        }
         this.loading = false
       }, _ => {
         this.loading = false

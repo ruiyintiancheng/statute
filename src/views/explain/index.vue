@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-11-02 16:39:31 
  * @Last Modified by: lk
- * @Last Modified time: 2020-01-08 18:11:07
+ * @Last Modified time: 2020-01-10 15:46:30
  * @Description:  专家解读
  */
 <template>
@@ -14,7 +14,7 @@
         <span>发布时间: {{articleDetail.docIssueTime | timeFiltering}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
         <span>发布机构: {{articleDetail.issueOrgText}}</span>
       </div>
-      <div class="article-content"
+      <div :class="{'article-content':true,'article-indent':articleDetail.indent}"
            v-html="articleDetail.content">
       </div>
       <div class="ori-link">
@@ -89,7 +89,12 @@ export default {
       this.loading = true
       baseRequest('/bDocBasic/selectById', { id: crawlConId }).then(response => {
         this.articleDetail = response.data.item
-        this.articleDetail.content = this.getHtml(this.articleDetail.content)
+        if (response.data.item.contentType !== 'doc') {
+          this.articleDetail.content = this.getHtml(this.articleDetail.content)
+          this.articleDetail.indent = true
+        } else {
+          this.articleDetail.indent = false
+        }
         const temp = response.data.item.listBDocBasicExplain
         const pageSize = 4
         if (temp && temp.length > 0) {
