@@ -2,13 +2,13 @@
  * @Author: wk 
  * @Date: 2019-12-31 11:54:48 
  * @Last Modified by: lk
- * @Last Modified time: 2020-01-10 15:45:00
+ * @Last Modified time: 2020-01-13 17:31:45
  * @Description:  讲话内容
  */
 <template>
   <div class="verbiage base-container clearfix"
-       v-loading="loading">
-    <div class="article">
+       >
+    <div class="article" v-loading="loading">
       <div class="article-title">{{articleDetail.docTittle}}</div>
       <div class="article-options">
         <span>发布时间: {{articleDetail.docIssueTime |timeFiltering}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -25,40 +25,6 @@
            :href="articleDetail.conUrl">{{articleDetail.conUrl}}</a>
       </div> -->
     </div>
-    <!-- <div class="other-articles">
-      <div class="article-items">
-        <div class="other-type-name">
-          关联政策
-        </div>
-        <ul class="other-titles">
-          <li class="item-title"
-              @click="getInfo(128)"><a>《关于军地建立无线电管理协议机制》</a></li>
-          <li class="item-title"
-              @click="getInfo(128)"><a>《关于军地建立无线电管理协议机制》</a></li>
-          <li class="item-title"
-              @click="getInfo(128)"><a>《关于军地建立无线电管理协议机制》</a></li>
-        </ul>
-      </div>
-      <div class="article-items">
-        <div class="other-type-name">
-          相关专家解读(多条)
-        </div>
-        <el-carousel class="other-titles other-explains"
-                     trigger="click"
-                     height="160px"
-                     indicator-position="outside"
-                     arrow="never">
-          <el-carousel-item v-for="(item,index) in this.explains"
-                            :key="item+index">
-            <li class="item-title"
-                v-for="(t,i) in item"
-                :key="t+i">
-              <router-link :to="{name:'explain',query:{crawlConId:128}}">{{t}}</router-link>
-            </li>
-          </el-carousel-item>
-        </el-carousel>
-      </div>
-    </div> -->
   </div>
 </template>
 <script>

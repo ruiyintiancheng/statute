@@ -2,13 +2,13 @@
  * @Author: lk 
  * @Date: 2019-11-02 16:39:31 
  * @Last Modified by: lk
- * @Last Modified time: 2020-01-10 15:46:30
+ * @Last Modified time: 2020-01-13 17:31:56
  * @Description:  专家解读
  */
 <template>
   <div class="policy base-container clearfix"
-       v-loading="loading">
-    <div class="article">
+       >
+    <div class="article" v-loading="loading">
       <div class="article-title">{{articleDetail.docName}}</div>
       <div class="article-options">
         <span>发布时间: {{articleDetail.docIssueTime | timeFiltering}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
