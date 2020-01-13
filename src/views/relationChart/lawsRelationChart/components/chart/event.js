@@ -97,7 +97,7 @@ function translateCenter(cfg) {
   const width = right - left + 100
   const height = bottom - top + 100
 
-  moveCenter(cfg, { x: (left + right) / 2, y: (top + bottom) / 2, k: Math.min(cfg.width / width, cfg.height / height) })
+  moveCenter(cfg, { x: (left + right) / 2, y: (top + bottom) / 2, k: Math.min(cfg.width / width, cfg.height / height, 1) })
 }
 
 const Event = {

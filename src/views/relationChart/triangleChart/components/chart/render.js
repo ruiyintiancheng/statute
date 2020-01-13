@@ -56,7 +56,7 @@ const Rander = {
   draw(cfg) {
     const g = cfg.g
     const data = cfg.data
-    const color = ['#61a0a8', '#2f4554', '#c23531', '#d48265', '#91c7ae']
+    const color = ['#248EA6', '#25C7D9', '#F2D338', '#F2762E', '#F23030']
 
     const nodeg = g.selectAll('g.node').data(data).enter()
       .append('g')
