@@ -89,7 +89,7 @@ export default {
       this.loading = true
       baseRequest('/bDocBasic/selectById', { id: crawlConId }).then(response => {
         this.articleDetail = response.data.item
-        if (response.data.item.contentType !== 'doc') {
+        if (response.data.item.contentType !== 'html') {
           this.articleDetail.content = this.getHtml(this.articleDetail.content)
           this.articleDetail.indent = true
         } else {
