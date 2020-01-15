@@ -14,6 +14,7 @@
     </div>
     <div class="graph-web-toolbar">
       <ul>
+        <li @click="savePng"><div class="text">保存图片</div></li>
         <!-- <li @click="refresh"><div class="text">重置</div></li> -->
         <li @click="relation"><div class="text">筛选</div></li>
         <li @click="openNodesTable"><div class="text">顶点列表</div></li>
@@ -32,8 +33,8 @@
         <span class="message-title-content">详细信息</span>
         <span class="message-close" @click="messageVisible = false">×</span>
       </div>
-      <el-table :data="messageData" style="width: 100%" height=300>
-        <el-table-column prop="name" label="名称" width="180"></el-table-column>
+      <el-table :data="messageData" style="width: 100%" :height=table_height>
+        <el-table-column prop="name" label="名称" width="110"></el-table-column>
         <el-table-column prop="value" label="内容"></el-table-column>
       </el-table>
     </div>
@@ -67,17 +68,17 @@ export default {
       return this.width
     },
     chart_height() {
-      return this.height - 30
+      return this.height - 50 - 30
+    },
+    table_height() {
+      return this.height - 40
     }
   },
   data() {
     return {
       graph: null,
       chart_data: null,
-      messageData: [
-        { name: '政策法规名称', value: '关于申报2017年度军队后勤开放研究科研项目的通告' },
-        { name: '政策法规文号', value: '军民赛组办[2017]8号' }
-      ],
+      messageData: [],
       messageVisible: false
     }
   },
@@ -111,18 +112,25 @@ export default {
         container: 'chart',
         width: this.chart_width,
         height: this.chart_height,
-        contextMenu: 'contextMenu'
+        contextMenu: 'contextMenu' // ,
+        // background: '#04244A'
       })
       graph.data(data)
       graph.render()
 
-      // Chart.Brush.init(graph, 'brush')
+      Chart.Brush.init(graph, 'brush')
       Chart.legend(graph, 'legend')
       this.$nextTick(() => {
-        graph.moveCenter(this.width / 2 - 60, 0, 1)
+        graph.translateCenter()
       })
 
       this.graph = graph
+    },
+    /**
+     * 保存图片
+     */
+    savePng() {
+      this.graph.savePng(`${this.name}-法律法规生命周期分析`)
     },
     /**
        * 重置
@@ -225,7 +233,7 @@ export default {
     bottom: 100px;
     right: 12px;
     width: 56px;
-    font-size: 15px;
+    font-size: 14px;
     background-color: white;
     cursor: pointer;
   }
@@ -288,11 +296,11 @@ export default {
   }
 
   .message {
-    width: 500px;
-    height: 400px;
+    width: 300px;
+    height: 100%;
     position: absolute;
-    bottom: 10px;
-    left: 10px;
+    bottom: 0px;
+    right: 0px;
     border: 1px solid;
     background-color: white;
   }

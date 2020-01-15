@@ -44,8 +44,6 @@ class Graph {
 
   _initCanvas() {
     const svg = d3.select('#' + this.get('container'))
-      // .style('width', this.get('width') + 'px')
-      // .style('height', this.get('height') + 'px')
       .append('svg')
       .attr('width', '100%')
       .attr('height', '100%')
@@ -63,12 +61,13 @@ class Graph {
       .attr('markerUnits', 'strokeWidth')
       .attr('markerWidth', 10)
       .attr('markerHeight', 6)
-      .attr('refX', 9)
+      .attr('refX', 9 + 30)
       .attr('refY', 3)
       .attr('orient', 'auto')
       .attr('viewBox', '0 0 10 6')
       .append('path')
       .attr('d', 'M 0,0 L10,3 L0,6 L5,3 L0,0')
+      .style('fill', 'green')
   }
   /**
    * 绑定数据
@@ -98,7 +97,11 @@ class Graph {
    */
   move(x, y, scale) {
     scale = scale || 1
-    Event.move(this._cfg, { x, y, k: scale })
+    Event.move(this._cfg, {
+      x,
+      y,
+      k: scale
+    })
   }
   /**
     移动到屏幕中间
@@ -108,7 +111,11 @@ class Graph {
    */
   moveCenter(x, y, scale) {
     scale = scale || 1
-    Event.moveCenter(this._cfg, { x, y, k: scale })
+    Event.moveCenter(this._cfg, {
+      x,
+      y,
+      k: scale
+    })
   }
   translateCenter() {
     Event.translateCenter(this._cfg)
@@ -147,6 +154,16 @@ class Graph {
     this.set('options', options)
     Behavior.relation(this._cfg, options)
   }
+
+  /**
+   * 导出png图片
+   * @param {*} title 图片标题
+   */
+  savePng(title) {
+    Util.savePng(this._cfg, title)
+  }
 }
 
-export { Graph }
+export {
+  Graph
+}

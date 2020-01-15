@@ -10,10 +10,6 @@ const Data = {
     this.data = data
   },
   copyData(data) {
-    data.links.forEach(d => {
-      d.source = d.source.id ? d.source.id : d.source
-      d.target = d.target.id ? d.target.id : d.target
-    })
     return JSON.parse(JSON.stringify(data))
   },
   addData(oldData, newData) {

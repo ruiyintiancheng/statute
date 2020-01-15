@@ -8,12 +8,9 @@
         <div id='brush'></div>
         <div id="legend"></div>
     </div>
-    <div class="graph-web-toolbar" style="display: none">
+    <div class="graph-web-toolbar">
       <ul>
-        <li @click="refresh"><div class="text">重置</div></li>
-        <li @click="relation"><div class="text">筛选</div></li>
-        <li @click="openNodesTable"><div class="text">顶点列表</div></li>
-        <li @click="openLinksTable"><div class="text">关系列表</div></li>
+        <li @click="toolbar_savePng"><div class="text">保存图片</div></li>
       </ul>
     </div>
     <div id="contextMenu" class="contextMenu">
@@ -33,25 +30,25 @@
         <el-table-column prop="value" label="内容"></el-table-column>
       </el-table>
     </div>
-    <nodes-table ref="nodesTable" @moveNode='moveNode'></nodes-table>
-    <links-table ref="linksTable"></links-table>
-    <relation ref="relation" @selRelation="selRelation"></relation>
+    <!-- <nodes-table ref="nodesTable" @moveNode='moveNode'></nodes-table> -->
+    <!-- <links-table ref="linksTable"></links-table> -->
+    <!-- <relation ref="relation" @selRelation="selRelation"></relation> -->
   </div>
 </template>
 
 <script>
 import { baseRequest } from '@/api/base'
-import nodesTable from './components/nodesTable'
-import linksTable from './components/linksTable'
-import relation from './components/relation'
+// import nodesTable from './components/nodesTable'
+// import linksTable from './components/linksTable'
+// import relation from './components/relation'
 import Chart from './components/chart/index.js'
 // import json from './components/data.json'
 import * as d3 from 'd3'
 export default {
   components: {
-    nodesTable,
-    linksTable,
-    relation
+    // nodesTable,
+    // linksTable,
+    // relation
   },
   props: {
     width: Number,
@@ -103,17 +100,8 @@ export default {
       // Chart.legend(graph, 'legend')
       this.graph = graph
       this.$nextTick(() => {
-        // graph.moveCenter(-this.chart_width / 3, -15, 1)
-        graph.moveCenter(-(this.chart_width - this.chart_height) / 2, -50, 1)
+        graph.translateCenter()
       })
-    },
-    /**
-       * 重置
-       */
-    refresh() {
-      this.graph.relation(null)
-      Chart.Brush.moveAll()
-      this.$refs.relation.clear()
     },
     /**
        * 节点定位
@@ -122,31 +110,10 @@ export default {
       this.graph.moveCenter(node.x, node.y, 1)
     },
     /**
-       * 打开节点列表
-       */
-    openNodesTable() {
-      const nodes = this.graph.get('nodes')
-      this.$refs.nodesTable.openDialog(nodes)
-    },
-    /**
-       * 打开关系列表
-       */
-    openLinksTable() {
-      const links = this.graph.get('links')
-      this.$refs.linksTable.openDialog(links)
-    },
-    /**
-       * 关系筛选
-       */
-    selRelation(options) {
-      this.graph.relation(options)
-    },
-    /**
-       * 打开筛选列表
-       */
-    relation() {
-      this.$refs.relation.openDialog()
-      // this.graph.relation({ related: ['强相关', '不相关'] })
+     * 保存图片
+     */
+    toolbar_savePng() {
+      this.graph.savePng(`${this.name}-法律法规响应层级分析`)
     },
     /**
        * 右键菜单--查看详情
@@ -168,17 +135,6 @@ export default {
        * 右键菜单--查看引用
        */
     menuSource() {
-      const node = this.graph.get('contextMenuNode')
-      const data = {
-        nodes: [
-          { 'id': 'c1', 'label': 'wenshu', 'state': 'running', 'name': '添加测试1', 'dinwei': '指导原则', 'xgd': '不相关' },
-          { 'id': node.id, 'label': 'wenshu', 'state': 'running', 'name': '关于公布第二批国家新型工业化产业示范基地复核意见的通知', 'dinwei': '指导原则', 'xgd': '不相关' }
-        ],
-        links: [
-          { 'id': '11', 'label': 'yinyong', 'source': node.id, 'target': 'c1', 'name': '2015-02-05' }
-        ]
-      }
-      this.graph.addData(data)
       d3.select('#contextMenu').style('display', 'none')
     },
     /**

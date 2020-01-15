@@ -18,29 +18,29 @@ const Rander = {
       Nodes['default'].enter(d3.select(this), d)
     })
     // update Node
-    // nodeg.each(function(d) {
-    //   Nodes['default'].update(d3.select(this), d)
-    // })
+    nodeg.each(function(d) {
+      Nodes['default'].update(d3.select(this), d)
+    })
     // exit Node
-    // nodeg.exit().each(function(d) {
-    //   Nodes['default'].exit(d3.select(this), d)
-    // })
+    nodeg.exit().each(function(d) {
+      Nodes['default'].exit(d3.select(this), d)
+    })
 
-    const linkg = g.selectAll('g.link').data(links, d => d.id)
+    const linkg = g.selectAll('g.link').data(links, d => `${d.source.id}-${d.target.id}`)
     // // add Link
     linkg.enter().each(function(d) {
       Links['default'].enter(d3.select(this), d)
     })
-    // // update Link
-    // linkg.each(function(d) {
-    //   Links['default'].update(d3.select(this), d)
-    // })
-    // // exit Link
-    // linkg.exit().each(function(d) {
-    //   Links['default'].exit(d3.select(this), d)
-    // })
+    // update Link
+    linkg.each(function(d) {
+      Links['default'].update(d3.select(this), d)
+    })
+    // exit Link
+    linkg.exit().each(function(d) {
+      Links['default'].exit(d3.select(this), d)
+    })
 
-    // this.tick()
+    this.tick()
   },
   /**
    * 更新图形
@@ -59,47 +59,12 @@ const Rander = {
   }
 }
 
-// 二次贝塞尔曲线
 function path(d) {
-  let x1 = d.source.x
-  let y1 = d.source.y // 起始点坐标
-  let x2 = d.target.x
-  let y2 = d.target.y // 终止点坐标
-
-  const q = d.q // 曲线间距
-  let v = d.v // 方向
-  // v === 0 表示自适应布局 1 逆时针旋转 -1 顺时针旋转
-  v = (v === undefined || v === null || v === 0) ? (x1 > x2 ? -1 : 1) : v
-
-  const radian = Math.atan((y2 - y1) / (x2 - x1))
-  // 曲线点坐标
-  const x = (x1 + x2) / 2 - v * q * Math.sin(radian)
-  const y = (y1 + y2) / 2 + v * q * Math.cos(radian)
-
-  const r1 = d.source.r
-  const radian1 = getRadian(x1, y1, x, y)
-  const r2 = d.target.r
-  const radian2 = getRadian(x2, y2, x, y)
-
-  x1 = x1 + r1 * Math.cos(radian1)
-  y1 = y1 + r1 * Math.sin(radian1)
-  x2 = x2 + r2 * Math.cos(radian2)
-  y2 = y2 + r2 * Math.sin(radian2)
-
-  // 计算弧度
-  function getRadian(x1, y1, x2, y2) {
-    let radian1 = Math.atan((y2 - y1) / (x2 - x1))
-    if (x1 < x2) {
-      if (y1 > y2) {
-        radian1 = Math.PI * 2 + radian1
-      }
-    } else {
-      radian1 = Math.PI + radian1
-    }
-    return radian1
-  }
-
-  return `M ${x1},${y1} Q ${x},${y} ${x2},${y2}`
+  const x1 = d.source.x
+  const y1 = d.source.y // 起始点坐标
+  const x2 = d.target.x
+  const y2 = d.target.y // 终止点坐标
+  return `M ${x1},${y1} L ${x2},${y2}`
 }
 // 路径文字旋转
 function rotate(d) {

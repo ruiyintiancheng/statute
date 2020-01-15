@@ -18,6 +18,23 @@ function zoome(cfg) {
     .scaleExtent([0.2, 4])
     .on('zoom', () => {
       cfg.g.attr('transform', d3.event.transform)
+      const k = d3.event.transform.k
+      const nodes = cfg.g.selectAll('g.node')
+      const links = cfg.g.selectAll('g.link')
+      // 按比例保持图像大小
+      if (k > 1) {
+        nodes.select('circle').attr('transform', d => `scale(${1 / k})`)
+        nodes.selectAll('text').attr('transform', d => `scale(${1 / k})`)
+
+        links.selectAll('path').style('stroke-width', d => 1 / k)
+      }
+
+      // 隐藏文字
+      if (k < 0.5) {
+        nodes.selectAll('text').style('display', 'none')
+      } else {
+        nodes.selectAll('text').style('display', null)
+      }
     })
 
   cfg.svg.call(zoom)
@@ -84,20 +101,10 @@ function moveCenter(cfg, transform) {
  * 图像缩放到屏幕中间
  */
 function translateCenter(cfg) {
-  const data = cfg.data
-  const nodes = data.nodes
-
-  let [top, left, bottom, right] = [null, null, null, null]
-  nodes.forEach(d => {
-    top = !top || top > d.y ? d.y : top
-    bottom = !bottom || bottom < d.y ? d.y : bottom
-    left = !left || left > d.x ? d.x : left
-    right = !right || right < d.x ? d.x : right
-  })
-  const width = right - left + 100
-  const height = bottom - top + 100
-
-  moveCenter(cfg, { x: (left + right) / 2, y: (top + bottom) / 2, k: Math.min(cfg.width / width, cfg.height / height) })
+  const gbox = cfg.g.node().getBBox()
+  const x = gbox.x + gbox.width / 2
+  const y = gbox.y + gbox.height / 2
+  moveCenter(cfg, { x: x, y: y, k: 1 })
 }
 
 const Event = {

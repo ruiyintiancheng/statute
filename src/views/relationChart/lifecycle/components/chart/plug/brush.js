@@ -52,10 +52,10 @@ const Brush = {
       .classed('nodes', true)
       .attr('transform', `translate(70, ${(height - 20) / 2})`)
       .selectAll('circle')
-      .data(Data.getData().links)
+      .data(Data.getData())
       .join('circle')
       .attr('r', '3')
-      .attr('transform', d => `translate(${x(new Date(d.name))})`)
+      .attr('transform', d => `translate(${x(new Date(d.docIssueTime))})`)
       .style('fill', 'red')
 
     function brushed() {
@@ -111,35 +111,31 @@ function handle(graph, sx) {
 
 function handleData(time) {
   const data = Data.copyData(Data.getData())
-  const json = { nodes: [], links: [] }
 
-  const nodes = new Set()
-  data.links.forEach(d => {
-    const date = new Date(d.name)
+  const newData = []
+  data.forEach(d => {
+    const date = new Date(d.docIssueTime)
     if (date.getTime() >= time[0].getTime() && date.getTime() <= time[1].getTime()) {
-      nodes.add(d.source)
-      nodes.add(d.target)
-      json.links.push(d)
-    } else {
-      // console.log(d)
+      newData.push(d)
     }
   })
-
-  data.nodes.forEach(d => {
-    if (nodes.has(d.id)) {
-      json.nodes.push(d)
-    }
-  })
-  return json
+  return newData
 }
 
 function dataTime() {
-  const links = Data.getData().links
-  let minDate = new Date(links[0].name)
-  let maxDate = new Date(links[0].name)
+  const nodes = Data.getData()
+  let minDate = null
+  let maxDate = null
 
-  links.forEach(d => {
-    const date = new Date(d.name)
+  nodes.forEach(d => {
+    const date = new Date(d.docIssueTime)
+    if (!minDate) {
+      minDate = date
+    }
+    if (!maxDate) {
+      maxDate = date
+    }
+
     if (minDate >= date) {
       minDate = date
     }

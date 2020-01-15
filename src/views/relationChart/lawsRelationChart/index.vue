@@ -4,32 +4,37 @@
 <template>
   <div style="width: 100%; height:100%; position: relative">
     <div v-loading="chartLoading">
-        <div id="chart" :style="{'width': `${chart_width}px`, 'height': `${chart_height}px`}"></div>      
-        <div id='brush'></div>
-        <div id="legend"></div>
+      <div id="chart" :style="{'width': `${chart_width}px`, 'height': `${chart_height}px`}"></div>
+      <div id="brush"></div>
+      <div id="legend"></div>
     </div>
     <div class="graph-web-toolbar">
       <ul>
+        <li @click="savePng"><div class="text">保存图片</div></li>
         <li @click="refresh"><div class="text">重置</div></li>
         <li @click="relation"><div class="text">筛选</div></li>
         <li @click="openNodesTable"><div class="text">顶点列表</div></li>
         <li @click="openLinksTable"><div class="text">关系列表</div></li>
       </ul>
     </div>
-    <div id="contextMenu" class="contextMenu">
+    <div id="contextMenu"
+         class="contextMenu">
       <ul>
         <li @click="menuMessage">查看详情</li>
         <!-- <li @click="menuSource">查看引用</li> -->
         <li @click="menuText">查看原文</li>
       </ul>
     </div>
-    <div v-show="messageVisible" id="message" class="message">
+    <div v-show="messageVisible"
+         id="message"
+         class="message">
       <div class="message-title">
         <span class="message-title-content">详细信息</span>
-        <span class="message-close" @click="messageVisible = false">×</span>
+        <span class="message-close"
+              @click="messageVisible = false">×</span>
       </div>
-      <el-table :data="messageData" style="width: 100%" height=358>
-        <el-table-column prop="name" label="名称" width="180"></el-table-column>
+      <el-table :data="messageData" style="width: 100%" :height=table_height>
+        <el-table-column prop="name" label="名称" width="110"></el-table-column>
         <el-table-column prop="value" label="内容"></el-table-column>
       </el-table>
     </div>
@@ -56,7 +61,8 @@ export default {
   props: {
     width: Number,
     height: Number,
-    id: Number
+    id: Number,
+    name: String
   },
   computed: {
     chart_width() {
@@ -64,6 +70,9 @@ export default {
     },
     chart_height() {
       return this.height - 50 - 30
+    },
+    table_height() {
+      return this.height - 40
     }
   },
   data() {
@@ -108,7 +117,8 @@ export default {
         container: 'chart',
         width: this.chart_width,
         height: this.chart_height,
-        contextMenu: 'contextMenu'
+        contextMenu: 'contextMenu',
+        background: '#04244A'
       })
       graph.data(data)
       graph.render()
@@ -117,6 +127,12 @@ export default {
       Chart.legend(graph, 'legend')
       graph.translateCenter()
       this.graph = graph
+    },
+    /**
+     * 保存图片
+     */
+    savePng() {
+      this.graph.savePng(`${this.name}-法律法规关联分析`)
     },
     /**
        * 重置
@@ -195,17 +211,6 @@ export default {
        * 右键菜单--查看引用
        */
     menuSource() {
-      const node = this.graph.get('contextMenuNode')
-      const data = {
-        nodes: [
-          { 'id': 'c1', 'label': 'wenshu', 'state': 'running', 'name': '添加测试1', 'dinwei': '指导原则', 'xgd': '不相关' },
-          { 'id': node.id, 'label': 'wenshu', 'state': 'running', 'name': '关于公布第二批国家新型工业化产业示范基地复核意见的通知', 'dinwei': '指导原则', 'xgd': '不相关' }
-        ],
-        links: [
-          { 'id': '11', 'label': 'yinyong', 'source': node.id, 'target': 'c1', 'name': '2015-02-05' }
-        ]
-      }
-      this.graph.addData(data)
       d3.select('#contextMenu').style('display', 'none')
     },
     /**
@@ -220,106 +225,106 @@ export default {
 </script>
 
 <style scoped>
-  .graph-web-toolbar {
-    position: absolute;
-    display: block;
-    bottom: 100px;
-    right: 12px;
-    width: 56px;
-    font-size: 15px;
-    background-color: white;
-    cursor: pointer;
-  }
-  
-  .graph-web-toolbar>ul {
-    margin: 0px;
-    box-sizing: border-box;
-    text-align: center;
-    padding: 0px;
-    border-top: 1px solid #DEDEDE;
-    border-left: 1px solid #DEDEDE;
-    border-right: 1px solid #DEDEDE;
-  }
+.graph-web-toolbar {
+  position: absolute;
+  display: block;
+  bottom: 100px;
+  right: 12px;
+  width: 50px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+}
 
-  .graph-web-toolbar ul>li {
-    padding: 12px;
-    list-style: none;
-    border-bottom: 1px solid #DEDEDE 
-  }
+.graph-web-toolbar > ul {
+  margin: 0px;
+  box-sizing: border-box;
+  text-align: center;
+  padding: 0px;
+  border-top: 1px solid #dedede;
+  border-left: 1px solid #dedede;
+  border-right: 1px solid #dedede;
+}
 
-  .graph-web-toolbar ul>li:hover {
-    background-color: #409eff;
-    color: white;
-  }
+.graph-web-toolbar ul > li {
+  padding: 7px;
+  list-style: none;
+  border-bottom: 1px solid #dedede;
+}
 
-  .contextMenu {
-    display: none;
-    position: absolute; 
-    width: 120px;
-    top: 200px; 
-    left: 50px; 
-    border: 1px solid #ccc;
-    background-color: white;
-  }
+.graph-web-toolbar ul > li:hover {
+  background-color: #409eff;
+  color: white;
+}
 
-  .contextMenu ul>li {
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-left: 8px;
-    padding-right: 8px;
-    list-style: none;
-    border-bottom: 1px solid #DEDEDE 
-  }
+.contextMenu {
+  display: none;
+  position: absolute;
+  width: 120px;
+  top: 200px;
+  left: 50px;
+  border: 1px solid #ccc;
+  background-color: white;
+}
 
-  .contextMenu>ul {
-    margin: 0px;
-    box-sizing: border-box;
-    font-size: 12px;
-    text-align: center;
-    user-select: none;
-    padding: 0px;
-    border-top: 1px solid #DEDEDE;
-    border-left: 1px solid #DEDEDE;
-    border-right: 1px solid #DEDEDE;
-  }
+.contextMenu ul > li {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  list-style: none;
+  border-bottom: 1px solid #dedede;
+}
 
-  .contextMenu ul>li:hover {
-    background-color: #409eff;
-    color: white;
-  }
+.contextMenu > ul {
+  margin: 0px;
+  box-sizing: border-box;
+  font-size: 12px;
+  text-align: center;
+  user-select: none;
+  padding: 0px;
+  border-top: 1px solid #dedede;
+  border-left: 1px solid #dedede;
+  border-right: 1px solid #dedede;
+}
 
-  .message {
-    width: 500px;
-    height: 400px;
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    border: 1px solid;
-    background-color: white;
-  }
+.contextMenu ul > li:hover {
+  background-color: #409eff;
+  color: white;
+}
 
-  .message-title {
-    height: 40px;
-    display: block;
-    background-color: #f3f3f3;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
+.message {
+  width: 300px;
+  height: 100%;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  border: 1px solid;
+  background-color: white;
+}
 
-  .message-title-content {
-    color: #000;
-    font-size: 18px;
-    line-height: 40px;
-    display: block;
-    float: left;
-  }
-  .message-close {
-      color: #128BED;
-      font-size: 30px;
-      font-weight: 700;
-      line-height: 40px;
-      display: block;
-      float: right;
-      cursor: pointer;
-  }
+.message-title {
+  height: 40px;
+  display: block;
+  background-color: #f3f3f3;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.message-title-content {
+  color: #000;
+  font-size: 18px;
+  line-height: 40px;
+  display: block;
+  float: left;
+}
+.message-close {
+  color: #128bed;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 40px;
+  display: block;
+  float: right;
+  cursor: pointer;
+}
 </style>

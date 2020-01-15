@@ -7,8 +7,12 @@ const Nodes = {
       }
       const option = {
         name: d.docName,
-        r: 30,
-        color: color
+        r: 10,
+        color: color,
+        texts: [
+          { title: '法规名称', value: d.docName },
+          { title: '发布时间', value: d.docIssueTime }
+        ]
       }
       d.r = option.r
 
@@ -35,9 +39,8 @@ const Nodes = {
   enter(selection, option) {
     const node = selection.append('g')
       .classed('node', true)
-      .attr('transform', d => `translate(${d.x}, ${d.y})`)
+      .style('font-size', 12)
       .style('cursor', 'pointer')
-      .style('font-size', option.r / 2.5)
 
     node.append('title').text(option.name)
 
@@ -45,28 +48,23 @@ const Nodes = {
       .attr('r', option.r)
       .style('fill', option.color)
 
-    const text = node.append('text')
-      .attr('text-anchor', 'middle')
-      .style('user-select', 'none')
-      .style('pointer-events', 'none')
-      .style('fill', 'white')
-
-    text.selectAll('tspan').data(circleText(option.name))
-      .enter()
-      .append('tspan')
-      .attr('x', 0)
-      .attr('y', 0)
-      .attr('dy', d => d.dy)
-      .text(d => d.text)
+    // const text = node.append('text')
+    //   // .attr('text-anchor', 'middle')
+    //   .style('user-select', 'none')
+    //   .style('pointer-events', 'none')
+    //   .style('fill', 'black')
+    node.append('text')
+      .attr('x', option.r + 10)
+      .attr('dy', '0.35em')
+      .style('fill', 'black')
+      .text(d => d.docName)
 
     node.append('text')
-      .attr('y', option.r)
-      .attr('dy', '1em')
-      .attr('text-anchor', 'middle')
-      .style('user-select', 'none')
-      .style('pointer-events', 'none')
-      .style('fill', 'blake')
-      .text(d => `(${d.docIssueTime})`)
+      .attr('x', -option.r - 10)
+      .attr('dy', '0.35em')
+      .attr('text-anchor', 'end')
+      .style('fill', 'black')
+      .text(d => d.docIssueTime)
   },
   /**
    * 修改元素
@@ -120,27 +118,25 @@ const Links = {
 
     link.append('path')
       .attr('id', d => d.id)
-      .attr('d', d => linkPath(d))
       .attr('marker-end', 'url(#markerArrow)')
       .style('fill', 'none')
       .style('stroke', option.color)
 
-    link.append('text')
-      .attr('dy', '-0.3em')
-      .style('font-size', '14px')
-      .style('user-select', 'none')
-      .append('textPath')
-      .attr('text-anchor', 'middle')
-      .attr('startOffset', '50%')
-      .attr('xlink:href', d => `#${d.id}`)
+    // link.append('text')
+    //   .attr('dy', '-0.3em')
+    //   .style('font-size', '14px')
+    //   .style('user-select', 'none')
+    //   .append('textPath')
+    //   .attr('text-anchor', 'middle')
+    //   .attr('startOffset', '50%')
+    //   .attr('xlink:href', d => `#${d.id}`)
   },
   /**
    * 修改元素
    * @param {*} selection
    * @param {*} option
    */
-  update(selection, option) {
-  },
+  update(selection, option) {},
   /**
    * 删除元素
    * @param {*} selection
@@ -152,46 +148,40 @@ const Links = {
 }
 
 // 圆内文字
-function circleText(text) {
-  if (!text) {
-    return { 'text': '', 'x': 0, 'y': 0 }
-  }
+// function circleText(text) {
+//   if (!text) {
+//     return { 'text': '', 'x': 0, 'y': 0 }
+//   }
 
-  if (text.length <= 5) {	// 一行
-    return [
-      { 'text': text, 'dy': '0.5em' }
-    ]
-  }
+//   if (text.length <= 10) { // 一行
+//     return [{ 'text': text, 'dy': '0.5em' }]
+//   }
 
-  if (text.length <= 9) {	// 二行
-    return [
-      { 'text': text.substring(0, 4), 'dy': '0' },
-      { 'text': text.substring(4, 9), 'dy': '1em' }
-    ]
-  }
+//   if (text.length <= 20) { // 二行
+//     return [
+//       { 'text': text.substring(0, 10), 'dy': '0' },
+//       { 'text': text.substring(10, 20), 'dy': '1em' }
+//     ]
+//   }
 
-  if (text.length > 9) {	// 三行
-    const arr = [
-      { 'text': text.substring(0, 4), 'dy': '-0.5em' },
-      { 'text': text.substring(4, 9), 'dy': '0.5em' }
-    ]
+//   if (text.length <= 30) { // 三行
+//     return [
+//       { 'text': text.substring(0, 10), 'dy': '-0.5em' },
+//       { 'text': text.substring(10, 20), 'dy': '0.5em' },
+//       { 'text': text.substring(20, 30), 'dy': '1.5em' }
+//     ]
+//   }
 
-    const line3 = text.substring(9, 12)
-    if (text.length > 12) {
-      arr.push({ 'text': line3 + '..', 'dy': '1.5em' })
-    } else {
-      arr.push({ 'text': line3, 'dy': '1.5em' })
-    }
-    return arr
-  }
+//   if (text.length > 30) {
+//     const length = text.length / 3
+//     return [
+//       { 'text': text.substring(0, length), 'dy': '-0.5em' },
+//       { 'text': text.substring(length, length * 2), 'dy': '0.5em' },
+//       { 'text': text.substring(length * 2, text.length), 'dy': '1.5em' }
+//     ]
+//   }
+// }
+export {
+  Nodes,
+  Links
 }
-
-function linkPath(d) {
-  const x1 = d.source.x + d.source.r
-  const y1 = d.source.y // 起始点坐标
-  const x2 = d.target.x - d.target.r
-  const y2 = d.target.y // 终止点坐标
-
-  return `M ${x1},${y1} L ${x2},${y2}`
-}
-export { Nodes, Links }

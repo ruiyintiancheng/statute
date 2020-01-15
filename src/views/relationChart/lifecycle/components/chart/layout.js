@@ -12,8 +12,8 @@ class Layout {
 
     for (let i = 0; i < data.length; ++i) {
       const node = data[i]
-      node.x = i * 300
-      node.y = 0
+      node.x = 0
+      node.y = i * 200
       nodes.push(node)
 
       if (i > 0) {

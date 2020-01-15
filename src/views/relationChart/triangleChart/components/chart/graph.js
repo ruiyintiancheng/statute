@@ -62,7 +62,7 @@ class Graph {
       .attr('markerUnits', 'strokeWidth')
       .attr('markerWidth', 10)
       .attr('markerHeight', 6)
-      .attr('refX', 9)
+      .attr('refX', 9 + 30)
       .attr('refY', 3)
       .attr('orient', 'auto')
       .attr('viewBox', '0 0 10 6')
@@ -145,6 +145,13 @@ class Graph {
   relation(options) {
     this.set('options', options)
     Behavior.relation(this._cfg, options)
+  }
+  /**
+   * 导出png图片
+   * @param {*} title 图片标题
+   */
+  savePng(title) {
+    Util.savePng(this._cfg, title)
   }
 }
 

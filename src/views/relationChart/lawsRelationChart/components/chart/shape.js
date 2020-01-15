@@ -35,7 +35,7 @@ const Nodes = {
   enter(selection, option) {
     const node = selection.append('g')
       .classed('node', true)
-      .style('font-size', option.r / 2.5)
+      .style('font-size', 12)
       .style('cursor', 'pointer')
 
     node.append('title').text(option.name)
@@ -64,7 +64,7 @@ const Nodes = {
       .attr('text-anchor', 'middle')
       .style('user-select', 'none')
       .style('pointer-events', 'none')
-      .style('fill', 'blake')
+      .style('fill', 'white')
       .text(d => `(${d.docIssueTime})`)
   },
   /**
@@ -123,22 +123,21 @@ const Links = {
       .style('fill', 'none')
       .style('stroke', option.color)
 
-    link.append('text')
-      .attr('dy', '-0.3em')
-      .style('font-size', '14px')
-      .style('user-select', 'none')
-      .append('textPath')
-      .attr('text-anchor', 'middle')
-      .attr('startOffset', '50%')
-      .attr('xlink:href', d => `#${d.id}`)
+    // link.append('text')
+    //   .attr('dy', '-0.3em')
+    //   .style('font-size', '14px')
+    //   .style('user-select', 'none')
+    //   .append('textPath')
+    //   .attr('text-anchor', 'middle')
+    //   .attr('startOffset', '50%')
+    //   .attr('xlink:href', d => `#${d.id}`)
   },
   /**
    * 修改元素
    * @param {*} selection
    * @param {*} option
    */
-  update(selection, option) {
-  },
+  update(selection, option) {},
   /**
    * 删除元素
    * @param {*} selection
@@ -155,33 +154,93 @@ function circleText(text) {
     return { 'text': '', 'x': 0, 'y': 0 }
   }
 
-  if (text.length <= 5) {	// 一行
+  if (text.length <= 10) { // 一行
+    return [{ 'text': text, 'dy': '0.5em' }]
+  }
+
+  if (text.length <= 20) { // 二行
     return [
-      { 'text': text, 'dy': '0.5em' }
+      { 'text': text.substring(0, 10), 'dy': '0' },
+      { 'text': text.substring(10, 20), 'dy': '1em' }
     ]
   }
 
-  if (text.length <= 9) {	// 二行
+  if (text.length <= 30) { // 三行
     return [
-      { 'text': text.substring(0, 4), 'dy': '0' },
-      { 'text': text.substring(4, 9), 'dy': '1em' }
+      { 'text': text.substring(0, 10), 'dy': '-0.5em' },
+      { 'text': text.substring(10, 20), 'dy': '0.5em' },
+      { 'text': text.substring(20, 30), 'dy': '1.5em' }
     ]
   }
 
-  if (text.length > 9) {	// 三行
-    const arr = [
-      { 'text': text.substring(0, 4), 'dy': '-0.5em' },
-      { 'text': text.substring(4, 9), 'dy': '0.5em' }
+  if (text.length > 30) {
+    const length = text.length / 3
+    return [
+      { 'text': text.substring(0, length), 'dy': '-0.5em' },
+      { 'text': text.substring(length, length * 2), 'dy': '0.5em' },
+      { 'text': text.substring(length * 2, text.length), 'dy': '1.5em' }
     ]
-
-    const line3 = text.substring(9, 12)
-    if (text.length > 12) {
-      arr.push({ 'text': line3 + '..', 'dy': '1.5em' })
-    } else {
-      arr.push({ 'text': line3, 'dy': '1.5em' })
-    }
-    return arr
   }
 }
 
-export { Nodes, Links }
+// 圆内文字
+// function circleText(text) {
+//   if (!text) {
+//     return {
+//       'text': '',
+//       'x': 0,
+//       'y': 0
+//     }
+//   }
+
+//   if (text.length <= 5) { // 一行
+//     return [{
+//       'text': text,
+//       'dy': '0.5em'
+//     }]
+//   }
+
+//   if (text.length <= 9) { // 二行
+//     return [
+//       {
+//         'text': text.substring(0, 4),
+//         'dy': '0'
+//       },
+//       {
+//         'text': text.substring(4, 9),
+//         'dy': '1em'
+//       }
+//     ]
+//   }
+
+//   if (text.length > 9) { // 三行
+//     const arr = [
+//       {
+//         'text': text.substring(0, 4),
+//         'dy': '-0.5em'
+//       },
+//       {
+//         'text': text.substring(4, 9),
+//         'dy': '0.5em'
+//       }
+//     ]
+
+//     const line3 = text.substring(9, 12)
+//     if (text.length > 12) {
+//       arr.push({
+//         'text': line3 + '..',
+//         'dy': '1.5em'
+//       })
+//     } else {
+//       arr.push({
+//         'text': line3,
+//         'dy': '1.5em'
+//       })
+//     }
+//     return arr
+//   }
+// }
+export {
+  Nodes,
+  Links
+}
