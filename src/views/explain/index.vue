@@ -48,7 +48,7 @@
 <script>
 import { baseRequest } from '@/api/base'
 export default {
-  name: 'policy',
+  name: 'explain',
   data() {
     return {
       articleDetail: {},
@@ -59,7 +59,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-      if (to.name === 'articleIndex') {
+      if (to.name === 'explain') {
         if (this.$route.query.crawlConId) {
           this.getInfo()
         }

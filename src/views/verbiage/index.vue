@@ -42,7 +42,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-      if (to.name === 'articleIndex') {
+      if (to.name === 'verbiage') {
         if (this.$route.query.crawlConId) {
           this.getInfo()
         }

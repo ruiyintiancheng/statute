@@ -31,8 +31,8 @@
         </div>
         <ul class="other-titles">
           <li class="item-title"
-              v-for="item in articleDetail.listBDocBasicpolicy"
-              :key="item.id"
+              v-for="(item,index) in articleDetail.listBDocBasicpolicy"
+              :key="item + index"
               @click="getInfo(item.id)"><a>{{item.docName}}</a></li>
 
         </ul>
@@ -74,7 +74,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-      if (to.name === 'articleIndex') {
+      if (to.name === 'policy') {
         if (this.$route.query.crawlConId) {
           this.getInfo()
         }
