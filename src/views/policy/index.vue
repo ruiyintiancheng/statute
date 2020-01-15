@@ -102,6 +102,7 @@ export default {
         crawlConId = this.$route.query.crawlConId
       }
       this.loading = true
+      this.explains = []
       baseRequest('/bDocBasic/selectById', { id: crawlConId }).then(response => {
         this.articleDetail = response.data.item
         if (response.data.item.contentType !== 'html') {
