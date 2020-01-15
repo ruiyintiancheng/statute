@@ -76,12 +76,11 @@ export default {
       this.loading = true
       baseRequest('bXjpBasic/selectById', { id: crawlConId }).then(response => {
         this.articleDetail = response.data.item
+        const reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g
+        this.conUrl = this.articleDetail.content.match(reg)[0]
+        this.articleDetail.content = this.articleDetail.content.replace(reg, '原文链接 <a style="color:#40A9FF" target="_blank" href="' + this.conUrl + '">' + this.conUrl + '</a>')
         if (response.data.item.contentType !== 'html') {
-          const reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g
-          this.conUrl = this.articleDetail.content.match(reg)[0]
-          this.articleDetail.content = this.articleDetail.content.replace(reg, '')
           this.articleDetail.content = this.getHtml(this.articleDetail.content)
-          this.articleDetail.content += '原文链接 <a style="color:#40A9FF" target="_blank" href="' + this.conUrl + '">' + this.conUrl + '</a>'
           this.articleDetail.indent = true
         } else {
           this.articleDetail.indent = false
