@@ -1,14 +1,14 @@
 /*
  * @Author: lk 
  * @Date: 2019-11-02 16:39:31 
- * @Last Modified by: lk
- * @Last Modified time: 2020-01-13 17:30:15
+ * @Last Modified by: 1k
+ * @Last Modified time: 2020-01-15 14:33:26
  * @Description:  政策文章
  */
 <template>
-  <div class="policy base-container clearfix"
-      >
-    <div class="article"  v-loading="loading">
+  <div class="policy base-container clearfix">
+    <div class="article"
+         v-loading="loading">
       <div class="article-title">{{articleDetail.docName}}</div>
       <div class="article-options">
         <span>发布时间: {{articleDetail.docIssueTime | timeFiltering}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -112,13 +112,8 @@ export default {
           this.articleDetail.indent = false
         }
         const temp = response.data.item.listBDocBasicExplain
-        const pageSize = 4
         if (temp && temp.length > 0) {
-          const pageCount = Math.ceil(temp.length / pageSize)
-          for (let x = 0; x < pageCount; x++) {
-            const children = temp.slice(x * 4, x * 4 + 4)
-            this.explains.push(children)
-          }
+          this.explains = this.group(temp, 4)
         }
         this.loading = false
       }, _ => {
@@ -131,6 +126,14 @@ export default {
         str = content.replace(/\n/g, '<p>')
       }
       return str
+    },
+    group(array, subGroupLength) { // 拆分数组
+      let index = 0
+      const newArray = []
+      while (index < array.length) {
+        newArray.push(array.slice(index, index += subGroupLength))
+      }
+      return newArray
     }
   }
 }
