@@ -1,14 +1,14 @@
 /*
  * @Author: wk 
  * @Date: 2019-12-31 11:54:48 
- * @Last Modified by: lk
- * @Last Modified time: 2020-01-13 17:31:45
+ * @Last Modified by: 1k
+ * @Last Modified time: 2020-01-15 10:39:16
  * @Description:  讲话内容
  */
 <template>
-  <div class="verbiage base-container clearfix"
-       >
-    <div class="article" v-loading="loading">
+  <div class="verbiage base-container clearfix">
+    <div class="article"
+         v-loading="loading">
       <div class="article-title">{{articleDetail.docTittle}}</div>
       <div class="article-options">
         <span>发布时间: {{articleDetail.docIssueTime |timeFiltering}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -20,9 +20,9 @@
         <div v-html="articleDetail.content"></div>
       </div>
       <!-- <div class="ori-link">
-        原文链接
+        原文链接 :
         <a target="_blank"
-           :href="articleDetail.conUrl">{{articleDetail.conUrl}}</a>
+           :href="conUrl">{{conUrl}}</a>
       </div> -->
     </div>
   </div>
@@ -33,6 +33,7 @@ export default {
   name: 'verbiage',
   data() {
     return {
+      conUrl: null,
       articleDetail: {},
       explains: [
       ],
@@ -76,7 +77,11 @@ export default {
       baseRequest('bXjpBasic/selectById', { id: crawlConId }).then(response => {
         this.articleDetail = response.data.item
         if (response.data.item.contentType !== 'html') {
+          const reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g
+          this.conUrl = this.articleDetail.content.match(reg)[0]
+          this.articleDetail.content = this.articleDetail.content.replace(reg, '')
           this.articleDetail.content = this.getHtml(this.articleDetail.content)
+          this.articleDetail.content += '原文链接 <a style="color:#40A9FF" target="_blank" href="' + this.conUrl + '">' + this.conUrl + '</a>'
           this.articleDetail.indent = true
         } else {
           this.articleDetail.indent = false
