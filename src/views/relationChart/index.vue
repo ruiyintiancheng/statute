@@ -1,16 +1,23 @@
 <template>
   <div class="base-container">
-    <div><span>{{name}}</span></div>
-    <div class="menu" style="height: 40px; background-color: white;">
-      <ul class="mao-nav">
-        <li :class="{'active': active === 0}" @click="active = 0"><a>法律法规关联分析</a></li>
-        <li :class="{'active': active === 1}" @click="active = 1"><a>法律法规生命周期分析</a></li>
-        <li :class="{'active': active === 2}" @click="active = 2"><a>法律法规响应层级分析</a></li>
-      </ul>
+    <div class="main-title" style="height: 52px;">
+      <div style="padding-top: 2px;"><span>{{name}}</span></div>
+      <el-row :gutter="20" class="mao-nav" style="height: 32px; background-color: white;">
+        <el-col :span="8">
+          <div :class="{'active': active === 0}" @click="active = 0"><a>法律法规关联分析</a></div>
+        </el-col>
+        <el-col :span="8">
+          <div :class="{'active': active === 1}" @click="active = 1"><a>法律法规生命周期分析</a></div>
+        </el-col>
+        <el-col :span="8">
+          <div :class="{'active': active === 2}" @click="active = 2"><a>法律法规响应层级分析</a></div>
+        </el-col>
+      </el-row>
     </div>
     <div class="main-chart" :style="{width: `${chart_width}px`, height: `${chart_height}px`}">
       <lawsrelation-chart v-if="active === 0" ref="lawsRelationChart"
           :width=chart_width :height=chart_height :id=id :name=name></lawsrelation-chart>
+          
       <lifecycle v-else-if="active === 1"
           :width=chart_width :height=chart_height :id=id :name=name></lifecycle>
 
@@ -35,7 +42,7 @@ export default {
       return document.querySelector('.base-container').offsetWidth
     },
     chart_height() {
-      return document.querySelector('.app-main').offsetHeight - 40 - 20
+      return document.querySelector('.app-main').offsetHeight - 52
     }
   },
   data() {
@@ -60,16 +67,9 @@ export default {
 </script>
 <style scoped>
 .mao-nav {
-  float: left;
+  /* float: left; */
   font-size: 16px;
   color: #666;
-  margin-left: 10px;
-  margin-top: 10px;
-}
-
-.mao-nav li {
-  display: inline;
-  margin-left: 20px;
 }
 .mao-nav a {
   line-height: 1.8;
