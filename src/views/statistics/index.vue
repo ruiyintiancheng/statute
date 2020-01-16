@@ -197,7 +197,7 @@ export default {
                 barBorderRadius: 30
               },
               normal: {
-                barBorderRadius: [10, 10, 10, 10],
+                // barBorderRadius: [10, 10, 10, 10],
                 color: new echarts.graphic.LinearGradient(
                   0, 0, 0, 1,
                   [
