@@ -61,7 +61,7 @@ class Graph {
       .attr('markerUnits', 'strokeWidth')
       .attr('markerWidth', 10)
       .attr('markerHeight', 6)
-      .attr('refX', 9 + 30)
+      .attr('refX', 9 + 10)
       .attr('refY', 3)
       .attr('orient', 'auto')
       .attr('viewBox', '0 0 10 6')

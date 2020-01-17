@@ -61,7 +61,8 @@ export default {
   props: {
     width: Number,
     height: Number,
-    id: Number
+    id: Number,
+    name: String
   },
   computed: {
     chart_width() {

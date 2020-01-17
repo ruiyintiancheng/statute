@@ -64,7 +64,7 @@ class Layout {
 function before(data) {
   const x = d3.scaleTime()
     .domain(dataTime(data.nodes))
-    .rangeRound([0, 1500])
+    .rangeRound([0, Layout.width - 100])
   data.nodes.forEach(d => {
     d.x = d.fx = x(new Date(d.docIssueTime))
     d.y = Math.random() * 980

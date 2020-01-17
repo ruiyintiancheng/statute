@@ -7,7 +7,8 @@ const Nodes = {
       }
       const option = {
         name: d.docName,
-        r: 30,
+        time: d.docIssueTime,
+        r: 10,
         color: color
       }
       d.r = option.r
@@ -16,7 +17,7 @@ const Nodes = {
     },
     update(selection, d) {
       const option = {
-        r: 30,
+        r: 10,
         t: 1000
       }
       d.r = option.r
@@ -35,7 +36,7 @@ const Nodes = {
   enter(selection, option) {
     const node = selection.append('g')
       .classed('node', true)
-      .style('font-size', 12)
+      .style('font-size', 13)
       .style('cursor', 'pointer')
 
     node.append('title').text(option.name)
@@ -45,27 +46,19 @@ const Nodes = {
       .style('fill', option.color)
 
     const text = node.append('text')
-      .attr('text-anchor', 'middle')
+      .attr('text-anchor', 'start')
       .style('user-select', 'none')
-      .style('pointer-events', 'none')
+      // .style('pointer-events', 'none')
       .style('fill', 'white')
 
-    text.selectAll('tspan').data(circleText(option.name))
+    text.selectAll('tspan').data(circleText(option.name, option.time))
       .enter()
       .append('tspan')
-      .attr('x', 0)
+      .attr('x', option.r + 10)
       .attr('y', 0)
+      .attr('dx', d => d.dx)
       .attr('dy', d => d.dy)
       .text(d => d.text)
-
-    node.append('text')
-      .attr('y', option.r)
-      .attr('dy', '1em')
-      .attr('text-anchor', 'middle')
-      .style('user-select', 'none')
-      .style('pointer-events', 'none')
-      .style('fill', 'white')
-      .text(d => `(${d.docIssueTime})`)
   },
   /**
    * 修改元素
@@ -149,36 +142,31 @@ const Links = {
 }
 
 // 圆内文字
-function circleText(text) {
+function circleText(text, text2) {
   if (!text) {
-    return { 'text': '', 'x': 0, 'y': 0 }
+    return [{ text: text2, dx: 0, dy: '0.35em' }]
   }
 
-  if (text.length <= 10) { // 一行
-    return [{ 'text': text, 'dy': '0.5em' }]
-  }
-
-  if (text.length <= 20) { // 二行
+  if (text.length <= 12) { // 一行
     return [
-      { 'text': text.substring(0, 10), 'dy': '0' },
-      { 'text': text.substring(10, 20), 'dy': '1em' }
+      { text: text, dx: 0, dy: '0.35em' },
+      { text: text2, dx: 0, dy: '1.6em' }
     ]
   }
 
-  if (text.length <= 30) { // 三行
+  if (text.length <= 26) { // 二行
     return [
-      { 'text': text.substring(0, 10), 'dy': '-0.5em' },
-      { 'text': text.substring(10, 20), 'dy': '0.5em' },
-      { 'text': text.substring(20, 30), 'dy': '1.5em' }
+      { text: text.substring(0, 12), dx: '2em', dy: '-0.9em' }, // 0.35 - 1 - 0.25
+      { text: text.substring(12, 26), dx: 0, dy: '0.35em' },
+      { text: text2, dx: 0, dy: '1.6em' } // 1 + 0.35 + 0.25
     ]
   }
 
-  if (text.length > 30) {
-    const length = text.length / 3
+  if (text.length > 26) {
     return [
-      { 'text': text.substring(0, length), 'dy': '-0.5em' },
-      { 'text': text.substring(length, length * 2), 'dy': '0.5em' },
-      { 'text': text.substring(length * 2, text.length), 'dy': '1.5em' }
+      { text: text.substring(0, 12), dx: '2em', dy: '-0.9em' }, // 0.35 - 1 - 0.25
+      { text: text.substring(12, 26) + '...', dx: 0, dy: '0.35em' },
+      { text: text2, dx: 0, dy: '1.6em' } // 1 + 0.35 + 0.25
     ]
   }
 }

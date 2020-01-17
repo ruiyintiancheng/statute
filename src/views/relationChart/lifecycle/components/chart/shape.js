@@ -39,7 +39,7 @@ const Nodes = {
   enter(selection, option) {
     const node = selection.append('g')
       .classed('node', true)
-      .style('font-size', 12)
+      .style('font-size', 13)
       .style('cursor', 'pointer')
 
     node.append('title').text(option.name)
@@ -52,7 +52,6 @@ const Nodes = {
     //   // .attr('text-anchor', 'middle')
     //   .style('user-select', 'none')
     //   .style('pointer-events', 'none')
-    //   .style('fill', 'black')
     node.append('text')
       .attr('x', option.r + 10)
       .attr('dy', '0.35em')

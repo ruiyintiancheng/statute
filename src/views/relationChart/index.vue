@@ -2,7 +2,7 @@
   <div class="base-container">
     <div class="main-title" style="height: 52px;">
       <div style="padding-top: 2px;"><span>{{name}}</span></div>
-      <el-row :gutter="20" class="mao-nav" style="height: 32px; background-color: white;">
+      <el-row :gutter="20" class="mao-nav" style="height: 32px;">
         <el-col :span="8">
           <div :class="{'active': active === 0}" @click="active = 0"><a>法律法规关联分析</a></div>
         </el-col>
@@ -53,15 +53,11 @@ export default {
     }
   },
   mounted() {
-    // const id = this.$route.params.id
     this.id = this.$route.params.id
     this.name = this.$route.params.name
     this.active = this.$route.params.type
   },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event)
-    }
   }
 }
 </script>
@@ -69,7 +65,9 @@ export default {
 .mao-nav {
   /* float: left; */
   font-size: 16px;
+  text-align: center;
   color: #666;
+  background-color: white;
 }
 .mao-nav a {
   line-height: 1.8;
