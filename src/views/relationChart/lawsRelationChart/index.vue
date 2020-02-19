@@ -22,7 +22,7 @@
       <ul>
         <li @click="menuMessage">查看详情</li>
         <!-- <li @click="menuSource">查看引用</li> -->
-        <li @click="menuText">查看原文</li>
+        <li @click="menuText" class='end'>查看原文</li>
       </ul>
     </div>
     <div v-show="messageVisible"
@@ -69,7 +69,7 @@ export default {
       return this.width
     },
     chart_height() {
-      return this.height - 50 - 30
+      return this.height - 30 // - 50
     },
     table_height() {
       return this.height - 40
@@ -94,6 +94,7 @@ export default {
   methods: {
     getData() {
       const params = { id: this.id }
+      // params.id = 500043
       baseRequest('/gVertex/selectLegalAssAnalysis', params).then(response => {
         response.data.item.nodes.forEach(d => {
           d.id += ''
@@ -118,12 +119,12 @@ export default {
         width: this.chart_width,
         height: this.chart_height,
         contextMenu: 'contextMenu',
-        background: '#04244A'
+        background: '#26368d' //  #04244A
       })
       graph.data(data)
       graph.render()
 
-      Chart.Brush.init(graph, 'brush')
+      // Chart.Brush.init(graph, 'brush')
       Chart.legend(graph, 'legend')
       graph.translateCenter()
       this.graph = graph
@@ -228,8 +229,8 @@ export default {
 .graph-web-toolbar {
   position: absolute;
   display: block;
-  bottom: 100px;
-  right: 12px;
+  bottom: 30px;
+  right: -50px;
   width: 50px;
   font-size: 14px;
   background-color: white;
@@ -260,11 +261,13 @@ export default {
 .contextMenu {
   display: none;
   position: absolute;
-  width: 120px;
+  width: 80px;
   top: 200px;
   left: 50px;
-  border: 1px solid #ccc;
-  background-color: white;
+  /* border: 1px solid black; */
+  background-color: black;
+  color: white;
+  letter-spacing: 2px;
 }
 
 .contextMenu ul > li {
@@ -273,7 +276,7 @@ export default {
   padding-left: 8px;
   padding-right: 8px;
   list-style: none;
-  border-bottom: 1px solid #dedede;
+  border-bottom: 1px solid #ffffff;
 }
 
 .contextMenu > ul {
@@ -283,9 +286,9 @@ export default {
   text-align: center;
   user-select: none;
   padding: 0px;
-  border-top: 1px solid #dedede;
-  border-left: 1px solid #dedede;
-  border-right: 1px solid #dedede;
+}
+.contextMenu ul > li.end {
+  border-bottom: 0;
 }
 
 .contextMenu ul > li:hover {

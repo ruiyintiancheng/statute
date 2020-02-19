@@ -24,66 +24,47 @@ class Layout {
     }
 
     // 路径排版计算
-    {
-      const map = new Map()
+    // {
+    //   const map = new Map()
 
-      links.forEach((d, i) => {
-        // d.id = `path-${i}`;
-        d.path = d.source.id + '-' + d.target.id
-        d.unpath = d.target.id + '-' + d.source.id
-        d.num = 1
+    //   links.forEach((d, i) => {
+    //     // d.id = `path-${i}`;
+    //     d.path = d.source.id + '-' + d.target.id
+    //     d.unpath = d.target.id + '-' + d.source.id
+    //     d.num = 1
 
-        if (map.has(d.path)) {
-          d.num = map.get(d.path) + 1
-        }
-        map.set(d.path, d.num)
-      })
+    //     if (map.has(d.path)) {
+    //       d.num = map.get(d.path) + 1
+    //     }
+    //     map.set(d.path, d.num)
+    //   })
 
-      const dq = 25 // 根据字体高度浮动
-      const q = dq * 2
+    //   const dq = 25 // 根据字体高度浮动
+    //   const q = dq * 2
 
-      links.forEach(d => {
-        if (map.has(d.unpath)) { // 两点间存在反向路径
-          d.v = 0
-          d.q = d.num * q - dq
-        } else {
-          if (map.get(d.path) % 2 === 0) { // 偶数条路径
-            d.num += 1
-            d.q = parseInt(d.num / 2) * q - dq
-          } else { // 奇数条路径
-            d.q = parseInt(d.num / 2) * q
-          }
-          d.v = d.num % 2 === 0 ? -1 : 1
-        }
-        d.color = 'red'
-      })
-    }
+    //   links.forEach(d => {
+    //     if (map.has(d.unpath)) { // 两点间存在反向路径
+    //       d.v = 0
+    //       d.q = d.num * q - dq
+    //     } else {
+    //       if (map.get(d.path) % 2 === 0) { // 偶数条路径
+    //         d.num += 1
+    //         d.q = parseInt(d.num / 2) * q - dq
+    //       } else { // 奇数条路径
+    //         d.q = parseInt(d.num / 2) * q
+    //       }
+    //       d.v = d.num % 2 === 0 ? -1 : 1
+    //     }
+    //     d.color = 'red'
+    //   })
+    // }
   }
 }
 
 function before(data) {
-  const x = d3.scaleTime()
-    .domain(dataTime(data.nodes))
-    .rangeRound([0, Layout.width - 100])
   data.nodes.forEach(d => {
-    d.x = d.fx = x(new Date(d.docIssueTime))
-    d.y = Math.random() * 980
+    d.x = Math.random() * 1960
+    d.y = Math.random() * 1080
   })
-}
-
-function dataTime(arr) {
-  let minDate = new Date(arr[0].docIssueTime)
-  let maxDate = new Date(arr[0].docIssueTime)
-
-  arr.forEach(d => {
-    const date = new Date(d.docIssueTime)
-    if (minDate >= date) {
-      minDate = date
-    }
-    if (maxDate <= date) {
-      maxDate = date
-    }
-  })
-  return [minDate, maxDate]
 }
 export default Layout

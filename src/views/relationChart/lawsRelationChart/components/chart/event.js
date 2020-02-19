@@ -49,7 +49,7 @@ function drag(cfg) {
   const drag = d3.drag() // 拖拽
     // .on('start', nodeEvent.dragStart)
     .on('drag', d => {
-      // d.x = d3.event.x
+      d.x = d3.event.x
       d.y = d3.event.y
       Rander.tick()
     })

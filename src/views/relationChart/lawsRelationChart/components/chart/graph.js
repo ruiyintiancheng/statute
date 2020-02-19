@@ -48,6 +48,7 @@ class Graph {
       .attr('width', '100%')
       .attr('height', '100%')
       .style('margin-bottom', '-3px')
+      // .style('background', 'url(static/bg.png)')
       .style('background-color', this.get('background'))
 
     const g = svg.append('g').classed('group', true)
@@ -58,7 +59,6 @@ class Graph {
     // 添加箭头
     svg.append('defs').append('marker')
       .attr('id', 'markerArrow')
-      .attr('markerUnits', 'strokeWidth')
       .attr('markerWidth', 10)
       .attr('markerHeight', 6)
       .attr('refX', 9 + 10)
@@ -67,7 +67,7 @@ class Graph {
       .attr('viewBox', '0 0 10 6')
       .append('path')
       .attr('d', 'M 0,0 L10,3 L0,6 L5,3 L0,0')
-      .style('fill', 'green')
+      .style('fill', '#4fbaf4')
   }
   /**
    * 绑定数据

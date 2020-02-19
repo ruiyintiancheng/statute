@@ -1,8 +1,10 @@
 <template>
   <div class="base-container">
-    <div class="main-title" style="height: 52px;">
-      <div style="padding-top: 2px;"><span>{{name}}</span></div>
-      <el-row :gutter="20" class="mao-nav" style="height: 32px;">
+    <div class="main-title" style="height: 80px;">
+      <div style="height: 50px; line-height: 50px; opacity: 0.5;">
+        <span>{{name}}</span>
+      </div>
+      <el-row :gutter="20" class="mao-nav">
         <el-col :span="8">
           <div :class="{'active': active === 0}" @click="active = 0"><a>法律法规关联分析</a></div>
         </el-col>
@@ -42,7 +44,7 @@ export default {
       return document.querySelector('.base-container').offsetWidth
     },
     chart_height() {
-      return document.querySelector('.app-main').offsetHeight - 52
+      return document.querySelector('.app-main').offsetHeight - 80
     }
   },
   data() {
@@ -63,11 +65,9 @@ export default {
 </script>
 <style scoped>
 .mao-nav {
-  /* float: left; */
   font-size: 16px;
   text-align: center;
   color: #666;
-  background-color: white;
 }
 .mao-nav a {
   line-height: 1.8;
