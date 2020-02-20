@@ -2,7 +2,7 @@
  * @Author: lk
  * @Date: 2019-02-01 17:37:56
  * @Last Modified by: lk
- * @Last Modified time: 2019-04-08 15:52:19
+ * @Last Modified time: 2020-02-20 11:37:05
  */
 import * as validators from './validators'
 import { baseRequest } from '@/api/base'
@@ -99,19 +99,23 @@ export function getValidate(key, obj) {
  * 对请求参数的验证
  * @param {参数} map
  */
-export function validateParams(map) {
+export function validateParams2(map) {
   const params = {}
   for (const key in map) {
-    if (key === 'paramConvertMap') {
+    if (map[key] && typeof map[key] === 'object' && map[key].constructor !== Array) {
       const paramConvertMap = {}
       for (const key2 in map[key]) {
-        let param = map[key][key2] + ''
-        param = param.replace(/(^\s*)|(\s*$)/g, '')
-        if (param !== '' && param !== 'null') {
-          paramConvertMap[key2] = param
+        if (typeof map[key][key2] === 'object') {
+          paramConvertMap[key2] = map[key][key2]
+        } else {
+          let param = map[key][key2] + ''
+          param = param.replace(/(^\s*)|(\s*$)/g, '')
+          if (param !== '' && param !== 'null') {
+            paramConvertMap[key2] = param
+          }
         }
       }
-      params.paramConvertMap = paramConvertMap
+      params[key] = paramConvertMap
     } else {
       let param = map[key] + ''
       param = param.replace(/(^\s*)|(\s*$)/g, '')
@@ -122,6 +126,28 @@ export function validateParams(map) {
   }
   return params
 }
+
+export function validateParams(source) {
+  if (!source && typeof source !== 'object') {
+    throw new Error('error arguments', 'shallowClone')
+  }
+  const targetObj = source.constructor === Array ? [] : {}
+  Object.keys(source).forEach((keys) => {
+    if (source[keys] && typeof source[keys] === 'object') {
+      targetObj[keys] = source[keys].constructor === Array ? [] : {}
+      targetObj[keys] = validateParams(source[keys])
+    } else {
+      if (source[keys] !== null) {
+        const temp = (source[keys] + '').replace(/(^\s*)|(\s*$)/g, '')
+        if (temp !== '') {
+          targetObj[keys] = temp
+        }
+      }
+    }
+  })
+  return targetObj
+}
+
 export function saveUpdate(url, formValue, rules, form, keys) {
   if (!rules.addBackValidate) {
     for (const key in formValue) {

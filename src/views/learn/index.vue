@@ -2,106 +2,58 @@
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
  * @Last Modified by: lk
- * @Last Modified time: 2020-01-09 10:08:51
+ * @Last Modified time: 2020-02-18 15:34:41
  * @Description:  学习路上
  */
 <template>
-  <div class="Learning"
-       v-loading="listLoading">
-    <div class="Learning-head">
+  <div class="learning"
+       >
+    <div class="learning-head">
       <img :src="banner">
     </div>
-    <div class="Learning-body">
-      <div class="Learning-center base-container">
-        <div class=" baseitem"
-             v-for="item in configData"
-             :key="item.id"
-             @click="jumpDetails(item.id)">
-          <div class="item-frame">
-            <div class="item-title">{{item.docTittle}}</div>
-            <div class="item-date">{{item.docIssueTime | timeFiltering}}</div>
-            <div class="item-speaker">习近平</div>
-            <div class=" source"
-                 style="font-size:12px">{{item.docSource}}</div>
-          </div>
+    <div class="learning-body">
+      <div class="base-container">
+        <div class="learing-search">
+          <el-input placeholder="请输入关键字" v-model.trim="keyword" class="input-with-select" @keyup.enter.native="learnList">
+            <el-button slot="append" type="primary" @click="learnList" >学习一下</el-button>
+          </el-input>
         </div>
-      </div>
-      <div> </div>
-      <div class="paging">
-        <el-pagination background
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="pageNo"
-                       :total="total"
-                       layout="total, prev, pager, next, jumper"
-                       :page-sizes="[10,15,20]"
-                       :page-size="pageSize">
-        </el-pagination>
+        <el-tabs v-model="activeName"  type="card" @tab-click="learnList">
+          <el-tab-pane label="全部" name="0">
+            <learn-list ref="0" :activeName="activeName" :keyword="keyword"></learn-list>
+          </el-tab-pane>
+          <el-tab-pane label="习主席" name="1">
+            <learn-list ref="1" :activeName="activeName" :keyword="keyword"></learn-list>
+          </el-tab-pane>
+          <el-tab-pane label="十三五" name="2">
+            <learn-list ref="2" :activeName="activeName" :keyword="keyword"></learn-list>
+          </el-tab-pane>
+        </el-tabs>
       </div>
     </div>
   </div>
 </template>
 <script>
 import banner from '@/assets/images/banner.jpg'
-import { baseSearch } from '@/api/base'
+import LearnList from './components/LearnList'
 export default {
-  name: 'home',
+  name: 'learn',
   components: {
+    LearnList
   },
   data() {
     return {
       banner,
-      searchData: {},
-      configData: null,
-      pageNo: 1,
-      total: null,
-      pageSize: 12,
-      listLoading: false
-    }
-  },
-  filters: {
-    timeFiltering(val) {
-      if (val) {
-        let newdate = ''
-        const date = new Date(Date.parse(val.replace(/-/g, '/')))
-        newdate = date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日'
-        return newdate
-      }
+      keyword: '',
+      activeName: '0'
     }
   },
   mounted() {
-    this.searchOption()
+    this.learnList()
   },
   methods: {
-    jumpDetails(id) { // 跳转讲话内容
-      this.$router.push({
-        name: 'verbiage',
-        query: {
-          crawlConId: id
-        }
-      })
-    },
-    searchOption(page) {
-      this.listLoading = true
-      if (!page) {
-        this.pageNo = 1
-      }
-      this.searchData.pageNo = this.pageNo
-      this.searchData.pageSize = this.pageSize
-      baseSearch('/bXjpBasic/selectBXjpBasicList', this.searchData).then(response => {
-        this.configData = response.data.item
-        this.total = response.data.total
-        this.pageSize = response.data.pageSize
-        this.listLoading = false
-      })
-    },
-    handleSizeChange(val) { // 分页
-      this.pageSize = val
-      this.searchOption()
-    },
-    handleCurrentChange(val) { // 分页
-      this.pageNo = val
-      this.searchOption(true)
+    learnList() {
+      this.$refs[this.activeName].searchOption()
     }
   }
 }
@@ -109,95 +61,69 @@ export default {
 
 
 <style lang="scss" scoped>
-.Learning {
+.learning {
   height: 100%;
-  .Learning-head {
+  .learning-head {
     margin-bottom: -5px;
     img {
       width: 100%;
     }
   }
-  .Learning-body {
+  .learning-body {
     background-color: #def5fb;
-    padding: 30px 0;
-
-    .Learning-center {
-      // width: 80%;
-      // margin: 0 auto;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      .baseitem:nth-child(4n) {
-        margin-right: 1px;
-      }
-      .baseitem {
-        width: 274px;
-        height: 380px;
-        display: inline-block;
-        background: #fff;
-        margin-bottom: 20px;
-        margin-right: 34px;
-        padding: 10px;
-
-        .item-frame {
-          height: 100%;
-          width: 100%;
-          // padding: 0 20px 30px 20px;
-          // min-height: 30px;
-          border: 1px solid #aaaaaa;
-          position: relative;
-          .item-title {
-            position: absolute;
-            top: 65px;
-            width: 100%;
-            color: #ed4d56;
-            text-align: center;
-            font-size: 20px;
-            line-height: 26px;
-            font-weight: 500;
-            padding: 0px 15px;
-            font-family: SimHei;
-            height: 78px;
-            overflow: hidden;
-          }
-          .item-date {
-            position: absolute;
-            top: 150px;
-            width: 100%;
-            color: #ed4d56;
-            text-align: center;
-            font-size: 12px;
-            letter-spacing: 1px;
-            box-shadow: 0 0 black;
-            font-family: FangSong;
-          }
-          .item-speaker {
-            position: absolute;
-            top: 173px;
-            width: 100%;
-            color: #ed4d56;
-            text-align: center;
-            font-size: 12px;
-            letter-spacing: 8px;
-            font-family: FangSong;
-          }
-          .source {
-            position: absolute;
-            bottom: 30px;
-            width: 100%;
-            color: #ed4d56;
-            text-align: center;
-            font-size: 14px;
-            letter-spacing: 3px;
-            font-family: FangSong;
-          }
-        }
-      }
-    }
-    .paging {
-      text-align: center;
+    padding: 10px 0;
+    .learing-search{
+      width: 800px;
+      margin:10px auto 20px;
     }
   }
+}
+</style>
+<style lang="scss">
+.learning {
+  .el-input-group__append button.el-button{
+    color: #FFF;
+    background-color: $mainColor;
+    border-color: $mainColor;
+    border-radius: 0px;
+  }
+    .el-tabs__item{
+      color: #666;
+      padding: 0 45px;
+      font-weight:bolder;
+      font-size:16px;
+      // background-color: #f5f7fa;
+      &.is-active{
+        color:#fff;
+        background-color: $mainColor;
+        border-radius: 0px;
+      }
+    }
+    .el-tabs--top.el-tabs--card>.el-tabs__header .el-tabs__item:nth-child(2),
+    .el-tabs--bottom .el-tabs--left>.el-tabs__header .el-tabs__item:last-child, .el-tabs--bottom .el-tabs--right>.el-tabs__header .el-tabs__item:last-child, .el-tabs--bottom.el-tabs--border-card>.el-tabs__header .el-tabs__item:last-child, .el-tabs--bottom.el-tabs--card>.el-tabs__header .el-tabs__item:last-child, .el-tabs--top .el-tabs--left>.el-tabs__header .el-tabs__item:last-child, .el-tabs--top .el-tabs--right>.el-tabs__header .el-tabs__item:last-child, .el-tabs--top.el-tabs--border-card>.el-tabs__header .el-tabs__item:last-child, .el-tabs--top.el-tabs--card>.el-tabs__header .el-tabs__item:last-child {
+      padding-left: 45px;
+      padding-right: 45px;
+    }
+    .el-tabs--card>.el-tabs__header .el-tabs__nav{
+      border: none;
+    }
+    // .el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
+    //   border-bottom-color: $mainColor;
+    // }
+    .el-tabs--card>.el-tabs__header .el-tabs__item{
+      // border-left: 1px solid $mainColor;
+      // border-left: 1px solid #dcdfe6;
+      border-left: none;
+    }
+    // .el-tabs--card>.el-tabs__header .el-tabs__item:first-child {
+    //     border-left: none;
+    // }
+    .learing-search{
+      .el-input.is-active .el-input__inner, .el-input__inner:focus {
+          border-color: #DCDFE6;
+          outline: 0;
+      }
+    }
 }
 </style>
 
