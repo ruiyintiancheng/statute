@@ -2,7 +2,7 @@
   <div class="app-wrapper" >
     <navbar></navbar>
     <div class="main-container" :style="{height:height+'px'}">
-      <app-main ref="appMain" :style="{minHeight:(height - 55)+'px'}">></app-main>
+      <app-main ref="appMain" :style="{minHeight:(height - 55)+'px',backgroundColor:conColor}">></app-main>
       <bottom-bar></bottom-bar>
     </div>
   </div>
@@ -19,6 +19,13 @@ export default {
     BottomBar
   },
   computed: {
+    conColor: function() {
+      if (this.$route.name === 'learn') {
+        return '#def5fb'
+      } else {
+        return 'none'
+      }
+    }
   },
   created() {
     this.setCurrentHeight()
