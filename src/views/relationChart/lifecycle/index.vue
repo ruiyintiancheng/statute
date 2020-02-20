@@ -18,7 +18,6 @@
         <!-- <li @click="refresh"><div class="text">重置</div></li> -->
         <li @click="relation"><div class="text">筛选</div></li>
         <li @click="openNodesTable"><div class="text">顶点列表</div></li>
-        <!-- <li @click="openLinksTable"><div class="text">关系列表</div></li> -->
       </ul>
     </div>
     <div id="contextMenu" class="contextMenu">
@@ -69,7 +68,7 @@ export default {
       return this.width
     },
     chart_height() {
-      return this.height - 50 - 30
+      return this.height - 30
     },
     table_height() {
       return this.height - 40
@@ -113,8 +112,8 @@ export default {
         container: 'chart',
         width: this.chart_width,
         height: this.chart_height,
-        contextMenu: 'contextMenu' // ,
-        // background: '#04244A'
+        contextMenu: 'contextMenu',
+        background: '#26368d'
       })
       graph.data(data)
       graph.render()
@@ -231,31 +230,31 @@ export default {
   .graph-web-toolbar {
     position: absolute;
     display: block;
-    bottom: 100px;
-    right: 12px;
-    width: 56px;
+    bottom: 30px;
+    right: -50px;
+    width: 50px;
     font-size: 14px;
     background-color: white;
     cursor: pointer;
   }
-  
-  .graph-web-toolbar>ul {
+
+  .graph-web-toolbar > ul {
     margin: 0px;
     box-sizing: border-box;
     text-align: center;
     padding: 0px;
-    border-top: 1px solid #DEDEDE;
-    border-left: 1px solid #DEDEDE;
-    border-right: 1px solid #DEDEDE;
+    border-top: 1px solid #dedede;
+    border-left: 1px solid #dedede;
+    border-right: 1px solid #dedede;
   }
 
-  .graph-web-toolbar ul>li {
-    padding: 12px;
+  .graph-web-toolbar ul > li {
+    padding: 7px;
     list-style: none;
-    border-bottom: 1px solid #DEDEDE 
+    border-bottom: 1px solid #dedede;
   }
 
-  .graph-web-toolbar ul>li:hover {
+  .graph-web-toolbar ul > li:hover {
     background-color: #409eff;
     color: white;
   }

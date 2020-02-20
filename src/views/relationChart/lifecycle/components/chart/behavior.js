@@ -16,20 +16,7 @@ const Behavior = {
 
     const nodes = cfg.data.nodes
     nodes.forEach(d => {
-      d._show = true
-      for (const key in options) {
-        const values = options[key]
-
-        if (d[key] && values && values.length > 0) {
-          let show = false
-          values.forEach(value => {
-            if (d[key] === value) {
-              show = true
-            }
-          })
-          d._show = d._show && show
-        }
-      }
+      d._show = options(d)
     })
 
     cfg.g.selectAll('g.node')

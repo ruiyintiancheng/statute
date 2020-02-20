@@ -60,15 +60,15 @@ class Graph {
     // 添加箭头
     svg.append('defs').append('marker')
       .attr('id', 'markerArrow')
-      .attr('markerUnits', 'strokeWidth')
       .attr('markerWidth', 10)
       .attr('markerHeight', 6)
-      .attr('refX', 9 + 10)
+      .attr('refX', 9 + 12)
       .attr('refY', 3)
       .attr('orient', 'auto')
       .attr('viewBox', '0 0 10 6')
       .append('path')
       .attr('d', 'M 0,0 L10,3 L0,6 L5,3 L0,0')
+      .style('fill', '#4fbaf4')
   }
   /**
    * 绑定数据

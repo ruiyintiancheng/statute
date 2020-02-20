@@ -5,20 +5,20 @@ import Data from '../data.js'
  */
 const Brush = {
   init(graph, id) {
-    const width = graph.get('width')
-    const height = 50
+    const width = 125
+    const height = graph.get('height')
 
-    const brush = d3.brushX()
-      .extent([[0, 0], [width - 140, height - 20]])
+    const brush = d3.brushY()
+      .extent([[0, 0], [10, height - 40]])
       .on('brush', brushed)
       .on('end', brushend)
 
     const x = d3.scaleTime()
       .domain([dataTime()[0], new Date()])
-      .rangeRound([0, width - 140])
+      .rangeRound([0, height - 40])
 
-    const axis = d3.axisBottom(x)
-      .ticks(16)
+    const axis = d3.axisLeft(x)
+      .ticks(6)
       .tickFormat(time => {
         return d3.timeFormat('%Y/%m')(time)
       })
@@ -27,36 +27,54 @@ const Brush = {
     this.brush = brush
     this.graph = graph
 
-    const svg = d3.select('#' + id)
-      .style('width', `${width}px`)
-      .style('height', `${height}px`)
-      .style('border-bottom', '#ccc 1px solid')
-      .append('svg')
-      .attr('width', '100%')
-      .attr('height', '100%')
-      .style('margin-bottom', '-3px')
-      .style('background-color', 'white')
+    const brushGroup = graph.get('svg').append('g').classed('brushg', true)
 
-    this.brushg = svg.append('g')
+    brushGroup.append('rect')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('width', width)
+      .attr('height', height)
+      .style('fill', '#26368d')
+      // .style('stroke', 'white')
+
+    // 绘制笔刷
+    brushGroup.append('rect')
+      .attr('x', 61)
+      .attr('y', 20)
+      .attr('width', 10)
+      .attr('height', height - 40)
+      .style('fill', '#cdcfd2')
+
+    this.brushg = brushGroup.append('g')
       .classed('brush', true)
-      .attr('transform', 'translate(70)')
+      .attr('transform', 'translate(61, 20)')
       .call(brush)
       .call(brush.move, x.range())
 
-    svg.append('g')
+    // this.brushg.select('rect.overlay').style('fill', 'gray')
+    this.brushg.select('rect.selection')
+      .style('stroke', 'none')
+      .style('fill', 'black')
+
+    // 绘制坐标轴
+    const axisg = brushGroup.append('g')
       .classed('axis', true)
-      .attr('transform', `translate(70, ${height - 20})`)
+      .attr('transform', `translate(60, 20)`)
       .call(axis)
 
-    svg.append('g')
+    axisg.select('.domain').style('stroke', 'none')
+    axisg.selectAll('line').style('stroke', 'white')
+    axisg.selectAll('text').style('fill', 'white')
+
+    brushGroup.insert('g', '.brush')
       .classed('nodes', true)
-      .attr('transform', `translate(70, ${(height - 20) / 2})`)
+      .attr('transform', `translate(66, 20)`)
       .selectAll('circle')
       .data(Data.getData())
       .join('circle')
-      .attr('r', '3')
+      .attr('r', '6')
       .attr('transform', d => `translate(${x(new Date(d.docIssueTime))})`)
-      .style('fill', 'red')
+      .style('fill', '#4fbaf4')
 
     function brushed() {
       d3.select(this).call(brushHandle, d3.event.selection)
@@ -78,15 +96,15 @@ const Brush = {
         .data([{ type: 'w', anchor: 'end' }, { type: 'e', achor: 'start' }])
         .join(enter => enter.append('text')
           .attr('class', 'handle--custom')
-          .attr('text-anchor', d => d.anchor)
+          .attr('dy', '0.35em')
           .style('user-select', 'none')
-          .style('fill', 'black')
+          .style('fill', 'white')
           .style('font-size', '12px')
         )
         .attr('display', s === null ? 'none' : null)
-        .attr('transform', s === null ? null : (d, i) => `translate(${s[i]}, 20)`)
+        .attr('transform', s === null ? null : (d, i) => `translate(15, ${s[i]})`)
         .text((d, i) => {
-          return d3.timeFormat('%Y/%m/%d')(x.invert(s[i]))
+          return d3.timeFormat('%Y/%m')(x.invert(s[i]))
         })
     }
   },

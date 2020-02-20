@@ -148,31 +148,31 @@ const Links = {
   }
 }
 
-// 圆内文字
+// 节点文字
 function circleText(text, text2) {
   if (!text) {
     return [{ text: text2, dx: 0, dy: '0.35em' }]
   }
 
-  if (text.length <= 12) { // 一行
+  if (text.length <= 16) { // 一行
     return [
       { text: text, dx: 0, dy: '0.35em' },
       { text: text2, dx: 0, dy: '1.6em' }
     ]
   }
 
-  if (text.length <= 26) { // 二行
+  if (text.length <= 30) { // 二行
     return [
-      { text: text.substring(0, 12), dx: 0, dy: '-0.9em' }, // 0.35 - 1 - 0.25
-      { text: text.substring(12, 26), dx: '2em', dy: '0.35em' },
+      { text: text.substring(0, 16), dx: 0, dy: '-0.9em' }, // 0.35 - 1 - 0.25
+      { text: text.substring(16, 30), dx: '2em', dy: '0.35em' },
       { text: text2, dx: 0, dy: '1.6em' } // 1 + 0.35 + 0.25
     ]
   }
 
-  if (text.length > 26) {
+  if (text.length > 30) {
     return [
-      { text: text.substring(0, 12), dx: 0, dy: '-0.9em' }, // 0.35 - 1 - 0.25
-      { text: text.substring(12, 26) + '...', dx: '2em', dy: '0.35em' },
+      { text: text.substring(0, 16), dx: 0, dy: '-0.9em' }, // 0.35 - 1 - 0.25
+      { text: text.substring(16, 30) + '...', dx: '2em', dy: '0.35em' },
       { text: text2, dx: 0, dy: '1.6em' } // 1 + 0.35 + 0.25
     ]
   }

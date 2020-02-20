@@ -14,8 +14,8 @@ const Rander = {
     const links = cfg.data.links
     const nodeg = g.selectAll('g.node').data(nodes, d => d.id)
     // add Node
-    nodeg.enter().each(function(d) {
-      Nodes['default'].enter(d3.select(this), d)
+    nodeg.enter().each(function(d, i) {
+      Nodes['default'].enter(d3.select(this), d, i)
     })
     // update Node
     nodeg.each(function(d) {

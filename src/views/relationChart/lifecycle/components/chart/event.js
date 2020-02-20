@@ -24,6 +24,7 @@ function zoome(cfg) {
       // 按比例保持图像大小
       if (k > 1) {
         nodes.select('circle').attr('transform', d => `scale(${1 / k})`)
+        nodes.select('path').attr('transform', d => `scale(${1 / k})`)
         nodes.selectAll('text').attr('transform', d => `scale(${1 / k})`)
 
         links.selectAll('path').style('stroke-width', d => 1 / k)
