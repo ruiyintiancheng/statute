@@ -2,7 +2,7 @@
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
  * @Last Modified by: lk
- * @Last Modified time: 2020-02-18 15:34:41
+ * @Last Modified time: 2020-02-20 13:57:08
  * @Description:  学习路上
  */
 <template>
@@ -53,7 +53,9 @@ export default {
   },
   methods: {
     learnList() {
-      this.$refs[this.activeName].searchOption()
+      this.$nextTick(_ => {
+        this.$refs[this.activeName].searchOption()
+      })
     }
   }
 }
