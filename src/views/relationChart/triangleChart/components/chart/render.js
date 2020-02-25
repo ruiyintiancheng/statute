@@ -68,26 +68,32 @@ const Rander = {
       .attr('points', d => d.polygon)
       .style('fill', d => color[d.orgRank - 1])
       .style('stroke', 'white')
-      // .style('opacity', 0.2)
     nodeg.append('title')
       .text(d => `发布单位: ${d.orgName}; 发布数量: ${d.count};`)
-
+    console.log(data)
     const textg = g.selectAll('g.text').data(data).enter()
       .append('g')
       .classed('text', true)
       .style('font-size', '16px')
 
-    textg.append('path')
-      .style('fill', 'none')
-      .style('stroke', 'black')
-      .attr('d', (d, i) => {
-        return `M ${d.x + d.width / 2},${d.y + d.height - 10}  L ${cfg.height + 20},${22 * i}`
-      })
+    // textg.append('path')
+    //   .style('fill', 'none')
+    //   .style('stroke', 'black')
+    //   .attr('d', (d, i) => {
+    //     return `M ${d.x + d.width / 2},${d.y + d.height - 10}  L ${cfg.height + 20},${22 * i}`
+    //   })
+
+    // textg.append('text')
+    //   .attr('x', cfg.height + 20)
+    //   .attr('y', (d, i) => 22 * i)
+    //   .text((d, i) => `${i + 1}. ${d.orgName}(${d.count})`)
 
     textg.append('text')
-      .attr('x', cfg.height + 20)
-      .attr('y', (d, i) => 22 * i)
-      .text((d, i) => `${i + 1}. ${d.orgName}(${d.count})`)
+      .attr('x', d => 100 * (d.depth + 1) + 10)
+      .attr('y', d => d.y)
+      .attr('dx', d => parseInt(d.index / 5) * 20 + 'em')
+      .attr('dy', d => d.index % 5 * 1.2 + 0.35 + 'em')
+      .text((d, i) => `${d.index + 1}. ${d.orgName}(${d.count})`)
   },
   /**
    * 更新图形

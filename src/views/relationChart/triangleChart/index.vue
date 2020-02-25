@@ -42,7 +42,7 @@ import { baseRequest } from '@/api/base'
 // import linksTable from './components/linksTable'
 // import relation from './components/relation'
 import Chart from './components/chart/index.js'
-// import json from './components/data.json'
+import json from './components/data.json'
 import * as d3 from 'd3'
 export default {
   components: {
@@ -95,7 +95,8 @@ export default {
         height: this.chart_height
         // contextMenu: 'contextMenu'
       })
-      graph.data(data)
+      graph.data(json)
+      // graph.data(data)
       graph.render()
 
       // Chart.legend(graph, 'legend')
@@ -153,31 +154,31 @@ export default {
   .graph-web-toolbar {
     position: absolute;
     display: block;
-    bottom: 100px;
-    right: 12px;
-    width: 56px;
-    font-size: 15px;
+    bottom: 30px;
+    right: -50px;
+    width: 50px;
+    font-size: 14px;
     background-color: white;
     cursor: pointer;
   }
-  
-  .graph-web-toolbar>ul {
+
+  .graph-web-toolbar > ul {
     margin: 0px;
     box-sizing: border-box;
     text-align: center;
     padding: 0px;
-    border-top: 1px solid #DEDEDE;
-    border-left: 1px solid #DEDEDE;
-    border-right: 1px solid #DEDEDE;
+    border-top: 1px solid #dedede;
+    border-left: 1px solid #dedede;
+    border-right: 1px solid #dedede;
   }
 
-  .graph-web-toolbar ul>li {
-    padding: 12px;
+  .graph-web-toolbar ul > li {
+    padding: 7px;
     list-style: none;
-    border-bottom: 1px solid #DEDEDE 
+    border-bottom: 1px solid #dedede;
   }
 
-  .graph-web-toolbar ul>li:hover {
+  .graph-web-toolbar ul > li:hover {
     background-color: #409eff;
     color: white;
   }

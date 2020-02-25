@@ -8,29 +8,43 @@
       <div id="brush"></div>
       <div id="legend"></div>
     </div>
+    <!-- 选项菜单 -->
     <div class="graph-web-toolbar">
       <ul>
         <li @click="savePng"><div class="text">保存图片</div></li>
         <li @click="refresh"><div class="text">重置</div></li>
-        <li @click="relation"><div class="text">筛选</div></li>
+        <!-- <li @click="relation"><div class="text">筛选</div></li> -->
         <li @click="openNodesTable"><div class="text">顶点列表</div></li>
         <li @click="openLinksTable"><div class="text">关系列表</div></li>
       </ul>
     </div>
-    <div id="contextMenu"
-         class="contextMenu">
+    <!-- 鼠标悬浮提示框 -->
+    <div id="title" class="title">
+      <div>
+        <div class='title-head'>发布单位: </div>
+        <div class="title-content">中华人民共和国工业和信息化部</div>
+      </div>
+        <div>
+        <div class='title-head'>发布法规: </div>
+        <div class="title-content">中华人民共和国工业和信息化部</div>
+      </div>
+      <div>
+        <div class='title-head'>发布时间: </div>
+        <div class="title-content">中华人民共和国工业和信息化部</div>
+      </div>
+    </div>
+    <!-- 鼠标右键菜单 -->
+    <div id="contextMenu" class="contextMenu">
       <ul>
         <li @click="menuMessage">查看详情</li>
         <li @click="menuText" class='end'>查看原文</li>
       </ul>
     </div>
-    <div v-show="messageVisible"
-         id="message"
-         class="message">
+    <!-- 详细信息 -->
+    <div v-show="messageVisible" id="message" class="message">
       <div class="message-title">
         <span class="message-title-content">详细信息</span>
-        <span class="message-close"
-              @click="messageVisible = false">×</span>
+        <span class="message-close" @click="messageVisible = false">×</span>
       </div>
       <el-table :data="messageData" style="width: 100%" :height=table_height>
         <el-table-column prop="name" label="名称" width="110"></el-table-column>
@@ -93,8 +107,7 @@ export default {
   methods: {
     getData() {
       const params = { id: this.id }
-      // params.id = 500043
-      baseRequest('/gVertex/selectLegalAssAnalysis', params).then(response => {
+      baseRequest('/gVertex/getRegulatoryLevel', params).then(response => {
         response.data.item.nodes.forEach(d => {
           d.id += ''
           if (d.id === (this.id + '')) {
@@ -118,6 +131,7 @@ export default {
         width: this.chart_width,
         height: this.chart_height,
         contextMenu: 'contextMenu',
+        nodeTitle: 'title',
         background: '#26368d' //  #04244A
       })
       graph.data(data)
@@ -329,4 +343,24 @@ export default {
   float: right;
   cursor: pointer;
 }
+  #title.title {
+    position: absolute;
+    display: none;
+    width: 250px;
+    height: auto;
+    top: 200px;
+    left: 50px;
+    background-color: black;
+    padding: 5px;
+    color: white;
+    letter-spacing: 2px;
+    font-size: 14px;
+    border-radius: 4px;
+  }
+  .title-head {
+		float: left;
+	}
+	.title-content {
+		margin-left: 75px;
+	}
 </style>

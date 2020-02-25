@@ -23,8 +23,11 @@
       <lifecycle v-else-if="active === 1"
           :width=chart_width :height=chart_height :id=id :name=name></lifecycle>
 
-      <triangle-chart v-else-if="active === 2"
-          :width=chart_width :height=chart_height :id=id :name=name></triangle-chart>
+      <!-- <triangle-chart v-else-if="active === 2"
+          :width=chart_width :height=chart_height :id=id :name=name></triangle-chart> -->
+
+      <depth-relationChart v-if="active === 2" ref="depthRelationChart"
+          :width=chart_width :height=chart_height :id=id :name=name></depth-relationChart>    
     </div>
   </div>
 </template>
@@ -32,12 +35,13 @@
 import lawsRelationChart from './lawsRelationChart/index'
 import lifecycle from './lifecycle/index'
 import triangleChart from './triangleChart/index'
+import depthRelationChart from './depthRelationChart/index'
 export default {
   components: {
     'lawsrelation-chart': lawsRelationChart,
     lifecycle,
-    'triangle-chart': triangleChart
-
+    'triangle-chart': triangleChart,
+    'depth-relationChart': depthRelationChart
   },
   computed: {
     chart_width() {

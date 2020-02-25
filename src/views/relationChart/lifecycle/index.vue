@@ -23,8 +23,7 @@
     <div id="contextMenu" class="contextMenu">
       <ul>
         <li @click="menuMessage">查看详情</li>
-        <!-- <li @click="menuSource">查看引用</li> -->
-        <li @click="menuText">查看原文</li>
+        <li @click="menuText" class='end'>查看原文</li>
       </ul>
     </div>
     <div v-show="messageVisible" id="message" class="message">
@@ -259,41 +258,43 @@ export default {
     color: white;
   }
 
-  .contextMenu {
-    display: none;
-    position: absolute; 
-    width: 120px;
-    top: 200px; 
-    left: 50px; 
-    border: 1px solid #ccc;
-    background-color: white;
-  }
+.contextMenu {
+  display: none;
+  position: absolute;
+  width: 80px;
+  top: 200px;
+  left: 50px;
+  /* border: 1px solid black; */
+  background-color: black;
+  color: white;
+  letter-spacing: 2px;
+}
 
-  .contextMenu ul>li {
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-left: 8px;
-    padding-right: 8px;
-    list-style: none;
-    border-bottom: 1px solid #DEDEDE 
-  }
+.contextMenu ul > li {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  list-style: none;
+  border-bottom: 1px solid #ffffff;
+}
 
-  .contextMenu>ul {
-    margin: 0px;
-    box-sizing: border-box;
-    font-size: 12px;
-    text-align: center;
-    user-select: none;
-    padding: 0px;
-    border-top: 1px solid #DEDEDE;
-    border-left: 1px solid #DEDEDE;
-    border-right: 1px solid #DEDEDE;
-  }
+.contextMenu > ul {
+  margin: 0px;
+  box-sizing: border-box;
+  font-size: 12px;
+  text-align: center;
+  user-select: none;
+  padding: 0px;
+}
+.contextMenu ul > li.end {
+  border-bottom: 0;
+}
 
-  .contextMenu ul>li:hover {
-    background-color: #409eff;
-    color: white;
-  }
+.contextMenu ul > li:hover {
+  background-color: #409eff;
+  color: white;
+}
 
   .message {
     width: 300px;

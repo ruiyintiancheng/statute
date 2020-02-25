@@ -48,7 +48,6 @@ class Util {
     const height = bg.height + 2 * padding
 
     const csvg = svg.clone(true)
-    csvg.select('g.brushg').style('display', 'none')
     csvg.select('g.group').attr('transform', `translate(${padding - bg.x}, ${padding - bg.y})scale(1)`)
     csvg.remove()
     saveSvg.saveSvgAsPng(csvg.node(), `${title}.png`, { height: height, width: width })
