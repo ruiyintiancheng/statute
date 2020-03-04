@@ -34,7 +34,7 @@
              style="font-size:14px;color:#777"
              v-html="item.docContent"></p>
           <p class="bar-date" style="font-size:12px;color:#999">{{item.docIssueTime==='null'?'':item.docIssueTime}}</p>
-          <div style="padding-bottom: 10px">
+          <div class="model-button" style="padding-bottom: 10px">
             <el-button :disabled="!item.modelAnalysis" size="small" round @click="openChart(item.id, item.docName, '0')">政策法规关联分析 </el-button>
             <el-button :disabled="!item.modelLifeCycle" size="small" round @click="openChart(item.id, item.docName, '1')">政策法规生命周期分析 </el-button>
             <el-button :disabled="!item.modelAnalysis" size="small" round @click="openChart(item.id, item.docName, '2')">政策法规响应层级分析</el-button>
@@ -175,6 +175,10 @@ export default {
         this.$refs.resultSearch.setParams(params)
         this.$refs.resultSearch.searchOperate()
       }
+      // 查询空参数
+      if (this.$route.query.type && this.$route.query.type === 'analysis') {
+        this.seacrHandle()
+      }
     },
     openChart(id, name, type) {
       this.$router.push({
@@ -200,6 +204,12 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .model-button > .el-button:not(.is-disabled):hover {
+    color: white !important;
+    background-color: #1E71F2 !important;
+  }
+</style>
 <style lang="scss">
 .search-result {
   padding: 30px 15px 15px;
