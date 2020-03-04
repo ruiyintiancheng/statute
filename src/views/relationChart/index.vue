@@ -6,27 +6,24 @@
       </div>
       <el-row :gutter="20" class="mao-nav">
         <el-col :span="8">
-          <div :class="{'active': active === 0}" @click="active = 0"><a>法律法规关联分析</a></div>
+          <div :class="{'active': active === '0'}" @click="active = '0'"><a>法律法规关联分析</a></div>
         </el-col>
         <el-col :span="8">
-          <div :class="{'active': active === 1}" @click="active = 1"><a>法律法规生命周期分析</a></div>
+          <div :class="{'active': active === '1'}" @click="active = '1'"><a>法律法规生命周期分析</a></div>
         </el-col>
         <el-col :span="8">
-          <div :class="{'active': active === 2}" @click="active = 2"><a>法律法规响应层级分析</a></div>
+          <div :class="{'active': active === '2'}" @click="active = '2'"><a>法律法规响应层级分析</a></div>
         </el-col>
       </el-row>
     </div>
     <div class="main-chart" :style="{width: `${chart_width}px`, height: `${chart_height}px`}">
-      <lawsrelation-chart v-if="active === 0" ref="lawsRelationChart"
+      <lawsrelation-chart v-if="active === '0'" ref="lawsRelationChart"
           :width=chart_width :height=chart_height :id=id :name=name></lawsrelation-chart>
           
-      <lifecycle v-else-if="active === 1"
+      <lifecycle v-else-if="active === '1'"
           :width=chart_width :height=chart_height :id=id :name=name></lifecycle>
 
-      <!-- <triangle-chart v-else-if="active === 2"
-          :width=chart_width :height=chart_height :id=id :name=name></triangle-chart> -->
-
-      <depth-relationChart v-if="active === 2" ref="depthRelationChart"
+      <depth-relationChart v-if="active === '2'" ref="depthRelationChart"
           :width=chart_width :height=chart_height :id=id :name=name></depth-relationChart>    
     </div>
   </div>
@@ -34,13 +31,12 @@
 <script>
 import lawsRelationChart from './lawsRelationChart/index'
 import lifecycle from './lifecycle/index'
-import triangleChart from './triangleChart/index'
 import depthRelationChart from './depthRelationChart/index'
+import { baseRequest } from '@/api/base'
 export default {
   components: {
     'lawsrelation-chart': lawsRelationChart,
     lifecycle,
-    'triangle-chart': triangleChart,
     'depth-relationChart': depthRelationChart
   },
   computed: {
@@ -53,17 +49,24 @@ export default {
   },
   data() {
     return {
-      active: null,
+      active: 0,
       id: null,
       name: null
     }
   },
   mounted() {
-    this.id = this.$route.params.id
-    this.name = this.$route.params.name
-    this.active = this.$route.params.type
+    this.id = this.$route.query.id
+    // this.name = this.$route.params.name
+    this.active = this.$route.query.type
+    this.loadName()
   },
   methods: {
+    loadName() {
+      baseRequest('/gVertex/select', { id: this.id }).then(response => {
+        this.name = response.data.item.docName
+      }, _ => {
+      })
+    }
   }
 }
 </script>

@@ -61,7 +61,7 @@ export const constantRouterMap = [
       {
         name: 'analysis',
         path: '/analysis',
-        component: _import('analysis/index')
+        component: _import('analysis/serach')
       }
     ]
   },

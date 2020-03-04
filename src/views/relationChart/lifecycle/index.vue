@@ -59,7 +59,7 @@ export default {
   props: {
     width: Number,
     height: Number,
-    id: Number,
+    id: String,
     name: String
   },
   computed: {

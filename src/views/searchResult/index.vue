@@ -28,13 +28,17 @@
              :key="index">
           <a @click="$router.push({name:'policy',query:{crawlConId:item.id}})"
              style="color:#666">
-            <h4> <span v-html="item.issueOrgText"></span>:<span v-html="item.docName  "></span></h4>
+            <h4> <span v-html="item.issueOrgText"></span>:<span v-html="item.docName"></span></h4>
           </a>
           <p class="bar-title"
              style="font-size:14px;color:#777"
              v-html="item.docContent"></p>
-          <p class="bar-date"
-             style="font-size:12px;color:#999">{{item.docIssueTime==='null'?'':item.docIssueTime}}</p>
+          <p class="bar-date" style="font-size:12px;color:#999">{{item.docIssueTime==='null'?'':item.docIssueTime}}</p>
+          <div style="padding-bottom: 10px">
+            <el-button :disabled="!item.modelAnalysis" size="small" round @click="openChart(item.id, item.docName, '0')">政策法规关联分析 </el-button>
+            <el-button :disabled="!item.modelLifeCycle" size="small" round @click="openChart(item.id, item.docName, '1')">政策法规生命周期分析 </el-button>
+            <el-button :disabled="!item.modelAnalysis" size="small" round @click="openChart(item.id, item.docName, '2')">政策法规响应层级分析</el-button>
+          </div>
         </div>
         <el-pagination v-if="total || total === 0"
                        background
@@ -171,6 +175,23 @@ export default {
         this.$refs.resultSearch.setParams(params)
         this.$refs.resultSearch.searchOperate()
       }
+    },
+    openChart(id, name, type) {
+      this.$router.push({
+        path: 'relationChart',
+        query: {
+          id: id,
+          type: type
+        }
+      })
+      // this.$router.push({
+      //   name: 'relationChart',
+      //   params: {
+      //     id: id, // 500166, 500007
+      //     name: name,
+      //     type: type
+      //   }
+      // })
     },
     back2Top() {
       const mainDom = document.querySelector('.main-container')

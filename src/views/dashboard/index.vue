@@ -25,7 +25,7 @@
             全文检索
           </p>
         </div>
-        <div class="home-item" @click="$router.push({name:'analysis'})">
+        <div class="home-item" @click="$router.push({name:'search'})">
           <img :src="math">
           <p class="home-item-text">
             模型分析
