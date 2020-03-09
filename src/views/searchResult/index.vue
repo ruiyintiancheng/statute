@@ -35,9 +35,9 @@
              v-html="item.docContent"></p>
           <p class="bar-date" style="font-size:12px;color:#999">{{item.docIssueTime==='null'?'':item.docIssueTime}}</p>
           <div class="model-button" style="padding-bottom: 10px">
-            <el-button :disabled="!item.modelAnalysis" size="small" round @click="openChart(item.id, item.docName, '0')">政策法规关联分析 </el-button>
-            <el-button :disabled="!item.modelLifeCycle" size="small" round @click="openChart(item.id, item.docName, '1')">政策法规生命周期分析 </el-button>
-            <el-button :disabled="!item.modelAnalysis" size="small" round @click="openChart(item.id, item.docName, '2')">政策法规响应层级分析</el-button>
+            <el-button :disabled="!item.modelAnalysis" size="small"  @click="openChart(item.id, item.docName, '0')">政策法规关联分析 </el-button>
+            <el-button :disabled="!item.modelLifeCycle" size="small"  @click="openChart(item.id, item.docName, '1')">政策法规生命周期分析 </el-button>
+            <el-button :disabled="!item.modelAnalysis" size="small"  @click="openChart(item.id, item.docName, '2')">政策法规响应层级分析</el-button>
           </div>
         </div>
         <el-pagination v-if="total || total === 0"
