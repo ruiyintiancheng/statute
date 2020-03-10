@@ -1,8 +1,8 @@
 /*
  * @Author: lk
  * @Date: 2019-02-01 17:36:33
- * @Last Modified by: 1k
- * @Last Modified time: 2020-01-08 16:43:01
+ * @Last Modified by: lk
+ * @Last Modified time: 2020-02-26 15:49:03
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -139,6 +139,17 @@ export const constantRouterMap = [
         name: 'relationChart',
         path: '/relationChart',
         component: _import('relationChart/index')
+      }
+    ]
+  },
+  {
+    path: '',
+    component: Layout,
+    children: [
+      {
+        name: 'system',
+        path: '/system',
+        component: _import('system/index')
       }
     ]
   }

@@ -314,7 +314,6 @@ export default {
         this.pageNo = 1
       }
       const param = { status: this.statusParameter, pageNo: this.pageNo, pageSize: this.pageSize } // this.$refs.basicTable.getData(url, this.$refs.searchForm.searchParam())
-      console.log(param)
       baseRequest(url, param).then(response => {
         this.data = response.data.item
         this.total = response.data.total

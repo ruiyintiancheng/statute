@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2018-08-11 11:43:38
  * @Last Modified by: lk
- * @Last Modified time: 2020-01-08 09:46:49
+ * @Last Modified time: 2020-03-10 11:08:02
  * @Description:  登录页面
  */
 <template>
@@ -42,7 +42,7 @@
 // import { isvalidUsername } from '@/utils/validate'
 import { baseRequest } from '@/api/base'
 import { encrypt } from '@/utils/encryption'
-import { getToken } from '@/utils/auth'
+// import { getToken } from '@/utils/auth'
 import sign from '@/assets/images/sign.jpg'
 import cutter from '@/assets/images/cutter.png'
 const errorMsg = {
@@ -53,11 +53,11 @@ const errorMsg = {
 export default {
   name: 'login',
   created() {
-    if (getToken()) {
-      this.$router.push('/')
-    } else {
-      this.handleCaptcha()
-    }
+    // if (getToken()) {
+    //   this.$router.push('/')
+    // } else {
+    this.handleCaptcha()
+    // }
   },
   data() {
     return {

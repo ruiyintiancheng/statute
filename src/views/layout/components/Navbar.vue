@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2018-09-21 14:54:24 
- * @Last Modified by: 1k
- * @Last Modified time: 2020-01-08 16:43:06
+ * @Last Modified by: lk
+ * @Last Modified time: 2020-02-26 15:50:19
  * @Description:  
  */
 <template>
@@ -23,6 +23,9 @@
         </li>
         <li :class="{actived:$route.name==='learn'}">
           <router-link to="learn">学习路上</router-link>
+        </li>
+        <li :class="{actived:$route.name==='system'}">
+          <router-link to="system">系统管理</router-link>
         </li>
       </ul>
       <ul class="right-menu clearfix">
