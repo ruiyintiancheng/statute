@@ -72,8 +72,8 @@ const Brush = {
       .selectAll('circle')
       .data(Data.getData())
       .join('circle')
-      .attr('r', '6')
-      .attr('transform', d => `translate(${x(new Date(d.docIssueTime))})`)
+      .attr('r', '4')
+      .attr('transform', d => `translate(0, ${x(new Date(d.docIssueTime))})`)
       .style('fill', '#4fbaf4')
 
     function brushed() {
