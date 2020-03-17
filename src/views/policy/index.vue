@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2019-11-02 16:39:31 
- * @Last Modified by: 1k
- * @Last Modified time: 2020-01-15 14:33:26
+ * @Last Modified by: lk
+ * @Last Modified time: 2020-03-17 14:16:47
  * @Description:  政策文章
  */
 <template>
@@ -118,6 +118,10 @@ export default {
         this.loading = false
       }, _ => {
         this.loading = false
+      })
+      baseRequest('/userBehaviorColl/add', {
+        resourceType: '1',
+        resourceId: crawlConId
       })
     },
     getHtml(content) {

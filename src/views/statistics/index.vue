@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 16:50:14 
  * @Last Modified by: lk
- * @Last Modified time: 2020-01-08 15:58:56
+ * @Last Modified time: 2020-03-17 14:13:30
  * @Description:  数据统计
  */
 <template>
@@ -130,6 +130,9 @@ export default {
       this.brokenLineDiagram()
       this.pieChart()
       this.cakeLike()
+    })
+    baseRequest('/userBehaviorColl/add', {
+      resourceType: '0'
     })
     // baseRequest('/crawlConInfo/policyeRleaseTrend', {}).then(response => {
 

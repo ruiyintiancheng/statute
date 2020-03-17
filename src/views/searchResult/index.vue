@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 20:48:17 
  * @Last Modified by: lk
- * @Last Modified time: 2020-01-10 15:31:28
+ * @Last Modified time: 2020-03-17 14:24:36
  * @Description:  查询列表
  */
 <template>
@@ -150,6 +150,10 @@ export default {
         this.listLoading = false
       }, _ => {
         this.listLoading = false
+      })
+      baseRequest('/userBehaviorColl/add', {
+        resourceType: '100',
+        keyword: this.keyword
       })
     },
     getParams() {

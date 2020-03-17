@@ -2,7 +2,7 @@
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
  * @Last Modified by: lk
- * @Last Modified time: 2020-02-20 14:17:50
+ * @Last Modified time: 2020-03-11 11:29:17
  * @Description:  学习路上
  */
 <template>
@@ -65,6 +65,7 @@ export default {
 <style lang="scss" scoped>
 .learning {
   height: 100%;
+  background-color: #def5fb;
   .learning-head {
     margin-bottom: -5px;
     img {

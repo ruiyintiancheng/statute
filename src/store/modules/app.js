@@ -79,8 +79,8 @@ const app = {
     },
     setContainHeight({ commit }, { height, dialogHeight, appWidth }) {
       commit('SET_CONTAIN_HEIGHT', height)
-      commit('SET_DIALOG_HEIGHT', dialogHeight)
-      commit('SET_CONTAIN_WIDTH', appWidth)
+      // commit('SET_DIALOG_HEIGHT', dialogHeight)
+      // commit('SET_CONTAIN_WIDTH', appWidth)
     },
     setBgColor({ commit }, bgColor) {
       commit('SET_BG_COLOR', bgColor)

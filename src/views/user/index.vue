@@ -2,13 +2,13 @@
  * @Author: wk 
  * @Date: 2019-10-17 19:59:27 
  * @Last Modified by: lk
- * @Last Modified time: 2020-01-08 16:50:26
+ * @Last Modified time: 2020-03-13 15:36:02
  * @Description:  用户管理
  */
 <template>
-  <div class="sys-config">
+  <div class="sys-config list-comtainer">
     <div class="">
-      <div class="row-botton clearfix">
+      <div class="row-botton new clearfix">
         <div class="row-title">
           <svg-icon icon-class="search" />
           <span>筛选查询</span>
@@ -28,12 +28,20 @@
         </div>
       </div>
       <div v-show="searchToggle"
-           class="form-search">
+           class="form-search new">
         <el-form :inline="true"
                  class="demo-table-expand">
           <div class="input-both-3">
             <el-form-item>
-              <span class="input-label">是否有效</span>
+              <span class="input-label">用户名:</span>
+              <el-input v-model.trim="userName"
+                         style="width:250px"
+                         clearable
+                         placeholder="">
+              </el-input>
+            </el-form-item>
+            <el-form-item>
+              <span class="input-label">是否有效:</span>
               <el-select v-model="statusParameter"
                          style="width:250px"
                          clearable
@@ -41,7 +49,7 @@
                 <el-option label="无效"
                            value="0">
                 </el-option>
-                <el-option label="正常"
+                <el-option label="有效"
                            value="1">
                 </el-option>
               </el-select>
@@ -51,7 +59,7 @@
       </div>
     </div>
     <div class="">
-      <div class="row-botton clearfix">
+      <div class="row-botton new clearfix">
         <div class="row-title">
           <svg-icon icon-class="ul" />
           <span>数据列表</span>
@@ -123,8 +131,8 @@
                          @click="deleteForm(scope.row)">删除</el-button>
               <el-button size="mini"
                          plain
-                         v-if="scope.row.server_config_id"
-                         v-show="false"></el-button>
+                         @click="roleSetting(scope.row)"
+                         >角色配置</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -168,6 +176,7 @@
                         label="登录密码">
             <el-input class="form-input"
                       style="width:200px"
+                      type="password"
                       v-model="updateFormData.loginPasswd"
                       clearable></el-input>
           </el-form-item>
@@ -178,6 +187,34 @@
         <el-button @click="parentFormVisible = false">取消</el-button>
         <el-button type="primary"
                    @click="saveOperate()">保存</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="角色配置"
+               :visible.sync="roleVisable"
+               width="500px"
+               custom-class="dialog-default">
+      <div class="dialog-contant-default" v-if="roleVisable">
+        <el-table :data="roleData"
+                  border
+                  ref="roleDialogTable"
+                  @selection-change="handleSelectionChange"
+                  >
+          <el-table-column
+            type="selection"
+            width="55">
+          </el-table-column>
+          <el-table-column prop="roleName"
+                           label="角色名称"
+                           align="center"
+                           min-width="200">
+          </el-table-column>
+        </el-table>
+      </div>
+      <div slot="footer"
+           class="dialog-footer">
+        <el-button @click="roleVisable = false">取消</el-button>
+        <el-button type="primary"
+                   @click="saveRoles()">保存</el-button>
       </div>
     </el-dialog>
   </div>
@@ -198,6 +235,7 @@ export default {
       pageNo: 1,
       total: null,
       pageSize: 15,
+      userName: '',
       statusParameter: '', // 列表查询参数
       tableHeight: 0,
       outsideRules: {
@@ -221,7 +259,7 @@ export default {
       },
       list: [], // 请求原始数据
       treeDataSource: [], // 组合成树表格接收的数据
-
+      roleData: [],
       item: {
         configCode: '',
         configValue: '',
@@ -242,6 +280,9 @@ export default {
         userName: '',
         loginPasswd: ''
       },
+      roleVisable: false,
+      currentId: null,
+      multipleSelection: [],
       parentFormVisible: false, // 父类数据弹框开关
       childrenFormVisible: false, // 子类数据弹框开关
       operateStatus: null, // 操作选项
@@ -263,8 +304,6 @@ export default {
 
   },
   created() {
-    this.getOption()
-    this.getConfigValue()
   },
   mounted() {
     this.searchOption()
@@ -276,6 +315,37 @@ export default {
     }
   },
   methods: {
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+    roleSetting(row) {
+      this.currentId = row.userId
+      this.multipleSelection = []
+      baseRequest('/cmprsRoles/selects', {}).then(response => {
+        this.roleData = response.data.item
+        this.roleVisable = true
+        baseRequest('/manager/getRoleByUser', { userId: this.currentId }).then(response => {
+          const selectRoles = response.data.item
+          this.$nextTick(_ => {
+            for (const iterator of this.roleData) {
+              if (selectRoles.some(item => item === iterator.roleId)) {
+                this.$refs.roleDialogTable.toggleRowSelection(iterator, true)
+              }
+            }
+          })
+        })
+      })
+    },
+    saveRoles() {
+      const roleIds = []
+      for (const iterator of this.multipleSelection) {
+        roleIds.push(iterator.roleId)
+      }
+      baseRequest('/manager/addRole', { userId: this.currentId, roleIds: roleIds }).then(response => {
+        this.$message.success('操作成功')
+        this.roleVisable = false
+      })
+    },
     // 判断字数提示
     textJug(text) {
       if (text) {
@@ -292,13 +362,7 @@ export default {
       this.$nextTick(_ => {
         const formDom = document.querySelector('.form-search')
         const formHeight = formDom ? formDom.offsetHeight : 0
-        this.tableHeight = document.body.offsetHeight - formHeight - 258
-        // alert()
-      })
-    },
-    getConfigValue() {
-      baseRequest('/servers/selects', { urlMode: '2' }).then(response => {
-        this.ConfigValue = response.data.item
+        this.tableHeight = document.body.offsetHeight - formHeight - 288
       })
     },
     handleSizeChange(val) { // 分页
@@ -313,33 +377,11 @@ export default {
       if (!page) {
         this.pageNo = 1
       }
-      const param = { status: this.statusParameter, pageNo: this.pageNo, pageSize: this.pageSize } // this.$refs.basicTable.getData(url, this.$refs.searchForm.searchParam())
+      const param = { status: this.statusParameter, userName: this.userName, pageNo: this.pageNo, pageSize: this.pageSize } // this.$refs.basicTable.getData(url, this.$refs.searchForm.searchParam())
       baseRequest(url, param).then(response => {
         this.data = response.data.item
         this.total = response.data.total
         this.pageSize = response.data.pageSize
-      })
-    },
-    actionFunc(m) {
-      alert('编辑')
-    },
-    deleteFunc(m) {
-      alert('删除')
-    },
-    // 资源删除
-    handleDelete(row) {
-      this.$confirm('此操作将永久删除该资源, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        const param = { resourceId: row.resourceId }
-        baseRequest('/sysConfig/deleteResource', param).then(request => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-        })
       })
     },
     // 删除
@@ -350,7 +392,6 @@ export default {
         type: 'warning'
       }).then(() => {
         baseRequest('/manager/delete', { userId: row.userId }).then(response => {
-          this.getOption()
           this.$Message.success('操作成功')
           this.searchOption()
         })
@@ -415,19 +456,6 @@ export default {
           this.$Message.success('操作成功')
           this.searchOption()
         })
-      }
-    },
-    getOption() {
-      baseRequest(url, { urlMode: '2' }).then(response => {
-        this.data = response.data.item
-      })
-    },
-    // 树行数据的key
-    treeKey(row) {
-      if (row.server_config_id || row.server_config_id === 0) {
-        return row.config_id + '' + row.server_config_id
-      } else {
-        return row.config_id + ''
       }
     }
   }

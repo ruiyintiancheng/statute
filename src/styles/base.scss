@@ -3,6 +3,12 @@
     width: 1200px;
     margin: 0 auto;
 }
+
+// list 
+.list-comtainer{
+    margin: 10px;
+} 
+
 //search
 .search {
     width: 100%;
@@ -127,12 +133,16 @@
 }
 .row-botton{
     background-color: #F3F3F3;
-    // border-bottom: 1px solid #E4E4E4;
     height: 50px;
     line-height: 50px;
     color: #9D9399;
-    padding:0 15px;
+    padding: 0 15px;
     font-size: 14px;
+    &.new{
+        border-top: 1px solid #E4E4E4;
+        border-left: 1px solid #E4E4E4;
+        border-right: 1px solid #E4E4E4;
+    }
 }
 .row-botton{
     button{

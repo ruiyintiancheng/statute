@@ -1,8 +1,8 @@
 /*
  * @Author: wlq
  * @Date: 2020/1/8
- * @Last Modified by: wlq
- * @Last Modified time: 2020/1/8
+ * @Last Modified by: lk
+ * @Last Modified time: 2020-03-17 14:23:27
  * @Description:  生命周期图
  */
 <template>
@@ -104,6 +104,10 @@ export default {
         this.listLoading = false
       }, _ => {
         this.listLoading = false
+      })
+      baseRequest('/userBehaviorColl/add', {
+        resourceType: '4',
+        resourceId: this.id
       })
     },
     init(data) {

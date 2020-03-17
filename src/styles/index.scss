@@ -47,6 +47,9 @@ a, body, div, dl, h1, h2, h3, h4, h5, h6, html, li, ol, p, span, ul {
 }
 .dialog-default{
   height:75%;
+  &.fixedHeight{
+    height:250px;
+  }
 }
 // .el-dialog__header{
 //   height: 10%;
@@ -82,6 +85,10 @@ label {
 .sidebar-container .el-menu--collapse .svg-icon{
   margin-left: -4px
 }
+.sidebar-container{
+  width:210px;
+  float: left;
+}
 html {
   height: 100%;
   box-sizing: border-box;
@@ -94,6 +101,7 @@ html {
 .app-main{
   padding: 0;
   width: 100%;
+  overflow: auto;
   // overflow: hidden;
 }
 

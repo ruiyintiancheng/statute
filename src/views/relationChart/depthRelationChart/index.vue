@@ -124,6 +124,10 @@ export default {
       }, _ => {
         this.chartLoading = false
       })
+      baseRequest('/userBehaviorColl/add', {
+        resourceType: '5',
+        resourceId: this.id
+      })
     },
     init(data) {
       const graph = new Chart.Graph({

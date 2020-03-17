@@ -2,7 +2,7 @@
  * @Author: lk
  * @Date: 2019-02-01 17:36:33
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-10 11:38:30
+ * @Last Modified time: 2020-03-16 09:27:31
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -39,121 +39,210 @@ export const constantRouterMap = [
   { path: '/401', component: _import('errorPage/401'), hidden: true },
   { path: '*', redirect: '/404', hidden: true },
   {
-    path: '',
+    path: '/',
     name: 'home',
-    component: _import('dashboard/index')
+    component: _import('dashboard/index'),
+    meta: {
+      type: '1'
+    }
   },
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       name: 'statistics',
+  //       path: '/statistics',
+  //       component: _import('statistics/index'),
+  //       meta: {
+  //         type: '1'
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       name: 'analysis',
+  //       path: '/analysis',
+  //       // component: _import('searchResult/index')
+  //       component: _import('analysis/index'),
+  //       meta: {
+  //         type: '1'
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       name: 'learn',
+  //       path: '/learn',
+  //       component: _import('learn/index'),
+  //       meta: {
+  //         type: '1'
+  //       }
+  //     }
+  //   ]
+  // },
   {
-    path: '',
-    component: Layout,
-    children: [
-      {
-        name: 'statistics',
-        path: '/statistics',
-        component: _import('statistics/index')
-      }
-    ]
-  },
-  {
-    path: '',
-    component: Layout,
-    children: [
-      {
-        name: 'analysis',
-        path: '/analysis',
-        // component: _import('searchResult/index')
-        component: _import('analysis/index')
-      }
-    ]
-  },
-  {
-    path: '',
-    component: Layout,
-    children: [
-      {
-        name: 'learn',
-        path: '/learn',
-        component: _import('learn/index')
-      }
-    ]
-  },
-  {
-    path: '',
+    path: '/',
     component: Layout,
     children: [
       {
         name: 'search',
         path: '/search',
-        component: _import('searchResult/index')
+        component: _import('searchResult/index'),
+        meta: {
+          type: '1'
+        }
       }
     ]
   },
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       name: 'user',
+  //       path: '/user',
+  //       component: _import('user/index'),
+  //       meta: {
+  //         type: '1'
+  //       }
+  //     }
+  //   ]
+  // },
   {
-    path: '',
-    component: Layout,
-    children: [
-      {
-        name: 'user',
-        path: '/user',
-        component: _import('user/index')
-      }
-    ]
-  },
-  {
-    path: '',
+    path: '/',
     component: Layout,
     children: [
       {
         name: 'policy',
         path: '/policy',
-        component: _import('policy/index')
+        component: _import('policy/index'),
+        meta: {
+          type: '1'
+        }
       }
     ]
   },
   {
-    path: '',
+    path: '/',
     component: Layout,
     children: [
       {
         name: 'verbiage',
         path: '/verbiage',
-        component: _import('verbiage/index')
+        component: _import('verbiage/index'),
+        meta: {
+          type: '1'
+        }
       }
     ]
   },
   {
-    path: '',
+    path: '/',
     component: Layout,
     children: [
       {
         name: 'explain',
         path: '/explain',
-        component: _import('explain/index')
+        component: _import('explain/index'),
+        meta: {
+          type: '1'
+        }
       }
     ]
   },
   {
-    path: '',
+    path: '/',
     component: Layout,
     children: [
       {
         name: 'relationChart',
         path: '/relationChart',
-        component: _import('relationChart/index')
+        component: _import('relationChart/index'),
+        meta: {
+          type: '1'
+        }
       }
     ]
   },
+  // {
+  //   path: '',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       name: 'system',
+  //       path: '/system',
+  //       component: _import('system/index'),
+  //       meta: {
+  //         type: '2'
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       name: 'collectionSetting',
+  //       path: '/collectionSetting',
+  //       component: _import('collectionSetting/index'),
+  //       meta: {
+  //         type: '2'
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       name: 'task',
+  //       path: '/task',
+  //       component: _import('task/index'),
+  //       meta: {
+  //         type: '2'
+  //       }
+  //     }
+  //   ]
+  // },
   {
-    path: '',
+    path: '/',
     component: Layout,
     children: [
       {
-        name: 'system',
-        path: '/system',
-        component: _import('system/index')
+        name: 'taskOption',
+        path: '/taskOption',
+        component: _import('task/components/taskOption'),
+        meta: {
+          type: '2'
+        }
       }
     ]
   }
+  // {
+  //   path: '',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       name: 'journal',
+  //       path: '/journal',
+  //       component: _import('journal/index'),
+  //       meta: {
+  //         type: '2'
+  //       }
+  //     }
+  //   ]
+  // }
 ]
 
 export const dashboardRouterMap = [

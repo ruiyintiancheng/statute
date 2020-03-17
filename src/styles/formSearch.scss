@@ -1,9 +1,16 @@
 @import './mixin.scss';
 .form-search{
-    padding:17px 0px 0px 0;
+    padding: 17px 0px 0px 0;
+    &.new{
+      border-left: 1px solid #E4E4E4;
+      border-right: 1px solid #E4E4E4;
+    }
     .demo-form-inline{
         width:100%;
         display: inline-block;
+      }
+      .input-order{
+        margin-left:30px;
       }
       .input-both-2{
         @include formSearch(50%)

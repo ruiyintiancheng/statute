@@ -1,11 +1,28 @@
 /*
  * @Author: lk
  * @Date: 2019-02-01 17:35:59
- * @Last Modified by:   lk
- * @Last Modified time: 2019-02-01 17:35:59
+ * @Last Modified by: lk
+ * @Last Modified time: 2020-03-13 18:21:43
  */
 // set function parseTime,formatTime to filter
 export { parseTime, formatTime } from '@/utils'
+
+// 加单位
+export function unitGe(val) {
+  if (val || val === 0) {
+    return val + '个'
+  } else {
+    return val
+  }
+}
+
+export function unitKb(val) {
+  if (val || val === 0) {
+    return val + 'KB'
+  } else {
+    return val
+  }
+}
 
 function pluralize(time, label) {
   if (time === 1) {

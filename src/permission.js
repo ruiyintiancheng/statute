@@ -2,10 +2,10 @@
  * @Author: lk
  * @Date: 2019-02-01 17:38:40
  * @Last Modified by: lk
- * @Last Modified time: 2019-12-23 10:55:13
+ * @Last Modified time: 2020-03-13 18:24:52
  */
 import router from './router'
-// import store from './store'
+import store from './store'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css'// progress bar style
 import { getToken } from '@/utils/auth' // getToken from cookie
@@ -22,16 +22,17 @@ router.beforeEach((to, from, next) => {
       next()
       NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
     } else {
-      // if (store.getters.permission_routers.length === 0) {
-      // store.dispatch('GenerateRoutes').then(() => { // 根据roles权限生成可访问的路由表
-      // router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-      // store.dispatch('GetUserInfo').then(_ => {
-      //   next({ path: '/' })
-      // })// 拉取user_info
-      // })
-      // } else {
-      next()
-      // }
+      if (!store.getters.name) {
+        store.dispatch('GenerateRoutes').then(() => { // 根据roles权限生成可访问的路由表
+          router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+          store.dispatch('GetUserInfo').then(_ => {
+            next({ path: '/' })
+          })// 拉取user_info
+        })
+      } else {
+        next()
+        // next({ path: '/' })
+      }
     }
   } else {
     /* has no token*/

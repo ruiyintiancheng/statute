@@ -1,8 +1,8 @@
 /*
  * @Author: wk 
  * @Date: 2019-12-31 11:54:48 
- * @Last Modified by: 1k
- * @Last Modified time: 2020-01-15 10:39:16
+ * @Last Modified by: lk
+ * @Last Modified time: 2020-03-17 14:23:08
  * @Description:  讲话内容
  */
 <template>
@@ -88,6 +88,10 @@ export default {
         this.loading = false
       }, _ => {
         this.loading = false
+      })
+      baseRequest('/userBehaviorColl/add', {
+        resourceType: '2',
+        resourceId: crawlConId
       })
     },
     getHtml(content) {

@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2018-09-21 14:54:24 
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-10 11:33:44
+ * @Last Modified time: 2020-03-16 10:00:24
  * @Description:  
  */
 <template>
@@ -15,17 +15,18 @@
         <li :class="{actived:$route.name==='home'}">
           <router-link to="/">首页</router-link>
         </li>
-        <li :class="{actived:$route.name==='statistics'}">
-          <router-link to="statistics">数据统计</router-link>
+        <!-- <li :class="{actived:$route.name==='statistics'}">
+          <router-link to="/statistics">数据统计</router-link>
         </li>
-        <li :class="{actived:$route.name==='analysis'}">
-          <router-link to="analysis">模型分析</router-link>
+        <li :class="{actived:$route.name==='search'}">
+          <router-link to="/analysis">模型分析</router-link>
         </li>
         <li :class="{actived:$route.name==='learn'}">
-          <router-link to="learn">学习路上</router-link>
-        </li>
-        <li :class="{actived:$route.name==='system'}">
-          <router-link to="system">系统管理</router-link>
+          <router-link to="/learn">学习路上</router-link>
+        </li> -->
+        <li v-for="(item,index) in permission_top_routers" :key="item.name+index" :class="{actived:$route.name===(item.component?tranform2Str(item.component):'')}">
+          <router-link v-if="item.path && item.component" :to="'/'+item.path">{{item.meta.title}}</router-link>
+          <a v-else @click="linkTo(item.name,item.meta.title)">{{item.meta.title}}</a>
         </li>
       </ul>
       <ul class="right-menu clearfix">
@@ -54,20 +55,32 @@
 
 <script>
 import cutter from '@/assets/images/cutter.png'
+import { mapGetters } from 'vuex'
+import { tranformStr } from '@/utils/index'
 export default {
+  computed: {
+    ...mapGetters([
+      'permission_top_routers',
+      'permission_left_map'
+    ])
+  },
   data() {
     return {
       cutter,
-      searchVal: ''
+      searchVal: '',
+      fathPath: '',
+      tranform2Str: tranformStr
     }
   },
   components: {
   },
+  mounted() {
+  },
   methods: {
     userManagement() {
-      this.$router.push({
-        name: 'user'
-      })
+      // this.$router.push({
+      //   name: 'user'
+      // })
     },
     searchHandle() {
       if (this.$route.name === 'search') {
@@ -92,6 +105,30 @@ export default {
           location.reload()
         })
       })
+    },
+    linkTo(name, title) {
+      const parmObj = {
+        leftRoutes: this.permission_left_map[name],
+        path: '/' + name
+      }
+      this.$store.dispatch('GenerateLeftRoutes', parmObj).then(() => {
+        // this.getFathPath(this.permission_left_map[name])
+        if (this.permission_left_map[name] && this.permission_left_map[name].length > 0) {
+          this.getFathPath(this.permission_left_map[name])
+          if (this.fathPath) {
+            this.$router.push(this.fathPath)
+          }
+        }
+      }).catch(() => {
+        alert('error submit!!')
+      })
+    },
+    getFathPath(map) {
+      if ((!map[0].children || map[0].children.length === 0) && map[0].component) {
+        this.fathPath = map[0].path
+      } else {
+        this.getFathPath(map[0].children)
+      }
     }
   }
 }
