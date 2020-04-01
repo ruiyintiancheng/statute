@@ -173,6 +173,20 @@ export const constantRouterMap = [
       }
     ]
   },
+  {
+    path: '/',
+    component: Layout,
+    children: [
+      {
+        name: 'bubbleChart',
+        path: '/bubbleChart',
+        component: _import('relationChart/bubbleChart/index'),
+        meta: {
+          type: '1'
+        }
+      }
+    ]
+  },
   // {
   //   path: '',
   //   component: Layout,

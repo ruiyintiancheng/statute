@@ -1,0 +1,82 @@
+{
+    "nodes": [
+        {
+            "docName": "工业和信息化部办公厅 财政部办公厅关于发布2018年工业转型升级资金工作指南的通知",
+            "docIssueOrgText": "中华人民共和国工业和信息化部",
+            "docIssueTime": "2018-05-30",
+            "docState": "running",
+            "docTitle": "工业转型升级资金工作指南",
+            "id": 500325,
+            "docUri": "http://jmjh.miit.gov.cn/tzgg/xwgl3368729.shtml",
+            "orgAbbName": "工业和信息化部",
+            "orgRank": 2
+        },
+        {
+            "docName": "国务院关于深化“互联网+先进制造业”发展工业互联网的指导意见",
+            "docIssueOrgText": "中华人民共和国国务院",
+            "docIssueTime": "2017-11-19",
+            "docState": "running",
+            "docTitle": "“互联网+先进制造业”发展工业互联网",
+            "id": 500628,
+            "docUri": "http://www.gov.cn/zhengce/content/2017-11/27/content_5242582.htm",
+            "orgAbbName": "国务院",
+            "orgRank": 1,
+            "queryNode": true
+        },
+        {
+            "docName": "工业互联网发展行动计划（2018-2020年）",
+            "docIssueOrgText": "中华人民共和国工业和信息化部",
+            "docIssueTime": "2018-05-31",
+            "docState": "running",
+            "docTitle": "工业互联网发展行动计划",
+            "id": 500961,
+            "docUri": null,
+            "orgAbbName": "工业和信息化部",
+            "orgRank": 2
+        },
+        {
+            "docName": "工业互联网体系架构（版本1.0）",
+            "docIssueOrgText": "中华人民共和国工业和信息化部",
+            "docIssueTime": "2018-01-03",
+            "docState": "running",
+            "docTitle": "工业互联网体系架构",
+            "id": 500959,
+            "docUri": null,
+            "orgAbbName": "工业和信息化部",
+            "orgRank": 2
+        },
+        {
+            "docName": "工业互联网标准体系框架（版本1.0）",
+            "docIssueOrgText": "中华人民共和国工业和信息化部",
+            "docIssueTime": "2008-01-01",
+            "docState": "running",
+            "docTitle": "工业互联网标准体系框架",
+            "id": 500960,
+            "docUri": null,
+            "orgAbbName": "工业和信息化部",
+            "orgRank": 2
+        }
+    ],
+    "links": [
+        {
+            "source": 500628,
+            "type": "引用",
+            "target": 500325
+        },
+        {
+            "source": 500961,
+            "type": "引用",
+            "target": 500628
+        },
+        {
+            "source": 500959,
+            "type": "引用",
+            "target": 500628
+        },
+        {
+            "source": 500960,
+            "type": "引用",
+            "target": 500628
+        }
+    ]
+}
