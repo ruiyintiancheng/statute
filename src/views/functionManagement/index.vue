@@ -2,18 +2,18 @@
  * @Author: lk 
  * @Date: 2019-02-12 15:42:54 
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-12 17:09:56
- * @Description:  功能管理
+ * @Last Modified time: 2020-03-18 16:08:37
+ * @Description:  菜单管理
  */
 <template>
-    <div class="app-container" style="margin-left:10px;padding: 5px 0;">
+    <div class="app-container menu-management" style="margin-left:10px;padding: 5px 0;">
         <el-row>
             <!-- 树开始 -->
             <el-col :span="5" class="code-tree" :style="{height:containHeight + 'px'}" v-loading="treeLoading">
               <div class="row-botton clearfix">
                   <div class="row-title">
                   <svg-icon icon-class="tree" />
-                  <span>功能管理</span>
+                  <span>菜单管理</span>
                   </div>
               </div>
               <div class="code-tree-contain">
@@ -47,14 +47,62 @@
                         <span>筛选查询</span>
                         </div>
                         <div class="row-option">
-                        <el-button icon="el-icon-search" @click="searchOption" type="primary">查询</el-button>
-                        <el-button icon="el-icon-refresh" @click="reset" >重置</el-button>
+                        <!-- <el-button icon="el-icon-search" @click="searchOption" type="primary">查询</el-button>
+                        <el-button icon="el-icon-refresh" @click="reset" >重置</el-button> -->
                         <!-- <a @click="searchToggle=false" v-if="searchToggle"><svg-icon icon-class="up" />&nbsp;收起</a>
                         <a  @click="searchToggle=true" v-else><svg-icon icon-class="down"/>&nbsp;展开</a> -->
                         </div>
                     </div>
-                    <search-form v-show="searchToggle" ref="searchForm" :inputCount="3" :searchFormData="configData" ></search-form>
-
+                    <!-- <search-form v-show="searchToggle" ref="searchForm" :inputCount="3" :searchFormData="configData" >
+                      <span class="input-label">是否有效:</span>
+                        <el-select v-model="status"
+                                  style="width:90px"
+                                  clearable
+                                  placeholder="">
+                          <el-option label="无效"
+                                    value="0">
+                          </el-option>
+                          <el-option label="有效"
+                                    value="1">
+                          </el-option>
+                        </el-select>
+                    </search-form> -->
+                      <div v-show="searchToggle"
+                                class="form-search new">
+                              <el-form :inline="true"
+                                      class="demo-table-expand">
+                                  <el-form-item class="input-order">
+                                    <span class="input-label">菜单名称:</span>
+                                    <el-input v-model.trim="actionName"
+                                              style="width:150px"
+                                              clearable
+                                              placeholder="">
+                                    </el-input>
+                                  </el-form-item>
+                                  <el-form-item class="input-order">
+                                    <span class="input-label">是否有效:</span>
+                                    <el-select v-model="status"
+                                              style="width:150px"
+                                              clearable
+                                              placeholder="">
+                                      <el-option label="无效"
+                                                value="0">
+                                      </el-option>
+                                      <el-option label="有效"
+                                                value="1">
+                                      </el-option>
+                                    </el-select>
+                                  </el-form-item>
+                                  <el-form-item class="input-order">
+                                                <el-button icon="el-icon-search"
+                                          @click="searchOption"
+                                          type="primary">查询</el-button>
+                                          <el-button icon="el-icon-refresh" @click="reset" >重置</el-button>
+                                          <el-button icon="el-icon-plus"
+                                           @click="addOption">添加</el-button>
+                                  </el-form-item>
+                              </el-form>
+                            </div>
                 </div>
                 <!-- 查询区域结束 -->
                 <!-- 表格数据开始 -->
@@ -65,13 +113,13 @@
                             <span>数据列表</span>
                         </div>
                         <div class="row-option">
-                            <el-button icon="el-icon-plus" @click="addOption" >添加</el-button>
+                            <!-- <el-button icon="el-icon-plus" @click="addOption" >添加</el-button> -->
                             <!-- <a @click="tableToggle=false" v-if="tableToggle"><svg-icon icon-class="up" />&nbsp;收起</a>
                             <a  @click="tableToggle=true" v-else><svg-icon icon-class="down"/>&nbsp;展开</a> -->
                         </div>
                     </div>
-                    <basic-table v-show="tableToggle" ref="basicTable" :tableOption="configData" :height="containHeight - 220" :pagenation="true" :rowNum="true">
-                      <el-table-column slot="optionColumn" label="图标" align="center" width="180"> 
+                    <!-- <basic-table v-show="tableToggle" ref="basicTable" :tableOption="configData" :height="containHeight - 220" :pagenation="true" :rowNum="true"> -->
+                      <!-- <el-table-column slot="optionColumn" label="图标" align="center" width="180"> 
                             <template slot-scope="scope">
                                 <svg-icon v-if="scope.row.actionIcon" :iconClass='scope.row.actionIcon' style="width:96px; height: 20px;"/>
                             </template>
@@ -80,10 +128,85 @@
                             <template slot-scope="scope">
                                 <el-button type="primary" plain size="mini" @click="updateOption(scope.row)">修改</el-button>         
                                 <el-button type="danger" plain size="mini" @click="deleteOption(scope.row)">删除</el-button>         
-                                <!-- <el-button v-if="scope.row.actionType === '3'" type="success" plain size="mini" @click="connections(scope.row)">关联资源</el-button> -->
+                            </template>
+                        </el-table-column> -->
+                    <!-- </basic-table> -->
+                      <el-table :data="data"
+                                        v-show="tableToggle"
+                                        border
+                                        :height="tableHeight">
+                                <el-table-column 
+                                                label="编号"
+                                                align="center"
+                                                type="index"
+                                                width="50">
+                                </el-table-column>
+                                <el-table-column 
+                                                label="菜单名称"
+                                                align="center"
+                                                min-width="200">
+                                                <template slot-scope="scope">
+                                                  {{scope.row.field_convert_map.msgId}}
+                                                </template>
+                                </el-table-column>
+                                <el-table-column prop="actionDesc"
+                                                label="菜单描述"
+                                                align="center"
+                                                min-width="200">
+                                </el-table-column>
+                                <el-table-column 
+                                                label="类型"
+                                                align="center"
+                                                min-width="200">
+                                                 <template slot-scope="scope">
+                                                  {{scope.row.field_convert_map.actionType}}
+                                                </template>
+                                </el-table-column>
+                                <el-table-column 
+                                                label="类型"
+                                                align="center"
+                                                min-width="200">
+                                                 <template slot-scope="scope">
+                                                  {{scope.row.actionUrl}}
+                                                </template>
+                                </el-table-column>
+                                <el-table-column 
+                                                label="URL"
+                                                align="center"
+                                                min-width="200">
+                                                 <template slot-scope="scope">
+                                                  {{scope.row.actionUrl}}
+                                                </template>
+                                </el-table-column>
+                                <el-table-column 
+                                                label="状态"
+                                                align="center"
+                                                min-width="200">
+                                                 <template slot-scope="scope">
+                                                  {{scope.row.field_convert_map.status}}
+                                                </template>
+                                </el-table-column>
+                                <el-table-column label="图标" align="center" width="180"> 
+                            <template slot-scope="scope">
+                                <svg-icon v-if="scope.row.actionIcon" :iconClass='scope.row.actionIcon' style="width:96px; height: 20px;"/>
                             </template>
                         </el-table-column>
-                    </basic-table>
+                        <el-table-column  label="操作" align="center" width="280" fixed="right"> 
+                            <template slot-scope="scope">
+                                <el-button type="primary" plain size="mini" @click="updateOption(scope.row)">修改</el-button>         
+                                <el-button type="danger" plain size="mini" @click="deleteOption(scope.row)">删除</el-button>         
+                            </template>
+                        </el-table-column> 
+                              </el-table>
+                              <el-pagination background
+                                            @size-change="handleSizeChange"
+                                            @current-change="handleCurrentChange"
+                                            :current-page="pageNo"
+                                            :total="total"
+                                            layout="total, sizes, prev, pager, next, jumper"
+                                            :page-sizes="[10,15,20]"
+                                            :page-size="pageSize">
+                              </el-pagination>                    
                 </div>
                 <!-- 表格数据结束 -->
             </el-col>
@@ -155,25 +278,35 @@
     </div>
 </template>
 <script>
-import SearchForm from 'search-form-ry'
-import BasicTable from 'basic-table-ry'
+// import SearchForm from 'search-form-ry'
+// import BasicTable from 'basic-table-ry'
 // import UpdateForm from 'update-form-ry'
 import SvgIcon from '@/components/SvgIcon'
-import { baseRequest } from '@/api/base'
+import { baseRequest, baseSearch } from '@/api/base'
 import icons from '@/views/svg-icons/generateIconsView'
 import clipboard from '@/utils/clipboardIcon'
-const url = '/cmprsFunction/selects'
 
 export default {
   name: 'systemManagementFunctionManagementIndex',
   components: {
-    SearchForm,
-    BasicTable,
+    // SearchForm,
+    // BasicTable,
     // UpdateForm,
     SvgIcon
   },
+  computed: {
+    tableHeight: function() {
+      return this.$store.state.app.containHeight - 296
+    }
+  },
   data() {
     return {
+      data: [],
+      pageNo: 1,
+      total: null,
+      pageSize: 15,
+      actionName: '',
+      status: null,
       treeLoading: false,
       oldParentId: null, // 拖拽之前的父id
       oldOrder: null, // 拖拽前的顺序
@@ -288,11 +421,25 @@ export default {
       return data.name.indexOf(value) !== -1
     },
     // 点击查询
-    searchOption() {
-      const param = this.$refs.searchForm.searchParam()
+    searchOption(page) {
+      // const param = this.$refs.searchForm.searchParam()
+      if (!page) {
+        this.pageNo = 1
+      }
+      const param = {
+        actionName: this.actionName,
+        status: this.status,
+        pageNo: this.pageNo,
+        pageSize: this.pageSize
+      }
       param.parentId = this.actionId
-      param.actionName = param.msgId
-      this.$refs.basicTable.getData(url, param)
+      baseSearch('/cmprsFunction/selects', param).then(response => {
+        this.data = response.data.item
+        this.total = response.data.total
+        this.pageSize = response.data.pageSize
+      })
+      // param.actionName = param.msgId
+      // this.$refs.basicTable.getData(url, param)
     },
     // 初始化数据
     getOption() {
@@ -300,22 +447,28 @@ export default {
         const root = [{
           id: 0,
           type: '0',
-          name: '管理系统',
+          name: '菜单列表',
           children: response.data.item
         }]
         this.treeData = root
-        baseRequest(url, { 'urlMode': '1' }).then(response => {
-          const result = response.data
-          result.formConfig = JSON.parse(result.formConfig)
-          result.tableConfig = JSON.parse(result.tableConfig)
-          this.configData = result
-          this.$nextTick(function() {
-            if (this.treeData[0]) {
-              this.actionId = this.treeData[0].id
-              this.searchOption()
-            }
-          })
+        this.$nextTick(function() {
+          if (this.treeData[0]) {
+            this.actionId = this.treeData[0].id
+            this.searchOption()
+          }
         })
+        // baseRequest(url, { 'urlMode': '1' }).then(response => {
+        //   const result = response.data
+        //   result.formConfig = JSON.parse(result.formConfig)
+        //   result.tableConfig = JSON.parse(result.tableConfig)
+        //   this.configData = result
+        //   this.$nextTick(function() {
+        //     if (this.treeData[0]) {
+        //       this.actionId = this.treeData[0].id
+        //       this.searchOption()
+        //     }
+        //   })
+        // })
       })
     },
     // 获取树数据
@@ -325,7 +478,7 @@ export default {
         const root = [{
           id: 0,
           type: '0',
-          name: '管理系统',
+          name: '菜单列表',
           children: response.data.item
         }]
         this.treeData = root
@@ -334,18 +487,23 @@ export default {
     },
     // 重置
     reset() {
-      baseRequest(url, { 'urlMode': '1' }).then(response => {
-        const result = response.data
-        result.formConfig = JSON.parse(result.formConfig)
-        result.tableConfig = JSON.parse(result.tableConfig)
-        this.configData = result
-        this.$nextTick(function() {
-          if (this.treeData[0]) {
-            this.actionId = this.treeData[0].id
-            this.searchOption()
-          }
-        })
-      })
+      this.actionName = ''
+      this.status = null
+      this.searchOption()
+      // baseRequest(url, { 'urlMode': '1' }).then(response => {
+      //   const result = response.data
+      //   result.formConfig = JSON.parse(result.formConfig)
+      //   result.tableConfig = JSON.parse(result.tableConfig)
+      //   this.configData = result
+      //   this.actionName = ''
+      //   this.status = null
+      //   this.$nextTick(function() {
+      //     if (this.treeData[0]) {
+      //       this.actionId = this.treeData[0].id
+      //       this.searchOption()
+      //     }
+      //   })
+      // })
     },
     // 点击树切换数据
     handleNodeClick(data) {
@@ -356,8 +514,8 @@ export default {
     // 设置类型下拉可选
     setOptionDisable() {
       let childrenType = null
-      if (this.$refs.basicTable.data && this.$refs.basicTable.data[0]) {
-        childrenType = this.$refs.basicTable.data[0].actionType
+      if (this.data && this.data[0]) {
+        childrenType = this.data[0].actionType
       }
       // 当有子节点时 只能选有的节点
       // 当没有子节点时 只能选自己类型的下层节点 这里自己类型只有 '1'和'2'
@@ -545,6 +703,14 @@ export default {
     },
     allowDrag(draggingNode) {
       return draggingNode.data.type !== '0'
+    },
+    handleSizeChange(val) { // 分页
+      this.pageSize = val
+      this.searchOption()
+    },
+    handleCurrentChange(val) { // 分页
+      this.pageNo = val
+      this.searchOption(true)
     }
   }
 }
@@ -585,5 +751,12 @@ export default {
     .disabled{
       pointer-events: none;
     }
+}
+</style>
+<style lang="scss">
+.menu-management{
+  .form-search .demo-form-inline{
+    width:auto;
+  }
 }
 </style>

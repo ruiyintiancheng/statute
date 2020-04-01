@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2019-10-17 19:59:27 
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-13 15:36:02
+ * @Last Modified time: 2020-03-18 14:28:47
  * @Description:  用户管理
  */
 <template>
@@ -15,9 +15,6 @@
         </div>
         <div class="row-option">
           <!-- <a href="javascript:void(0)" class="button" @click="searchOption">查询</a> -->
-          <el-button icon="el-icon-search"
-                     @click="searchOption"
-                     type="primary">查询</el-button>
 
           <a @click="searchToggle=false"
              v-if="searchToggle">
@@ -31,19 +28,46 @@
            class="form-search new">
         <el-form :inline="true"
                  class="demo-table-expand">
-          <div class="input-both-3">
-            <el-form-item>
+            <el-form-item class="input-order">
               <span class="input-label">用户名:</span>
               <el-input v-model.trim="userName"
-                         style="width:250px"
+                         style="width:150px"
                          clearable
                          placeholder="">
               </el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item class="input-order">
+              <span class="input-label">登录名:</span>
+              <el-input v-model.trim="loginName"
+                         style="width:150px"
+                         clearable
+                         placeholder="">
+              </el-input>
+            </el-form-item>
+            <el-form-item class="input-order">
+              <span class="input-label">添加时间:</span>
+              <el-date-picker v-model.trim="startDate"
+                         style="width:150px"
+                         type="date"
+                         format="yyyy-MM-dd"
+                         value-format="yyyy-MM-dd"
+                         placeholder="开始日期">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item class="input-order">
+              <span class="input-label">-&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <el-date-picker v-model.trim="endDate"
+                         style="width:150px"
+                         type="date"
+                         format="yyyy-MM-dd"
+                         value-format="yyyy-MM-dd"
+                         placeholder="结束日期">
+              </el-date-picker>
+            </el-form-item>
+             <el-form-item class="input-order">
               <span class="input-label">是否有效:</span>
               <el-select v-model="statusParameter"
-                         style="width:250px"
+                         style="width:90px"
                          clearable
                          placeholder="">
                 <el-option label="无效"
@@ -54,7 +78,15 @@
                 </el-option>
               </el-select>
             </el-form-item>
-          </div>
+            <el-form-item class="input-order">
+                          <el-button icon="el-icon-search"
+                     @click="searchOption"
+                     type="primary">查询</el-button>
+                       <el-button icon="el-icon-refresh"
+                     @click="reset">重置</el-button>
+                        <el-button icon="el-icon-plus"
+                     @click="addParent">添加</el-button>
+            </el-form-item>
         </el-form>
       </div>
     </div>
@@ -65,8 +97,6 @@
           <span>数据列表</span>
         </div>
         <div class="row-option">
-          <el-button icon="el-icon-plus"
-                     @click="addParent">添加</el-button>
           <a @click="tableToggle=false"
              v-if="tableToggle">
             <svg-icon icon-class="up" />&nbsp;收起</a>
@@ -116,7 +146,7 @@
             </template>
           </el-table-column> -->
           <el-table-column label="操作"
-                           width="250"
+                           width="350"
                            fixed="right"
                            align="center">
             <template slot-scope="scope">
@@ -129,6 +159,16 @@
                          plain
                          type="danger"
                          @click="deleteForm(scope.row)">删除</el-button>
+              <el-button size="mini"
+                        v-if="$store.state.user.userId === scope.row.userId"
+                         plain
+                         type="warning"
+                         @click="updatePw(scope.row)">修改密码</el-button>
+              <el-button size="mini"
+                        v-else-if="$store.state.user.userId === 1"
+                         plain
+                         type="warning"
+                         @click="resetPw(scope.row)">重置密码</el-button>
               <el-button size="mini"
                          plain
                          @click="roleSetting(scope.row)"
@@ -149,8 +189,8 @@
     </div>
     <el-dialog :title="dialogTitle[operateStatus]"
                :visible.sync="parentFormVisible"
-               width="40%"
-               custom-class="dialog-default">
+               width="550px"
+               custom-class="dialog-default autoHeight">
       <div class="dialog-contant-default">
         <el-form :rules="outsideRules"
                  class="baseUpdate-form"
@@ -169,15 +209,8 @@
                         label="登录名">
             <el-input class="form-input"
                       style="width:200px"
+                      :disabled="operateStatus === 2"
                       v-model="updateFormData.loginName"
-                      clearable></el-input>
-          </el-form-item>
-          <el-form-item prop="loginPasswd"
-                        label="登录密码">
-            <el-input class="form-input"
-                      style="width:200px"
-                      type="password"
-                      v-model="updateFormData.loginPasswd"
                       clearable></el-input>
           </el-form-item>
         </el-form>
@@ -187,6 +220,33 @@
         <el-button @click="parentFormVisible = false">取消</el-button>
         <el-button type="primary"
                    @click="saveOperate()">保存</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="修改密码"
+               :visible.sync="updatePwVisable"
+               width="550px"
+               custom-class="dialog-default autoHeight">
+      <div class="dialog-contant-default" v-if="updatePwVisable">
+        <el-form :rules="pwRules"
+                 class="baseUpdate-form"
+                 ref="pwForm"
+                 style="    margin-left: calc(50% - 185px)"
+                 :model="pwFormData"
+                 label-width="120px">
+          <el-form-item prop="loginPasswd"
+                        label="登录密码">
+            <el-input class="form-input"
+                      style="width:200px"
+                      v-model="pwFormData.loginPasswd"
+                      clearable></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div slot="footer"
+           class="dialog-footer">
+        <el-button @click="updatePwVisable = false">取消</el-button>
+        <el-button type="primary"
+                   @click="savePwOperate()">保存</el-button>
       </div>
     </el-dialog>
     <el-dialog title="角色配置"
@@ -232,10 +292,15 @@ export default {
   components: {},
   data() {
     return {
+      // 修改密码
+      updatePwVisable: false,
       pageNo: 1,
       total: null,
       pageSize: 15,
       userName: '',
+      loginName: '',
+      startDate: null,
+      endDate: null,
       statusParameter: '', // 列表查询参数
       tableHeight: 0,
       outsideRules: {
@@ -244,9 +309,12 @@ export default {
         ],
         userName: [
           { required: true, message: '该项为必填项' }
-        ],
+        ]
+      },
+      pwRules: {
         loginPasswd: [
-          { required: true, message: '该项为必填项' }
+          { required: true, message: '请输入密码' },
+          { min: 6, message: '密码不能少于6位' }
         ]
       },
       insideRules: {
@@ -277,7 +345,9 @@ export default {
       tableToggle: true,
       updateFormData: {
         loginName: '',
-        userName: '',
+        userName: ''
+      },
+      pwFormData: {
         loginPasswd: ''
       },
       roleVisable: false,
@@ -302,8 +372,6 @@ export default {
   },
   computed: {
 
-  },
-  created() {
   },
   mounted() {
     this.searchOption()
@@ -374,10 +442,20 @@ export default {
       this.searchOption(true)
     },
     searchOption(page) {
+      if (this.startDate && this.endDate && this.startDate + '' > this.endDate + '') {
+        this.$message.warning('开始时间不能大于结束时间')
+        return
+      }
       if (!page) {
         this.pageNo = 1
       }
-      const param = { status: this.statusParameter, userName: this.userName, pageNo: this.pageNo, pageSize: this.pageSize } // this.$refs.basicTable.getData(url, this.$refs.searchForm.searchParam())
+      const param = {
+        status: this.statusParameter,
+        userName: this.userName,
+        loginName: this.loginName,
+        startDate: this.startDate,
+        endDate: this.endDate,
+        pageNo: this.pageNo, pageSize: this.pageSize } // this.$refs.basicTable.getData(url, this.$refs.searchForm.searchParam())
       baseRequest(url, param).then(response => {
         this.data = response.data.item
         this.total = response.data.total
@@ -408,7 +486,13 @@ export default {
         this.$refs.formOutside.clearValidate()
       })
     },
-
+    // 修改密码
+    updatePw(row) {
+      this.pwFormData.userId = row.userId
+      this.pwFormData.loginName = row.loginName
+      this.pwFormData.loginPasswd = ''
+      this.updatePwVisable = true
+    },
     // 修改表单
     updateOption(row) {
       this.operateStatus = 2
@@ -423,7 +507,11 @@ export default {
           userId: row.userId
         }
         baseRequest('/manager/select', param).then(response => {
-          this.updateFormData = response.data.item
+          for (const key in response.data.item) {
+            if (this.updateFormData.hasOwnProperty(key)) {
+              this.updateFormData[key] = response.data.item[key]
+            }
+          }
           this.parentFormVisible = true
           this.$nextTick(_ => {
             this.$refs.formOutside.clearValidate()
@@ -451,12 +539,53 @@ export default {
           this.searchOption()
         })
       } else {
-        saveUpdate('/manager/add', this.updateFormData, this.outsideRules, this.$refs.formOutside).then(() => {
+        const params = {}
+        for (const key in this.updateFormData) {
+          params[key] = this.updateFormData[key]
+        }
+        params.loginPasswd = '000000'
+        saveUpdate('/manager/add', params, this.outsideRules, this.$refs.formOutside).then(() => {
           this.parentFormVisible = false
           this.$Message.success('操作成功')
           this.searchOption()
         })
       }
+    },
+    // 修改密码保存
+    savePwOperate() {
+      saveUpdate('/manager/update', this.pwFormData, this.pwRules, this.$refs.pwForm).then(() => {
+        this.updatePwVisable = false
+        this.$Message.success('操作成功')
+        this.searchOption()
+      })
+    },
+    reset() {
+      this.statusParameter = null
+      this.userName = ''
+      this.loginName = ''
+      this.startDate = null
+      this.endDate = null
+      this.searchOption()
+    },
+    // 重置密码
+    resetPw(row) {
+      this.$confirm('确定重置密码吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const params = {
+          userId: row.userId,
+          loginName: row.loginName,
+          userName: row.userName,
+          loginPasswd: '000000'
+        }
+        baseRequest('/manager/update', params).then(() => {
+          this.updatePwVisable = false
+          this.$Message.success('操作成功')
+          this.searchOption()
+        })
+      })
     }
   }
 }

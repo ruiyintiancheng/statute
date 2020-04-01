@@ -24,7 +24,7 @@
         <li :class="{actived:$route.name==='learn'}">
           <router-link to="/learn">学习路上</router-link>
         </li> -->
-        <li v-for="(item,index) in permission_top_routers" :key="item.name+index" :class="{actived:$route.name===(item.component?tranform2Str(item.component):'')}">
+        <li v-for="(item,index) in permission_top_routers" :key="item.name+index" :class="{actived:toggleClass(item)}">
           <router-link v-if="item.path && item.component" :to="'/'+item.path">{{item.meta.title}}</router-link>
           <a v-else @click="linkTo(item.name,item.meta.title)">{{item.meta.title}}</a>
         </li>
@@ -77,6 +77,18 @@ export default {
   mounted() {
   },
   methods: {
+    toggleClass(item) {
+      const component = item.component ? this.tranform2Str(item.component) : ''
+      if (this.$route.name === component) {
+        return true
+      } else {
+        if (this.$route.name === 'search' && component === 'analysisIndex') {
+          return true
+        } else {
+          return false
+        }
+      }
+    },
     userManagement() {
       // this.$router.push({
       //   name: 'user'

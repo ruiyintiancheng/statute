@@ -13,7 +13,7 @@
         <search @seacrHandle="seacrHandle" @searchOperate="searchOperate"></search>
       </div>
       <div class="home-options clearfix">
-        <div class="home-item" @click="$router.push({name:'statistics'})">
+        <div class="home-item" @click="$router.push({name:'statisticsIndex'})">
           <img :src="all">
           <p class="home-item-text">
             数据统计
@@ -25,13 +25,13 @@
             全文检索
           </p>
         </div>
-        <div class="home-item" @click="$router.push({name:'analysis'})">
+        <div class="home-item" @click="$router.push({name:'analysisIndex'})">
           <img :src="math">
           <p class="home-item-text">
             模型分析
           </p>
         </div>
-        <div class="home-item" @click="$router.push({name:'learn'})">
+        <div class="home-item" @click="$router.push({name:'learnIndex'})">
           <img :src="study">
           <p class="home-item-text">
             学习路上

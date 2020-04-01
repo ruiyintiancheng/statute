@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-02-26 15:34:09 
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-17 11:28:51
+ * @Last Modified time: 2020-03-18 14:47:08
  * @Description:  登录日志
  */
 <template>
@@ -27,7 +27,7 @@
         <el-form :inline="true"
                  class="demo-table-expand">
             <el-form-item class="input-order">
-              <span class="input-label">用户名:</span>
+              <span class="input-label">登录名:</span>
               <el-input v-model.trim="loginName"
                          style="width:150px"
                          clearable
@@ -68,20 +68,26 @@
                 <el-button icon="el-icon-search"
                      @click="searchOption"
                      type="primary">查询</el-button>
+                             <el-button icon="el-icon-refresh"
+                     @click="reset"
+                     >重置</el-button>
+                             <el-button icon="el-icon-bottom" :loading="exportLoading"
+                     @click="downloadHandle"
+                     >导出</el-button>
             </el-form-item>
         </el-form>
       </div>
     </div>
     <div v-loading="loading">
-      <el-tabs v-model="activeName" type="card">
-          <el-tab-pane label="登录日志统计图" name="chart">
+      <el-tabs v-model="activeName" type="card" @tab-click="tabsClickHandle">
+          <el-tab-pane label="访问统计图" name="chart">
               <custom-echarts ref="chartOption"
                             :propsHeight="tableHeight+'px'"
                             propsWidth="100%"
                             id="chartOption"
                             :option="chartOption"></custom-echarts>
           </el-tab-pane>
-          <el-tab-pane label="登录日志明细" name="table">
+          <el-tab-pane label="访问明细" name="table">
             <div>
               <el-table :data="data"
                         v-show="tableToggle"
@@ -128,6 +134,7 @@
 import { baseSearch } from '@/api/base'
 import echarts from 'echarts'
 import CustomEcharts from '@/components/Charts/CustomEcharts'
+import { basicDownload } from '@/utils/download'
 export default {
   filters: {
   },
@@ -137,6 +144,7 @@ export default {
   data() {
     return {
       loading: false,
+      exportLoading: false,
       chartOption: {},
       xAxisList: null,
       seriesList: null,
@@ -145,11 +153,11 @@ export default {
       total: null,
       pageSize: 15,
       loginName: '', // 列表查询参数
-      dateType: '0',
+      dateType: '1',
       startLoginDate: null,
       endLoginDate: null,
-      dateTypeOption: 'date',
-      dateFormat: 'yyyy-MM-dd',
+      dateTypeOption: 'month',
+      dateFormat: 'yyyy-MM',
       // tableHeight: 0,
       searchToggle: true,
       tableToggle: true,
@@ -171,6 +179,22 @@ export default {
     }
   },
   methods: {
+    reset() {
+      this.loginName = ''
+      this.dateType = '1'
+      this.dateTypeOption = 'month'
+      this.dateFormat = 'yyyy-MM'
+      this.startLoginDate = null
+      this.endLoginDate = null
+      this.searchOption()
+    },
+    tabsClickHandle(tab) {
+      if (this.activeName === 'chart') {
+        this.$nextTick(_ => {
+          this.getChart()
+        })
+      }
+    },
     dataTypeChangeHandle(val) {
       this.startLoginDate = null
       this.endLoginDate = null
@@ -220,6 +244,24 @@ export default {
           this.loading = false
           this.getChart()
         })
+      })
+    },
+    downloadHandle() {
+      if (this.startLoginDate && this.endLoginDate && this.startLoginDate + '' > this.endLoginDate + '') {
+        this.$message.warning('开始时间不能大于结束时间')
+        return
+      }
+      this.exportLoading = true
+      const params = {
+        loginName: this.loginName,
+        dateType: this.dateType,
+        startLoginDate: this.startLoginDate,
+        endLoginDate: this.endLoginDate
+      }
+      basicDownload('/userLogin/export', params).then(_ => {
+        this.exportLoading = false
+      }, _ => {
+        this.exportLoading = false
       })
     },
     getChart() {

@@ -2,7 +2,7 @@
  * @Author: lk
  * @Date: 2019-02-01 17:37:48
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-12 11:16:19
+ * @Last Modified time: 2020-03-27 11:29:29
  */
 import axios from 'axios'
 import { Message } from 'element-ui'
@@ -82,7 +82,7 @@ service.interceptors.response.use(
           //   type: 'warning'
           // }).then(() => {
           // localStorage.setItem('loginMsg', res.msg)
-          store.dispatch('LogOut').then(() => {
+          store.dispatch('FedLogOut').then(() => {
             location.reload()// 为了重新实例化vue-router对象 避免bug
           })
           // })

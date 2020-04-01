@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-02-26 15:34:09 
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-16 10:01:16
+ * @Last Modified time: 2020-03-18 16:19:45
  * @Description:  角色管理
  */
 <template>
@@ -27,17 +27,60 @@
         <el-form :inline="true"
                  class="demo-table-expand">
             <el-form-item class="input-order">
-              <span class="input-label">名称:</span>
-              <el-input v-model.trim="sysName"
-                         style="width:250px"
+              <span class="input-label">角色名称:</span>
+              <el-input v-model.trim="roleName"
+                         style="width:150px"
                          clearable
                          placeholder="">
               </el-input>
             </el-form-item>
             <el-form-item class="input-order">
+              <span class="input-label">添加时间:</span>
+              <el-date-picker v-model.trim="startDate"
+                         style="width:150px"
+                         type="date"
+                         format="yyyy-MM-dd"
+                         value-format="yyyy-MM-dd"
+                         placeholder="开始日期">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item class="input-order">
+              <span class="input-label">-&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <el-date-picker v-model.trim="endDate"
+                         style="width:150px"
+                         type="date"
+                         format="yyyy-MM-dd"
+                         value-format="yyyy-MM-dd"
+                         placeholder="结束日期">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item class="input-order">
+              <span class="input-label">有效期:</span>
+              <el-date-picker v-model.trim="validTime"
+                         style="width:150px"
+                         type="date"
+                         format="yyyy-MM-dd"
+                         value-format="yyyy-MM-dd"
+                         placeholder="生效时间">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item class="input-order">
+              <span class="input-label">-&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <el-date-picker v-model.trim="invalidTime"
+                         style="width:150px"
+                         type="date"
+                         format="yyyy-MM-dd"
+                         value-format="yyyy-MM-dd"
+                         placeholder="失效时间">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item class="input-order">
                 <el-button icon="el-icon-search"
                      @click="searchOption"
                      type="primary">查询</el-button>
+                <el-button icon="el-icon-refresh"
+                     @click="reset"
+                     >重置</el-button>
                 <el-button icon="el-icon-plus"
                      @click="addModel">创建</el-button>
             </el-form-item>
@@ -72,6 +115,11 @@
           </el-table-column>
           <el-table-column prop="roleName"
                            label="角色名称"
+                           align="center"
+                           min-width="200">
+          </el-table-column>
+          <el-table-column prop="addTime"
+                           label="添加时间"
                            align="center"
                            min-width="200">
           </el-table-column>
@@ -121,7 +169,7 @@
     <el-dialog :title="operateStatus===1?'创建':'修改'"
                :visible.sync="operateVisable"
                width="500px"
-               custom-class="dialog-default">
+               custom-class="dialog-default autoHeight">
       <div class="dialog-contant-default" v-if="operateVisable">
           <el-form :rules="rules"
                  class="baseUpdate-form"
@@ -210,7 +258,11 @@ export default {
       pageNo: 1,
       total: null,
       pageSize: 15,
-      sysName: '', // 列表查询参数
+      roleName: '', // 列表查询参数
+      startDate: null,
+      endDate: null,
+      validTime: null,
+      invalidTime: null,
       // tableHeight: 0,
       searchToggle: true,
       tableToggle: true,
@@ -256,6 +308,14 @@ export default {
     }
   },
   methods: {
+    reset() {
+      this.roleName = ''
+      this.startDate = null
+      this.endDate = null
+      this.validTime = null
+      this.invalidTime = null
+      this.searchOption()
+    },
     menuSetting(row) {
       this.currentId = row.roleId
       baseRequest('/cmprsFunction/getTree').then(response => {
@@ -326,10 +386,24 @@ export default {
       this.searchOption(true)
     },
     searchOption(page) {
+      if (this.startDate && this.endDate && this.startDate + '' > this.endDate + '') {
+        this.$message.warning('开始时间不能大于结束时间')
+        return
+      }
+      if (this.validTime && this.invalidTime && this.validTime + '' > this.invalidTime + '') {
+        this.$message.warning('生效日期不能大于失效日期')
+        return
+      }
       if (!page) {
         this.pageNo = 1
       }
-      const param = { sysName: this.sysName, pageNo: this.pageNo, pageSize: this.pageSize } // this.$refs.basicTable.getData(url, this.$refs.searchForm.searchParam())
+      const param = {
+        roleName: this.roleName,
+        startDate: this.startDate,
+        endDate: this.endDate,
+        validTime: this.validTime,
+        invalidTime: this.invalidTime,
+        pageNo: this.pageNo, pageSize: this.pageSize } // this.$refs.basicTable.getData(url, this.$refs.searchForm.searchParam())
       baseSearch(url, param).then(response => {
         this.data = response.data.item
         this.total = response.data.total

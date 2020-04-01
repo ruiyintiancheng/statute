@@ -155,7 +155,7 @@ const permission = {
     GenerateRoutes({ commit, state }, data) {
       return new Promise((resolve, reject) => {
         baseRequest('/cmprsFunction/getMenu').then(response => {
-          const menuData = response.data.item
+          const menuData = response.data.item || []
           const newData = deepClone(menuData)
           var baseData = [] // 路由数据数组
           setBaseRouter(menuData, baseData)
