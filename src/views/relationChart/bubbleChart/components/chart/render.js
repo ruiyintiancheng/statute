@@ -12,12 +12,12 @@ const Rander = {
     const x = cfg._xScale
     const y = cfg.yScale
     const r = cfg.rScale
-
-    const nodeg = cfg.g.select('g.circle').selectAll('g.node').data(nodes, d => d.id)
+    const nodeg = cfg.g.select('g.circle').selectAll('g.node').data(nodes, d => d.year + d.month)
 
     const nodeEnter = nodeg.enter()
       .append('g')
       .classed('node', true)
+      .attr('id', d => d.year + d.month)
       .attr('transform', d => {
         if (cfg.dataType === 'year') {
           return `translate(${x(d.year)}, ${y(d.data.length)})`

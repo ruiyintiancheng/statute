@@ -65,7 +65,7 @@
           <span class="message-title-content">详细信息</span>
           <span class="message-close" @click="messageVisible = false">×</span>
         </div>
-        <el-table :data="messageData" style="width: 100%" :height=table_height>
+        <el-table :data="messageData" style="width: 100%" :height="table_height">
           <el-table-column prop="name" label="名称" width="110"></el-table-column>
           <el-table-column prop="value" label="内容"></el-table-column>
         </el-table>
@@ -94,18 +94,18 @@ export default {
 
   },
   computed: {
-    chart_width() {
-      return document.querySelector('.app-main').offsetWidth - 40
-    },
-    chart_height() {
-      return document.querySelector('.app-main').offsetHeight - 30
-    },
+    // chart_width() {
+    //   return document.querySelector('.app-main').offsetWidth - 40
+    // },
+    // chart_height() {
+    //   return document.querySelector('.app-main').offsetHeight - 30
+    // },
     table_height() {
       return this.height - 40
-    },
-    toolbarHeight() {
-      return document.querySelector('.app-main').offsetHeight
     }
+    // toolbarHeight() {
+    //   return document.querySelector('.app-main').offsetHeight
+    // }
   },
   data() {
     return {
@@ -121,19 +121,27 @@ export default {
       name: '气泡',
       activeName: '筛选',
       toolbarShow: true,
-      toolbarWidth: 300
+      chart_width: 0,
+      chart_height: 0,
+      toolbarWidth: 300,
+      toolbarHeight: 0
     }
   },
   created() {
   },
   mounted() {
-    document.querySelector('.el-tabs__header.is-top').style.display = 'none'
-    // console.log()
     this.$nextTick(() => {
+      this.getSize()
       this.getData()
+      document.querySelector('.el-tabs__header.is-top').style.display = 'none'
     })
   },
   methods: {
+    getSize() {
+      this.chart_width = document.querySelector('.app-main').offsetWidth - 40
+      this.chart_height = document.querySelector('.app-main').offsetHeight - 30
+      this.toolbarHeight = document.querySelector('.app-main').offsetWidth
+    },
     getData() {
       const params = {}
       baseRequest('/bDocBasic/annualAnalysis', params).then(response => {

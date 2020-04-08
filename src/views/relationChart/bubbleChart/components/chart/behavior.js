@@ -2,8 +2,13 @@ import Data from './data.js'
 
 const Behavior = {
   showAll(cfg) {
+    console.log('clear')
     const newData = []
-    cfg.data = newData.concat(Data.getData())
+    const nodes = Data.getData()
+    nodes.forEach(d => {
+      newData.push(d)
+    })
+    cfg.data = newData
   },
   /**
    * 筛选顶点

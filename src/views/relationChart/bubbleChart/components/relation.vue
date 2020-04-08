@@ -111,6 +111,7 @@ export default {
           relations[key] = this.options[key]
         }
       }
+
       this.$emit('selRelation', check)
       this.mainVisible = false
 
@@ -162,12 +163,10 @@ export default {
      *  清空
      */
     clear() {
-      this.options = {
-        docSys: { type: 'array', values: [] },
-        fuseField: { type: 'array', values: [] },
-        docContentSys: { type: 'array', values: [] },
-        timeType: { type: 'array', values: [] }
-      }
+      this.options.docSys.values = []
+      this.options.fuseField.values = []
+      this.options.docContentSys.values = []
+      this.options.timeType.values = []
       this.$emit('selRelation', null)
     }
   }
