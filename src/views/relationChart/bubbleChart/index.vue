@@ -2,7 +2,7 @@
 * 气泡图
 */
 <template>
-  <div class="base-container">
+  <div>
     <div style="width: 100%; height:100%; position: relative">
       <div v-loading="chartLoading">
         <div id="chart" :style="{'width': `${chart_width}px`, 'height': `${chart_height}px`}"></div>
@@ -10,15 +10,33 @@
         <div id="legend"></div>
       </div>
       <!-- 选项菜单 -->
-      <div class="graph-web-toolbar">
-        <ul>
-          <li @click="savePng"><div class="text">保存图片</div></li>
-          <li @click="refresh"><div class="text">重置</div></li>
-          <!-- <li @click="relation"><div class="text">筛选</div></li> -->
-          <li @click="openNodesTable"><div class="text">顶点列表</div></li>
-          <li @click="openLinksTable"><div class="text">关系列表</div></li>
-        </ul>
+      <div class="graph-toolbar">
+        <div class="graph-web-toolbar">
+          <ul>
+            <li :class="activeName === '筛选'? 'active' : null " @click="activeName='筛选'"><div class="text">筛选</div></li>
+            <li :class="activeName === '帮助'? 'active' : null " @click="activeName='帮助'"><div class="text">帮助</div></li>
+            <li :class="activeName === '政策列表'? 'active' : null " @click="clickInfo"><div class="text">政策列表</div></li>
+            <li @click="clickTypeSwitch"><div class="text">切换</div></li>
+            <li v-show="toolbarShow" @click="clickToolbar"><div class="text">收起</div></li>
+            <li v-show="!toolbarShow" @click="clickToolbar"><div class="text">打开</div></li>
+          </ul>
+        </div>
+        <!-- v-show="toolbarShow" -->
+        <div class="graph-web-tabpane" :style="{'width': `${toolbarWidth}px`}">
+          <el-tabs v-model="activeName">
+            <el-tab-pane name="筛选">
+              <relation-pane ref="relation" :width="260" :height="toolbarHeight" @selRelation="selRelation"></relation-pane>
+            </el-tab-pane>
+            <el-tab-pane name="帮助">
+              <explain-pane :width="260" :height="toolbarHeight"></explain-pane>
+            </el-tab-pane>
+            <el-tab-pane name="政策列表">
+              <info-pane ref="infoPane" :width="260" :height="toolbarHeight"></info-pane>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
       </div>
+      
       <!-- 鼠标悬浮提示框 -->
       <div id="title" class="title">
         <!-- <div>
@@ -35,12 +53,12 @@
         </div> -->
       </div>
       <!-- 鼠标右键菜单 -->
-      <div id="contextMenu" class="contextMenu">
+      <!-- <div id="contextMenu" class="contextMenu">
         <ul>
           <li @click="menuMessage">查看详情</li>
           <li @click="menuText" class='end'>查看原文</li>
         </ul>
-      </div>
+      </div> -->
       <!-- 详细信息 -->
       <div v-show="messageVisible" id="message" class="message">
         <div class="message-title">
@@ -53,8 +71,6 @@
         </el-table>
       </div>
       <nodes-table ref="nodesTable" @moveNode='moveNode'></nodes-table>
-      <links-table ref="linksTable"></links-table>
-      <relation ref="relation" @selRelation="selRelation"></relation>
     </div>
   </div>
 </template>
@@ -62,33 +78,38 @@
 <script>
 import { baseRequest } from '@/api/base'
 import nodesTable from './components/nodesTable'
-import linksTable from './components/linksTable'
-import relation from './components/relation'
+import relationPane from './components/relation'
+import explainPane from './components/explain'
+import infoPane from './components/infoPane'
 import Chart from './components/chart/index.js'
-// import json from './components/data.json'
-import * as d3 from 'd3'
+// import * as d3 from 'd3'
 export default {
   components: {
     nodesTable,
-    linksTable,
-    relation
+    relationPane,
+    explainPane,
+    infoPane
   },
   props: {
 
   },
   computed: {
     chart_width() {
-      return document.querySelector('.base-container').offsetWidth
+      return document.querySelector('.app-main').offsetWidth - 40
     },
     chart_height() {
       return document.querySelector('.app-main').offsetHeight - 30
     },
     table_height() {
       return this.height - 40
+    },
+    toolbarHeight() {
+      return document.querySelector('.app-main').offsetHeight
     }
   },
   data() {
     return {
+      chartData: [],
       graph: null,
       chart_data: null,
       messageData: [],
@@ -97,12 +118,17 @@ export default {
       width: 1000,
       height: 1000,
       id: '1',
-      name: '气泡'
+      name: '气泡',
+      activeName: '筛选',
+      toolbarShow: true,
+      toolbarWidth: 300
     }
   },
   created() {
   },
   mounted() {
+    document.querySelector('.el-tabs__header.is-top').style.display = 'none'
+    // console.log()
     this.$nextTick(() => {
       this.getData()
     })
@@ -117,10 +143,6 @@ export default {
       }, _ => {
         this.chartLoading = false
       })
-      // baseRequest('/userBehaviorColl/add', {
-      //   resourceType: '5',
-      //   resourceId: this.id
-      // })
     },
     init(data) {
       const graph = new Chart.Graph({
@@ -129,13 +151,15 @@ export default {
         height: this.chart_height,
         // contextMenu: 'contextMenu',
         nodeTitle: 'title',
-        background: '#26368d' //  #04244A
+        background: '#26368d',
+        openList: this.openList,
+        dataType: 'year'
       })
       graph.data(data)
       graph.render()
 
       // Chart.Brush.init(graph, 'brush')
-      // Chart.legend(graph, 'legend')
+      Chart.legend(graph, 'legend')
       // graph.translateCenter()
       this.graph = graph
     },
@@ -149,29 +173,13 @@ export default {
        * 重置
        */
     refresh() {
-      this.graph.relation(null)
-      Chart.Brush.moveAll()
-      this.$refs.relation.clear()
+      this.graph.move(0, 0, 1)
     },
     /**
        * 节点定位
        */
     moveNode(node) {
       this.graph.moveCenter(node.x, node.y, 1)
-    },
-    /**
-       * 打开节点列表
-       */
-    openNodesTable() {
-      const nodes = this.graph.get('data').nodes
-      this.$refs.nodesTable.openDialog(nodes)
-    },
-    /**
-       * 打开关系列表
-       */
-    openLinksTable() {
-      const links = this.graph.get('data').links
-      this.$refs.linksTable.openDialog(links)
     },
     /**
        * 关系筛选
@@ -186,57 +194,79 @@ export default {
       this.$refs.relation.openDialog()
       // this.graph.relation({ related: ['强相关', '不相关'] })
     },
-    /**
-       * 右键菜单--查看详情
-       */
-    menuMessage() {
-      const node = this.graph.get('contextMenuNode')
-      this.messageData = [
-        // { name: 'id', value: node.id },
-        { name: '政策法规名称', value: node.docName },
-        { name: '政策法规文号', value: node.docNum },
-        { name: '政策原文名称', value: node.docTittle },
-        { name: '定位', value: node.docPositioning },
-        { name: '发布时间', value: node.docIssueTime },
-        { name: '生效时间', value: node.docEffectiveTime },
-        { name: '废止时间', value: node.docAnnulTime },
-        { name: '发布单位类型', value: node.docIssueOrgType },
-        { name: '发布单位名称', value: node.docIssueOrgText },
-        { name: '发文方式', value: node.docIssueType },
-        { name: '适用范围', value: node.docUseBroad },
-        { name: '适用范围描述', value: node.docUseBroadText },
-        { name: '密级', value: node.docSecretClass },
-        { name: '内容体系', value: node.docContentSys },
-        { name: '文章类型', value: node.docType },
-        { name: '领域类型', value: node.docDomainType },
-        { name: '军民融合相关度', value: node.docAbout },
-        { name: '可操作性', value: node.docOperability },
-        { name: '评估重点', value: node.docFocalPoint },
-        { name: '军民融合条款摘录', value: node.docSummary },
-        { name: '关键词', value: node.docKeyWord }
-      ]
-      this.messageVisible = true
-      d3.select('#contextMenu').style('display', 'none')
+    openList(data) {
+      this.$refs.nodesTable.openDialog(data)
     },
-    /**
-       * 右键菜单--查看引用
-       */
-    menuSource() {
-      d3.select('#contextMenu').style('display', 'none')
+    /** 菜单折叠 */
+    clickToolbar() {
+      this.toolbarShow = !this.toolbarShow
+      this.toolbarWidth = this.toolbarShow ? 300 : 0
     },
-    /**
-       * 右键菜单--查看原文
-       */
-    menuText() {
-      const node = this.graph.get('contextMenuNode')
-      window.open(node.docUri, '_blank')
+    clickInfo() {
+      this.$refs.infoPane.setData(this.graph.get('data'))
+      this.activeName = '政策列表'
+    },
+    /** 类型切换 */
+    clickTypeSwitch() {
+      this.graph.typeSwitch()
     }
   }
 }
 </script>
 
 <style scoped>
-  @import '../components/chart.css';
+  /* @import '../components/chart.css'; */
+  .graph-toolbar {
+    position: absolute;
+    display: block;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    font-size: 14px;
+    background-color: white;
+  }
+  
+/* 右侧工具菜单 */
+
+  .graph-web-toolbar {
+    float: left;
+    width: 40px;
+    height: 100%;
+    cursor: pointer;
+    border-left: 1px solid #dedede;
+    border-right: 1px solid #dedede;
+  }
+
+
+  .graph-web-toolbar > ul {
+    margin: 0px;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 0px;
+    border-top: 1px solid #dedede;
+    border-left: 1px solid #dedede;
+    border-right: 1px solid #dedede;
+  }
+
+  .graph-web-toolbar ul > li {
+    padding: 7px;
+    list-style: none;
+    border-bottom: 1px solid #dedede;
+  }
+
+  .graph-web-toolbar ul > li:hover {
+    background-color: #409eff;
+    color: white;
+  }
+  .graph-web-toolbar ul > li.active {
+    background-color: #409eff;
+    color: white;
+  }
+
+  .graph-web-tabpane {
+    transition: width 0.75s;
+    height: 100%;
+  }
 
   #title.title {
     position: absolute;
@@ -257,5 +287,9 @@ export default {
 	}
 	.title-content {
 		margin-left: 75px;
-	}
+  }
+  
+  .el-tabs__header.is-top {
+    display: none;
+  }
 </style>

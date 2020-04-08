@@ -38,7 +38,6 @@
             <el-button :disabled="!item.modelAnalysis" size="small"  @click="openChart(item.id, item.docName, '0')">政策法规关联分析 </el-button>
             <el-button :disabled="!item.modelLifeCycle" size="small"  @click="openChart(item.id, item.docName, '1')">政策法规生命周期分析 </el-button>
             <el-button :disabled="!item.modelAnalysis" size="small"  @click="openChart(item.id, item.docName, '2')">政策法规响应层级分析</el-button>
-            <el-button :disabled="false" size="small"  @click="openChart2(item.id, item.docName, '2')">气泡图</el-button>
           </div>
         </div>
         <el-pagination v-if="total || total === 0"
@@ -188,15 +187,6 @@ export default {
     openChart(id, name, type) {
       this.$router.push({
         path: 'relationChart',
-        query: {
-          id: id,
-          type: type
-        }
-      })
-    },
-    openChart2(id, name, type) {
-      this.$router.push({
-        path: 'bubbleChart',
         query: {
           id: id,
           type: type

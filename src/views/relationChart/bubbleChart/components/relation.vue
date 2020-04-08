@@ -2,109 +2,82 @@
  * 筛选列表
  */
 <template>
-  <el-dialog title="筛选列表" width="50%" custom-class="dialog-default"
-      :visible.sync="mainVisible" 
-      :close-on-click-modal='false' 
-      append-to-body
-      v-el-drag-dialog>
-    <div class="dialog-contant-default file-download-log relation">
-        <el-form ref="form" label-width="160px">
-          <el-form-item label="定位:">
-            <el-checkbox-group v-model="options.docPositioning.values" >
-              <el-checkbox label="具体操作"></el-checkbox>
-              <el-checkbox label="指导原则"></el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-
-          <el-form-item label="适用范围:">
-            <el-checkbox-group v-model="options.docUseBroad.values" >
-              <el-checkbox label="全国"></el-checkbox>
-              <el-checkbox label="地方"></el-checkbox>
-              <el-checkbox label="部门"></el-checkbox>
-              <el-checkbox label="军队"></el-checkbox>
-              <el-checkbox label="空白"></el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-
-          <el-form-item label="军民融合相关度:">
-            <el-checkbox-group v-model="options.docAbout.values" >
-              <el-checkbox label="强相关"></el-checkbox>
-              <el-checkbox label="有所涉及"></el-checkbox>
-              <el-checkbox label="不相关"></el-checkbox>
-              <el-checkbox label="空白"></el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-
-          <el-form-item label="可操作性:">
-            <el-checkbox-group v-model="options.docOperability.values" >
-              <el-checkbox label="强相关"></el-checkbox>
-              <el-checkbox label="有所涉及"></el-checkbox>
-              <el-checkbox label="不相关"></el-checkbox>
-              <el-checkbox label="空白"></el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-
-          <el-form-item label="文章类型:">
-            <el-checkbox-group v-model="options.docType.values" >
-              <el-checkbox label="法律法规"></el-checkbox>
-              <el-checkbox label="法律修订"></el-checkbox>
-              <el-checkbox label="通知公告"></el-checkbox>
-              <el-checkbox label="网络舆情"></el-checkbox>
-              <el-checkbox label="意见征求"></el-checkbox>
-              <el-checkbox label="招标信息"></el-checkbox>
-              <el-checkbox label="政策文件"></el-checkbox>
-              <el-checkbox label="政策修订"></el-checkbox>
-              <el-checkbox label="专家解读"></el-checkbox>
-              <el-checkbox label="空白"></el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-
-          <el-form-item label="评估重点:">
-            <el-checkbox-group v-model="options.docFocalPoint.values" >
-              <el-checkbox label="参考法律法规"></el-checkbox>
-              <el-checkbox label="基本法律法规"></el-checkbox>
-              <el-checkbox label="军地数据资源交换共享"></el-checkbox>
-              <el-checkbox label="军地只会信息系统互联互通"></el-checkbox>
-              <el-checkbox label="网络安全联防联控"></el-checkbox>
-              <el-checkbox label="信息基础设施共建共用"></el-checkbox>
-              <el-checkbox label="其它"></el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-
-          <el-form-item label="发布时间:">
-            <el-date-picker v-model="options.docIssueTime.min" 
-              type="date" placeholder="起始日期" size="small">
-            </el-date-picker>
-            —
-            <el-date-picker v-model="options.docIssueTime.max"
-              type="date" placeholder="截至日期" size="small">
-            </el-date-picker>
-          </el-form-item>
-        </el-form>
+<div :style="{'width': `${width}px`, 'height': `${height}px`, 'overflow-y': 'auto', 'overflow-x': 'hidden'}">
+  <div>
+    <div class="check-group-label">政策体系:</div>
+    <div class="check-group">
+      <el-checkbox-group v-model="options.docSys.values" @change="handleChange">
+        <el-checkbox label="政策体系1" style="width: 100%">基础政策</el-checkbox>
+        <el-checkbox label="政策体系2" style="width: 100%">具体政策</el-checkbox>
+      </el-checkbox-group>
     </div>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="onSubmit">查看</el-button>
-      <el-button type="primary" @click="clear">清空</el-button>
+  </div>
+  <div>
+    <div class="check-group-label">军民融合领域:</div>
+    <div class="check-group">
+      <el-checkbox-group v-model="options.fuseField.values" @change="handleChange">
+        <el-checkbox style="width: 100%" label="基础设施共建共享领域"></el-checkbox>
+        <el-checkbox style="width: 100%" label="国防科技工业武器装备领域"></el-checkbox>
+        <el-checkbox style="width: 100%" label="军民科技协同创新领域"></el-checkbox>
+        <el-checkbox style="width: 100%" label="重大安全领域"></el-checkbox>
+        <el-checkbox style="width: 100%" label="军地人力资源开发领域"></el-checkbox>
+        <el-checkbox style="width: 100%" label="军队保障社会化领域"></el-checkbox>
+        <el-checkbox style="width: 100%" label="统筹应急应战公共安全领域"></el-checkbox>
+      </el-checkbox-group>
     </div>
-  </el-dialog>
+  </div>
+  <div>
+    <div class="check-group-label">二级领域:</div>
+    <div class="check-group">
+      <el-checkbox-group v-model="options.docContentSys.values" @change="handleChange">
+        <!-- <el-checkbox style="width: 100%" label="强相关"></el-checkbox>
+        <el-checkbox style="width: 100%" label="有所涉及"></el-checkbox>
+        <el-checkbox style="width: 100%" label="不相关"></el-checkbox>
+        <el-checkbox style="width: 100%" label="空白"></el-checkbox> -->
+      </el-checkbox-group>
+    </div>
+  </div>
+  <div>
+    <div class="check-group-label">发布时间:</div>
+    <div class="check-group">
+      <el-checkbox-group v-model="options.timeType.values" @change="handleChange">
+        <el-checkbox style="width: 100%" label=1>0-3年</el-checkbox>
+        <el-checkbox style="width: 100%" label=2>3-5年</el-checkbox>
+        <el-checkbox style="width: 100%" label=3>5-10年</el-checkbox>
+        <el-checkbox style="width: 100%" label=4>10年以前</el-checkbox>
+      </el-checkbox-group>
+    </div>
+  </div>
+  <div style="margin-top: 10px; margin-left: 30px">
+    <el-button size='small' @click="clear" style="width: 200px">清空</el-button>
+  </div>
+</div>
 </template>
 <script>
+// import { baseRequest } from '@/api/base'
 export default {
+  props: {
+    width: Number,
+    height: Number
+  },
   data() {
     return {
       mainVisible: false,
       options: {
-        docPositioning: { type: 'array', values: [] },
-        docUseBroad: { type: 'array', values: [] },
-        docAbout: { type: 'array', values: [] },
-        docOperability: { type: 'array', values: [] },
-        docType: { type: 'array', values: [] },
-        docFocalPoint: { type: 'array', values: [] },
-        docIssueTime: { type: 'date', min: '', max: '' }
+        docSys: { type: 'array', values: [] },
+        fuseField: { type: 'array', values: [] },
+        docContentSys: { type: 'array', values: [] },
+        timeType: { type: 'array', valueType: 'number', values: [] }
       }
     }
   },
   created() {
+
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.getOption()
+    })
   },
   computed: {
     tableHeight() {
@@ -112,8 +85,16 @@ export default {
     }
   },
   methods: {
-    openDialog() {
-      this.mainVisible = true
+    getOption() {
+      // console.log('getOption')
+      // const params = { 'pid': '0' }
+      // baseRequest('/confMci/getMciOption', params).then(response => {
+      // // console.log(response.data.item)
+      // })
+    },
+    handleChange(value) {
+      // console.log('change', value)
+      this.onSubmit()
     },
     /**
      * 查看
@@ -138,11 +119,10 @@ export default {
         for (const key in relations) {
           const d = relations[key]
           if (obj.hasOwnProperty(key)) {
-            // array
             if (d.type === 'array') {
-              flag = flag && array(obj[key], d.values)
+              flag = flag && array(obj[key], d.values, d.valueType)
             }
-            // date
+
             if (d.type === 'date') {
               flag = flag && date(obj[key], d.max, d.min)
             }
@@ -150,10 +130,10 @@ export default {
         }
         return flag
 
-        function array(value, arrays) {
+        function array(value, arrays, valueType) {
           let isSel = false
           arrays.forEach(v => {
-            if (v === value) {
+            if (value === conversion(v, valueType)) {
               isSel = true
             }
           })
@@ -170,6 +150,12 @@ export default {
           }
           return isSel
         }
+        function conversion(value, valueType) {
+          if (valueType === 'number') {
+            return parseInt(value)
+          }
+          return value
+        }
       }
     },
     /**
@@ -177,13 +163,10 @@ export default {
      */
     clear() {
       this.options = {
-        docPositioning: { type: 'array', values: [] },
-        docUseBroad: { type: 'array', values: [] },
-        docAbout: { type: 'array', values: [] },
-        docOperability: { type: 'array', values: [] },
-        docType: { type: 'array', values: [] },
-        docFocalPoint: { type: 'array', values: [] },
-        docIssueTime: { type: 'date', min: '', max: '' }
+        docSys: { type: 'array', values: [] },
+        fuseField: { type: 'array', values: [] },
+        docContentSys: { type: 'array', values: [] },
+        timeType: { type: 'array', values: [] }
       }
       this.$emit('selRelation', null)
     }
@@ -191,7 +174,12 @@ export default {
 }
 </script>
 <style scoped>
-
+  .check-group-label {
+    padding: 5px;
+  }
+  .check-group {
+    margin-left: 35px;
+  }
 </style>
 
 

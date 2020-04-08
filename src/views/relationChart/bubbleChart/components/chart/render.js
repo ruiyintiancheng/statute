@@ -9,35 +9,39 @@ const Rander = {
   draw(cfg) {
     this._cfg = cfg
     const nodes = cfg.data
+    const x = cfg._xScale
+    const y = cfg.yScale
+    const r = cfg.rScale
 
-    const year = (new Date()).getFullYear()
-    const x = d3.scaleLinear()
-      .domain([year - 10, year])
-      .range([0, cfg.gridWidth])
+    const nodeg = cfg.g.select('g.circle').selectAll('g.node').data(nodes, d => d.id)
 
-    const y = d3.scaleLinear()
-      .domain([12, 0])
-      .range([0, cfg.gridHeight])
-
-    drawAxis(cfg, x, y)
-
-    const nodeg = cfg.g.select('g.circle').selectAll('g.node')
-      .data(nodes, d => d.id)
-      .enter()
+    const nodeEnter = nodeg.enter()
       .append('g')
       .classed('node', true)
-      .attr('transform', d => `translate(${x(d.year)}, ${y(d.month)})`)
+      .attr('transform', d => {
+        if (cfg.dataType === 'year') {
+          return `translate(${x(d.year)}, ${y(d.data.length)})`
+        }
+        return `translate(${x(d.year * 12 + d.month - 1)}, ${y(d.data.length)})`
+      })
 
-    nodeg.append('circle')
-      .attr('r', 10)
+    nodeEnter.append('circle')
+      .attr('r', d => r(d.data.length))
       .style('fill', d => d.color)
+      .style('cursor', 'pointer')
 
-    nodeg.append('text')
+    nodeEnter.append('text')
       .text(d => d.data.length)
       .attr('text-anchor', 'middle')
       .attr('dy', '0.35em')
       .style('font-size', 12)
-  }
+      .style('fill', 'white')
+      .style('user-select', 'none')
+
+    nodeg.select('text')
+      .text(d => d.data.length)
+    nodeg.exit().remove()
+  },
 
   //   const nodes = cfg.data.nodes
   //   const links = cfg.data.links
@@ -51,23 +55,9 @@ const Rander = {
   //   nodeg.each(function(d) {
   //     Nodes['default'].update(d3.select(this), d)
   //   })
-  //   // exit Node
+  //   // exit Nodenodeg.exit()
   //   nodeg.exit().each(function(d) {
   //     Nodes['default'].exit(d3.select(this), d)
-  //   })
-
-  //   const linkg = g.selectAll('g.link').data(links, d => d.id)
-  //   // add Link
-  //   linkg.enter().each(function(d) {
-  //     Links['default'].enter(d3.select(this), d)
-  //   })
-  //   // update Link
-  //   linkg.each(function(d) {
-  //     Links['default'].update(d3.select(this), d)
-  //   })
-  //   // exit Link
-  //   linkg.exit().each(function(d) {
-  //     Links['default'].exit(d3.select(this), d)
   //   })
 
   //   this.tick()
@@ -87,54 +77,86 @@ const Rander = {
 
   //   g.selectAll('g.node').attr('transform', d => `translate(${d.x}, ${d.y})`)
   // }
-}
+  // 绘制坐标网格
+  drawInit(cfg) {
+    const gridWidth = cfg.width - 140
+    const gridHeight = cfg.height - 50
 
-function drawAxis(cfg, x, y) {
-  const gridWidth = cfg.gridWidth
-  const gridHeight = cfg.gridHeight
-  cfg.g.append('clipPath')
-    .attr('id', 'clip')
-    .append('rect')
-    .attr('x', 0)
-    .attr('y', -20)
-    .attr('width', gridWidth + 30)
-    .attr('height', gridHeight + 20)
+    cfg.gridWidth = gridWidth
+    cfg.gridHeight = gridHeight
 
-  // x坐标轴
-  const xaxis = d3.axisBottom(x).ticks(10).tickSizeOuter(0)
-  const xaxisg = cfg.g.append('g')
-    .classed('xaxis', true)
-    .attr('transform', `translate(0, ${gridHeight})`)
-    .style('color', 'white')
-    .call(xaxis)
+    cfg.g.append('clipPath')
+      .attr('id', 'clip')
+      .append('rect')
+      .attr('x', 0)
+      .attr('y', -20)
+      .attr('width', gridWidth + 30)
+      .attr('height', gridHeight + 20)
 
-  // y坐标轴
-  const yaxis = d3.axisLeft(y).ticks(12)
+    // x坐标轴
+    cfg.g.append('g').classed('xaxis', true)
+      .attr('transform', `translate(0, ${gridHeight})`)
+      .style('color', 'white')
+    // y坐标轴
+    cfg.g.append('g')
+      .classed('yaxis', true)
+      .style('color', 'white')
 
-  const yaxisg = cfg.g.append('g')
-    .classed('yaxis', true)
-    .style('color', 'white')
-  //   .attr('transform', `translate(60, 20)`)
-    .call(yaxis)
+    cfg.g.append('g').attr('clip-path', 'url(#clip)')
+      .append('g').classed('circle', true)
 
-  // 绘制网格
-  xaxisg.selectAll('g.tick')
-    .append('line')
-    .classed('grid', true)
-    .attr('y2', -gridHeight)
-    .style('stroke', 'currentColor')
-    .style('opacity', 0.3)
-    .style('stroke-dasharray', '5,5')
+    this.drawAxis(cfg)
+  },
+  drawAxis(cfg) {
+    const gridWidth = cfg.width - 140
+    const gridHeight = cfg.height - 50
+    const year = (new Date()).getFullYear()
 
-  yaxisg.selectAll('g.tick')
-    .append('line')
-    .classed('grid', true)
-    .attr('x2', gridWidth)
-    .style('stroke', 'currentColor')
-    .style('opacity', 0.3)
-    .style('stroke-dasharray', '5,5')
+    const _xScale = d3.scaleLinear()
+      .range([0, gridWidth])
 
-  cfg.g.append('g').attr('clip-path', 'url(#clip)')
-    .append('g').classed('circle', true)
+    const yScale = d3.scaleLinear()
+      .range([gridHeight - 10, gridWidth / 10 / 2])
+
+    const rScale = d3.scaleLinear()
+      .range([10, gridWidth / 10 / 2])
+
+    if (cfg.dataType === 'year') {
+      _xScale.domain([year - 10, year])
+      // x坐标轴
+      const xaxis = d3.axisBottom(_xScale).ticks(10).tickSizeOuter(0)
+        .tickFormat(v => v + '年')
+      cfg.g.select('g.xaxis').call(xaxis)
+    }
+
+    if (cfg.dataType === 'month') {
+      _xScale.domain([year * 12 - 12, year * 12])
+      // x坐标轴
+      const xaxis = d3.axisBottom(_xScale).ticks(10).tickSizeOuter(0)
+        // .tickValues([1, 2, 3, 5, 8, 13, 21])
+        .tickFormat(v => {
+          return v % 12 === 0 ? `${parseInt(v / 12)}年1月` : `${v % 12 + 1}月`
+        })
+      cfg.g.select('g.xaxis').call(xaxis)
+    }
+
+    yScale.domain(cfg.countRange)
+    rScale.domain(cfg.countRange)
+
+    cfg._xScale = _xScale
+    cfg.yScale = yScale
+    cfg.xScale = _xScale
+    cfg.rScale = rScale
+
+    // y坐标轴
+    const yaxis = d3.axisLeft(yScale).ticks(5).tickSizeOuter(0)
+    const yaxisg = cfg.g.select('g.yaxis').call(yaxis)
+    yaxisg.select('path.domain')
+      .attr('d', `M1,${gridHeight} V${gridWidth / 10 / 2}`)
+    // 改变x坐标轴
+    // const xScale = d3.scaleLinear().domain([newyear - 10, newyear]).range([0, cfg.gridWidth])
+    // cfg.xScale = xScale
+    // cfg.g.select('g.xaxis').call(d3.axisBottom(xScale).ticks(10).tickSizeOuter(0).tickFormat(v => v + '年'))
+  }
 }
 export default Rander

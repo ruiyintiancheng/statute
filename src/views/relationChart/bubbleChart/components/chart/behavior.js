@@ -1,7 +1,9 @@
+import Data from './data.js'
+
 const Behavior = {
   showAll(cfg) {
-    cfg.g.selectAll('g.node').style('opacity', 1)
-    cfg.g.selectAll('g.link').style('opacity', 1)
+    const newData = []
+    cfg.data = newData.concat(Data.getData())
   },
   /**
    * 筛选顶点
@@ -13,21 +15,15 @@ const Behavior = {
       this.showAll(cfg)
       return
     }
-
-    const nodes = cfg.data.nodes
+    const newData = []
+    const nodes = Data.getData()
     nodes.forEach(d => {
       d._show = options(d)
+      if (d._show) {
+        newData.push(d)
+      }
     })
-
-    cfg.g.selectAll('g.node')
-      .style('opacity', d => {
-        return d._show ? 1 : 0.2
-      })
-
-    cfg.g.selectAll('g.link')
-      .style('opacity', d => {
-        return d.source._show && d.target._show ? 1 : 0.2
-      })
+    cfg.data = newData
   }
 }
 

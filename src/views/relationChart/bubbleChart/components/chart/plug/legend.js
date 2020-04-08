@@ -5,12 +5,13 @@ function legend(graph, id) {
   const height = 30
   const legends = {
     nodes: [
-      { name: '查询法规', color: '#ff804c', translate: 'translate(0)' },
-      { name: '政策法规', color: '#4fbaf4', translate: 'translate(84)' },
-      { name: '废止法规', color: '#b8b7b6', translate: 'translate(168)' }
+      { name: '近3年发布的政策', color: '#9EEA6A', translate: 'translate(0)' },
+      { name: '3-5年未修订', color: '#4fbaf4', translate: 'translate(135)' },
+      { name: '5-10年未修订', color: '#ff804c', translate: 'translate(237)' },
+      { name: '10年以上未修订', color: 'red', translate: 'translate(347)' }
     ],
     links: [
-      { name: '被引用', color: '#4fbaf4', translate: 'translate(252)' }
+      // { name: '被引用', color: '#4fbaf4', translate: 'translate(252)' }
     ]
   }
 

@@ -16,30 +16,12 @@ const Data = {
     })
     return JSON.parse(JSON.stringify(data))
   },
-  addData(oldData, newData) {
-    oldData = this.copyData(oldData)
-
-    const nids = new Set()
-    const lids = new Set()
-    oldData.nodes.forEach(d => {
-      nids.add(d.id)
+  conversionData(newData) {
+    let array = []
+    newData.forEach(d => {
+      array = array.concat(d.data)
     })
-    oldData.links.forEach(d => {
-      lids.add(d.id)
-    })
-
-    newData.nodes.forEach(d => {
-      if (!nids.has(d.id)) {
-        oldData.nodes.push(d)
-      }
-    })
-    newData.links.forEach(d => {
-      if (!lids.has(d.id)) {
-        oldData.links.push(d)
-      }
-    })
-    this.data = oldData
-    return oldData
+    return array
   }
 }
 

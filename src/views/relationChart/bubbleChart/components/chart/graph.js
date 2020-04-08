@@ -51,10 +51,7 @@ class Graph {
       .style('background-color', this.get('background'))
 
     const g = svg.append('g').classed('group', true)
-      .attr('transform', `translate(100, 20)`)
-
-    this.set('gridWidth', this.get('width') - 200)
-    this.set('gridHeight', this.get('height') - 50)
+      .attr('transform', `translate(70, 20)`)
 
     this.set('svg', svg)
     this.set('g', g)
@@ -128,6 +125,7 @@ class Graph {
    */
   render() {
     Layout.init(this.get('data'))
+    Rander.drawInit(this._cfg)
     Rander.draw(this._cfg)
     Event.init(this._cfg)
   }
@@ -150,12 +148,35 @@ class Graph {
     Behavior.relation(this._cfg, this.get('options'))
   }
   /**
+   * 修改图大小
+   * @param {*} size
+   */
+  reSize(size) {
+    console.log()
+  }
+  /** 类型切换 */
+  typeSwitch() {
+    if (this.get('dataType') === 'year') {
+      this.set('dataType', 'month')
+    } else {
+      this.set('dataType', 'year')
+    }
+
+    Layout.init(Data.conversionData(this.get('data')))
+    Rander.drawAxis(this._cfg)
+    Rander.draw(this._cfg)
+    Event.init(this._cfg)
+  }
+  /**
    * 关系筛选
    * @param {*} options
    */
   relation(options) {
     this.set('options', options)
     Behavior.relation(this._cfg, options)
+    Layout.init(this.get('data'))
+    Rander.draw(this._cfg)
+    Event.init(this._cfg)
   }
 
   /**
