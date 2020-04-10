@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2019-12-24 19:52:31 
- * @Last Modified by: lk
- * @Last Modified time: 2020-01-09 18:40:36
+ * @Last Modified by: 1k
+ * @Last Modified time: 2020-04-10 15:39:44
  * @Description:  高级搜索
  */
  <template>
@@ -35,7 +35,6 @@
                    collapse-tags
                    style="width:100%"
                    @change="selectControl($event,'docPositioning','DOC_POSITIONING')"
-                   @remove-tag="removeTag"
                    v-model="updateFormData.docPositioning"
                    clearable>
           <el-option v-for="(text,item) in DOC_POSITIONING"
@@ -84,7 +83,7 @@
                    multiple
                    collapse-tags
                    style="width:100%"
-                    @change="selectControl($event,'issueType','ISSUE_TYPE')"
+                   @change="selectControl($event,'issueType','ISSUE_TYPE')"
                    v-model="updateFormData.issueType"
                    clearable>
           <el-option v-for="(text,item) in ISSUE_TYPE"
@@ -151,9 +150,12 @@
                         placeholder="结束日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="排 序" prop="orderby" >
-          <el-radio v-model="updateFormData.orderby" label="_score">按相似度</el-radio>
-          <el-radio v-model="updateFormData.orderby" label="docIssueTime">按发布时间</el-radio>
+      <el-form-item label="排 序"
+                    prop="orderby">
+        <el-radio v-model="updateFormData.orderby"
+                  label="_score">按相似度</el-radio>
+        <el-radio v-model="updateFormData.orderby"
+                  label="docIssueTime">按发布时间</el-radio>
       </el-form-item>
       <div class="dialog-footer"
            style="text-align: center;">
@@ -171,10 +173,17 @@ import { baseRequest } from '@/api/base'
 export default {
   data() {
     return {
+      repeatedEngravingForm: {
+        docPositioning: [],
+        docTimeliness: [],
+        docType: [],
+        issueType: [],
+        docUseBroad: []
+      },
       updateFormData: {
         // publishingStructure: null,
         docPositioning: [],
-        docTimeliness: '',
+        docTimeliness: [],
         docType: [],
         issueType: [],
         docUseBroad: [],
@@ -238,8 +247,24 @@ export default {
           all.push(this[options][key])
         }
         this.updateFormData[prop] = all
+        this.repeatedEngravingForm[prop] = all
       } else if (val.find(item => item === '全部')) {
         this.updateFormData[prop] = this.updateFormData[prop].filter(item => item !== '全部')
+        this.repeatedEngravingForm[prop] = this.updateFormData[prop].filter(item => item !== '全部')
+      } else if (val.find(item => item !== '全部')) {
+        const all = []
+        for (const key in this[options]) {
+          all.push(this[options][key])
+        }
+        if (val.length === all.length - 1) {
+          if (this.repeatedEngravingForm[prop].length === all.length) {
+            this.updateFormData[prop] = []
+            this.repeatedEngravingForm[prop] = []
+          } else if (this.repeatedEngravingForm[prop].length < all.length) {
+            this.updateFormData[prop] = all
+            this.repeatedEngravingForm[prop] = all
+          }
+        }
       }
     },
     setText(val) {
@@ -265,7 +290,7 @@ export default {
     },
     resetForm() { // 重置表单
       this.updateFormData.docPositioning = []
-      this.updateFormData.docTimeliness = ''
+      this.updateFormData.docTimeliness = []
       this.updateFormData.docType = []
       this.updateFormData.issueType = []
       this.updateFormData.docUseBroad = []
