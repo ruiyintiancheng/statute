@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2019-10-17 19:59:27 
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-18 14:28:47
+ * @Last Modified time: 2020-04-13 14:33:29
  * @Description:  用户管理
  */
 <template>
@@ -80,7 +80,7 @@
             </el-form-item>
             <el-form-item class="input-order">
                           <el-button icon="el-icon-search"
-                     @click="searchOption"
+                     @click="searchOption()"
                      type="primary">查询</el-button>
                        <el-button icon="el-icon-refresh"
                      @click="reset">重置</el-button>
@@ -576,11 +576,11 @@ export default {
       }).then(() => {
         const params = {
           userId: row.userId,
-          loginName: row.loginName,
-          userName: row.userName,
-          loginPasswd: '000000'
+          loginName: row.loginName
+          // userName: row.userName
+          // loginPasswd: '000000'
         }
-        baseRequest('/manager/update', params).then(() => {
+        baseRequest('/manager/resetPassword', params).then(() => {
           this.updatePwVisable = false
           this.$Message.success('操作成功')
           this.searchOption()

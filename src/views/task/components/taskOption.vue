@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-02-27 10:33:39 
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-11 11:23:26
+ * @Last Modified time: 2020-04-13 14:25:32
  * @Description:  项目操作
  */
  <template>
@@ -1471,13 +1471,13 @@
              data.portStateStatus = 0
              baseRequest('/confProtInfo/add', data).then(_ => {
                this.$message.success('操作成功')
-               this.$router.push({ name: 'task' })
+               this.$router.go(-1)
              })
            } else {
              data.protId = this.$route.query.protId
              baseRequest('/confProtInfo/update', data).then(_ => {
                this.$message.success('操作成功')
-               this.$router.push({ name: 'task' })
+               this.$router.go(-1)
              })
            }
          }
@@ -1518,7 +1518,7 @@
            data.portStateStatus = 0
            baseRequest('/confProtInfo/add', data).then(_ => {
              this.$message.success('操作成功')
-             this.$router.push({ name: 'task' })
+             this.$router.go(-1)
            })
          } else {
            data.protId = this.$route.query.protId

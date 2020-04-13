@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-02-26 15:34:09 
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-12 11:05:08
+ * @Last Modified time: 2020-04-13 14:32:19
  * @Description:  数据源
  */
 <template>
@@ -36,7 +36,7 @@
             </el-form-item>
             <el-form-item class="input-order">
                 <el-button icon="el-icon-search"
-                     @click="searchOption"
+                     @click="searchOption()"
                      type="primary">查询</el-button>
                 <el-button icon="el-icon-plus"
                      @click="addModel">创建</el-button>
