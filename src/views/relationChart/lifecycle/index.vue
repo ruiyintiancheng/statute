@@ -1,8 +1,8 @@
 /*
  * @Author: wlq
  * @Date: 2020/1/8
- * @Last Modified by: lk
- * @Last Modified time: 2020-03-17 14:23:27
+ * @Last Modified by: wlq
+ * @Last Modified time: 2020-4-14
  * @Description:  生命周期图
  */
 <template>
@@ -48,7 +48,6 @@ import nodesTable from './components/nodesTable'
 import linksTable from './components/linksTable'
 import relation from './components/relation'
 import Chart from './components/chart/index.js'
-// import json from './components/data.json'
 import * as d3 from 'd3'
 export default {
   components: {
@@ -133,7 +132,7 @@ export default {
      * 保存图片
      */
     savePng() {
-      this.graph.savePng(`${this.name}-法律法规生命周期分析`)
+      this.graph.savePng(`${this.name}-政策法规生命周期分析`)
     },
     /**
        * 重置

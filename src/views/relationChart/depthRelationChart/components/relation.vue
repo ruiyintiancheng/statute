@@ -22,7 +22,6 @@
               <el-checkbox label="地方"></el-checkbox>
               <el-checkbox label="部门"></el-checkbox>
               <el-checkbox label="军队"></el-checkbox>
-              <el-checkbox label="空白"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
 
@@ -31,16 +30,14 @@
               <el-checkbox label="强相关"></el-checkbox>
               <el-checkbox label="有所涉及"></el-checkbox>
               <el-checkbox label="不相关"></el-checkbox>
-              <el-checkbox label="空白"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
 
           <el-form-item label="可操作性:">
             <el-checkbox-group v-model="options.docOperability.values" >
-              <el-checkbox label="强相关"></el-checkbox>
-              <el-checkbox label="有所涉及"></el-checkbox>
-              <el-checkbox label="不相关"></el-checkbox>
-              <el-checkbox label="空白"></el-checkbox>
+              <el-checkbox label="强"></el-checkbox>
+              <el-checkbox label="弱"></el-checkbox>
+              <el-checkbox label="其他"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
 
@@ -55,7 +52,6 @@
               <el-checkbox label="政策文件"></el-checkbox>
               <el-checkbox label="政策修订"></el-checkbox>
               <el-checkbox label="专家解读"></el-checkbox>
-              <el-checkbox label="空白"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
 
@@ -64,10 +60,10 @@
               <el-checkbox label="参考法律法规"></el-checkbox>
               <el-checkbox label="基本法律法规"></el-checkbox>
               <el-checkbox label="军地数据资源交换共享"></el-checkbox>
-              <el-checkbox label="军地只会信息系统互联互通"></el-checkbox>
+              <el-checkbox label="军地指挥信息系统互联互通"></el-checkbox>
               <el-checkbox label="网络安全联防联控"></el-checkbox>
               <el-checkbox label="信息基础设施共建共用"></el-checkbox>
-              <el-checkbox label="其它"></el-checkbox>
+              <el-checkbox label="其他"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
 
@@ -94,13 +90,13 @@ export default {
     return {
       mainVisible: false,
       options: {
-        docPositioning: { type: 'array', values: [] },
-        docUseBroad: { type: 'array', values: [] },
-        docAbout: { type: 'array', values: [] },
-        docOperability: { type: 'array', values: [] },
-        docType: { type: 'array', values: [] },
-        docFocalPoint: { type: 'array', values: [] },
-        docIssueTime: { type: 'date', min: '', max: '' }
+        docPositioning: { values: [], has: null },
+        docUseBroad: { values: [], has: null },
+        docAbout: { values: [], has: null },
+        docOperability: { values: [], has: null },
+        docType: { values: [], has: null },
+        docFocalPoint: { values: [], has: null },
+        docIssueTime: { min: '', max: '' }
       }
     }
   },
@@ -121,52 +117,72 @@ export default {
     onSubmit() {
       const relations = {}
       for (const key in this.options) {
-        if (this.options[key].type === 'array') {
+        if (this.options[key].value) {
           const values = this.options[key].values
           if (values && values.length > 0) {
             relations[key] = this.options[key]
+            relations[key].has = new Set(this.options[key].values)
           }
         } else {
           relations[key] = this.options[key]
         }
       }
+
       this.$emit('selRelation', check)
       this.mainVisible = false
 
       function check(obj) {
         let flag = true
         for (const key in relations) {
-          const d = relations[key]
-          if (obj.hasOwnProperty(key)) {
-            // array
-            if (d.type === 'array') {
-              flag = flag && array(obj[key], d.values)
-            }
-            // date
-            if (d.type === 'date') {
-              flag = flag && date(obj[key], d.max, d.min)
-            }
+          if (key === 'docPositioning') {
+            flag = flag && inArray(obj[key], relations[key].has)
+          }
+          if (key === 'docUseBroad') {
+            flag = flag && arrayInArray(obj[key], ';', relations[key].has)
+          }
+          if (key === 'docAbout') {
+            flag = flag && inArray(obj[key], relations[key].has)
+          }
+          if (key === 'docOperability') {
+            flag = flag && inArray(obj[key], relations[key].has)
+          }
+          if (key === 'docType') {
+            flag = flag && inArray(obj[key], relations[key].has)
+          }
+          if (key === 'docFocalPoint') {
+            flag = flag && inArray(obj[key], relations[key].has)
+          }
+          if (key === 'docIssueTime') {
+            flag = flag && inData(obj[key], [relations[key].min, relations[key].max])
           }
         }
+
         return flag
 
-        function array(value, arrays) {
+        function inArray(value, set) {
+          return set.has(value)
+        }
+        function arrayInArray(value, separator, set) {
+          if (value === null) {
+            return false
+          }
+          const newArray = value.split(separator)
           let isSel = false
-          arrays.forEach(v => {
-            if (v === value) {
+          newArray.forEach(v => {
+            if (set.has(v)) {
               isSel = true
             }
           })
           return isSel
         }
-        function date(value, max, min) {
+        function inData(value, times) {
           const time = new Date(value)
           let isSel = true
-          if (max && max !== '') {
-            isSel = isSel && time <= max
+          if (times[1] && time[1] !== '') {
+            isSel = isSel && time <= time[1]
           }
-          if (min && min !== '') {
-            isSel = isSel && time >= min
+          if (time[0] && time[0] !== '') {
+            isSel = isSel && time >= time[0]
           }
           return isSel
         }
@@ -176,15 +192,13 @@ export default {
      *  清空
      */
     clear() {
-      this.options = {
-        docPositioning: { type: 'array', values: [] },
-        docUseBroad: { type: 'array', values: [] },
-        docAbout: { type: 'array', values: [] },
-        docOperability: { type: 'array', values: [] },
-        docType: { type: 'array', values: [] },
-        docFocalPoint: { type: 'array', values: [] },
-        docIssueTime: { type: 'date', min: '', max: '' }
-      }
+      this.options.docPositioning.values = []
+      this.options.docUseBroad.values = []
+      this.options.docAbout.values = []
+      this.options.docOperability.values = []
+      this.options.docType.values = []
+      this.options.docFocalPoint.values = []
+      this.options.docIssueTime.values = []
       this.$emit('selRelation', null)
     }
   }
@@ -193,6 +207,3 @@ export default {
 <style scoped>
 
 </style>
-
-
-
