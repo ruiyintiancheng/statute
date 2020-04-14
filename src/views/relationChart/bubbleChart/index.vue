@@ -140,7 +140,7 @@ export default {
     getSize() {
       this.chart_width = document.querySelector('.app-main').offsetWidth - 40
       this.chart_height = document.querySelector('.app-main').offsetHeight - 30
-      this.toolbarHeight = document.querySelector('.app-main').offsetWidth
+      this.toolbarHeight = document.querySelector('.app-main').offsetHeight
     },
     getData() {
       const params = {}
