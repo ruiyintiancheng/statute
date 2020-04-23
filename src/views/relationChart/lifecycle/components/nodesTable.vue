@@ -28,7 +28,7 @@
               <!-- <el-button type="primary" plain size="mini" @click="path(scope.row)">查看原文</el-button> -->
             </template>
           </el-table-column>
-         </el-table>
+        </el-table>
     </div>
     <div slot="footer" class="dialog-footer">
       <el-button @click="mainVisible = false">关闭</el-button>
