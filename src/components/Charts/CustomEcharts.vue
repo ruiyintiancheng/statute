@@ -1,5 +1,7 @@
 <template>
-  <div :id="id" :style="{height:propsHeight,width:chartWidth}" :option="option"></div>
+  <div :id="id"
+       :style="{height:propsHeight,width:chartWidth}"
+       :option="option"></div>
 </template>
 <script>
 import echarts from 'echarts'
