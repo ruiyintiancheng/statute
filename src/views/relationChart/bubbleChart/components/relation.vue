@@ -4,7 +4,7 @@
 <template>
 <div :style="{'width': `${width}px`, 'height': `${height}px`, 'overflow-y': 'auto', 'overflow-x': 'hidden'}">
   <div>
-    <div class="check-group-label">政策体系:</div>
+    <div class="check-group-label">政策层级:</div>
     <div class="check-group">
       <el-checkbox-group v-model="options.docSys.values" @change="handleChange">
         <el-checkbox label="政策体系1" style="width: 100%">基础政策</el-checkbox>

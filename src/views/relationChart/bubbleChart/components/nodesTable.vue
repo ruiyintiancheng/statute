@@ -17,7 +17,7 @@
               <div>{{scope.row.year}}年{{scope.row.month}}月</div>
             </template>
           </el-table-column>
-          <el-table-column prop="docSys" label="政策体系" align="center" width="150" sortable></el-table-column>
+          <el-table-column prop="docSys" label="政策层级" align="center" width="150" sortable></el-table-column>
           <el-table-column prop="fuseField" label="军民融合领域" align="center" width="300" sortable></el-table-column>
           <el-table-column prop="docContentSys" label="二级领域" align="center" width="300" sortruetable></el-table-column>
           <el-table-column width="200" label="操作" align="center" fixed="right"> 

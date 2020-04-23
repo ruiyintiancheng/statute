@@ -1,8 +1,8 @@
 /*
  * @Author: wlq
  * @Date: 2020/1/8
- * @Last Modified by: wlq
- * @Last Modified time: 2020-4-14
+ * @Last Modified by: lk
+ * @Last Modified time: 2020-04-23 11:09:07
  * @Description:  生命周期图
  */
 <template>
@@ -14,10 +14,10 @@
     </div>
     <div class="graph-web-toolbar">
       <ul>
+        <!-- <li @click="relation"><div class="text">筛选</div></li> -->
+        <li @click="openNodesTable"><div class="text">政策列表</div></li>
+        <!-- <li @click="refresh"><div class="text">还原</div></li> -->
         <li @click="savePng"><div class="text">保存图片</div></li>
-        <!-- <li @click="refresh"><div class="text">重置</div></li> -->
-        <li @click="relation"><div class="text">筛选</div></li>
-        <li @click="openNodesTable"><div class="text">顶点列表</div></li>
       </ul>
     </div>
     <div id="contextMenu" class="contextMenu">

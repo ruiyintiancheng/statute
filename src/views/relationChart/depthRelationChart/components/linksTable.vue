@@ -1,8 +1,8 @@
 /*
- * 边列表
+ * 关系列表
  */
 <template>
-  <el-dialog title="边列表" :visible.sync="mainVisible" :close-on-click-modal='false' 
+  <el-dialog title="关系列表" :visible.sync="mainVisible" :close-on-click-modal='false' 
       append-to-body
       v-el-drag-dialog width="77%" custom-class="dialog-default">
     <div class="dialog-contant-default file-download-log linklist">

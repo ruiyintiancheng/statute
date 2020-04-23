@@ -178,13 +178,23 @@ export const constantRouterMap = [
     component: Layout,
     children: [
       {
-        name: 'bubbleChart',
-        path: '/bubbleChart',
-        component: _import('relationChart/bubbleChart/index'),
-        meta: {
-          type: '1'
-        }
+        name: 'selfCheck',
+        path: '/selfCheck',
+        component: _import('checkAnalysis/selfConsistency/index'),
+        meta: { type: '2' }
+      },
+      {
+        name: 'selfCompare',
+        path: '/selfCompare',
+        component: _import('checkAnalysis/selfConsistency/compare'),
+        meta: { type: '2' }
       }
+      // {
+      //   name: 'selfSearch',
+      //   path: '/selfSearch',
+      //   component: _import('checkAnalysis/selfConsistency/search'),
+      //   meta: { type: '2' }
+      // }
     ]
   },
   // {

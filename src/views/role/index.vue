@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-02-26 15:34:09 
  * @Last Modified by: lk
- * @Last Modified time: 2020-04-13 14:32:56
+ * @Last Modified time: 2020-04-14 10:48:50
  * @Description:  角色管理
  */
 <template>
@@ -426,7 +426,9 @@ export default {
     addModel() {
       this.operateStatus = 1
       this.updateFormData = {
-        roleName: null
+        roleName: null,
+        validTime: null,
+        invalidTime: null
       }
       this.operateVisable = true
     },
@@ -434,7 +436,9 @@ export default {
     // 修改表单
     updateOption(row) {
       this.updateFormData = {
-        roleName: null
+        roleName: null,
+        validTime: null,
+        invalidTime: null
       }
       this.operateStatus = 2
       this.currentId = row.roleId

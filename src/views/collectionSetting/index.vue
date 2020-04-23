@@ -2,15 +2,15 @@
  * @Author: lk 
  * @Date: 2020-02-26 14:51:08 
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-04 16:18:38
+ * @Last Modified time: 2020-04-17 17:32:07
  * @Description:  采集配置
  */
  <template>
      <div class="collention-setting">
          <el-tabs v-model="activeName">
-          <el-tab-pane label="采集服务器" name="first">
+          <!-- <el-tab-pane label="采集服务器" name="first">
             <cj-server></cj-server>
-          </el-tab-pane>
+          </el-tab-pane> -->
           <el-tab-pane label="代理服务" name="second">
             <dl-server></dl-server>
           </el-tab-pane>
@@ -39,7 +39,7 @@ export default {
   },
   data() {
     return {
-      activeName: 'first'
+      activeName: 'second'
     }
   },
   methods: {

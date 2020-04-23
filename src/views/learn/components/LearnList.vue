@@ -49,7 +49,7 @@ export default {
       configData: null,
       pageNo: 1,
       total: null,
-      pageSize: 12,
+      pageSize: 16,
       listLoading: false
     }
   },
@@ -114,6 +114,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .learn-list{
+      padding-bottom: 50px;
+
         .learning-center {
       // width: 80%;
       // margin: 0 auto;
@@ -131,6 +133,8 @@ export default {
         margin-bottom: 20px;
         margin-right: 34px;
         padding: 10px;
+        position: relative;
+        cursor: pointer;
 
         .item-frame {
           height: 100%;
@@ -189,6 +193,7 @@ export default {
     }
     .paging {
       text-align: center;
+      position: relative;
     }
 }
 </style>

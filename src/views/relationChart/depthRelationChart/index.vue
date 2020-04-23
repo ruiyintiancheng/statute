@@ -11,11 +11,11 @@
     <!-- 选项菜单 -->
     <div class="graph-web-toolbar">
       <ul>
-        <li @click="savePng"><div class="text">保存图片</div></li>
-        <li @click="refresh"><div class="text">重置</div></li>
         <!-- <li @click="relation"><div class="text">筛选</div></li> -->
-        <li @click="openNodesTable"><div class="text">顶点列表</div></li>
+        <li @click="openNodesTable"><div class="text">政策列表</div></li>
         <li @click="openLinksTable"><div class="text">关系列表</div></li>
+        <!-- <li @click="refresh"><div class="text">还原</div></li> -->
+        <li @click="savePng"><div class="text">保存图片</div></li>
       </ul>
     </div>
     <!-- 鼠标悬浮提示框 -->
