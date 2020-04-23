@@ -6,13 +6,13 @@
       </div>
       <el-row :gutter="20" class="mao-nav">
         <el-col :span="8">
-          <div :class="{'active': active === '0'}" @click="active = '0'"><a>政策法规关联分析</a></div>
+          <div :class="{'active': active === '0','disabled':$route.params.modelAnalysis==='0'}" @click="tabsHandle('0',$route.params.modelAnalysis==='0')"><a>政策法规关联分析</a></div>
         </el-col>
         <el-col :span="8">
-          <div :class="{'active': active === '1'}" @click="active = '1'"><a>政策法规生命周期分析</a></div>
+          <div :class="{'active': active === '1','disabled':$route.params.modelLifeCycle==='0'}" @click="tabsHandle('1',$route.params.modelLifeCycle==='0')"><a>政策法规生命周期分析</a></div>
         </el-col>
         <el-col :span="8">
-          <div :class="{'active': active === '2'}" @click="active = '2'"><a>政策法规响应层级分析</a></div>
+          <div :class="{'active': active === '2','disabled':$route.params.modelAnalysis==='0'}" @click="tabsHandle('2',$route.params.modelAnalysis==='0')"><a>政策法规响应层级分析</a></div>
         </el-col>
       </el-row>
     </div>
@@ -66,6 +66,11 @@ export default {
         this.name = response.data.item.docName
       }, _ => {
       })
+    },
+    tabsHandle(name, disabled) {
+      if (!disabled) {
+        this.active = name
+      }
     }
   }
 }
@@ -83,5 +88,9 @@ export default {
 .mao-nav .active > a {
   color: #128bed;
   border-bottom: 2px solid #128bed;
+}
+.mao-nav .disabled > a {
+  color: #C0C4CC;
+  cursor: not-allowed;
 }
 </style>

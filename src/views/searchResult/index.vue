@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 20:48:17 
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-17 14:24:36
+ * @Last Modified time: 2020-04-23 09:54:51
  * @Description:  查询列表
  */
 <template>
@@ -35,9 +35,9 @@
              v-html="item.docContent"></p>
           <p class="bar-date" style="font-size:12px;color:#999">{{item.docIssueTime==='null'?'':item.docIssueTime}}</p>
           <div class="model-button" style="padding-bottom: 10px">
-            <el-button :disabled="!item.modelAnalysis" size="small"  @click="openChart(item.id, item.docName, '0')">政策法规关联分析 </el-button>
-            <el-button :disabled="!item.modelLifeCycle" size="small"  @click="openChart(item.id, item.docName, '1')">政策法规生命周期分析 </el-button>
-            <el-button :disabled="!item.modelAnalysis" size="small"  @click="openChart(item.id, item.docName, '2')">政策法规响应层级分析</el-button>
+            <el-button :disabled="!item.modelAnalysis" size="small"  @click="openChart(item, '0')">政策法规关联分析 </el-button>
+            <el-button :disabled="!item.modelLifeCycle" size="small"  @click="openChart(item, '1')">政策法规生命周期分析 </el-button>
+            <el-button :disabled="!item.modelAnalysis" size="small"  @click="openChart(item, '2')">政策法规响应层级分析</el-button>
           </div>
         </div>
         <el-pagination v-if="total || total === 0"
@@ -184,12 +184,16 @@ export default {
         this.seacrHandle()
       }
     },
-    openChart(id, name, type) {
+    openChart(item, type) {
       this.$router.push({
-        path: 'relationChart',
+        name: 'relationChart',
         query: {
-          id: id,
+          id: item.id,
           type: type
+        },
+        params: {
+          modelAnalysis: item.modelAnalysis ? '1' : '0',
+          modelLifeCycle: item.modelLifeCycle ? '1' : '0'
         }
       })
     },

@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-02-26 15:34:09 
  * @Last Modified by: lk
- * @Last Modified time: 2020-04-13 14:29:07
+ * @Last Modified time: 2020-04-17 17:34:52
  * @Description:  采集任务
  */
 <template>
@@ -74,14 +74,14 @@
                            align="center"
                            min-width="200">
           </el-table-column>
-          <el-table-column prop="sysCount"
+          <!-- <el-table-column prop="sysCount"
                            label="采集服务器"
                            align="center"
                            min-width="200">
                 <template slot-scope="scope">
                   <el-button @click="currentProtId=scope.row.protId;cjVisible=true" type="text">{{scope.row.sysCount | unitGe}}</el-button>
                 </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column prop="agntCount"
                            label="代理服务"
                            align="center"
@@ -95,14 +95,14 @@
                            align="center"
                            min-width="200">
           </el-table-column>
-          <el-table-column 
+          <!-- <el-table-column 
                            label="线程"
                            align="center"
                            min-width="200">
                 <template slot-scope="scope">
                     {{scope.row.protMinT + '-' + scope.row.protMaxT}}
                 </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column 
                            label="任务计划"
                            align="center"

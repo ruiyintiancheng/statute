@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-02-27 10:33:39 
  * @Last Modified by: lk
- * @Last Modified time: 2020-04-13 14:25:32
+ * @Last Modified time: 2020-04-20 10:14:09
  * @Description:  项目操作
  */
  <template>
@@ -64,7 +64,7 @@
                                       :rows="3"
                                       clearable></el-input>
                           </el-form-item>
-                          <el-form-item prop="confSysList" label-width="100px"
+                          <!-- <el-form-item prop="confSysList" label-width="100px"
                                           label="系统环境:" class="extend-length-href">
                               <ul class="result-list" v-if="otherItem.confSysList && otherItem.confSysList.length>0">
                                   <li v-for="item in otherItem.confSysList" :key="item.sysId">
@@ -76,8 +76,8 @@
                                   </li>
                               </ul>
                               <el-button class="add-result" size="mini" @click="addOptions('confSysList')"><i class="el-icon-plus"></i></el-button>
-                          </el-form-item>
-                          <el-form-item prop="confAgntList"
+                          </el-form-item> -->
+                          <el-form-item prop="confAgntList" label-width="100px"
                                           label="代理服务:" class="extend-length-href">
                               <ul class="result-list"  v-if="otherItem.confAgntList && otherItem.confAgntList.length>0">
                                   <li v-for="item in otherItem.confAgntList" :key="item.agntId">
@@ -122,78 +122,6 @@
                       </p>
                   </div>
                   <!--项目状态end -->
-              </el-tab-pane>
-              <el-tab-pane label="线程控制/队列设置" name="second">
-                    <!-- 线程控制 -->
-                  <h4 class="model-title">
-                      线程控制
-                  </h4>
-                  <div class="model-container">
-                          <el-form-item prop="protMaxT" 
-                                          >
-                              最大同时发起 
-                              <el-input-number style="width:150px;" v-model="otherItem.protMaxT"  :min="1"  ></el-input-number>
-                              个线程来下载
-                          </el-form-item>
-                          <el-form-item prop="protMinT" 
-                                          >
-                              最小同时发起 
-                              <el-input-number style="width:150px;" v-model="otherItem.protMinT"  :min="1"  ></el-input-number>
-                              个线程来下载
-                          </el-form-item>
-                          <el-form-item prop="protDelT" class="extend-length"
-                                          >
-                              如果经过 
-                              <el-input-number style="width:150px;" v-model="otherItem.protDelT"  :min="1" ></el-input-number>
-                              秒没有使用则放弃该线程
-                          </el-form-item>
-                  </div>
-                  <!-- 线程控制end -->
-                  <div class="split-line"></div>
-                  <!-- 队列设置 -->
-                  <h4 class="model-title">
-                      队列设置
-                  </h4>
-                  <div class="model-container">
-                          <el-form-item prop="portQueueRun"
-                                          >
-                                  待执行队列长度
-                                  <el-input-number style="width:150px;" v-model="otherItem.portQueueRun"  :min="0"  ></el-input-number>
-                                  （0=无限制），
-                          </el-form-item>
-                          <el-form-item prop="portQueueRunTime"
-                                          >
-                                  每间隔
-                                  <el-input-number style="width:150px;" v-model="otherItem.portQueueRunTime"  :min="60" :max="3600"></el-input-number>
-                                  秒自动同步到数据库中
-                          </el-form-item>
-                          <br>
-                          <el-form-item prop="portQueueErr"
-                                          >
-                                  错误队列长度
-                                  <el-input-number style="width:150px;" v-model="otherItem.portQueueErr" :min="0" ></el-input-number>
-                                  （0=无限制），
-                          </el-form-item>
-                          <el-form-item prop="portQueueErrTime"
-                                          >
-                                  每间隔
-                                  <el-input-number style="width:150px;" v-model="otherItem.portQueueErrTime"  :min="60" :max="3600"></el-input-number>
-                                  秒自动同步到数据库中
-                          </el-form-item>
-                          <br>
-                          <el-form-item prop="portQueueSus"
-                                          >
-                                  成功队列长度
-                                  <el-input-number style="width:150px;" v-model="otherItem.portQueueSus"  :min="0"></el-input-number>
-                          </el-form-item>
-                          <el-form-item prop="portQueueSusTime"
-                                          >
-                                  （0=无限制），每间隔
-                                  <el-input-number style="width:150px;" v-model="otherItem.portQueueSusTime"  :min="60" :max="3600"></el-input-number>
-                                  秒自动同步到数据库中
-                          </el-form-item>
-                  </div>
-                  <!--队列设置end -->                      
               </el-tab-pane>
               <el-tab-pane label="下载选项" name="third">
                   <!-- 下载选项 -->
@@ -274,162 +202,6 @@
                             </el-form-item>
                     </div>
                 <!-- 下载选项end -->
-              </el-tab-pane>
-              <el-tab-pane label="排除选项/探测设置" name="fourth">
-                  <!-- 排除选项 -->
-                  <h4 class="model-title">
-                      排除选项
-                  </h4>
-                  <div class="model-container">
-                          <el-form-item prop="protFiltCharUl" class="extend-length"
-                                          >
-                              <div class="f-left">注意：排除标准如果与项目设定冲突，则有优先权</div>
-                              <el-checkbox  true-label="1" false-label="0" class="f-right" style="width:150px;" v-model="otherItem.protFiltCharUl">匹配大小写</el-checkbox>
-                          </el-form-item>
-                          <el-form-item prop="protFiltAllChar" class="extend-length"
-                                          >
-                              <div class="f-left" style="width:550px;line-height: 23px;">不保存信息网页，或与信息网页链接的文件。除非这些网页中包含以下关键字（你可
-                          以使用*和？做替换字符；请使用分行分割关键字</div>
-                              <el-checkbox  true-label="1" false-label="0" class="f-right" style="width:150px;" v-model="otherItem.protFiltAllChar">匹配整个字符串</el-checkbox>
-                          </el-form-item>
-                          <el-form-item prop="protFiltChar" class="extend-length whole-length">
-                              <el-input 
-                                      v-model.trim="otherItem.protFiltChar"
-                                      clearable></el-input>
-                          </el-form-item>
-                          <el-form-item prop="protFiltFileName" class="extend-length whole-length">
-                              <div>不要下载任何符合以下DOS扩展名的文件（请以分号来分割扩展名，例如*.avi;*.jpg)</div>
-                              <el-input 
-                                      v-model.trim="otherItem.protFiltFileName"
-                                      clearable></el-input>
-                          </el-form-item>
-                          <el-form-item prop="protFiltId" class="extend-length whole-length">
-                              <div style="width:550px;line-height: 23px;">以下列部分网址为启始的连接不要追踪，也不要收集他们的文件。（使用“http://”
-                                  代表http忘记“ftp://”代表ftp地址。你也可以使用*和？替换字符。每个网址各占一行。</div>
-                              <ul class="result-list" v-if="otherItem.confFiltList && otherItem.confFiltList.length>0">
-                                  <li v-for="item in otherItem.confFiltList" :key="item.protFiltId">
-                                      {{item.protFilt}}
-                                      <div class="result-option">
-                                          <i class="el-icon-edit" @click="updateOptions('confFiltList','protFiltId',item.protFiltId)"></i>
-                                          <i class="el-icon-delete" @click="deleteOtherOptions('confFiltList','protFiltId',item.protFiltId)"></i>
-                                      </div>
-                                  </li>
-                              </ul>
-                              <el-button class="add-result" size="mini"  @click="addOptions('confFiltList')"><i class="el-icon-plus"></i></el-button>
-                          </el-form-item>
-                  </div>
-                  <!-- 排除选项end -->
-                  <div class="split-line"></div>
-                    <!-- 探测设置 -->
-                    <h4 class="model-title">
-                        探测设置
-                    </h4>
-                    <div class="model-container">
-                            <el-form-item prop="protSearchPic" class="extend-length"
-                                            >
-                                <el-checkbox true-label="1" false-label="0" v-model="otherItem.protSearchPic">
-                                </el-checkbox>
-                                    探测服务器端的映射图像（每隔
-                                <el-input-number style="width:150px;" v-model="otherItem.protSearchPicNum"  :min="0" :max="30" ></el-input-number>
-                                    像素）
-                            </el-form-item>
-                            <el-form-item prop="protSearchFile"
-                                            >
-                                <el-checkbox true-label="1" false-label="0" v-model="otherItem.protSearchFile">
-                                    探测框架文件</el-checkbox>
-                            </el-form-item>
-                            <el-form-item prop="protSearchJs"
-                                            >
-                                <el-checkbox true-label="1" false-label="0" v-model="otherItem.protSearchJs">
-                                    处理脚本和事件代码</el-checkbox>
-                            </el-form-item>
-                            <el-form-item prop="protSearchTable"
-                                            >
-                                <el-checkbox true-label="1" false-label="0" v-model="otherItem.protSearchTable">
-                                    尽可能探测表格</el-checkbox>
-                            </el-form-item>
-                            <el-form-item prop="protSearchCookies"
-                                            >
-                                <el-checkbox true-label="1" false-label="0" v-model="otherItem.protSearchCookies">
-                                    同意并返回Cookies</el-checkbox>
-                            </el-form-item>
-                            <br>
-                            <el-form-item prop="protSearchNum"
-                                            >
-                                    重复被拒绝请求
-                                    <el-input-number style="width:150px;" v-model="otherItem.protSearchNum"  :min="1" :max="10" ></el-input-number>
-                                    次
-                            </el-form-item>
-                            <el-form-item prop="protSearchFileNum"
-                                            >
-                                    没有完成的文件重复
-                                    <el-input-number style="width:150px;" v-model="otherItem.protSearchFileNum"  :min="1" :max="10"></el-input-number>
-                                    次后放弃。
-                            </el-form-item>
-                    </div>
-                    <!--探测设置end -->       
-              </el-tab-pane>
-              <el-tab-pane label="网络礼节/更新设置" name="fifth">
-                <!-- 网络礼节 -->
-                <h4 class="model-title">
-                    网络礼节
-                </h4>
-                <div class="model-container">
-                        <el-form-item class="extend-length"
-                                        >
-                            <el-checkbox true-label="1" false-label="0" v-model="otherItem.protCoryField">启动域分散搜索（将连接请求分散给不同的服务器，避免缓慢的服务器造成网络拥塞）。</el-checkbox><br>
-                            <el-checkbox true-label="1" false-label="0" v-model="otherItem.protCorySerd">启动服务器过载保护（自动降低对于速度缓慢之服务器在同一时间内的数据请求次数）。</el-checkbox><br>
-                            <el-checkbox true-label="1" false-label="0" v-model="otherItem.protCoryRemoves">遵循自动排除标准（避免爬虫 进入站点管理员标记为无权存取的区域）。</el-checkbox><br>
-                        </el-form-item>
-                        <el-form-item prop="protCoryTime"
-                                        >
-                            等待 
-                            <el-input-number style="width:150px;" v-model="otherItem.protCoryTime"  :min="0" :max="1000" ></el-input-number>
-                            秒,当请求
-                            <el-radio v-model="otherItem.protCorySystem" label="0">较慢的服务器</el-radio>
-                            <el-radio v-model="otherItem.protCorySystem" label="1">所有服务器</el-radio>
-                        </el-form-item>
-                        <el-form-item prop="protCoryUseField" class="extend-length long-length"
-                                        label="使用此域提交所有请求:">
-                            <el-input class="form-input"
-                                    v-model.trim="otherItem.protCoryUseField"
-                                    clearable></el-input>
-                        </el-form-item>
-                        <el-form-item prop="protCoryUser" 
-                                        label="程序标识:">
-                            <el-radio v-model="otherItem.protCoryType" label="0">匿名</el-radio><br/>
-                            <el-radio v-model="otherItem.protCoryType" label="1">告知对方是爬虫</el-radio><br/>
-                            <el-radio v-model="otherItem.protCoryType" label="2">假装是 Microsoft Internet Explorer</el-radio><br/>
-                            <el-radio v-model="otherItem.protCoryType" label="3">假装是 Chrome</el-radio><br/>
-                            <el-radio v-model="otherItem.protCoryType" label="4">使用这个身份</el-radio>
-                            <el-input class="form-input" style="width:255px;"
-                                    v-model.trim="otherItem.protCoryUser"
-                                    clearable></el-input>
-                        </el-form-item>
-                </div>
-                <!-- 网络礼节end -->
-                <div class="split-line"></div>
-                  <!-- 更新设置 -->
-                  <h4 class="model-title">
-                      更新设置
-                  </h4>
-                  <div class="model-container">
-                          <el-form-item prop="portUpd" 
-                                          >
-                              <el-radio v-model="otherItem.portUpd" label="0">更新好的文件</el-radio>
-                              <el-radio v-model="otherItem.portUpd" label="1">更新坏的文件</el-radio>
-                              <el-radio v-model="otherItem.portUpd" label="2">好坏文件都更新</el-radio>
-                          </el-form-item>
-                          <br>
-                          <el-form-item 
-                                          >
-                              <el-checkbox true-label="1" false-label="0" v-model="otherItem.portUpdHtml">更新HTML文件</el-checkbox>
-                              <el-checkbox true-label="1" false-label="0" v-model="otherItem.portUpdImg">更新服务器端映射图像</el-checkbox>
-                              <el-checkbox true-label="1" false-label="0" v-model="otherItem.portUpdFile">更新内嵌文件</el-checkbox>
-                              <el-checkbox true-label="1" false-label="0" v-model="otherItem.portUpdAll">更新所有其他文件</el-checkbox>
-                          </el-form-item> 
-                  </div>
-                  <!--更新设置end -->         
               </el-tab-pane>
               <el-tab-pane label="解析设置" name="sixth">
                   <!-- 解析设置 -->
@@ -1011,13 +783,14 @@
        },
        tempItem: {
          // 基本
-         protName: null,
+         protName: '',
          protNameText: null,
          protAuthor: null,
          protStart: '1',
          protWebUri: null,
          protWebName: null,
          protWebNameText: null,
+         //  confSysList: [{ sysId: '7' }],
          confSysList: [],
          confAgntList: [],
          protState: '1',

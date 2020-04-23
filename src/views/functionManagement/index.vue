@@ -163,14 +163,6 @@
                                                 </template>
                                 </el-table-column>
                                 <el-table-column 
-                                                label="类型"
-                                                align="center"
-                                                min-width="200">
-                                                 <template slot-scope="scope">
-                                                  {{scope.row.actionUrl}}
-                                                </template>
-                                </el-table-column>
-                                <el-table-column 
                                                 label="URL"
                                                 align="center"
                                                 min-width="200">
