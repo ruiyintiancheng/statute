@@ -100,17 +100,6 @@
                  :model="screenData"
                  label-width="88px">
           <el-form-item label="发文机构 :">
-            <!-- <el-select v-model="screenData.Dispatch"
-                       style="width:215px"
-                       clearable
-                       placeholder="">
-              <el-option v-for="(item,index) in organization"
-                         :key="index"
-                         :label="item"
-                         :value="index"></el-option>
-
-            </el-select> -->
-
             <el-cascader v-model="screenData.Dispatch"
                          style="width:215px"
                          clearable
@@ -152,7 +141,7 @@
               :sm="12"
               :lg="12">
         <div class="statistics-card top-card">
-          <div class="statistics-card-title">{{barTittle}}</div>
+          <div class="statistics-card-title">政策法规收录统计</div>
           <div class="statistics-card-context">
             <custom-echarts ref="baosongqingkuangChart"
                             propsHeight="400px"
@@ -166,7 +155,7 @@
               :lg="12">
 
         <div class="statistics-card top-card">
-          <div class="statistics-card-title">{{policyLevelTittle}}</div>
+          <div class="statistics-card-title">政策层级统计</div>
           <div class="statistics-card-context">
             <custom-echarts ref="zhengcecengcitongji"
                             propsHeight="400px"
@@ -178,7 +167,7 @@
       <el-col :sm="12"
               :lg="12">
         <div class="statistics-card top-card">
-          <div class="statistics-card-title">{{lineTittle}}</div>
+          <div class="statistics-card-title">政策法规逐年发布趋势</div>
           <div class="statistics-card-context">
             <custom-echarts ref="fabuliangqushiChart"
                             propsHeight="400px"
@@ -190,7 +179,7 @@
       <el-col :sm="12"
               :lg="12">
         <div class="statistics-card">
-          <div class="statistics-card-title">{{pieTittle}}</div>
+          <div class="statistics-card-title">公文发布类型统计</div>
           <div class="statistics-card-context">
             <custom-echarts ref="ziduanbaosongtongjiChart"
                             propsHeight="400px"
@@ -202,7 +191,7 @@
       <el-col :sm="12"
               :lg="12">
         <div class="statistics-card">
-          <div class="statistics-card-title">{{piesTittle}}</div>
+          <div class="statistics-card-title">军民融合领域</div>
           <div class="statistics-card-context">
             <custom-echarts ref="wentitongjiChart"
                             propsHeight="400px"
@@ -214,7 +203,6 @@
     </el-row>
   </div>
 </template>
-
 <script>
 import echarts from 'echarts'
 import CustomEcharts from '@/components/Charts/CustomEcharts'
@@ -284,28 +272,7 @@ export default {
   mounted() {
     this.startTime()
     this.getOrganization()
-    baseRequest('expGroupAnalyse/selectDataStatistics').then(response => {
-      this.totalSum = response.data.item.docSysSum.totalSum
-      this.speSum = response.data.item.docSysSum.speSum
-      this.basicSum = response.data.item.docSysSum.basicSum
-      this.histogramValue = response.data.item.ministryPolicyReleaseMap.seriesList
-      this.histogramName = response.data.item.ministryPolicyReleaseMap.xAxisList
-      this.barTittle = response.data.item.ministryPolicyReleaseMap.title
-      this.brokenLineDiagramValue = response.data.item.policyeRleaseTrendMap.seriesList
-      this.brokenLineDiagramName = response.data.item.policyeRleaseTrendMap.xAxisList
-      this.lineTittle = response.data.item.policyeRleaseTrendMap.title
-      this.pieChartValue = response.data.item.docTypeStatisticsMap.seriesList
-      this.pieChartName = response.data.item.docTypeStatisticsMap.legendList
-      this.pieTittle = response.data.item.docTypeStatisticsMap.title
-      this.cakeLikeValue = response.data.item.issueOrgTypeStatisticsMap.seriesList
-      this.cakeLikeName = response.data.item.issueOrgTypeStatisticsMap.legendList
-      this.piesTittle = response.data.item.issueOrgTypeStatisticsMap.title
-      this.histogram()
-      this.brokenLineDiagram()
-      this.pieChart()
-      this.cakeLike()
-      this.roseShaped()
-    })
+    this.getOldOption()
     baseRequest('/userBehaviorColl/add', {
       resourceType: '0'
     })
@@ -351,7 +318,6 @@ export default {
           return
         }
       }
-      console.log(this.screenData.Dispatch)
 
       if (state) {
         this.headSwitch = false
@@ -361,7 +327,6 @@ export default {
         this.policyLevelValue = response.data.item.policyLevelMap.seriesList
         this.policyLevelName = response.data.item.policyLevelMap.legendList
         this.policyLevelTittle = response.data.item.policyLevelMap.title
-
         this.brokenLineDiagramValue = response.data.item.policyeRleaseTrendMap.seriesList
         this.brokenLineDiagramName = response.data.item.policyeRleaseTrendMap.xAxisList
         this.lineTittle = response.data.item.policyeRleaseTrendMap.title
@@ -393,6 +358,16 @@ export default {
     },
     histogram() { // 柱状图
       this.baosongqingkuang = {
+        title: {
+          show: !this.histogramValue || this.histogramValue.length === 0,
+          text: '暂无数据',
+          x: 'center',
+          y: 'center',
+          textStyle: {
+            fontWeight: 'normal',
+            fonrSize: 16
+          }
+        },
         color: ['#209ded'],
         tooltip: {
           trigger: 'axis',
@@ -452,26 +427,33 @@ export default {
     },
     segment() {
       if (this.screenData.date1 && this.screenData.date2) {
-        let name = ''
-        name = this.screenData.date1 + '-' + this.screenData.date2
-        if (this.brokenLineDiagramName[0] < this.screenData.date1 && this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1] >= this.screenData.date2) {
+        // const name = ''
+        if (this.brokenLineDiagramName.length === 1) {
           return [[{
-            name: name,
+            name: this.brokenLineDiagramName[0],
             xAxis: this.screenData.date1
           }, {
             xAxis: this.screenData.date2
           }]]
-        } else if (this.screenData.date1 < this.screenData.date2) {
-          if (this.brokenLineDiagramName[0] > this.screenData.date1 && this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1] > this.screenData.date2) {
+        }
+        if (this.screenData.date1 < this.screenData.date2) {
+          if (this.brokenLineDiagramName[0] < this.screenData.date1 && this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1] >= this.screenData.date2) {
             return [[{
-              name: name,
+              name: this.screenData.date1 + '-' + this.screenData.date2,
+              xAxis: this.screenData.date1
+            }, {
+              xAxis: this.screenData.date2
+            }]]
+          } else if (this.brokenLineDiagramName[0] > this.screenData.date1 && this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1] >= this.screenData.date2) {
+            return [[{
+              name: this.brokenLineDiagramName[0] + '-' + this.screenData.date2,
               xAxis: this.brokenLineDiagramName[0]
             }, {
               xAxis: this.screenData.date2
             }]]
           } else if (this.brokenLineDiagramName[0] <= this.screenData.date1 && this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1] < this.screenData.date2) {
             return [[{
-              name: name,
+              name: this.screenData.date1 + '-' + this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1],
               xAxis: this.screenData.date1
             }, {
               xAxis: this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1]
@@ -487,12 +469,21 @@ export default {
         //   xAxis: this.screenData.date2
         // }]]
       } else {
-        alert(0)
         return []
       }
     },
     brokenLineDiagram() { // 近几年发布量趋势
       this.fabuliangqushi = {
+        title: {
+          show: !this.brokenLineDiagramValue || this.brokenLineDiagramValue.length === 0,
+          text: '暂无数据',
+          x: 'center',
+          y: 'center',
+          textStyle: {
+            fontWeight: 'normal',
+            fonrSize: 16
+          }
+        },
         // color: ['#209ded'],
         tooltip: {
           trigger: 'axis'
@@ -554,6 +545,16 @@ export default {
     },
     pieChart() { // 饼状图1
       this.ziduanbaosongtongji = {
+        title: {
+          show: !this.pieChartValue || this.pieChartValue.length === 0,
+          text: '暂无数据',
+          x: 'center',
+          y: 'center',
+          textStyle: {
+            fontWeight: 'normal',
+            fonrSize: 16
+          }
+        },
         tooltip: {
           trigger: 'item',
           formatter: '{a}{b} : {c} ({d}%)'
@@ -585,6 +586,16 @@ export default {
     },
     cakeLike() { // 饼状图2
       this.wentitongji = {
+        title: {
+          show: !this.cakeLikeValue || this.cakeLikeValue.length === 0,
+          text: '暂无数据',
+          x: 'center',
+          y: 'center',
+          textStyle: {
+            fontWeight: 'normal',
+            fonrSize: 16
+          }
+        },
         tooltip: {
           trigger: 'item',
           formatter: '{a} {b} : {c} ({d}%)'
@@ -618,6 +629,16 @@ export default {
     // zhengcecengcitongji
     roseShaped() {
       this.zhengcecengcitongji = {
+        title: {
+          show: !this.policyLevelValue || this.policyLevelValue.length === 0,
+          text: '暂无数据',
+          x: 'center',
+          y: 'center',
+          textStyle: {
+            fontWeight: 'normal',
+            fonrSize: 16
+          }
+        },
         tooltip: {
           trigger: 'item',
           formatter: '{a} {b} : {c} ({d}%)'
@@ -626,7 +647,7 @@ export default {
         legend: {
           // orient: 'vertical',
           bottom: 'bottom',
-          data: this.cakeLikeName,
+          data: this.policyLevelName,
           y: '75%'
         },
         series: [
@@ -636,7 +657,7 @@ export default {
             radius: '50%',
             center: ['50%', '40%'],
             // roseType: 'area',
-            data: this.cakeLikeValue,
+            data: this.policyLevelValue,
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
@@ -671,6 +692,7 @@ export default {
     },
     back2Home() {
       this.headSwitch = true
+      this.getOldOption()
       this.$nextTick(_ => {
         this.$refs.baosongqingkuangChart.initChart()
         this.$refs.baosongqingkuangChart.chart.resize()
@@ -686,6 +708,30 @@ export default {
       baseRequest('/bOrgBasic/getOption').then(response => {
         this.organization = response.data.item
       })
+    },
+    getOldOption() {
+      baseRequest('expGroupAnalyse/selectDataStatistics').then(response => {
+        this.totalSum = response.data.item.docSysSum.totalSum
+        this.speSum = response.data.item.docSysSum.speSum
+        this.basicSum = response.data.item.docSysSum.basicSum
+        this.histogramValue = response.data.item.ministryPolicyReleaseMap.seriesList
+        this.histogramName = response.data.item.ministryPolicyReleaseMap.xAxisList
+        this.barTittle = response.data.item.ministryPolicyReleaseMap.title
+        this.brokenLineDiagramValue = response.data.item.policyeRleaseTrendMap.seriesList
+        this.brokenLineDiagramName = response.data.item.policyeRleaseTrendMap.xAxisList
+        this.lineTittle = response.data.item.policyeRleaseTrendMap.title
+        this.pieChartValue = response.data.item.docTypeStatisticsMap.seriesList
+        this.pieChartName = response.data.item.docTypeStatisticsMap.legendList
+        this.pieTittle = response.data.item.docTypeStatisticsMap.title
+        this.cakeLikeValue = response.data.item.issueOrgTypeStatisticsMap.seriesList
+        this.cakeLikeName = response.data.item.issueOrgTypeStatisticsMap.legendList
+        this.piesTittle = response.data.item.issueOrgTypeStatisticsMap.title
+        this.histogram()
+        this.brokenLineDiagram()
+        this.pieChart()
+        this.cakeLike()
+        this.roseShaped()
+      })
     }
   }
 }
@@ -698,9 +744,9 @@ export default {
   .statistical-screening {
     width: 1200px;
     height: 60px;
-    margin: 0 auto;
+    margin: 25px auto 0 auto;
     position: relative;
-    top: 15px;
+    // top: 15px;
     // border: 1px solid #ccc;
     .screening {
       width: 80%;
