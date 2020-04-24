@@ -85,8 +85,8 @@ export default {
     },
     // 开始对比
     compare() {
-      this.targetFileId = 500345
-      this.contrastFileId = 500345
+      // this.targetFileId = 500345
+      // this.contrastFileId = 500345
 
       if ((this.uploadFileId === null && this.targetFileId === null) ||
         this.contrastFileId === null) {
