@@ -16,7 +16,7 @@
         <div class="home-item" @click="$router.push({name:'statisticsIndex'})">
           <img :src="all">
           <p class="home-item-text">
-            数据统计
+            统计概览
           </p>
         </div>
         <div class="home-item"  @click="$router.push({name:'search'})">

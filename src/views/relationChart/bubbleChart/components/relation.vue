@@ -2,54 +2,54 @@
  * 筛选列表
  */
 <template>
-<div :style="{'width': `${width}px`, 'height': `${height}px`, 'overflow-y': 'auto', 'overflow-x': 'hidden'}">
-  <div>
+<div >
+  <div class="oprate-item">
     <div class="check-group-label">政策层级:</div>
     <div class="check-group">
       <el-checkbox-group v-model="options.docSys.values" @change="handleChange">
-        <el-checkbox label="政策体系1" style="width: 100%">基础政策</el-checkbox>
-        <el-checkbox label="政策体系2" style="width: 100%">具体政策</el-checkbox>
+        <el-checkbox label="政策体系1" >基础政策</el-checkbox>
+        <el-checkbox label="政策体系2" >具体政策</el-checkbox>
       </el-checkbox-group>
     </div>
   </div>
-  <div>
+  <div class="oprate-item">
     <div class="check-group-label">军民融合领域:</div>
     <div class="check-group">
       <el-checkbox-group v-model="options.fuseField.values" @change="handleChange">
-        <el-checkbox style="width: 100%" label="基础设施共建共享领域"></el-checkbox>
-        <el-checkbox style="width: 100%" label="国防科技工业武器装备领域"></el-checkbox>
-        <el-checkbox style="width: 100%" label="军民科技协同创新领域"></el-checkbox>
-        <el-checkbox style="width: 100%" label="重大安全领域"></el-checkbox>
-        <el-checkbox style="width: 100%" label="军地人力资源开发领域"></el-checkbox>
-        <el-checkbox style="width: 100%" label="军队保障社会化领域"></el-checkbox>
-        <el-checkbox style="width: 100%" label="统筹应急应战公共安全领域"></el-checkbox>
+        <el-checkbox style="width: 100%;" label="基础设施共建共享领域"></el-checkbox>
+        <el-checkbox style="width: 100%;margin-top:5px;" label="国防科技工业武器装备领域"></el-checkbox>
+        <el-checkbox style="width: 100%;margin-top:5px;" label="军民科技协同创新领域"></el-checkbox>
+        <el-checkbox style="width: 100%;margin-top:5px;" label="重大安全领域"></el-checkbox>
+        <el-checkbox style="width: 100%;margin-top:5px;" label="军地人力资源开发领域"></el-checkbox>
+        <el-checkbox style="width: 100%;margin-top:5px;" label="军队保障社会化领域"></el-checkbox>
+        <el-checkbox style="width: 100%;margin-top:5px;" label="统筹应急应战公共安全领域"></el-checkbox>
       </el-checkbox-group>
     </div>
   </div>
-  <div>
+  <!-- <div>
     <div class="check-group-label">二级领域:</div>
     <div class="check-group">
-      <el-checkbox-group v-model="options.docContentSys.values" @change="handleChange">
+      <el-checkbox-group v-model="options.docContentSys.values" @change="handleChange"> -->
         <!-- <el-checkbox style="width: 100%" label="强相关"></el-checkbox>
         <el-checkbox style="width: 100%" label="有所涉及"></el-checkbox>
         <el-checkbox style="width: 100%" label="不相关"></el-checkbox>
         <el-checkbox style="width: 100%" label="空白"></el-checkbox> -->
-      </el-checkbox-group>
+      <!-- </el-checkbox-group>
     </div>
-  </div>
-  <div>
+  </div> -->
+  <div class="oprate-item last-oprate">
     <div class="check-group-label">发布时间:</div>
     <div class="check-group">
       <el-checkbox-group v-model="options.timeType.values" @change="handleChange">
-        <el-checkbox style="width: 100%" label=1>0-3年</el-checkbox>
-        <el-checkbox style="width: 100%" label=2>3-5年</el-checkbox>
-        <el-checkbox style="width: 100%" label=3>5-10年</el-checkbox>
-        <el-checkbox style="width: 100%" label=4>10年以前</el-checkbox>
+        <el-checkbox style="width: 90px" label=1>0-3年</el-checkbox>
+        <el-checkbox style="width: 90px" label=2>3-5年</el-checkbox>
+        <el-checkbox style="width: 90px" label=3>5-10年</el-checkbox>
+        <el-checkbox style="width: 90px" label=4>10年以前</el-checkbox>
       </el-checkbox-group>
     </div>
   </div>
-  <div style="margin-top: 10px; margin-left: 30px">
-    <el-button size='small' @click="clear" style="width: 200px">清空</el-button>
+  <div class="clear-button">
+    <el-button size='small' @click="clear" style="width: 236px">清空</el-button>
   </div>
 </div>
 </template>
@@ -172,13 +172,26 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+  .oprate-item{
+    padding:15px 0;
+    border-bottom:1px solid #dedfdf;
+    &.last-oprate{
+      border-bottom:none;
+    }
+  }
   .check-group-label {
-    padding: 5px;
+    color:#666;
+    margin-bottom:15px;
+    font-weight: 600;
   }
-  .check-group {
-    margin-left: 35px;
+  .clear-button{
+    margin-top:15px;
+    text-align: center;
   }
+  // .check-group {
+    // margin-left: 35px;
+  // }
 </style>
 
 
