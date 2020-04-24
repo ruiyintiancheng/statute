@@ -68,8 +68,7 @@ export default {
       sourceFileName: null,
       // 对比文件名称
       targetFileName: null,
-      uploadUrl: 'http://localhost:8090/demo/upload',
-      // uploadUrl: '/wsClient/upload',
+      uploadUrl: '/wsClient/upload',
       fileList: []
     }
   },
@@ -86,8 +85,18 @@ export default {
     },
     // 开始对比
     compare() {
-      this.targetFileId = 500002
-      this.contrastFileId = 500005
+      this.targetFileId = 500345
+      this.contrastFileId = 500345
+
+      if ((this.uploadFileId === null && this.targetFileId === null) ||
+        this.contrastFileId === null) {
+        this.$message({
+          showClose: true,
+          message: '请选择文件',
+          type: 'error'
+        })
+        return
+      }
 
       this.$router.push({
         path: '/selfCompare',
@@ -105,6 +114,7 @@ export default {
       if (type === 'source') {
         this.sourceFileName = row.docName
         this.targetFileId = row.id
+        this.uploadFileId = null
       }
       if (type === 'target') {
         this.targetFileName = row.docName
@@ -120,10 +130,8 @@ export default {
     // 上传文件
     sourceUploadRequest(content) {
       const patt = new RegExp('.*\.(txt|doc|docx)$')
-      console.log(content.file.name)
-      console.log(patt.test(content.file.name))
       if (!patt.test(content.file.name)) {
-        console.log('error')
+        this.sourceFileName = null
         this.$refs.upload.clearFiles
         this.$message({
           showClose: true,
@@ -138,9 +146,15 @@ export default {
         content.onSuccess('文件上传成功！')
         this.uploadFileId = response.data.item.fileId
         this.sourceFileName = response.data.item.fileName
+        this.targetFileId = null
       }, _ => {
         this.$refs.upload.clearFiles()
         this.item.fileId = null
+        this.$message({
+          showClose: true,
+          message: '上传失败',
+          type: 'error'
+        })
       })
     }
   }

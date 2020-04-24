@@ -66,12 +66,8 @@ export default {
   components: {
     compareTable
   },
-  props: {
-
-  },
-  computed: {
-
-  },
+  props: {},
+  computed: {},
   data() {
     return {
       mainLoading: true,
@@ -100,8 +96,7 @@ export default {
 
     }
   },
-  created() {
-  },
+  created() {},
   mounted() {
     this.uploadFileId = this.$route.query.uploadFileId
     this.targetFileId = this.$route.query.targetFileId
@@ -143,6 +138,7 @@ export default {
         uploadFileId: this.uploadFileId,
         contrastFileId: this.contrastFileId
       }
+
       const url = '/wsClient/selfConsCheck'
       // const url = 'http://localhost:8090/demo/json'
       baseRequest(url, params).then(response => {
@@ -300,6 +296,13 @@ export default {
       const svg = d3.select('#compare_middle_chart').append('svg')
         .attr('width', width)
         .attr('height', height)
+
+      // 同步滚动
+      svg.on('wheel', e => {
+        const scale = d3.event.deltaY / 5
+        this.$refs.compare_left.scrollTop += scale
+        this.$refs.compare_right.scrollTop += scale
+      })
 
       const g = svg.append('g')
 
