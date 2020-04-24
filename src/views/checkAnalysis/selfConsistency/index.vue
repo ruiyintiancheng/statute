@@ -7,7 +7,7 @@
  */
 <template>
   <div style="width: 100%; height: 100%; position: relative;">
-    <div class="box box_centre">
+    <div class="box box_centre" style="margin: 0 auto; top: 20%;">
       <!-- 目标文件 -->
       <div class="content box_centre">
         <div class="line">
@@ -29,7 +29,9 @@
         <div class="line">
           <div class="cell">对比公文:</div>
           <div class="cell" style="width: 500px;"><el-input v-model="targetFileName" :disabled="true" placeholder=""></el-input></div>
-          <div classs="cell"><el-button class="menu2" size="small" @click="openDialog('target')">选择库中公文</el-button></div>
+          <div class="cell">
+            <el-button class="menu2" size="small" @click="openDialog('target')">选择库中公文</el-button>
+          </div>
         </div>
         <div class="line" style="text-align: center;">
           <div><el-button class="menu" size="small" @click="compare">开始对比</el-button></div>
@@ -66,7 +68,8 @@ export default {
       sourceFileName: null,
       // 对比文件名称
       targetFileName: null,
-      uploadUrl: '/wsClient/upload',
+      uploadUrl: 'http://localhost:8090/demo/upload',
+      // uploadUrl: '/wsClient/upload',
       fileList: []
     }
   },
@@ -83,6 +86,9 @@ export default {
     },
     // 开始对比
     compare() {
+      this.targetFileId = 500002
+      this.contrastFileId = 500005
+
       this.$router.push({
         path: '/selfCompare',
         query: {
@@ -113,6 +119,19 @@ export default {
     },
     // 上传文件
     sourceUploadRequest(content) {
+      const patt = new RegExp('.*\.(txt|doc|docx)$')
+      console.log(content.file.name)
+      console.log(patt.test(content.file.name))
+      if (!patt.test(content.file.name)) {
+        console.log('error')
+        this.$refs.upload.clearFiles
+        this.$message({
+          showClose: true,
+          message: '错误的文件类型,请选择txt/doc/docx文件上传',
+          type: 'error'
+        })
+        return
+      }
       var form = new FormData()
       form.append('file', content.file)
       baseUpload(this.uploadUrl, form).then((response) => {

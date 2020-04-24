@@ -6,16 +6,15 @@
  * @Description:  自洽性校验--比对结果
  */
 <template>
-  <div style="padding: 10px;" v-loading="mainLoading">
+  <div v-loading="mainLoading">
     <el-tabs v-model="activeName">
       <el-tab-pane label="内容对比" name="first">
-        <div>
-          <div>
-            <div style="padding: 5px 0;"><h2>分值: <span style="color: red;">XXX</span></h2></div>
+        <div class="tab-main" style="margin: 0px 30px;">
+            <div style="padding: 10px 0 20px 0;"><h2>分值: <span style="color: red;">{{fraction}}</span></h2></div>
             <div id="compare_main" style="position: relative;">
               <div class="compare_col" :style="{width: `${textWidth}px`, 'background-color': '#ffffff'}">
                 <div ref="compare_left" id="compare_left" @scroll="handleScroll('left')" :style="{height: `${textHeight}px`, 'overflow-y': 'auto', position: 'relative', color: 'gray'}">
-                  <div style="font-size: 16px; padding: 10px 5px 0 5px;">
+                  <div style="font-size: 16px; padding: 10px 10px 0;">
                     <span style="font-weight: 600; color: black;">目标文件: </span>
                     <span>{{sourceFileName}}</span>
                   </div>
@@ -48,7 +47,6 @@
               :style="{left: `${textWidth + 10}px`, top: `${score_top}px`}">
                 相似度评分: {{score_text}}
             </div>
-          </div>
         </div>
       </el-tab-pane>
       <el-tab-pane label="标签对比" name="second">
@@ -86,6 +84,7 @@ export default {
       contrastFileId: null,
       sourceFileName: null,
       targetFileName: null,
+      fraction: null,
 
       sourceContent: null,
       targetContent: null,
@@ -110,11 +109,19 @@ export default {
     this.sourceFileName = this.$route.query.sourceFileName
     this.targetFileName = this.$route.query.targetFileName
 
-    const width = document.querySelector('.app-main').offsetWidth
+    const width = document.querySelector('.tab-main').offsetWidth
     this.textWidth = (width - 150 - 30) / 2 - 20
     const height = document.querySelector('.app-main').offsetHeight
-    this.textHeight = height - 115
+    this.textHeight = height - 135
     this.$nextTick(function() {
+      document.querySelector('.el-tabs__nav-scroll').style.backgroundColor = 'white'
+      document.querySelector('.el-tabs__nav-scroll').style.paddingLeft = '30px'
+
+      const x = document.querySelectorAll('.el-tabs__item')
+      for (let i = 0; i < x.length; i++) {
+        x[i].style.fontSize = '17px'
+        x[i].style.fontWeight = 600
+      }
       this.getData()
     })
   },
@@ -143,6 +150,7 @@ export default {
         const sourceFile = response.data.item.sourceDocContent
         const targetFile = response.data.item.targetDocContent
         const checkResult = response.data.item.checkResult
+        this.fraction = response.data.item.fraction
 
         const sourceLabelResult = response.data.item.sourceLabelResult
         sourceLabelResult.docFileName = this.sourceFileName
@@ -479,7 +487,7 @@ export default {
     white-space: pre-line; 
     font-size: 14px; 
     line-height: 150%;
-    padding: 0 5px;
+    padding: 0 10px;
   }
 
   .compare_shade {
