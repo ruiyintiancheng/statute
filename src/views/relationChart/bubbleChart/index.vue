@@ -9,31 +9,32 @@
         <div id="brush"></div>
         <div id="legend"></div>
       </div>
+      <!-- 展开按钮 -->
+      <div class="graph-toolbar-open" v-show="!toolbarShow" @click="clickToolbar"><div class="text no-text-select">展开</div></div>
       <!-- 选项菜单 -->
-      <div class="graph-toolbar">
+      <div class="graph-toolbar" v-show="toolbarShow">
         <div class="graph-web-toolbar">
-          <ul>
-            <li :class="activeName === '筛选'? 'active' : null " @click="activeName='筛选'"><div class="text">筛选</div></li>
-            <li :class="activeName === '帮助'? 'active' : null " @click="activeName='帮助'"><div class="text">帮助</div></li>
-            <li :class="activeName === '政策列表'? 'active' : null " @click="clickInfo"><div class="text">政策列表</div></li>
-            <li @click="clickTypeSwitch"><div class="text">切换</div></li>
-            <li v-show="toolbarShow" @click="clickToolbar"><div class="text">收起</div></li>
-            <li v-show="!toolbarShow" @click="clickToolbar"><div class="text">打开</div></li>
+          <ul class="clearfix">
+            <li :class="activeName === '筛选'? 'active' : null " @click="activeName='筛选'"><div class="text  no-text-select">筛选</div></li>
+            <li :class="activeName === '帮助'? 'active' : null " @click="activeName='帮助'"><div class="text  no-text-select">帮助</div></li>
+            <!-- <li :class="activeName === '政策列表'? 'active' : null " @click="clickInfo"><div class="text">政策列表</div></li> -->
+            <li @click="clickTypeSwitch"><div class="text  no-text-select">切换年/月</div></li>
+            <li v-show="toolbarShow" @click="clickToolbar"><div class="text no-text-select">收起</div></li>
           </ul>
         </div>
         <!-- v-show="toolbarShow" -->
         <div class="graph-web-tabpane" :style="{'width': `${toolbarWidth}px`}">
-          <el-tabs v-model="activeName">
-            <el-tab-pane name="筛选">
-              <relation-pane ref="relation" :width="260" :height="toolbarHeight" @selRelation="selRelation"></relation-pane>
-            </el-tab-pane>
-            <el-tab-pane name="帮助">
-              <explain-pane :width="260" :height="toolbarHeight"></explain-pane>
-            </el-tab-pane>
+          <!-- <el-tabs v-model="activeName">
+            <el-tab-pane name="筛选"> -->
+              <relation-pane ref="relation" v-show="activeName==='筛选'" :width="260" :height="toolbarHeight" @selRelation="selRelation"></relation-pane>
+            <!-- </el-tab-pane> -->
+            <!-- <el-tab-pane name="帮助"> -->
+              <explain-pane v-show="activeName==='帮助'" :width="260" :height="toolbarHeight"></explain-pane>
+            <!-- </el-tab-pane>
             <el-tab-pane name="政策列表">
               <info-pane ref="infoPane" :width="260" :height="toolbarHeight"></info-pane>
             </el-tab-pane>
-          </el-tabs>
+          </el-tabs> -->
         </div>
       </div>
       
@@ -138,7 +139,7 @@ export default {
   },
   methods: {
     getSize() {
-      this.chart_width = document.querySelector('.app-main').offsetWidth - 40
+      this.chart_width = document.querySelector('.app-main').offsetWidth
       this.chart_height = document.querySelector('.app-main').offsetHeight - 30
       this.toolbarHeight = document.querySelector('.app-main').offsetHeight
     },
@@ -208,7 +209,7 @@ export default {
     /** 菜单折叠 */
     clickToolbar() {
       this.toolbarShow = !this.toolbarShow
-      this.toolbarWidth = this.toolbarShow ? 300 : 0
+      // this.toolbarWidth = this.toolbarShow ? 300 : 0
     },
     clickInfo() {
       this.$refs.infoPane.setData(this.graph.get('data'))
@@ -222,27 +223,36 @@ export default {
 }
 </script>
 
-<style scoped>
-  /* @import '../components/chart.css'; */
+<style lang="scss" scoped>
   .graph-toolbar {
     position: absolute;
     display: block;
-    bottom: 0;
+    top: 0;
     right: 0;
-    height: 100%;
+    height: calc(100% - 30px);
     font-size: 14px;
     background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+  }
+  .graph-toolbar-open{
+    position: absolute;
+    display: block;
+    top: 0;
+    right: 0;
+    font-size: 12px;
+    background-color: #26378b;
+    height: 54px;
+    line-height: 54px;
+    color:#fff;
+    padding:0 20px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;    
   }
   
-/* 右侧工具菜单 */
 
   .graph-web-toolbar {
-    float: left;
-    width: 40px;
-    height: 100%;
     cursor: pointer;
-    border-left: 1px solid #dedede;
-    border-right: 1px solid #dedede;
+    background-color: #26378b;
   }
 
 
@@ -251,29 +261,35 @@ export default {
     box-sizing: border-box;
     text-align: center;
     padding: 0px;
-    border-top: 1px solid #dedede;
-    border-left: 1px solid #dedede;
-    border-right: 1px solid #dedede;
   }
 
   .graph-web-toolbar ul > li {
-    padding: 7px;
     list-style: none;
-    border-bottom: 1px solid #dedede;
+    height: 54px;
+    line-height: 54px;
+    float: left;
+    color:#fff;
+    padding:0 20px;
+    font-size: 12px;
+    position: relative;
   }
-
-  .graph-web-toolbar ul > li:hover {
-    background-color: #409eff;
-    color: white;
-  }
-  .graph-web-toolbar ul > li.active {
-    background-color: #409eff;
-    color: white;
+  .graph-web-toolbar ul > li.active:after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 9px;
+    background-image: url("./images/barArrow.png");
+    bottom: 0;
+    left: 50%;
+    margin-left: -7px;
   }
 
   .graph-web-tabpane {
     transition: width 0.75s;
-    height: 100%;
+    height: calc(100% - 55px);
+    overflow: hidden;
+    padding:0 15px;
+    color:#333333;
   }
 
   #title.title {

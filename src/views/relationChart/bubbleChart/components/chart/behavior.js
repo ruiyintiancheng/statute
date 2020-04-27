@@ -2,7 +2,6 @@ import Data from './data.js'
 
 const Behavior = {
   showAll(cfg) {
-    console.log('clear')
     const newData = []
     const nodes = Data.getData()
     nodes.forEach(d => {

@@ -2,7 +2,7 @@
  * 标签对比
  */
 <template>
-  <div>
+  <div class="my_main">
     <el-table :data="tableData" style="width: 100%;" :max-height="tableHeight"
       :header-cell-style="{color:'gray', 'background-color': '#d8dadb', fontSize:'16px'}"
       :border="true" :fit="true">
@@ -31,7 +31,7 @@ export default {
   },
   mounted() {
     this.$nextTick(function() {
-      this.tableHeight = document.querySelector('.app-main').offsetHeight - 74
+      this.tableHeight = document.querySelector('.app-main').offsetHeight - 156
     })
   },
   methods: {
@@ -56,6 +56,13 @@ export default {
 }
 </script>
 <style scoped>
+  .my_main {
+    margin: 20px 50px;
+    padding: 30px;
+    background-color: white;
+    border: 1px solid #dddddd;
+  }
+
   .circle {
     width: 15px;      
     height: 15px;      

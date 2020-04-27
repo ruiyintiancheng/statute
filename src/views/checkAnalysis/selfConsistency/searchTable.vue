@@ -13,58 +13,73 @@
       v-el-drag-dialog>
     <div style="padding: 5px 50px">
       <div>
-        <el-row :gutter="20" style="padding: 20px 0;">
+        <el-row :gutter="20" style="padding: 10px 0;">
+          <el-col :span="24" style="margin-left: calc(50% - 400px);">
+            <div>
+              <span style="float: left; line-height: 36px; padding: 0 10px;">公文名称:</span>
+              <div style="width: 695px; height: 36px; float: left;">
+                <el-input v-model="option.docName" placeholder="请输入公文名称"></el-input>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" style="padding: 10px 0;">
           <el-col :span="12" style="text-align: right;">
               <span class="form-label">发文机构:</span>
-              <el-select v-model="issueOrgText" placeholder="请选择"
+              <el-cascader v-model="option.issueOrgText"
+                :show-all-levels="false"
+                :clearable="true"
+                :options="optionLabels.orgOption" 
+                :props="{ expandTrigger: 'hover' }"
                 style="width: 300px;">
-                <el-option label="全部" value="全部"></el-option>
-                <el-option label="国务院" value="国务院"></el-option>
-                <el-option label="工信部" value="工信部"></el-option>
-                <el-option label="发改委" value="发改委"></el-option>
-              </el-select>
+              </el-cascader>
           </el-col>
           <el-col :span="12">
               <span class="form-label">政策层次:</span>
-              <el-select v-model="docSys" placeholder="请选择"
+              <el-select v-model="option.docSys" placeholder="请选择"
                 style="width: 300px;">
                 <el-option label="全部" value="全部"></el-option>
-                <el-option label="基础政策" value="基础政策"></el-option>
-                <el-option label="具体政策" value="具体政策"></el-option>
+                <el-option v-for="(value, key, index) in optionLabels.docSys"
+                           :key="index"
+                           :label="value"
+                           :value="key">
+                </el-option>
               </el-select>
           </el-col>
         </el-row>
-        <el-row :gutter="20" style="padding: 20px 0;">
+        <el-row :gutter="20" style="padding: 10px 0;">
           <el-col :span="12" style="text-align: right;">
               <span class="form-label">军民融合领域:</span>
-              <el-select v-model="fuseField" placeholder="请选择"
+              <el-select v-model="option.fuseField" placeholder="请选择"
                   style="width: 300px;">
                 <el-option label="全部" value="全部"></el-option>
-                <el-option label="军地人力资源开发领域" value="军地人力资源开发领域"></el-option>
-                <el-option label="军队保障社会化领域" value="军队保障社会化领域"></el-option>
-                <el-option label="军民科技协同创新领域" value="军民科技协同创新领域"></el-option>
+                <el-option v-for="(value, key, index) in optionLabels.fuseField"
+                           :key="index"
+                           :label="value"
+                           :value="key">
+                </el-option>
               </el-select>
           </el-col>
           <el-col :span="12">
             <div style="float: left;">
               <span class="form-label">发布日期:</span>
-              <el-date-picker v-model.trim="startTime"
+              <el-date-picker v-model.trim="option.startTime"
                   style="width:140px" type="date"
                   format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="年-月-日">
               </el-date-picker>
             </div>
             <div>
               <span>&nbsp;--&nbsp;</span>
-              <el-date-picker v-model.trim="endTime"
+              <el-date-picker v-model.trim="option.endTime"
                   style="width:139px" type="date"
                   format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="年-月-日">
               </el-date-picker>
             </div>
           </el-col>
         </el-row>
-        <el-row style="padding: 20px 0;">
+        <el-row style="padding: 10px 0;">
           <el-col :span="24" style="text-align: center;">
-            <el-button class="menu" size="small" @click="searchOption">搜索</el-button>
+            <el-button class="menu" size="small" @click="searchOption()">搜索</el-button>
           </el-col>
         </el-row>
       </div>
@@ -81,10 +96,19 @@
             </el-table-column>
             <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
             <el-table-column  prop="docName" label="公文名称" align="center"></el-table-column>
-            <el-table-column  prop="docSys" label="政策层次" align="center" width="130"></el-table-column>
-            <el-table-column  prop="issueOrgText" label="发文机构" align="center" width="200"></el-table-column>
-            <el-table-column  prop="fuseField" label="军民让融合领域" align="center" width="200"></el-table-column>
-            <el-table-column  prop="docIssueTime" label="发布日期" align="center" width="130"></el-table-column>
+            <!-- <el-table-column  prop="docSys" label="政策层次" align="center" width="130"></el-table-column> -->
+            <!-- <el-table-column  prop="issueOrgText" label="发文机构" align="center" width="200"></el-table-column> -->
+            <!-- <el-table-column  prop="fuseField" label="军民让融合领域" align="center" width="200"></el-table-column> -->
+            <el-table-column width="130" label="发布日期" align="center"> 
+              <template slot-scope="scope">
+                <span>{{dateFormat('yyyy-MM-dd', new Date(scope.row.docIssueTime))}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column width="200" label="操作" align="center" fixed="right"> 
+              <template slot-scope="scope">
+                <el-button class="menu" size="mini" @click="openInfo(scope.row)">查看原文</el-button>
+              </template>
+            </el-table-column>
           </el-table>
           <el-pagination background
                         @size-change="handleSizeChange"
@@ -99,36 +123,63 @@
       </div>
     </div>  
     <div slot="footer" class="dialog-footer">
-       <el-button class="menu" size="small" @click="onSubmit">确定</el-button>
+      <el-button class="menu" size="small" @click="onSubmit">确定</el-button>
       <el-button size="small" @click="mainVisible = false">关闭</el-button>
     </div>
+    <el-dialog title="政策文章" width="90%" custom-class="dialog-default"
+        :visible.sync="infoVisible" 
+        :close-on-click-modal='false'
+        append-to-body
+        v-el-drag-dialog>
+      <div class="dialog-contant-default file-download-log nodelist2">
+           <policy :crawlConId=crawlConId></policy>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="infoVisible = false">关闭</el-button>
+      </div>
+    </el-dialog>
   </el-dialog>
 </template>
 <script>
+import policy from './policy'
 import { baseSearch } from '@/api/base'
 export default {
+  components: {
+    policy
+  },
   data() {
     return {
       mainVisible: false,
+      infoVisible: false,
+      crawlConId: '',
       tableToogle: false,
 
-      issueOrgText: '全部',
-      docSys: '全部',
-      fuseField: '全部',
-      startTime: null,
-      endTime: null,
+      option: {
+        docName: null,
+        issueOrgText: null,
+        docSys: '全部',
+        fuseField: '全部',
+        startTime: null,
+        endTime: null
+      },
+      optionLabels: {
+        orgOption: null,
+        docSys: null,
+        fuseField: null
+      },
 
       tableData: [],
       pageNo: 1,
       total: null,
-      pageSize: 15,
+      pageSize: 10,
       radio: null,
       currentRow: null,
       searchType: null
     }
   },
-  computed: {
-
+  computed: {},
+  mounted() {
+    this.loadOption()
   },
   methods: {
     openDialog(val) {
@@ -138,38 +189,54 @@ export default {
       this.tableToogle = false
       this.mainVisible = true
     },
+    openInfo(data) {
+      this.crawlConId = data.id + ''
+      this.infoVisible = true
+    },
     onSubmit() {
       this.$emit('selectFileName', this.searchType, this.currentRow)
       this.mainVisible = false
     },
-    // getTableHeight() {
-    //   this.$nextTick(function() {
-    //     this.tableHeight = document.querySelector('.dialog-contant-default.file-download-log.nodelist').offsetHeight - 150
-    //   })
-    // },
+    loadOption() {
+      baseSearch('/bCode/getOrgOption', {}).then(response => {
+        this.optionLabels.orgOption = response.data.item
+      })
+
+      // 政策层次: AA-012000000000000000-0001
+      // 军民融合领域: AA-011000000000000000-0001
+      const param = {
+        fCodeId: 'AA-012000000000000000-0001,AA-011000000000000000-0001'
+      }
+      baseSearch('/bCode/getOptionByFCodeId', param).then(response => {
+        const item = response.data.item
+        this.optionLabels.docSys = item.docSys
+        this.optionLabels.fuseField = item.fuseField
+      })
+    },
     searchOption(page) {
       this.tableToogle = true
       if (!page) {
         this.pageNo = 1
       }
       const param = {
+        docName: this.option.docName,
         pageNo: this.pageNo,
         pageSize: this.pageSize
       }
-      if (this.issueOrgText !== '全部') {
-        param.issueOrgText = this.issueOrgText
+      if (this.option.issueOrgText && this.option.issueOrgText.length > 0) {
+        param.issueOrgText = this.option.issueOrgText[this.option.issueOrgText.length - 1]
       }
-      if (this.docSys !== '全部') {
-        param.docSys = this.docSys
+      if (this.option.docSys !== '全部') {
+        param.docSys = this.option.docSys
       }
-      if (this.fuseField !== '全部') {
-        param.fuseField = this.fuseField
+      if (this.option.fuseField !== '全部') {
+        param.fuseField = this.option.fuseField
       }
-      if (this.startTime) {
-        param.startTime = this.startTime
+      if (this.option.startTime) {
+        param.startTime = this.option.startTime
       }
-      if (this.endTime) {
-        param.endTime = this.endTime
+      if (this.option.endTime) {
+        param.endTime = this.option.endTime
       }
 
       baseSearch('/wsClient/selects', param).then(response => {
@@ -178,17 +245,39 @@ export default {
         this.pageSize = response.data.pageSize
       })
     },
+    // 行点击
     handleCurrentRowChange(val) {
       this.currentRow = val
       this.radio = val.docName
     },
-    handleSizeChange(val) { // 分页
+    // 分页
+    handleSizeChange(val) {
       this.pageSize = val
       this.searchOption()
     },
-    handleCurrentChange(val) { // 分页
+    // 分页
+    handleCurrentChange(val) {
       this.pageNo = val
       this.searchOption(true)
+    },
+    dateFormat(fmt, date) {
+      let ret
+      const opt = {
+        'y+': date.getFullYear().toString(), // 年
+        'M+': (date.getMonth() + 1).toString(), // 月
+        'd+': date.getDate().toString(), // 日
+        'h+': date.getHours().toString(), // 时
+        'm+': date.getMinutes().toString(), // 分
+        's+': date.getSeconds().toString() // 秒
+      // 有其他格式化字符需求可以继续添加，必须转化成字符串
+      }
+      for (const k in opt) {
+        ret = new RegExp('(' + k + ')').exec(fmt)
+        if (ret) {
+          fmt = fmt.replace(ret[1], (ret[1].length === 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, '0')))
+        }
+      }
+      return fmt
     }
   }
 }

@@ -10,7 +10,7 @@
     <div class="dialog-contant-default file-download-log nodelist">
         <el-table :data="tableData" style="width: 100%;" :height="tableHeight"
           :border="true" :fit="true">
-          <el-table-column fixed type="index" width="50" label="序号" align="center" sortable></el-table-column>
+          <el-table-column  type="index" :index="indexMethod" width="50" label="#" align="center" sortable></el-table-column>
           <el-table-column  prop="docName" label="政策名称" align="center" width="500" sortable></el-table-column>
           <el-table-column width="150" label="发布时间" align="center" sortable> 
             <template slot-scope="scope">
@@ -18,15 +18,23 @@
             </template>
           </el-table-column>
           <el-table-column prop="docSys" label="政策层级" align="center" width="150" sortable></el-table-column>
-          <el-table-column prop="fuseField" label="军民融合领域" align="center" width="300" sortable></el-table-column>
-          <el-table-column prop="docContentSys" label="二级领域" align="center" width="300" sortruetable></el-table-column>
+          <el-table-column prop="fuseField" label="军民融合领域" align="center" width="400" sortable></el-table-column>
+          <el-table-column prop="docContentSys" label="二级领域" align="center" width="250" sortruetable></el-table-column>
           <el-table-column width="200" label="操作" align="center" fixed="right"> 
             <template slot-scope="scope">
-              <!-- <el-button type="primary" plain size="mini" @click="move(scope.row)">定位</el-button> -->
               <el-button type="primary" plain size="mini" @click="openInfo(scope.row)">查看原文</el-button>
             </template>
           </el-table-column>
          </el-table>
+         <el-pagination background
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="pageNo"
+                        :total="total"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :page-sizes="[10,15,20]"
+                        :page-size="pageSize">
+          </el-pagination>
     </div>
     <div slot="footer" class="dialog-footer">
       <el-button @click="mainVisible = false">关闭</el-button>
@@ -42,7 +50,6 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="infoVisible = false">关闭</el-button>
       </div>
-      
     </el-dialog>
   </el-dialog>
 </template>
@@ -54,8 +61,13 @@ export default {
       mainVisible: false,
       infoVisible: false,
       tableHeight: 100,
-      tableData: [],
-      crawlConId: ''
+
+      countData: null,
+      tableData: null,
+      crawlConId: '',
+      total: null,
+      pageNo: 1,
+      pageSize: 15
     }
   },
   components: {
@@ -67,32 +79,40 @@ export default {
   methods: {
     openDialog(data) {
       this.mainVisible = true
-      this.tableData = data
+      this.countData = data
+      this.total = data.length
+      this.getData()
       this.setTabHeight()
     },
     setTabHeight() {
       this.$nextTick(function() {
-        this.tableHeight = document.querySelector('.dialog-contant-default.file-download-log.nodelist').offsetHeight - 30
+        this.tableHeight = document.querySelector('.dialog-contant-default.file-download-log.nodelist').offsetHeight - 53
       })
     },
-    // move(row) {
-    //   this.$emit('moveNode', row)
-    //   this.mainVisible = false
-    // },
-    path(row) {
-      window.open(row.docUri, '_blank')
-    },
-    getLabel(label) {
-      if (label === 'danwei') {
-        return '发布单位'
+    getData() {
+      const array = []
+      let i = (this.pageNo - 1) * this.pageSize
+      for (; i < this.total && i < this.pageNo * this.pageSize; i++) {
+        array.push(this.countData[i])
       }
-      if (label === 'wenshu') {
-        return '政策法规'
-      }
+      this.tableData = array
     },
     openInfo(data) {
       this.crawlConId = data.id + ''
       this.infoVisible = true
+    },
+    indexMethod(index) {
+      return (this.pageNo - 1) * this.pageSize + index + 1
+    },
+    // 分页
+    handleSizeChange(val) {
+      this.pageSize = val
+      this.getData()
+    },
+    // 分页
+    handleCurrentChange(val) {
+      this.pageNo = val
+      this.getData()
     }
   }
 }
