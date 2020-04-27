@@ -3,6 +3,7 @@ module.exports = {
   ENV_CONFIG: '"prod"',
   // BASE_API: '"https://api-prod"'
   // BASE_API: '"http://47.93.121.177:8080/app/mock/17/"'
-  BASE_API: '"http://39.106.123.32:8080/cmprsNewBack"'
+  // BASE_API: '"http://39.106.123.32:8080/cmprsNewBack"'
+    BASE_API: '"http://123.56.175.133:8080/cmprs"'
   // BASE_API: '"http://localhost:8082/"'
 }

@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-23 11:16:27 
  * @Last Modified by: lk
- * @Last Modified time: 2019-12-27 14:36:35
+ * @Last Modified time: 2020-04-26 11:37:15
  * @Description:  首页
  */
 <template>
@@ -28,7 +28,7 @@
         <div class="home-item" @click="$router.push({name:'analysisIndex'})">
           <img :src="math">
           <p class="home-item-text">
-            模型分析
+            政策分析
           </p>
         </div>
         <div class="home-item" @click="$router.push({name:'learnIndex'})">

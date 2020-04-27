@@ -8,6 +8,7 @@ const user = {
     code: '',
     token: getToken(),
     name: '',
+    loginName: '',
     userId: null,
     role: '',
     deptId: null,
@@ -41,6 +42,9 @@ const user = {
     },
     SET_NAME: (state, name) => {
       state.name = name
+    },
+    SET_LOGIN_NAME: (state, loginName) => {
+      state.loginName = loginName
     },
     SET_USERID: (state, userId) => {
       state.userId = userId
@@ -101,6 +105,7 @@ const user = {
           }
           const data = response.data.item
           commit('SET_NAME', data.userName)
+          commit('SET_LOGIN_NAME', data.loginName)
           commit('SET_USERID', data.userId)
           commit('SET_ROLE', data.roleId + '')
           commit('SET_ROLENAME', data.roleName)

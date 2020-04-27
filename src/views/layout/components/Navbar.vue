@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2018-09-21 14:54:24 
  * @Last Modified by: lk
- * @Last Modified time: 2020-04-08 15:25:20
+ * @Last Modified time: 2020-04-27 17:36:47
  * @Description:  
  */
 <template>
@@ -41,15 +41,66 @@
           </div>
         </li>
         <li class="right-menu-item">
+        
           <span class="log-out">
-            <i class="log-user"
-               @click="userManagement"
-               :style="{backgroundImage:'url('+cutter+')',cursor:'pointer'}"></i>
+              <el-dropdown trigger="click" @command="handleCommand">
+                  <i class="log-user"
+                    @click="userManagement"
+                    :style="{backgroundImage:'url('+cutter+')',cursor:'pointer'}"></i>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item disabled >{{name}}</el-dropdown-item>
+                    <el-dropdown-item command="update" divided>修改用户信息</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+
             <a @click="logout">退出</a>
           </span>
         </li>
       </ul>
     </div>
+    <el-dialog title="修改用户信息"
+               :visible.sync="infoVisible"
+               width="550px"
+               custom-class="info-update-dialog dialog-default autoHeight">
+      <div class="dialog-contant-default">
+        <el-form :rules="infoRules"
+                 class="baseUpdate-form"
+                 ref="infoUpdate"
+                 style="margin-left: calc(50% - 185px)"
+                 :model="updateFormData"
+                 label-width="120px">
+          <el-form-item prop="loginName"
+                        label="登录名">
+            <el-input class="form-input"
+                      style="width:200px"
+                      :disabled="true"
+                      v-model="updateFormData.loginName"
+                      clearable></el-input>
+          </el-form-item>
+          <el-form-item prop="userName"
+                        label="用户名">
+            <el-input class="form-input"
+                      style="width:200px"
+                      v-model="updateFormData.userName"
+                      clearable></el-input>
+          </el-form-item>
+          <el-form-item prop="loginPasswd"
+                        label="登录密码">
+            <el-input class="form-input"
+                      style="width:200px"
+                      v-model="updateFormData.loginPasswd"
+                      clearable></el-input>
+          </el-form-item>
+         
+        </el-form>
+      </div>
+      <div slot="footer"
+           class="dialog-footer">
+        <el-button @click="infoVisible = false">取消</el-button>
+        <el-button type="primary"
+                   @click="saveOperate()">保存</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -57,11 +108,15 @@
 import cutter from '@/assets/images/cutter.png'
 import { mapGetters } from 'vuex'
 import { tranformStr } from '@/utils/index'
+import { saveUpdate } from '@/utils/validate'
 export default {
   computed: {
     ...mapGetters([
       'permission_top_routers',
-      'permission_left_map'
+      'permission_left_map',
+      'userId',
+      'loginName',
+      'name'
     ])
   },
   data() {
@@ -69,6 +124,25 @@ export default {
       cutter,
       searchVal: '',
       fathPath: '',
+      infoVisible: false,
+      infoRules: {
+        loginName: [
+          { required: true, message: '该项为必填项' }
+        ],
+        userName: [
+          { required: true, message: '该项为必填项' }
+        ],
+        loginPasswd: [
+          { required: true, message: '请输入密码' },
+          { min: 6, message: '密码不能少于6位' }
+        ]
+      },
+      updateFormData: {
+        userId: null,
+        userName: null,
+        loginName: null,
+        loginPasswd: null
+      },
       tranform2Str: tranformStr
     }
   },
@@ -141,6 +215,24 @@ export default {
       } else {
         this.getFathPath(map[0].children)
       }
+    },
+    handleCommand(command) {
+      if (command === 'update') {
+        this.updateFormData = {
+          userId: this.userId,
+          userName: this.name,
+          loginName: this.loginName,
+          loginPasswd: null
+        }
+        this.infoVisible = true
+      }
+    },
+    saveOperate() {
+      saveUpdate('/manager/update', this.updateFormData, this.infoRules, this.$refs.infoUpdate).then(() => {
+        this.infoVisible = false
+        this.$Message.success('操作成功')
+        location.reload()
+      })
     }
   }
 }
@@ -222,8 +314,8 @@ export default {
         position: relative;
         .log-user {
           position: absolute;
-          top: -4px;
-          left: -40px;
+          top: -17px;
+          left: -30px;
           width: 26px;
           height: 26px;
           background-position: 55px 210px;
@@ -239,4 +331,9 @@ export default {
     }
   }
 }
+</style>
+<style lang="scss">
+  .info-update-dialog{
+    line-height:20px;
+  }
 </style>

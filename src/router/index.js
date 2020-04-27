@@ -2,7 +2,7 @@
  * @Author: lk
  * @Date: 2019-02-01 17:36:33
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-16 09:27:31
+ * @Last Modified time: 2020-04-26 16:07:03
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -169,6 +169,20 @@ export const constantRouterMap = [
         component: _import('relationChart/index'),
         meta: {
           type: '1'
+        }
+      }
+    ]
+  },
+  {
+    path: '/',
+    component: Layout,
+    children: [
+      {
+        name: 'score',
+        path: '/score',
+        component: _import('operable/score'),
+        meta: {
+          type: '2'
         }
       }
     ]

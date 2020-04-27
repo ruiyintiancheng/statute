@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-02-27 10:33:39 
  * @Last Modified by: lk
- * @Last Modified time: 2020-04-20 10:14:09
+ * @Last Modified time: 2020-04-27 16:49:33
  * @Description:  项目操作
  */
  <template>
@@ -16,29 +16,29 @@
               <el-tab-pane label="基本信息/任务状态" name="first">
                   <!-- 项目基本信息 -->
                   <h4 class="model-title">
-                      项目基本信息
+                      任务基本信息
                   </h4>
                   <div class="model-container">
                           <el-form-item prop="protName" class="extend-length" label-width="100px"
-                                          label="项目名称:">
+                                          label="任务名称:">
                               <el-input class="form-input"
                                       v-model.trim="otherItem.protName"
                                       clearable></el-input>
                           </el-form-item>
                           <el-form-item prop="protNameText" class="extend-length" label-width="100px"
-                                          label="项目描述:">
+                                          label="任务描述:">
                               <el-input class="form-input"
                                       v-model.trim="otherItem.protNameText"
                                         type="textarea"
                                       :rows="3"
                                       clearable></el-input>
                           </el-form-item>
-                          <el-form-item prop="protAuthor" label-width="100px"
+                          <!-- <el-form-item prop="protAuthor" label-width="100px"
                                           label="作者:">
                               <el-input class="form-input" style="width:255px;"
                                       v-model.trim="otherItem.protAuthor"
                                       clearable></el-input>
-                          </el-form-item>
+                          </el-form-item> -->
                           <el-form-item prop="protStart" label-width="100px"
                                         label="策略优先:" >
                               <el-radio v-model="otherItem.protStart" label="0">深度优先</el-radio>
@@ -91,7 +91,7 @@
                               <el-button class="add-result" size="mini" @click="addOptions('confAgntList')"><i class="el-icon-plus"></i></el-button>
                           </el-form-item>
                           <el-form-item prop="protState" class="extend-length" label-width="100px"
-                                        label="项目状态:">
+                                        label="运行状态:">
                               <el-radio v-model="otherItem.protState" label="0">删除</el-radio>
                               <el-radio v-model="otherItem.protState" label="1">停用</el-radio>
                               <el-radio v-model="otherItem.protState" label="2">启用</el-radio>
@@ -105,7 +105,7 @@
                   <div class="split-line"></div>
                    <!-- 项目状态 -->
                   <h4 class="model-title">
-                      项目状态
+                      任务状态
                   </h4>
                   <div class="model-container">
                       <p class="model-status-row">
@@ -117,7 +117,7 @@
                           失败运行URL：<span class="model-status-result">{{portStatus.portStateErrNum}}个</span> 
                       </p>
                       <p class="model-status-row clearfix">
-                          <span class="f-left">任务状态：{{portStatus.portStateState==='0'?'运行中':'已停止'}}</span>
+                          <span class="f-left">任务执行状态：{{portStatus.portStateState==='0'?'运行中':'已停止'}}</span>
                           <el-progress class="f-left" style="width:calc(100% - 170px);margin:10px;" :percentage="portStatus.portStateStatus"></el-progress>
                       </p>
                   </div>
@@ -347,7 +347,7 @@
                     任务计划
                 </h4>
                 <div class="model-container">
-                        <h4 style="height:20px;">运行该项目……</h4>
+                        <!-- <h4 style="height:20px;">运行该项目……</h4> -->
                           <el-form-item prop="portTaskPortId" class="extend-length"
                                         >
                                 <el-radio v-model="otherItem.portTask" label="0" style="margin-top:10px;">
@@ -785,7 +785,7 @@
          // 基本
          protName: '',
          protNameText: null,
-         protAuthor: null,
+         protAuthor: this.$store.state.user.loginName,
          protStart: '1',
          protWebUri: null,
          protWebName: null,
