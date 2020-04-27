@@ -12,12 +12,12 @@ const Rander = {
     const x = cfg._xScale
     const y = cfg.yScale
     const r = cfg.rScale
-    const nodeg = cfg.g.select('g.circle').selectAll('g.node').data(nodes, d => d.year + d.month)
+    const nodeg = cfg.g.select('g.circle').selectAll('g.node').data(nodes, d => d.year + ':' + d.month)
 
     const nodeEnter = nodeg.enter()
       .append('g')
       .classed('node', true)
-      .attr('id', d => d.year + d.month)
+      .attr('id', d => d.year + ':' + d.month)
       .attr('transform', d => {
         if (cfg.dataType === 'year') {
           return `translate(${x(d.year)}, ${y(d.data.length)})`
@@ -43,40 +43,6 @@ const Rander = {
     nodeg.exit().remove()
   },
 
-  //   const nodes = cfg.data.nodes
-  //   const links = cfg.data.links
-
-  //   const nodeg = g.selectAll('g.node').data(nodes, d => d.id)
-  //   // add Node
-  //   nodeg.enter().each(function(d) {
-  //     Nodes['default'].enter(d3.select(this), d)
-  //   })
-  //   // update Node
-  //   nodeg.each(function(d) {
-  //     Nodes['default'].update(d3.select(this), d)
-  //   })
-  //   // exit Nodenodeg.exit()
-  //   nodeg.exit().each(function(d) {
-  //     Nodes['default'].exit(d3.select(this), d)
-  //   })
-
-  //   this.tick()
-  // },
-  // /**
-  //  * 更新图形
-  //  */
-  // tick() {
-  //   const g = this._cfg.g
-  //   const linkg = g.selectAll('g.link')
-  //   linkg.select('path')
-  //     .attr('d', d => path(d))
-  //   linkg.select('text')
-  //     .attr('rotate', d => rotate(d))
-  //     .select('textPath')
-  //     .text(d => pathText(d))
-
-  //   g.selectAll('g.node').attr('transform', d => `translate(${d.x}, ${d.y})`)
-  // }
   // 绘制坐标网格
   drawInit(cfg) {
     const gridWidth = cfg.width - 140
@@ -133,7 +99,6 @@ const Rander = {
       _xScale.domain([year * 12 - 12, year * 12])
       // x坐标轴
       const xaxis = d3.axisBottom(_xScale).ticks(10).tickSizeOuter(0)
-        // .tickValues([1, 2, 3, 5, 8, 13, 21])
         .tickFormat(v => {
           return v % 12 === 0 ? `${parseInt(v / 12)}年1月` : `${v % 12 + 1}月`
         })

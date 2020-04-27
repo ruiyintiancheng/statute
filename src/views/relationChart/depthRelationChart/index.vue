@@ -61,7 +61,7 @@
 import { baseRequest } from '@/api/base'
 import nodesTable from './components/nodesTable'
 import linksTable from './components/linksTable'
-import relation from './components/relation'
+import relation from '../components/relation'
 import Chart from './components/chart/index.js'
 import * as d3 from 'd3'
 export default {
@@ -202,7 +202,7 @@ export default {
         { name: '政策法规名称', value: node.docName },
         { name: '政策法规文号', value: node.docNum },
         { name: '政策原文名称', value: node.docTittle },
-        { name: '定位', value: node.docPositioning },
+        { name: '政策层次', value: node.docSys },
         { name: '发布时间', value: node.docIssueTime },
         { name: '生效时间', value: node.docEffectiveTime },
         { name: '废止时间', value: node.docAnnulTime },

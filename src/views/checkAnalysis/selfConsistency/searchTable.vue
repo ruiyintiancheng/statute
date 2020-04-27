@@ -29,7 +29,7 @@
               <el-cascader v-model="option.issueOrgText"
                 :show-all-levels="false"
                 :clearable="true"
-                :options="option.orgOption"
+                :options="optionLabels.orgOption" 
                 :props="{ expandTrigger: 'hover' }"
                 style="width: 300px;">
               </el-cascader>
@@ -39,8 +39,11 @@
               <el-select v-model="option.docSys" placeholder="请选择"
                 style="width: 300px;">
                 <el-option label="全部" value="全部"></el-option>
-                <el-option label="基础政策" value="基础政策"></el-option>
-                <el-option label="具体政策" value="具体政策"></el-option>
+                <el-option v-for="(value, key, index) in optionLabels.docSys"
+                           :key="index"
+                           :label="value"
+                           :value="key">
+                </el-option>
               </el-select>
           </el-col>
         </el-row>
@@ -50,7 +53,7 @@
               <el-select v-model="option.fuseField" placeholder="请选择"
                   style="width: 300px;">
                 <el-option label="全部" value="全部"></el-option>
-                <el-option v-for="(value, key, index) in option.fuseFieldOption"
+                <el-option v-for="(value, key, index) in optionLabels.fuseField"
                            :key="index"
                            :label="value"
                            :value="key">
@@ -154,12 +157,15 @@ export default {
       option: {
         docName: null,
         issueOrgText: null,
-        orgOption: null,
         docSys: '全部',
         fuseField: '全部',
-        fuseFieldOption: null,
         startTime: null,
         endTime: null
+      },
+      optionLabels: {
+        orgOption: null,
+        docSys: null,
+        fuseField: null
       },
 
       tableData: [],
@@ -192,16 +198,20 @@ export default {
       this.mainVisible = false
     },
     loadOption() {
-      baseSearch('http://47.93.121.177:8080/app/mock/36//bCode/getOrgOption', {}).then(response => {
-        this.option.orgOption = response.data.item
+      baseSearch('/bCode/getOrgOption', {}).then(response => {
+        this.optionLabels.orgOption = response.data.item
       })
 
-      baseSearch('http://47.93.121.177:8080/app/mock/36//bCode/getOptionByFCodeId', { fCodeId: 'AA-011000000000000000-0001' }).then(response => {
-        this.option.fuseFieldOption = response.data.item
+      // 政策层次: AA-012000000000000000-0001
+      // 军民融合领域: AA-011000000000000000-0001
+      const param = {
+        fCodeId: 'AA-012000000000000000-0001,AA-011000000000000000-0001'
+      }
+      baseSearch('/bCode/getOptionByFCodeId', param).then(response => {
+        const item = response.data.item
+        this.optionLabels.docSys = item.docSys
+        this.optionLabels.fuseField = item.fuseField
       })
-    },
-    getOrgOption() {
-
     },
     searchOption(page) {
       this.tableToogle = true

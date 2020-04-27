@@ -4,11 +4,14 @@
 <template>
 <div >
   <div class="oprate-item">
-    <div class="check-group-label">政策层级:</div>
+    <div class="check-group-label">政策层次:</div>
     <div class="check-group">
       <el-checkbox-group v-model="options.docSys.values" @change="handleChange">
-        <el-checkbox label="政策体系1" >基础政策</el-checkbox>
-        <el-checkbox label="政策体系2" >具体政策</el-checkbox>
+        <el-checkbox v-for="(value, key, index) in optionLabels.docSys"
+                    :key="index"
+                    :label="value"
+                    :value="value">
+        </el-checkbox>
       </el-checkbox-group>
     </div>
   </div>
@@ -16,27 +19,15 @@
     <div class="check-group-label">军民融合领域:</div>
     <div class="check-group">
       <el-checkbox-group v-model="options.fuseField.values" @change="handleChange">
-        <el-checkbox style="width: 100%;" label="基础设施共建共享领域"></el-checkbox>
-        <el-checkbox style="width: 100%;margin-top:5px;" label="国防科技工业武器装备领域"></el-checkbox>
-        <el-checkbox style="width: 100%;margin-top:5px;" label="军民科技协同创新领域"></el-checkbox>
-        <el-checkbox style="width: 100%;margin-top:5px;" label="重大安全领域"></el-checkbox>
-        <el-checkbox style="width: 100%;margin-top:5px;" label="军地人力资源开发领域"></el-checkbox>
-        <el-checkbox style="width: 100%;margin-top:5px;" label="军队保障社会化领域"></el-checkbox>
-        <el-checkbox style="width: 100%;margin-top:5px;" label="统筹应急应战公共安全领域"></el-checkbox>
+        <el-checkbox v-for="(value, key, index) in optionLabels.fuseField"
+                    :key="index"
+                    :label="value"
+                    :value="value"
+                    style="width: 100%;margin-top:5px;">
+        </el-checkbox>
       </el-checkbox-group>
     </div>
   </div>
-  <!-- <div>
-    <div class="check-group-label">二级领域:</div>
-    <div class="check-group">
-      <el-checkbox-group v-model="options.docContentSys.values" @change="handleChange"> -->
-        <!-- <el-checkbox style="width: 100%" label="强相关"></el-checkbox>
-        <el-checkbox style="width: 100%" label="有所涉及"></el-checkbox>
-        <el-checkbox style="width: 100%" label="不相关"></el-checkbox>
-        <el-checkbox style="width: 100%" label="空白"></el-checkbox> -->
-      <!-- </el-checkbox-group>
-    </div>
-  </div> -->
   <div class="oprate-item last-oprate">
     <div class="check-group-label">发布时间:</div>
     <div class="check-group">
@@ -54,7 +45,7 @@
 </div>
 </template>
 <script>
-// import { baseRequest } from '@/api/base'
+import { baseSearch } from '@/api/base'
 export default {
   props: {
     width: Number,
@@ -64,10 +55,13 @@ export default {
     return {
       mainVisible: false,
       options: {
-        docSys: { type: 'array', values: [] },
-        fuseField: { type: 'array', values: [] },
-        docContentSys: { type: 'array', values: [] },
-        timeType: { type: 'array', valueType: 'number', values: [] }
+        docSys: { values: [], has: null },
+        fuseField: { values: [], has: null },
+        timeType: { values: [], has: null }
+      },
+      optionLabels: {
+        docSys: {},
+        fuseField: {}
       }
     }
   },
@@ -75,9 +69,7 @@ export default {
 
   },
   mounted() {
-    this.$nextTick(() => {
-      this.getOption()
-    })
+    this.loadOption()
   },
   computed: {
     tableHeight() {
@@ -85,15 +77,21 @@ export default {
     }
   },
   methods: {
-    getOption() {
-      // console.log('getOption')
-      // const params = { 'pid': '0' }
-      // baseRequest('/confMci/getMciOption', params).then(response => {
-      // // console.log(response.data.item)
-      // })
+    loadOption() {
+      // 政策层次: AA-012000000000000000-0001
+      // 军民融合领域: AA-011000000000000000-0001
+      const param = {
+        fCodeId: 'AA-012000000000000000-0001, AA-011000000000000000-0001'
+      }
+      baseSearch('/bCode/getOptionByFCodeId', param).then(response => {
+        const item = response.data.item
+        this.optionLabels = {
+          docSys: item.docSys,
+          fuseField: item.fuseField
+        }
+      })
     },
     handleChange(value) {
-      // console.log('change', value)
       this.onSubmit()
     },
     /**
@@ -102,10 +100,11 @@ export default {
     onSubmit() {
       const relations = {}
       for (const key in this.options) {
-        if (this.options[key].type === 'array') {
+        if (this.options[key].values) {
           const values = this.options[key].values
           if (values && values.length > 0) {
             relations[key] = this.options[key]
+            relations[key].has = new Set(this.options[key].values)
           }
         } else {
           relations[key] = this.options[key]
@@ -118,44 +117,35 @@ export default {
       function check(obj) {
         let flag = true
         for (const key in relations) {
-          const d = relations[key]
-          if (obj.hasOwnProperty(key)) {
-            if (d.type === 'array') {
-              flag = flag && array(obj[key], d.values, d.valueType)
-            }
-
-            if (d.type === 'date') {
-              flag = flag && date(obj[key], d.max, d.min)
-            }
+          if (key === 'docSys') {
+            flag = flag && arrayInArray(obj[key], ';', relations[key].has)
+          }
+          if (key === 'fuseField') {
+            flag = flag && arrayInArray(obj[key], ';', relations[key].has)
+          }
+          if (key === 'timeType') {
+            flag = flag && inArray(obj[key].toString(), relations[key].has)
           }
         }
+
         return flag
 
-        function array(value, arrays, valueType) {
+        function inArray(value, set) {
+          return set.has(value)
+        }
+
+        function arrayInArray(value, separator, set) {
+          if (value === null) {
+            return false
+          }
+          const newArray = value.split(separator)
           let isSel = false
-          arrays.forEach(v => {
-            if (value === conversion(v, valueType)) {
+          newArray.forEach(v => {
+            if (set.has(v)) {
               isSel = true
             }
           })
           return isSel
-        }
-        function date(value, max, min) {
-          const time = new Date(value)
-          let isSel = true
-          if (max && max !== '') {
-            isSel = isSel && time <= max
-          }
-          if (min && min !== '') {
-            isSel = isSel && time >= min
-          }
-          return isSel
-        }
-        function conversion(value, valueType) {
-          if (valueType === 'number') {
-            return parseInt(value)
-          }
-          return value
         }
       }
     },
@@ -165,7 +155,6 @@ export default {
     clear() {
       this.options.docSys.values = []
       this.options.fuseField.values = []
-      this.options.docContentSys.values = []
       this.options.timeType.values = []
       this.$emit('selRelation', null)
     }
