@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 19:52:31 
  * @Last Modified by: 1k
- * @Last Modified time: 2020-04-10 15:39:44
+ * @Last Modified time: 2020-04-27 17:06:15
  * @Description:  高级搜索
  */
  <template>
@@ -26,40 +26,45 @@
              @click.native.stop=""
              class="searchForm"
              :model="updateFormData"
-             label-width="100px">
-      <el-form-item prop="docPositioning"
-                    label="定 位">
+             label-width="110px">
+      <el-form-item prop="docSys"
+                    label="政策层次"
+                    style="margin-bottom:20px">
         <el-select class="form-input"
                    placeholder=""
                    multiple
                    collapse-tags
                    style="width:100%"
-                   @change="selectControl($event,'docPositioning','DOC_POSITIONING')"
-                   v-model="updateFormData.docPositioning"
+                   @change="selectControl($event,'docSys','Policy_Level')"
+                   v-model="updateFormData.docSys"
                    clearable>
-          <el-option v-for="(text,item) in DOC_POSITIONING"
+          <el-option v-for="(text,item) in Policy_Level"
                      :key="item"
                      :label="text"
-                     :value="text"></el-option>
+                     :value="item+'|'+text"></el-option>
 
         </el-select>
       </el-form-item>
-      <el-form-item prop="docTimeliness"
-                    label="时效性">
+      <el-form-item prop="fuseField"
+                    style="margin-bottom:20px"
+                    label="军民融合领域">
         <el-select class="form-input"
                    placeholder=""
+                   multiple
                    collapse-tags
                    style="width:100%"
-                   v-model="updateFormData.docTimeliness"
+                   @change="selectControl($event,'fuseField','Military_Integration')"
+                   v-model="updateFormData.fuseField"
                    clearable>
-          <el-option v-for="(text,item) in DOC_TIMELINESS"
+          <el-option v-for="(text,item) in Military_Integration"
                      :key="item"
                      :label="text"
-                     :value="item"></el-option>
+                     :value="item+'|'+text"></el-option>
 
         </el-select>
       </el-form-item>
       <el-form-item prop="docType"
+                    style="margin-bottom:20px"
                     label="公文类型">
         <el-select class="form-input"
                    placeholder=""
@@ -72,11 +77,12 @@
           <el-option v-for="(text,item)  in DOC_TYPE"
                      :key="item"
                      :label="text"
-                     :value="text"></el-option>
+                     :value="item+'|'+text"></el-option>
 
         </el-select>
       </el-form-item>
-      <el-form-item prop="issueType"
+
+      <!-- <el-form-item prop="issueType"
                     label="发文方式">
         <el-select class="form-input"
                    placeholder=""
@@ -92,8 +98,9 @@
                      :value="text"></el-option>
 
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item prop="docUseBroad"
+                    style="margin-bottom:20px"
                     label="适用范围">
         <el-select class="form-input"
                    placeholder=""
@@ -106,31 +113,12 @@
           <el-option v-for="(text,item) in DOC_USE_BROAD"
                      :key="item"
                      :label="text"
-                     :value="text"></el-option>
+                     :value="item+'|'+text"></el-option>
 
         </el-select>
       </el-form-item>
-      <el-form-item prop="issueOrgText"
-                    class="single-form-item"
-                    label="发布单位">
-        <el-autocomplete v-model="updateFormData.issueOrgText"
-                         clearable
-                         style="width:100%"
-                         :fetch-suggestions="querySearchAsync"
-                         placeholder=""
-                         @select="handleSelect"></el-autocomplete>
-      </el-form-item>
-      <el-form-item prop="docSource"
-                    class="single-form-item"
-                    label="来源网络">
-        <el-autocomplete v-model="updateFormData.docSource"
-                         clearable
-                         style="width:100%"
-                         :fetch-suggestions="querySearchAsync2"
-                         placeholder=""
-                         @select="handleSelect2"></el-autocomplete>
-      </el-form-item>
       <el-form-item prop="startTime"
+                    style="margin-bottom:20px"
                     label="发布时间">
         <el-date-picker v-model="updateFormData.startTime"
                         type="date"
@@ -141,6 +129,7 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item prop="endTime"
+                    style="margin-bottom:20px"
                     label=" ">
         <el-date-picker v-model="updateFormData.endTime"
                         type="date"
@@ -150,6 +139,59 @@
                         placeholder="结束日期">
         </el-date-picker>
       </el-form-item>
+      <el-form-item label="发文机构 "
+                    style="margin-bottom:20px"
+                    prop="Dispatch">
+        <el-cascader v-model="Dispatch"
+                     clearable
+                     placeholder=""
+                     ref="dispatch"
+                     style="width:100%"
+                     collapse-tags
+                     @change="articleSelection"
+                     :props="{  multiple: true, checkStrictly: true}"
+                     :options="organization"></el-cascader>
+      </el-form-item>
+
+      <el-form-item prop="docTimeliness"
+                    style="margin-bottom:20px"
+                    label="时效性">
+        <el-select class="form-input"
+                   placeholder=""
+                   multiple
+                   collapse-tags
+                   style="width:100%"
+                   @change="selectControl($event,'docTimeliness','DOC_TIMELINESS')"
+                   v-model="updateFormData.docTimeliness"
+                   clearable>
+          <el-option v-for="(text,item) in DOC_TIMELINESS"
+                     :key="item"
+                     :label="text"
+                     :value="item+'|'+text"></el-option>
+
+        </el-select>
+      </el-form-item>
+      <!-- <el-form-item prop="issueOrgText"
+                    class="single-form-item"
+                    label="发布单位">
+        <el-autocomplete v-model="updateFormData.issueOrgText"
+                         clearable
+                         style="width:100%"
+                         :fetch-suggestions="querySearchAsync"
+                         placeholder=""
+                         @select="handleSelect"></el-autocomplete>
+      </el-form-item> -->
+      <!-- <el-form-item prop="docSource"
+                    class="single-form-item"
+                    label="来源网络">
+        <el-autocomplete v-model="updateFormData.docSource"
+                         clearable
+                         style="width:100%"
+                         :fetch-suggestions="querySearchAsync2"
+                         placeholder=""
+                         @select="handleSelect2"></el-autocomplete>
+      </el-form-item> -->
+
       <el-form-item label="排 序"
                     prop="orderby">
         <el-radio v-model="updateFormData.orderby"
@@ -173,22 +215,28 @@ import { baseRequest } from '@/api/base'
 export default {
   data() {
     return {
+      Dispatch: [], // 发文机构
+      organization: [],
       repeatedEngravingForm: {
-        docPositioning: [],
+        docSys: [], // 政策层次
+        fuseField: [], // 军民融合领域
+        // docPositioning: [],
         docTimeliness: [],
         docType: [],
-        issueType: [],
+        // issueType: [],
         docUseBroad: []
       },
       updateFormData: {
+        docSys: [], // 政策层次
+        fuseField: [], // 军民融合领域
         // publishingStructure: null,
-        docPositioning: [],
+        // docPositioning: [],
         docTimeliness: [],
         docType: [],
-        issueType: [],
+        // issueType: [],
         docUseBroad: [],
-        issueOrgText: '',
-        docSource: '',
+        issueOrgText: [],
+        // docSource: '',
         orderby: '_score',
         startTime: '',
         endTime: ''
@@ -216,45 +264,93 @@ export default {
       generalSearch: true, // 搜索开关
       seniorForm: false, // 表单开关
       dataValue: '',
-      DOC_POSITIONING: {},
+      // DOC_POSITIONING: {},
       DOC_TIMELINESS: {},
       DOC_TYPE: {},
-      ISSUE_TYPE: {},
-      DOC_USE_BROAD: {}
+      // ISSUE_TYPE: {},
+      DOC_USE_BROAD: {},
+      Policy_Level: {}, // 政策层次
+      Military_Integration: {}// 军民融合领域
     }
   },
   mounted() {
-    baseRequest('/bFieldCode/getBFieldCodeOption').then(response => {
-      this.DOC_POSITIONING = response.data.item.DOC_POSITIONING || {}
-      this.DOC_TIMELINESS = response.data.item.DOC_TIMELINESS || {}
-      this.DOC_TYPE = response.data.item.DOC_TYPE || {}
-      this.ISSUE_TYPE = response.data.item.ISSUE_TYPE || {}
-      this.DOC_USE_BROAD = response.data.item.DOC_USE_BROAD || {}
+    baseRequest('/bCode/getOrgOption').then(response => {
+      this.organization = response.data.item
+    })
+    const IDs = 'AA-012000000000000000-0001,AA-011000000000000000-0001,AA-003000000000000000-0001,AA-006000000000000000-0001,AA-014000000000000000-0001'
+    baseRequest('/bCode/getOptionByFCodeId', { fCodeIds: IDs }).then(response => {
+      this.Military_Integration = response.data.item.fuseField || {}
+      this.Policy_Level = response.data.item.docSys || {}
+      // this.DOC_POSITIONING = response.data.item.DOC_POSITIONING || {}
+      this.DOC_TIMELINESS = response.data.item.timeliness || {}
+      this.DOC_TYPE = response.data.item.docType || {}
+      // this.ISSUE_TYPE = response.data.item.ISSUE_TYPE || {}
+      this.DOC_USE_BROAD = response.data.item.docUseBroad || {}
+      if (this.Military_Integration && this.Military_Integration !== {}) {
+        // this.Military_Integration[0] = '全部'
+        this.$set(this.Military_Integration, 0, '全部')
+      }
+      if (this.Policy_Level && this.Policy_Level !== {}) {
+        // this.Policy_Level[0] = '全部'
+        this.$set(this.Policy_Level, 0, '全部')
+      }
+      if (this.DOC_TIMELINESS && this.DOC_TIMELINESS !== {}) {
+        // this.DOC_TIMELINESS[0] = '全部'
+        this.$set(this.DOC_TIMELINESS, 0, '全部')
+      }
+      if (this.DOC_TYPE && this.DOC_TYPE !== {}) {
+        // this.DOC_TYPE[0] = '全部'
+        this.$set(this.DOC_TYPE, 0, '全部')
+      }
+      if (this.DOC_USE_BROAD && this.DOC_USE_BROAD !== {}) {
+        // this.DOC_USE_BROAD[0] = '全部'
+        this.$set(this.DOC_USE_BROAD, 0, '全部')
+      }
     })
     this.$nextTick(_ => {
       document.body.addEventListener('click', this.pannalHandle)
+
+      document.body.addEventListener('click', this.pannalHandle)
+      document.getElementsByClassName('el-date-picker').addEventListener('click', (e) => {
+        e.stopPropagation()
+      })
     })
   },
   destroyed() {
     document.body.removeEventListener(this.pannalHandle)
   },
   methods: {
+    articleSelection(item) {
+      const checknodes = this.$refs.dispatch.getCheckedNodes()
+
+      // console.log(item)
+      const arr = []
+      if (checknodes) {
+        for (const i of checknodes) {
+          // arr = arr.concat(i)
+          arr.push(i.data.value + '|' + i.data.label)
+        }
+      }
+
+      this.updateFormData.issueOrgText = arr
+      // console.log('-------------', arr)
+    },
     // 选中控制
     selectControl(val, prop, options) {
-      if (val.length && val[val.length - 1] === '全部') {
+      if (val.length && val[val.length - 1] === '0|全部') {
         const all = []
         for (const key in this[options]) {
-          all.push(this[options][key])
+          all.push(key + '|' + this[options][key])
         }
         this.updateFormData[prop] = all
         this.repeatedEngravingForm[prop] = all
-      } else if (val.find(item => item === '全部')) {
-        this.updateFormData[prop] = this.updateFormData[prop].filter(item => item !== '全部')
-        this.repeatedEngravingForm[prop] = this.updateFormData[prop].filter(item => item !== '全部')
-      } else if (val.find(item => item !== '全部')) {
+      } else if (val.find(item => item === '0|全部')) {
+        this.updateFormData[prop] = this.updateFormData[prop].filter(item => item !== '0|全部')
+        this.repeatedEngravingForm[prop] = this.updateFormData[prop].filter(item => item !== '0|全部')
+      } else if (val.find(item => item !== '0|全部')) {
         const all = []
         for (const key in this[options]) {
-          all.push(this[options][key])
+          all.push(key + '|' + this[options][key])
         }
         if (val.length === all.length - 1) {
           if (this.repeatedEngravingForm[prop].length === all.length) {
@@ -283,19 +379,32 @@ export default {
       this.generalSearch = true
     },
     searchOperate() { // 高级搜索的搜索
-      const params = Object.assign(this.updateFormData, { content: this.dataValue })
+      // const params = Object.assign(this.updateFormData, { content: this.dataValue })
+      const params = {}
+      params.content = this.dataValue
+      params.endTime = this.updateFormData.endTime
+      params.startTime = this.updateFormData.startTime
+      params.orderby = this.updateFormData.orderby
+      params.issueOrgText = this.updateFormData.issueOrgText
+      params.docUseBroad = this.updateFormData.docUseBroad
+      params.docType = this.updateFormData.docType
+      params.docTimeliness = this.updateFormData.docTimeliness
+      params.fuseField = this.updateFormData.fuseField
+      params.docSys = this.updateFormData.docSys
       this.$emit('searchOperate', params)
       this.seniorForm = false
       this.generalSearch = true
     },
     resetForm() { // 重置表单
-      this.updateFormData.docPositioning = []
+      this.updateFormData.docSys = [] // 政策层次
+      this.updateFormData.fuseField = [] // 军民融合领域
+      // this.updateFormData.docPositioning = []
       this.updateFormData.docTimeliness = []
       this.updateFormData.docType = []
-      this.updateFormData.issueType = []
+      // this.updateFormData.issueType = []
       this.updateFormData.docUseBroad = []
-      this.updateFormData.issueOrgText = ''
-      this.updateFormData.docSource = ''
+      this.updateFormData.issueOrgText = []
+      // this.updateFormData.docSource = ''
       this.updateFormData.orderby = '_score'
       this.updateFormData.starTime = ''
       this.updateFormData.endTime = ''
