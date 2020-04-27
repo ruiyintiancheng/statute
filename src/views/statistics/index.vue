@@ -52,15 +52,9 @@
                  class="demo-form-inline">
           <el-form-item label="发文机构 :"
                         style="margin-right:50px">
-            <!-- <el-select v-model="screenData.Dispatch"
-                       placeholder="">
-              <el-option v-for="(item,index) in organization"
-                         :key="index"
-                         :label="item"
-                         :value="index"></el-option>
-            </el-select> -->
             <el-cascader v-model="screenData.Dispatch"
                          clearable
+                         :props="{ checkStrictly: true }"
                          :options="organization"></el-cascader>
           </el-form-item>
           <el-form-item label="发布日期 :"
@@ -103,6 +97,7 @@
             <el-cascader v-model="screenData.Dispatch"
                          style="width:215px"
                          clearable
+                         :props="{ checkStrictly: true }"
                          :options="organization"></el-cascader>
           </el-form-item>
           <el-form-item label="发布日期 :">
@@ -705,7 +700,7 @@ export default {
       })
     },
     getOrganization() { // 获取发文机构
-      baseRequest('/bOrgBasic/getOption').then(response => {
+      baseRequest('/bCode/getOrgOption').then(response => {
         this.organization = response.data.item
       })
     },

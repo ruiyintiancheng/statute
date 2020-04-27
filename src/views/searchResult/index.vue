@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2019-12-24 20:48:17 
- * @Last Modified by: lk
- * @Last Modified time: 2020-04-23 09:54:51
+ * @Last Modified by: 1k
+ * @Last Modified time: 2020-04-27 17:22:55
  * @Description:  查询列表
  */
 <template>
@@ -33,11 +33,19 @@
           <p class="bar-title"
              style="font-size:14px;color:#777"
              v-html="item.docContent"></p>
-          <p class="bar-date" style="font-size:12px;color:#999">{{item.docIssueTime==='null'?'':item.docIssueTime}}</p>
-          <div class="model-button" style="padding-bottom: 10px">
-            <el-button :disabled="!item.modelAnalysis" size="small"  @click="openChart(item, '0')">政策法规关联分析 </el-button>
-            <el-button :disabled="!item.modelLifeCycle" size="small"  @click="openChart(item, '1')">政策法规生命周期分析 </el-button>
-            <el-button :disabled="!item.modelAnalysis" size="small"  @click="openChart(item, '2')">政策法规响应层级分析</el-button>
+          <p class="bar-date"
+             style="font-size:12px;color:#999">{{item.docIssueTime==='null'?'':item.docIssueTime}}</p>
+          <div class="model-button"
+               style="padding-bottom: 10px">
+            <el-button :disabled="!item.modelAnalysis"
+                       size="small"
+                       @click="openChart(item, '0')">政策法规关联分析 </el-button>
+            <el-button :disabled="!item.modelLifeCycle"
+                       size="small"
+                       @click="openChart(item, '1')">政策法规生命周期分析 </el-button>
+            <el-button :disabled="!item.modelAnalysis"
+                       size="small"
+                       @click="openChart(item, '2')">政策法规响应层级分析</el-button>
           </div>
         </div>
         <el-pagination v-if="total || total === 0"
@@ -167,6 +175,11 @@ export default {
       }
       param.content = this.keyword
       param = Object.assign(param, formItem)
+      param.docUseBroad = formItem.docUseBroad.filter(item => item !== '0|全部')
+      param.docType = formItem.docType.filter(item => item !== '0|全部')
+      param.docTimeliness = formItem.docTimeliness.filter(item => item !== '0|全部')
+      param.fuseField = formItem.fuseField.filter(item => item !== '0|全部')
+      param.docSys = param.docSys.filter(item => item !== '0|全部')
       return param
     },
     routingQuery() { // 路由传参查询
@@ -205,10 +218,10 @@ export default {
 }
 </script>
 <style scoped>
-  .model-button > .el-button:not(.is-disabled):hover {
-    color: white !important;
-    background-color: #1E71F2 !important;
-  }
+.model-button > .el-button:not(.is-disabled):hover {
+  color: white !important;
+  background-color: #1e71f2 !important;
+}
 </style>
 <style lang="scss">
 .search-result {

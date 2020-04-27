@@ -9,61 +9,63 @@
       v-el-drag-dialog>
     <div class="dialog-contant-default file-download-log relation">
         <el-form ref="form" label-width="160px">
-          <el-form-item label="定位:">
-            <el-checkbox-group v-model="options.docPositioning.values" >
-              <el-checkbox label="具体操作"></el-checkbox>
-              <el-checkbox label="指导原则"></el-checkbox>
+          <el-form-item label="政策层次:">
+            <el-checkbox-group v-model="options.docSys.values" >
+              <el-checkbox v-for="(value, key, index) in optionLabels.docSys"
+                          :key="index"
+                          :label="value"
+                          :value="value">
+              </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
 
           <el-form-item label="适用范围:">
             <el-checkbox-group v-model="options.docUseBroad.values" >
-              <el-checkbox label="全国"></el-checkbox>
-              <el-checkbox label="地方"></el-checkbox>
-              <el-checkbox label="部门"></el-checkbox>
-              <el-checkbox label="军队"></el-checkbox>
+              <el-checkbox v-for="(value, key, index) in optionLabels.docUseBroad"
+                          :key="index"
+                          :label="value"
+                          :value="value">
+              </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
 
           <el-form-item label="军民融合相关度:">
             <el-checkbox-group v-model="options.docAbout.values" >
-              <el-checkbox label="强相关"></el-checkbox>
-              <el-checkbox label="有所涉及"></el-checkbox>
-              <el-checkbox label="不相关"></el-checkbox>
+              <el-checkbox v-for="(value, key, index) in optionLabels.docAbout"
+                          :key="index"
+                          :label="value"
+                          :value="value">
+              </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
 
           <el-form-item label="可操作性:">
             <el-checkbox-group v-model="options.docOperability.values" >
-              <el-checkbox label="强"></el-checkbox>
-              <el-checkbox label="弱"></el-checkbox>
-              <el-checkbox label="其他"></el-checkbox>
-            </el-checkbox-group>
+              <el-checkbox v-for="(value, key, index) in optionLabels.docOperability"
+                          :key="index"
+                          :label="value"
+                          :value="value">
+              </el-checkbox>
+            </el-checkbox-group>  
           </el-form-item>
 
-          <el-form-item label="文章类型:">
+          <el-form-item label="公文类型:">
             <el-checkbox-group v-model="options.docType.values" >
-              <el-checkbox label="法律法规"></el-checkbox>
-              <el-checkbox label="法律修订"></el-checkbox>
-              <el-checkbox label="通知公告"></el-checkbox>
-              <el-checkbox label="网络舆情"></el-checkbox>
-              <el-checkbox label="意见征求"></el-checkbox>
-              <el-checkbox label="招标信息"></el-checkbox>
-              <el-checkbox label="政策文件"></el-checkbox>
-              <el-checkbox label="政策修订"></el-checkbox>
-              <el-checkbox label="专家解读"></el-checkbox>
-            </el-checkbox-group>
+              <el-checkbox v-for="(value, key, index) in optionLabels.docType"
+                          :key="index"
+                          :label="value"
+                          :value="value">
+              </el-checkbox>
+            </el-checkbox-group>  
           </el-form-item>
 
-          <el-form-item label="评估重点:">
-            <el-checkbox-group v-model="options.docFocalPoint.values" >
-              <el-checkbox label="参考法律法规"></el-checkbox>
-              <el-checkbox label="基本法律法规"></el-checkbox>
-              <el-checkbox label="军地数据资源交换共享"></el-checkbox>
-              <el-checkbox label="军地指挥信息系统互联互通"></el-checkbox>
-              <el-checkbox label="网络安全联防联控"></el-checkbox>
-              <el-checkbox label="信息基础设施共建共用"></el-checkbox>
-              <el-checkbox label="其他"></el-checkbox>
+          <el-form-item label="军民融合领域:">
+            <el-checkbox-group v-model="options.docFuseField.values" >
+              <el-checkbox v-for="(value, key, index) in optionLabels.docFuseField"
+                          :key="index"
+                          :label="value"
+                          :value="value">
+              </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
 
@@ -85,29 +87,65 @@
   </el-dialog>
 </template>
 <script>
+import { baseSearch } from '@/api/base'
 export default {
   data() {
     return {
       mainVisible: false,
       options: {
-        docPositioning: { values: [], has: null },
+        docSys: { values: [], has: null },
         docUseBroad: { values: [], has: null },
         docAbout: { values: [], has: null },
         docOperability: { values: [], has: null },
         docType: { values: [], has: null },
-        docFocalPoint: { values: [], has: null },
+        docFuseField: { values: [], has: null },
         docIssueTime: { min: '', max: '' }
+      },
+      optionLabels: {
+        docSys: {},
+        docUseBroad: {},
+        docAbout: {},
+        docOperability: {},
+        docType: {},
+        docFuseField: {}
       }
     }
-  },
-  created() {
   },
   computed: {
     tableHeight() {
       return document.querySelector('.dialog-contant-default.file-download-log.relation').offsetHeight - 30
     }
   },
+  created() {},
+  mounted() {
+    this.loadOption()
+  },
   methods: {
+    loadOption() {
+      // 政策层次:AA-012000000000000000-0001
+      // 适用范围:AA-006000000000000000-0001
+      // 军民融合相关度:AA-008000000000000000-0001
+      // 可操作性:AA-009000000000000000-0001
+      // 公文类型:AA-003000000000000000-0001
+      // 军民融合领域:AA-011000000000000000-0001
+      const param = {
+        fCodeId: 'AA-012000000000000000-0001,AA-006000000000000000-0001,AA-008000000000000000-0001,' +
+         'AA-009000000000000000-0001,AA-003000000000000000-0001,AA-011000000000000000-0001,' +
+         'AA-010000000000000000-0001'
+      }
+      baseSearch('/bCode/getOptionByFCodeId', param).then(response => {
+        const item = response.data.item
+        this.optionLabels = {
+          docSys: item.docSys,
+          docUseBroad: item.docUseBroad,
+          docAbout: item.about,
+          docOperability: item.docOperability,
+          docType: item.docType,
+          docFuseField: item.fuseField
+        }
+        // console.log(this.optionLabels)
+      })
+    },
     openDialog() {
       this.mainVisible = true
     },
@@ -134,23 +172,24 @@ export default {
       function check(obj) {
         let flag = true
         for (const key in relations) {
-          if (key === 'docPositioning') {
-            flag = flag && inArray(obj[key], relations[key].has)
+          if (key === 'docSys') {
+            // flag = flag && inArray(obj[key], relations[key].has)
+            flag = flag && arrayInArray(obj[key], ';', relations[key].has)
           }
           if (key === 'docUseBroad') {
             flag = flag && arrayInArray(obj[key], ';', relations[key].has)
           }
           if (key === 'docAbout') {
-            flag = flag && inArray(obj[key], relations[key].has)
+            flag = flag && arrayInArray(obj[key], ';', relations[key].has)
           }
           if (key === 'docOperability') {
-            flag = flag && inArray(obj[key], relations[key].has)
+            flag = flag && arrayInArray(obj[key], ';', relations[key].has)
           }
           if (key === 'docType') {
-            flag = flag && inArray(obj[key], relations[key].has)
+            flag = flag && arrayInArray(obj[key], ';', relations[key].has)
           }
-          if (key === 'docFocalPoint') {
-            flag = flag && inArray(obj[key], relations[key].has)
+          if (key === 'docFuseField') {
+            flag = flag && arrayInArray(obj[key], ';', relations[key].has)
           }
           if (key === 'docIssueTime') {
             flag = flag && inData(obj[key], [relations[key].min, relations[key].max])
@@ -159,9 +198,9 @@ export default {
 
         return flag
 
-        function inArray(value, set) {
-          return set.has(value)
-        }
+        // function inArray(value, set) {
+        //   return set.has(value)
+        // }
         function arrayInArray(value, separator, set) {
           if (value === null) {
             return false
@@ -192,12 +231,12 @@ export default {
      *  清空
      */
     clear() {
-      this.options.docPositioning.values = []
+      this.options.docSys.values = []
       this.options.docUseBroad.values = []
       this.options.docAbout.values = []
       this.options.docOperability.values = []
       this.options.docType.values = []
-      this.options.docFocalPoint.values = []
+      this.options.docFuseField.values = []
       this.options.docIssueTime.values = []
       this.$emit('selRelation', null)
     }
