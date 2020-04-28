@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 16:50:14 
  * @Last Modified by: 1k
- * @Last Modified time: 2020-04-23 18:31:50
+ * @Last Modified time: 2020-04-28 09:54:41
  * @Description:  数据统计
  */
 <template>
@@ -54,6 +54,7 @@
                         style="margin-right:50px">
             <el-cascader v-model="screenData.Dispatch"
                          clearable
+                         ref="cascader2"
                          :props="{ checkStrictly: true }"
                          :options="organization"></el-cascader>
           </el-form-item>
@@ -67,6 +68,7 @@
                               v-model="screenData.date1"></el-date-picker>
             </el-col>
             <el-col class="line"
+                    style="color: #606266;font-size: 14px;font-weight: 700;"
                     :span="2">&nbsp;至</el-col>
             <el-col :span="11">
               <el-date-picker type="year"
@@ -95,6 +97,7 @@
                  label-width="88px">
           <el-form-item label="发文机构 :">
             <el-cascader v-model="screenData.Dispatch"
+                         ref="cascader"
                          style="width:215px"
                          clearable
                          :props="{ checkStrictly: true }"
@@ -109,6 +112,7 @@
                               style="width: 100%;"></el-date-picker>
             </el-col>
             <el-col class="line"
+                    style="color: #606266;font-size: 14px;font-weight: 700;position: relative; left: 2px;"
                     :span="2">至</el-col>
             <el-col :span="11">
               <el-date-picker type="year"
@@ -259,6 +263,18 @@ export default {
         date2: ''
       },
       headSwitch: true
+    }
+  },
+  watch: {
+    'screenData.Dispatch': {
+      handler() {
+        if (this.$refs.cascader) {
+          this.$refs.cascader.dropDownVisible = false
+        }
+        if (this.$refs.cascader2) {
+          this.$refs.cascader2.dropDownVisible = false
+        }
+      }
     }
   },
   created() {
