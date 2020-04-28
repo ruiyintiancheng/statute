@@ -74,14 +74,14 @@ export default {
     },
     // 开始对比
     compare() {
-      // if (this.uploadFileId === null && this.targetFileId === null) {
-      //   this.$message({
-      //     showClose: true,
-      //     message: '请选择文件',
-      //     type: 'error'
-      //   })
-      //   return
-      // }
+      if (this.uploadFileId === null && this.targetFileId === null) {
+        this.$message({
+          showClose: true,
+          message: '请选择文件',
+          type: 'error'
+        })
+        return
+      }
 
       this.$router.push({
         path: '/score',

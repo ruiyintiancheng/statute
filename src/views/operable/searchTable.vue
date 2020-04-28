@@ -76,13 +76,14 @@
         </el-row>
         <el-row style="padding: 10px 0;">
           <el-col :span="24" style="text-align: center;">
-            <el-button class="menu" size="small" @click="searchOption()">搜索</el-button>
+            <el-button class="menu" :loading="loading" size="small" @click="searchOption()">搜索</el-button>
           </el-col>
         </el-row>
       </div>
-      <div>
+      <div   style="minHeight:50px;">
         <div v-show="tableToogle">
-          <el-table :data="tableData" border
+          <el-table :data="tableData" border 
+          v-loading="loading"
             :header-cell-style="{'color': 'gray', 'background-color': '#d8dadb'}"
             highlight-current-row 
             @current-change="handleCurrentRowChange">
@@ -146,10 +147,12 @@ export default {
   },
   data() {
     return {
+      loading: false,
       mainVisible: false,
       infoVisible: false,
       crawlConId: '',
       tableToogle: false,
+      tableHeight: 0,
 
       option: {
         docName: null,
@@ -171,11 +174,18 @@ export default {
       searchType: null
     }
   },
-  computed: {},
+  computed: {
+  },
   mounted() {
     this.loadOption()
+    this.getTableHeight()
   },
   methods: {
+    getTableHeight() {
+      this.$nextTick(_ => {
+        this.tableHeight = document.body.offsetHeight * 0.75 - 90
+      })
+    },
     openDialog(val) {
       this.searchType = val
       this.tableData = []
@@ -204,6 +214,7 @@ export default {
 
     },
     searchOption(page) {
+      this.loading = true
       this.tableToogle = true
       if (!page) {
         this.pageNo = 1
@@ -228,11 +239,11 @@ export default {
       if (this.option.endTime) {
         param.endTime = this.option.endTime
       }
-
       baseSearch('/wsClient/selects', param).then(response => {
         this.tableData = response.data.item
         this.total = response.data.total
         this.pageSize = response.data.pageSize
+        this.loading = false
       })
     },
     // 行点击
