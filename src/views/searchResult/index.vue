@@ -14,7 +14,7 @@
     </div>
     <div class="literalexcess"
          v-if="literalexcess"><i class="el-icon-warning-outline"></i> 查询限制在38个汉字以内超出后省略。</div>
-    <div style='margin:20px 0;font-size:16px'
+    <div style='margin:20px 0;font-size:16px;color: #606266;'
          v-if="total || total === 0">
       当前关键词:<span style="color:#1f73f3;"
             v-if="keyword">"{{keyword}}"</span>&nbsp;&nbsp;共<span style="color:#1f73f3;">{{total}}</span>条相关记录
@@ -236,6 +236,15 @@ export default {
     .not-find {
       font-size: 14px;
       color: #666;
+      line-height: 43px;
+      h3{
+        font-size: 20px;
+      }
+      p{
+        padding-left: 40px;
+        font-size: 17px;
+        color: #909399;
+      }
     }
     .data-bar {
       padding: 0 40px;

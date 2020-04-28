@@ -3,6 +3,7 @@
         <h2 class="score-title">
             分值: 
             <span class="score-value">{{fraction}}</span>
+            <a class="score-back" @click="$router.go(-1)">返回</a>
         </h2>
         <div class="score-container first">
           <div class="score-name">{{$route.query.sourceFileName}}</div>
@@ -78,14 +79,14 @@ export default {
       const jj = mainWidth * 0.04 - 10
       sourceArray.forEach(d => {
         // const sourceId = d.sourceId
-
+        const itemScore = (d.SCORE * 100).toFixed(2)
         sourceContent += sourceFile.substring(sourceIndex, d.OUT_SOURCE_START)
         targetContent += `<span style="opacity:0;">${sourceFile.substring(sourceIndex, d.OUT_SOURCE_START)}</span>`
         const offsetLeft = 10
         // if (/^\s/.test(d.OUT_SOURCE_CONTENT)) {
         //   offsetLeft = 40
         // }
-        sourceContent += `<span style="color: rgb(3, 126, 251);position:relative;">${sourceFile.substring(d.OUT_SOURCE_START, d.OUT_SOURCE_END)}<span style="position: absolute;top: -4px;left: ${offsetLeft}px;width: ${containerWidth + jj}px;height: 6px;border: 1px solid rgb(49, 100, 183);border-bottom: none;"></span></span>`
+        sourceContent += `<span style="color: rgb(3, 126, 251);position:relative;">${sourceFile.substring(d.OUT_SOURCE_START, d.OUT_SOURCE_END)}<span style="position: absolute;top: -4px;left: ${offsetLeft}px;width: ${containerWidth + jj}px;height: 6px;border: 1px solid rgb(49, 100, 183);border-bottom: none;"><i style="font-size: 12px;top: -10px;position: absolute;right: 3px;color: red;">${itemScore}</i></span></span>`
         targetContent += `<span style="color: rgb(3, 126, 251);position:relative;">${sourceFile.substring(d.OUT_SOURCE_START, d.OUT_SOURCE_END)}</span>`
         sourceIndex = d.OUT_SOURCE_END
       })
@@ -102,8 +103,16 @@ export default {
         padding:30px;
         // height:100%;
         .score-title{
+          // position: relative;
           .score-value{
             color:red;
+          }
+          .score-back{
+            position: absolute;
+            color:rgb(3, 126, 251);
+            font-size: 14px;
+            right: 100px;
+            top:80px;
           }
         }
         .score-container{

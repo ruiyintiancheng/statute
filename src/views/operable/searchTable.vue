@@ -89,7 +89,7 @@
             @current-change="handleCurrentRowChange">
             <el-table-column width="50" label="选择" align="center"> 
               <template slot-scope="scope">
-                <el-radio v-model="radio" :label="scope.row.docName"><span></span></el-radio>
+                <el-radio v-model="radio" :label="scope.row.id"><span></span></el-radio>
               </template>
             </el-table-column>
             <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
@@ -249,7 +249,7 @@ export default {
     // 行点击
     handleCurrentRowChange(val) {
       this.currentRow = val
-      this.radio = val.docName
+      this.radio = val.id
     },
     // 分页
     handleSizeChange(val) {
