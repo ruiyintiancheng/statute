@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 19:52:31 
  * @Last Modified by: 1k
- * @Last Modified time: 2020-04-27 17:06:15
+ * @Last Modified time: 2020-04-28 09:15:38
  * @Description:  高级搜索
  */
  <template>
@@ -308,12 +308,12 @@ export default {
       }
     })
     this.$nextTick(_ => {
-      document.body.addEventListener('click', this.pannalHandle)
+      // document.body.addEventListener('click', this.pannalHandle)
 
-      document.body.addEventListener('click', this.pannalHandle)
-      document.getElementsByClassName('el-date-picker').addEventListener('click', (e) => {
-        e.stopPropagation()
-      })
+      // document.body.addEventListener('click', this.pannalHandle)
+      // document.getElementsByClassName('el-date-picker').addEventListener('click', (e) => {
+      //   e.stopPropagation()
+      // })
     })
   },
   destroyed() {
