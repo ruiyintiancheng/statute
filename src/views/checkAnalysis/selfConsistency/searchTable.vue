@@ -91,7 +91,7 @@
             @current-change="handleCurrentRowChange">
             <el-table-column width="50" label="选择" align="center"> 
               <template slot-scope="scope">
-                <el-radio v-model="radio" :label="scope.row.docName"><span></span></el-radio>
+                <el-radio v-model="radio" :label="scope.row.id"><span></span></el-radio>
               </template>
             </el-table-column>
             <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
@@ -205,7 +205,7 @@ export default {
       // 政策层次: AA-012000000000000000-0001
       // 军民融合领域: AA-011000000000000000-0001
       const param = {
-        fCodeId: 'AA-012000000000000000-0001,AA-011000000000000000-0001'
+        fCodeIds: 'AA-012000000000000000-0001,AA-011000000000000000-0001'
       }
       baseSearch('/bCode/getOptionByFCodeId', param).then(response => {
         const item = response.data.item
@@ -245,10 +245,10 @@ export default {
         this.pageSize = response.data.pageSize
       })
     },
-    // 行点击
+    // 行点击id
     handleCurrentRowChange(val) {
       this.currentRow = val
-      this.radio = val.docName
+      this.radio = val.id
     },
     // 分页
     handleSizeChange(val) {

@@ -81,7 +81,7 @@ export default {
       // 政策层次: AA-012000000000000000-0001
       // 军民融合领域: AA-011000000000000000-0001
       const param = {
-        fCodeId: 'AA-012000000000000000-0001, AA-011000000000000000-0001'
+        fCodeIds: 'AA-012000000000000000-0001,AA-011000000000000000-0001'
       }
       baseSearch('/bCode/getOptionByFCodeId', param).then(response => {
         const item = response.data.item
