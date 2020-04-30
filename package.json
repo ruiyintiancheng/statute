@@ -34,6 +34,7 @@
     "node-sass": "^4.9.0",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
+    "pako": "^1.0.11",
     "sass-resources-loader": "^2.0.1",
     "save-svg-as-png": "^1.4.14",
     "sortablejs": "1.7.0",

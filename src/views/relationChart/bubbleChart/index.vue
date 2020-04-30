@@ -83,6 +83,7 @@ import relationPane from './components/relation'
 import explainPane from './components/explain'
 import infoPane from './components/infoPane'
 import Chart from './components/chart/index.js'
+import pako from 'pako'
 // import * as d3 from 'd3'
 export default {
   components: {
@@ -144,14 +145,26 @@ export default {
       this.toolbarHeight = document.querySelector('.app-main').offsetHeight
     },
     getData() {
-      const params = {}
-      baseRequest('/bDocBasic/annualAnalysis', params).then(response => {
-        this.chart_data = response.data.item
+      baseRequest('/bDocBasic/annualAnalysis', {}).then(response => {
+        const compress = response.data.item.result
+        const val = this.ungzip(compress)
+        this.chart_data = val
         this.init(this.chart_data)
         this.chartLoading = false
       }, _ => {
         this.chartLoading = false
       })
+    },
+    // gzip解压o
+    ungzip(punzipstr) {
+      try {
+        // 解压
+        var restored = pako.ungzip(punzipstr, { to: 'string' })
+        return JSON.parse(restored)
+      } catch (err) {
+        console.log('punzipMsgSTR--error: ' + err)
+      }
+      return null
     },
     init(data) {
       const graph = new Chart.Graph({

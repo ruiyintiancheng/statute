@@ -38,7 +38,7 @@
     </div>
     <nodes-table ref="nodesTable" @moveNode='moveNode'></nodes-table>
     <links-table ref="linksTable"></links-table>
-    <relation ref="relation" @selRelation="selRelation"></relation>
+    <!-- <relation ref="relation" @selRelation="selRelation"></relation> -->
   </div>
 </template>
 
@@ -46,14 +46,14 @@
 import { baseRequest } from '@/api/base'
 import nodesTable from './components/nodesTable'
 import linksTable from './components/linksTable'
-import relation from '../components/relation'
+// import relation from '../components/relation'
 import Chart from './components/chart/index.js'
 import * as d3 from 'd3'
 export default {
   components: {
     nodesTable,
-    linksTable,
-    relation
+    linksTable
+    // relation
   },
   props: {
     width: Number,
@@ -83,12 +83,14 @@ export default {
   created() {
   },
   mounted() {
+    console.log('生命周期')
     this.$nextTick(() => {
       this.getData()
     })
   },
   methods: {
     getData() {
+      console.log('getData')
       const params = { id: this.id }
       baseRequest('/gVertex/selectLegalLifeCycle', params).then(response => {
         const data = response.data.item
@@ -99,7 +101,6 @@ export default {
           }
         })
         this.init(data)
-
         this.listLoading = false
       }, _ => {
         this.listLoading = false
