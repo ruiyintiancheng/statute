@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2019-12-24 20:48:17 
- * @Last Modified by: 1k
- * @Last Modified time: 2020-04-27 17:22:55
+ * @Last Modified by: lk
+ * @Last Modified time: 2020-05-06 17:02:53
  * @Description:  查询列表
  */
 <template>
@@ -191,11 +191,13 @@ export default {
         this.$refs.resultSearch.setText(params.content)
         this.$refs.resultSearch.setParams(params)
         this.$refs.resultSearch.searchOperate()
-      }
-      // 查询空参数
-      if (this.$route.query.type && this.$route.query.type === 'analysis') {
+      } else {
         this.seacrHandle()
       }
+      // 查询空参数
+      // if (this.$route.query.type && this.$route.query.type === 'analysis') {
+      //   this.seacrHandle()
+      // }
     },
     openChart(item, type) {
       this.$router.push({
