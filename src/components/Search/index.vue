@@ -367,6 +367,7 @@ export default {
       this.dataValue = val
     },
     setParams(params) {
+      this.Dispatch = params.Dispatch
       for (const key in params) {
         if (this.updateFormData.hasOwnProperty(key)) {
           this.updateFormData[key] = params[key]
@@ -381,6 +382,7 @@ export default {
     searchOperate() { // 高级搜索的搜索
       // const params = Object.assign(this.updateFormData, { content: this.dataValue })
       const params = {}
+      params.Dispatch = this.Dispatch
       params.content = this.dataValue
       params.endTime = this.updateFormData.endTime
       params.startTime = this.updateFormData.startTime
@@ -396,6 +398,7 @@ export default {
       this.generalSearch = true
     },
     resetForm() { // 重置表单
+      this.Dispatch = []
       this.updateFormData.docSys = [] // 政策层次
       this.updateFormData.fuseField = [] // 军民融合领域
       // this.updateFormData.docPositioning = []
