@@ -12,12 +12,22 @@ const Rander = {
     const x = cfg._xScale
     const y = cfg.yScale
     const r = cfg.rScale
-    const nodeg = cfg.g.select('g.circle').selectAll('g.node').data(nodes, d => d.year + ':' + d.month)
+
+    cfg.g.select('g.circle').selectAll('g.node').remove()
+
+    const nodeg = cfg.g.select('g.circle').selectAll('g.node')
+      .data(nodes)
 
     const nodeEnter = nodeg.enter()
       .append('g')
       .classed('node', true)
-      .attr('id', d => d.year + ':' + d.month)
+      // .attr('id', d => {
+      //   if (cfg.dataType === 'year') {
+      //     return d.year
+      //   } else {
+      //     return d.year + ':' + d.month
+      //   }
+      // })
       .attr('transform', d => {
         if (cfg.dataType === 'year') {
           return `translate(${x(d.year)}, ${y(d.data.length)})`
@@ -38,9 +48,9 @@ const Rander = {
       .style('fill', 'white')
       .style('user-select', 'none')
 
-    nodeg.select('text')
-      .text(d => d.data.length)
-    nodeg.exit().remove()
+    // nodeg.select('text')
+    //   .text(d => d.data.length)
+    // nodeg.exit().remove()
   },
 
   // 绘制坐标网格

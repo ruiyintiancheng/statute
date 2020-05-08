@@ -6,11 +6,10 @@
  * @Description:  自洽性校验-搜索
  */
 <template>
-  <el-dialog title="选择库中公文" width="75%"
+  <el-dialog title="选择库中公文" width="77%"
       :visible.sync="mainVisible" 
       :close-on-click-modal='false' 
-      append-to-body
-      v-el-drag-dialog>
+      append-to-body>
     <div style="padding: 5px 50px">
       <div>
         <el-row :gutter="20" style="padding: 10px 0;">
@@ -29,7 +28,7 @@
               <el-cascader v-model="option.issueOrgText"
                 :show-all-levels="false"
                 :clearable="true"
-                :options="option.orgOption"
+                :options="optionLabels.orgOption" 
                 :props="{ expandTrigger: 'hover' }"
                 style="width: 300px;">
               </el-cascader>
@@ -39,8 +38,11 @@
               <el-select v-model="option.docSys" placeholder="请选择"
                 style="width: 300px;">
                 <el-option label="全部" value="全部"></el-option>
-                <el-option label="基础政策" value="基础政策"></el-option>
-                <el-option label="具体政策" value="具体政策"></el-option>
+                <el-option v-for="(value, key, index) in optionLabels.docSys"
+                           :key="index"
+                           :label="value"
+                           :value="key">
+                </el-option>
               </el-select>
           </el-col>
         </el-row>
@@ -50,7 +52,7 @@
               <el-select v-model="option.fuseField" placeholder="请选择"
                   style="width: 300px;">
                 <el-option label="全部" value="全部"></el-option>
-                <el-option v-for="(value, key, index) in option.fuseFieldOption"
+                <el-option v-for="(value, key, index) in optionLabels.fuseField"
                            :key="index"
                            :label="value"
                            :value="key">
@@ -76,14 +78,13 @@
         </el-row>
         <el-row style="padding: 10px 0;">
           <el-col :span="24" style="text-align: center;">
-            <el-button class="menu" :loading="loading" size="small" @click="searchOption()">搜索</el-button>
+            <el-button class="menu" size="small" @click="searchOption()">搜索</el-button>
           </el-col>
         </el-row>
       </div>
-      <div   style="minHeight:50px;">
+      <div>
         <div v-show="tableToogle">
-          <el-table :data="tableData" border 
-          v-loading="loading"
+          <el-table :data="tableData" border
             :header-cell-style="{'color': 'gray', 'background-color': '#d8dadb'}"
             highlight-current-row 
             @current-change="handleCurrentRowChange">
@@ -147,22 +148,23 @@ export default {
   },
   data() {
     return {
-      loading: false,
       mainVisible: false,
       infoVisible: false,
       crawlConId: '',
       tableToogle: false,
-      tableHeight: 0,
 
       option: {
         docName: null,
         issueOrgText: null,
-        orgOption: null,
         docSys: '全部',
         fuseField: '全部',
-        fuseFieldOption: null,
         startTime: null,
         endTime: null
+      },
+      optionLabels: {
+        orgOption: null,
+        docSys: null,
+        fuseField: null
       },
 
       tableData: [],
@@ -174,18 +176,11 @@ export default {
       searchType: null
     }
   },
-  computed: {
-  },
+  computed: {},
   mounted() {
     this.loadOption()
-    this.getTableHeight()
   },
   methods: {
-    getTableHeight() {
-      this.$nextTick(_ => {
-        this.tableHeight = document.body.offsetHeight * 0.75 - 90
-      })
-    },
     openDialog(val) {
       this.searchType = val
       this.tableData = []
@@ -202,19 +197,22 @@ export default {
       this.mainVisible = false
     },
     loadOption() {
-      baseSearch('http://47.93.121.177:8080/app/mock/36//bCode/getOrgOption', {}).then(response => {
-        this.option.orgOption = response.data.item
+      baseSearch('/bCode/getOrgOption', {}).then(response => {
+        this.optionLabels.orgOption = response.data.item
       })
 
-      baseSearch('http://47.93.121.177:8080/app/mock/36//bCode/getOptionByFCodeId', { fCodeId: 'AA-011000000000000000-0001' }).then(response => {
-        this.option.fuseFieldOption = response.data.item
+      // 政策层次: AA-012000000000000000-0001
+      // 军民融合领域: AA-011000000000000000-0001
+      const param = {
+        fCodeIds: 'AA-012000000000000000-0001,AA-011000000000000000-0001'
+      }
+      baseSearch('/bCode/getOptionByFCodeId', param).then(response => {
+        const item = response.data.item
+        this.optionLabels.docSys = item.docSys
+        this.optionLabels.fuseField = item.fuseField
       })
-    },
-    getOrgOption() {
-
     },
     searchOption(page) {
-      this.loading = true
       this.tableToogle = true
       if (!page) {
         this.pageNo = 1
@@ -239,14 +237,14 @@ export default {
       if (this.option.endTime) {
         param.endTime = this.option.endTime
       }
+
       baseSearch('/wsClient/selects', param).then(response => {
         this.tableData = response.data.item
         this.total = response.data.total
         this.pageSize = response.data.pageSize
-        this.loading = false
       })
     },
-    // 行点击
+    // 行点击id
     handleCurrentRowChange(val) {
       this.currentRow = val
       this.radio = val.id

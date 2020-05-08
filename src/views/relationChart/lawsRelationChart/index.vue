@@ -142,7 +142,7 @@ export default {
        */
     refresh() {
       this.graph.relation(null)
-      Chart.Brush.moveAll()
+      // Chart.Brush.moveAll()
       this.$refs.relation.clear()
     },
     /**
