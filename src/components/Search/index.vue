@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 19:52:31 
  * @Last Modified by: 1k
- * @Last Modified time: 2020-04-28 09:15:38
+ * @Last Modified time: 2020-05-08 15:10:13
  * @Description:  高级搜索
  */
  <template>
@@ -409,7 +409,7 @@ export default {
       this.updateFormData.issueOrgText = []
       // this.updateFormData.docSource = ''
       this.updateFormData.orderby = '_score'
-      this.updateFormData.starTime = ''
+      this.updateFormData.startTime = ''
       this.updateFormData.endTime = ''
     },
     seacrHandle() {
