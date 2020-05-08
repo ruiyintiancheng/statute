@@ -155,7 +155,7 @@ export default {
     onSubmit() {
       const relations = {}
       for (const key in this.options) {
-        if (this.options[key].value) {
+        if (this.options[key].values) {
           const values = this.options[key].values
           if (values && values.length > 0) {
             relations[key] = this.options[key]
@@ -173,7 +173,6 @@ export default {
         let flag = true
         for (const key in relations) {
           if (key === 'docSys') {
-            // flag = flag && inArray(obj[key], relations[key].has)
             flag = flag && arrayInArray(obj[key], ';', relations[key].has)
           }
           if (key === 'docUseBroad') {

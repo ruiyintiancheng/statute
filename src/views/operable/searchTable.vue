@@ -9,8 +9,7 @@
   <el-dialog title="选择库中公文" width="75%"
       :visible.sync="mainVisible" 
       :close-on-click-modal='false' 
-      append-to-body
-      v-el-drag-dialog>
+      append-to-body>
     <div style="padding: 5px 50px">
       <div>
         <el-row :gutter="20" style="padding: 10px 0;">
