@@ -191,6 +191,10 @@
                 <el-radio v-model="updateFormData.sourceState" label="1">停用</el-radio>
                 <el-radio v-model="updateFormData.sourceState" label="2">启用</el-radio>
             </el-form-item>
+            <el-form-item prop="isConnect"
+                        >
+              <el-button type="success" plain size="small " @click="testConnect">连接测试</el-button>
+          </el-form-item>
         </el-form>
       </div>
             <div slot="footer"
@@ -257,6 +261,9 @@ export default {
         ],
         sourceState: [
           { required: true, message: '请填写此项' }
+        ],
+        isConnect: [
+          { required: true, message: '请测试连接地址' }
         ]
       },
       updateFormData: {
@@ -265,7 +272,8 @@ export default {
         sourceState: '1',
         sourceType: null,
         sourceUrl: null,
-        sourceUsername: null
+        sourceUsername: null,
+        isConnect: null
       },
       currentId: null,
       currentPassword: null
@@ -286,6 +294,22 @@ export default {
     }
   },
   methods: {
+    // 测试地址
+    testConnect() {
+      this.$refs.updateFrom.validateField(['sourceType', 'sourceUrl', 'sourceUsername', 'sourcePazzword'], valid => {
+      })
+      if (this.updateFormData.sourceType && this.updateFormData.sourceUrl && this.updateFormData.sourceUsername && this.updateFormData.sourcePazzword) {
+        const params = {
+          sourceType: this.updateFormData.sourceType,
+          sourceUrl: this.updateFormData.sourceUrl,
+          sourceUsername: this.updateFormData.sourceUsername,
+          sourcePazzword: this.updateFormData.sourcePazzword
+        }
+        baseRequest('/confSource/isConnect', params).then(response => {
+          this.updateFrom.isConnect = 1
+        })
+      }
+    },
     getTableHeight() {
       this.$nextTick(_ => {
         this.tableHeight = document.body.offsetHeight - 360
@@ -331,7 +355,8 @@ export default {
         sourceState: '1',
         sourceType: null,
         sourceUrl: null,
-        sourceUsername: null
+        sourceUsername: null,
+        isConnect: null
       }
       this.operateVisable = true
     },
@@ -344,7 +369,8 @@ export default {
         sourceState: '1',
         sourceType: null,
         sourceUrl: null,
-        sourceUsername: null
+        sourceUsername: null,
+        isConnect: null
       }
       this.operateStatus = 2
       this.currentId = row.sourceId
