@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-02-26 15:34:09 
  * @Last Modified by: lk
- * @Last Modified time: 2020-04-13 14:32:19
+ * @Last Modified time: 2020-05-09 09:22:34
  * @Description:  数据源
  */
 <template>
@@ -306,7 +306,9 @@ export default {
           sourcePazzword: this.updateFormData.sourcePazzword
         }
         baseRequest('/confSource/isConnect', params).then(response => {
-          this.updateFrom.isConnect = 1
+          this.updateFormData.isConnect = 1
+          this.$message.success('测试通过')
+          this.$refs.updateFrom.validateField(['isConnect'])
         })
       }
     },

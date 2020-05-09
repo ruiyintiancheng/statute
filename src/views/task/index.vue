@@ -131,13 +131,13 @@
                          type="danger"
                          @click="deleteForm(scope.row)">删除</el-button>
               <el-button size="mini"
-                          v-if="scope.row.protStateStr === '停用'"
+                          v-if="scope.row.protState === '2' && scope.row.portStateState === '1'"
                          plain
                          type="success"
                          @click="startTask(scope.row)"
                          >立即启动</el-button>
               <el-button size="mini"
-                          v-if="scope.row.protStateStr === '启用'"
+                          v-if="scope.row.portStateState === '0'"
                          plain
                          type="danger"
                          @click="stopTask(scope.row)"
