@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2019-12-24 20:48:17 
- * @Last Modified by: lk
- * @Last Modified time: 2020-05-06 17:02:53
+ * @Last Modified by: 1k
+ * @Last Modified time: 2020-05-11 14:23:56
  * @Description:  查询列表
  */
 <template>
@@ -103,7 +103,7 @@ export default {
   methods: {
     judgingBody(str) { // 判断标题发布机构是否有值
       if (str && str !== '') {
-        if (str.indexOf('EA-' === -1)) {
+        if (str.indexOf('EA-') === -1) {
           return true
         } else {
           return false

@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 16:50:14 
  * @Last Modified by: 1k
- * @Last Modified time: 2020-04-28 09:54:41
+ * @Last Modified time: 2020-05-11 14:07:39
  * @Description:  数据统计
  */
 <template>
@@ -227,6 +227,7 @@ export default {
     return {
       organization: [], // 发文机构选项
       totalSum: null, // 综合
+      fuseTotalSum: null, // 总数
       speSum: null, // 具体
       basicSum: null, // 基础
       param: {
@@ -735,6 +736,7 @@ export default {
     getOldOption() {
       baseRequest('expGroupAnalyse/selectDataStatistics').then(response => {
         this.totalSum = response.data.item.docSysSum.totalSum
+        this.fuseTotalSum = response.data.item.docSysSum.fuseTotalSum
         this.speSum = response.data.item.docSysSum.speSum
         this.basicSum = response.data.item.docSysSum.basicSum
         this.histogramValue = response.data.item.ministryPolicyReleaseMap.seriesList
