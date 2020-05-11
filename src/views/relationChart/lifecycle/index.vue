@@ -83,14 +83,12 @@ export default {
   created() {
   },
   mounted() {
-    console.log('生命周期')
     this.$nextTick(() => {
       this.getData()
     })
   },
   methods: {
     getData() {
-      console.log('getData')
       const params = { id: this.id }
       baseRequest('/gVertex/selectLegalLifeCycle', params).then(response => {
         const data = response.data.item

@@ -4,14 +4,12 @@ const Nodes = {
       const color = d.docState === 'running' ? '#4fbaf4' : '#b8b7b6'
 
       const option = {
-        title: d.docTitle,
-        name: d.orgAbbName,
+        name: d.orgAbbName || d.docIssueOrgText || '',
+        title: d.docTittle || d.docName || '',
         time: d.docIssueTime,
         r: 10,
-        color: color,
-        d
+        color: color
       }
-
       if (d.queryNode === true) {
         option.color = '#ff804c'
         // option.r = 15

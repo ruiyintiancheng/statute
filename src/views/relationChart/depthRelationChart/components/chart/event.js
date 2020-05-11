@@ -66,8 +66,8 @@ function nodeEvent(cfg) {
       title.style('display', 'block')
         .style('left', `${d3.event.offsetX + 10}px`)
         .style('top', `${d3.event.offsetY + 10}px`)
-        .selectAll('div.title-content').data([d.docName, d.docIssueOrgText, d.docIssueTime])
-        .text(text => text)
+        .selectAll('div.title-content').data([d.docIssueOrgText, d.docName, d.docIssueTime])
+        .text(text => text || '')
       d3.event.stopPropagation()
     })
     .on('mousemove', d => {

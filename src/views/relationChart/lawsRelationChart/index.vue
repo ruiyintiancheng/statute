@@ -92,8 +92,9 @@ export default {
   methods: {
     getData() {
       const params = { id: this.id }
-      // params.id = 500043
-      baseRequest('/gVertex/selectLegalAssAnalysis', params).then(response => {
+      // '/gVertex/selectLegalAssAnalysis'
+      const url = process.env.CHART_API + '/chart/selectLegalAssAnalysis'
+      baseRequest(url, params).then(response => {
         response.data.item.nodes.forEach(d => {
           d.id += ''
           if (d.id === (this.id + '')) {

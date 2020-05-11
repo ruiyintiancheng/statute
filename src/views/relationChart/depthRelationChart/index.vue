@@ -20,17 +20,17 @@
     </div>
     <!-- 鼠标悬浮提示框 -->
     <div id="title" class="title">
-      <div>
+      <div style="min-height: 16px;">
         <div class='title-head'>发布单位: </div>
-        <div class="title-content">中华人民共和国工业和信息化部</div>
+        <div class="title-content"></div>
       </div>
-        <div>
+      <div style="min-height: 16px;">
         <div class='title-head'>发布法规: </div>
-        <div class="title-content">中华人民共和国工业和信息化部</div>
+        <div class="title-content"></div>
       </div>
-      <div>
+      <div style="min-height: 16px;">
         <div class='title-head'>发布时间: </div>
-        <div class="title-content">中华人民共和国工业和信息化部</div>
+        <div class="title-content"></div>
       </div>
     </div>
     <!-- 鼠标右键菜单 -->
@@ -106,7 +106,9 @@ export default {
   methods: {
     getData() {
       const params = { id: this.id }
-      baseRequest('/gVertex/getRegulatoryLevel', params).then(response => {
+      // '/gVertex/getRegulatoryLevel'
+      const url = process.env.CHART_API + '/chart/getRegulatoryLevel'
+      baseRequest(url, params).then(response => {
         response.data.item.nodes.forEach(d => {
           d.id += ''
           if (d.id === (this.id + '')) {

@@ -1,6 +1,7 @@
 module.exports = {
   NODE_ENV: '"development"',
   ENV_CONFIG: '"dev"',
+  CHART_API: '"http://123.56.175.133:8080/modelRunningServer"',
   // BASE_API: '"https://api-dev"'
   // BASE_API: '"http://47.93.121.177:8080/app/mock/36//"'
   // BASE_API: '"http://39.106.123.32:8080/cmprsNewBack"'
