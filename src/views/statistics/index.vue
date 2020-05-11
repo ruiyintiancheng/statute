@@ -11,19 +11,31 @@
       <div class="screening">
         <el-row :gutter="24"
                 v-if="headSwitch">
-          <el-col :sm="8"
-                  :lg="8"
+          <el-col :sm="6"
+                  :lg="6"
+                  class="screening-item">
+            <img src="@/assets/images/总量.png"
+                 style="width:66px;height:66px"
+                 alt="">
+            <div class="imgr">
+              <p class="imgr-num">{{totalSum}}</p>
+              <p class="imgr-word">政策法规总数</p>
+              <!-- <span>asdf </span> -->
+            </div>
+          </el-col>
+          <el-col :sm="6"
+                  :lg="6"
                   class="screening-item">
             <img src="@/assets/images/all2.png"
                  alt="">
             <div class="imgr">
-              <p class="imgr-num">{{totalSum}}</p>
-              <p class="imgr-word">政策法规总量</p>
+              <p class="imgr-num">{{fuseTotalSum}}</p>
+              <p class="imgr-word">军地政策法规总数</p>
               <!-- <span>asdf </span> -->
             </div>
           </el-col>
-          <el-col :sm="8"
-                  :lg="8"
+          <el-col :sm="6"
+                  :lg="6"
                   class="screening-item">
             <img src="@/assets/images/zhence.png"
                  alt="">
@@ -33,8 +45,8 @@
               <!-- <span>asdf </span> -->
             </div>
           </el-col>
-          <el-col :sm="8"
-                  :lg="8"
+          <el-col :sm="6"
+                  :lg="6"
                   class="screening-item">
             <img src="@/assets/images/renwu.png"
                  alt="">

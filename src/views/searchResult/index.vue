@@ -28,7 +28,12 @@
              :key="index">
           <a @click="$router.push({name:'policy',query:{crawlConId:item.id}})"
              style="color:#666">
-            <h4> <span v-html="item.issueOrgText"></span>:<span v-html="item.docName"></span></h4>
+            <h4>
+              <span v-if="judgingBody(item.issueOrgText)"
+                    v-html="item.issueOrgText"></span>
+              <span v-if="judgingBody(item.issueOrgText)">:</span>
+              <span v-html="item.docName"></span>
+            </h4>
           </a>
           <p class="bar-title"
              style="font-size:14px;color:#777"
@@ -96,6 +101,17 @@ export default {
     this.routingQuery()
   },
   methods: {
+    judgingBody(str) { // 判断标题发布机构是否有值
+      if (str && str !== '') {
+        if (str.indexOf('EA-' === -1)) {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
+    },
     handleSizeChange(val) { // 分页
       this.pageSize = val
       this.requestSearch()
@@ -239,10 +255,10 @@ export default {
       font-size: 14px;
       color: #666;
       line-height: 43px;
-      h3{
+      h3 {
         font-size: 20px;
       }
-      p{
+      p {
         padding-left: 40px;
         font-size: 17px;
         color: #909399;
