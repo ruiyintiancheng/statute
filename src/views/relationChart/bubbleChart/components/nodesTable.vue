@@ -10,21 +10,26 @@
     <div class="dialog-contant-default file-download-log nodelist">
         <el-table :data="tableData" style="width: 100%;" :height="tableHeight"
           :border="true" :fit="true">
-          <el-table-column  type="index" :index="indexMethod" width="50" label="#" align="center" sortable></el-table-column>
-          <el-table-column  prop="docName" label="政策名称" align="center" width="500" sortable></el-table-column>
+          <!-- <el-table-column  type="index" :index="indexMethod" width="50" label="#" align="center" sortable></el-table-column> -->
+          <!-- <el-table-column  prop="docName" label="政策名称" align="center" width="500" sortable></el-table-column>
           <el-table-column width="150" label="发布时间" align="center" sortable> 
             <template slot-scope="scope">
               <div>{{scope.row.year}}年{{scope.row.month}}月</div>
             </template>
-          </el-table-column>
-          <el-table-column prop="docSys" label="政策层级" align="center" width="150" sortable></el-table-column>
+          </el-table-column> -->
+          <!-- <el-table-column prop="docSys" label="政策层级" align="center" width="150" sortable></el-table-column>
           <el-table-column prop="fuseField" label="军民融合领域" align="center" width="400" sortable></el-table-column>
-          <el-table-column prop="docContentSys" label="二级领域" align="center" width="250" sortruetable></el-table-column>
-          <el-table-column width="200" label="操作" align="center" fixed="right"> 
+          <el-table-column prop="docContentSys" label="二级领域" align="center" width="250" sortruetable></el-table-column> -->
+          <el-table-column  type="index" :index="indexMethod" width="50" label="#" align="center"></el-table-column>
+          <el-table-column prop="docName" label="政策法规名称" align="center" sortable>
             <template slot-scope="scope">
-              <el-button type="primary" plain size="mini" @click="openInfo(scope.row)">查看原文</el-button>
+              <el-link :underline="false" @click="openInfo(scope.row)" type="primary">{{scope.row.docName}}</el-link>
             </template>
           </el-table-column>
+          <el-table-column prop="docNum" label="政策法规文号" align="center" width="200" sortable></el-table-column>
+          <el-table-column prop="docIssueOrgText" label="发布单位名称" align="center" width="200" sortable></el-table-column>
+          <el-table-column prop="docIssueTime" label="发布时间" align="center" width="140" sortable></el-table-column>
+          <el-table-column prop="docAnnulTime" label="废止时间" align="center" width="140" sortable></el-table-column>
          </el-table>
          <el-pagination background
                         @size-change="handleSizeChange"

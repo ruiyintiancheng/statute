@@ -14,7 +14,7 @@ const Nodes = {
         option.color = '#ff804c'
         // option.r = 15
       }
-
+      option.name = d.name === 'null' ? '' : d.name
       d.r = option.r
       Nodes.enter(selection, option)
     },

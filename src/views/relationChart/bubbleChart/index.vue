@@ -149,6 +149,7 @@ export default {
         const compress = response.data.item.result
         const val = this.ungzip(compress)
         this.chart_data = val
+
         this.init(this.chart_data)
         this.chartLoading = false
       }, _ => {
