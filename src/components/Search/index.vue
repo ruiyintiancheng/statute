@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 19:52:31 
  * @Last Modified by: 1k
- * @Last Modified time: 2020-05-08 15:10:13
+ * @Last Modified time: 2020-05-11 17:36:10
  * @Description:  高级搜索
  */
  <template>
@@ -321,19 +321,30 @@ export default {
   },
   methods: {
     articleSelection(item) {
-      const checknodes = this.$refs.dispatch.getCheckedNodes()
-
-      // console.log(item)
+      // const checknodes = this.$refs.dispatch.getCheckedNodes()
       const arr = []
-      if (checknodes) {
-        for (const i of checknodes) {
+      if (item) {
+        for (const i of item) {
           // arr = arr.concat(i)
-          arr.push(i.data.value + '|' + i.data.label)
+          // arr.push(i.data.value + '|' + i.data.label)
+          if (i.length === 1) {
+            const fa = this.organization.filter((n) => {
+              return n.value === i[0]
+            })
+            arr.push(fa[0].value + '|' + fa[0].label)
+          } else if (i.length > 1) {
+            const f = this.organization.filter((n) => {
+              return n.value === i[0]
+            })
+            const ch = f[0].children.filter((n) => {
+              return n.value === i[1]
+            })
+            arr.push(ch[0].value + '|' + ch[0].label)
+          }
         }
       }
 
       this.updateFormData.issueOrgText = arr
-      // console.log('-------------', arr)
     },
     // 选中控制
     selectControl(val, prop, options) {

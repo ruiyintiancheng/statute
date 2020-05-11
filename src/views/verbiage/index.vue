@@ -1,8 +1,8 @@
 /*
  * @Author: wk 
  * @Date: 2019-12-31 11:54:48 
- * @Last Modified by: lk
- * @Last Modified time: 2020-03-17 14:23:08
+ * @Last Modified by: 1k
+ * @Last Modified time: 2020-05-11 16:32:29
  * @Description:  讲话内容
  */
 <template>
@@ -77,7 +77,7 @@ export default {
       baseRequest('bXjpBasic/selectById', { id: crawlConId }).then(response => {
         this.articleDetail = response.data.item
         const reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g
-        this.conUrl = this.articleDetail.content.match(reg)[0]
+        this.conUrl = this.articleDetail.content.match(reg)
         this.articleDetail.content = this.articleDetail.content.replace(reg, '原文链接 <a style="color:#40A9FF" target="_blank" href="' + this.conUrl + '">' + this.conUrl + '</a>')
         if (response.data.item.contentType !== 'html') {
           this.articleDetail.content = this.getHtml(this.articleDetail.content)
