@@ -3,6 +3,7 @@ class Layout {
   static setConfig(cfg) {
     this.width = cfg.width
     this.height = cfg.height
+    this._cfg = cfg
   }
 
   static init(data) {
@@ -11,7 +12,15 @@ class Layout {
     if (nodes.length === 0) {
       return
     }
-    before(data)
+
+    data.nodes.forEach(d => {
+      if (d.queryNode === true) {
+        this._cfg.queryNode = d
+      }
+      d.x = Math.random() * 1960
+      d.y = d.fy = 200 * (d.orgRank || (d.docIssueOrgText ? 3 : 4))
+    })
+
     const simulation = d3.forceSimulation(nodes) // 力布局
       .force('center', d3.forceCenter(this.width / 2, this.height / 2)) // 定心力
       .force('link', d3.forceLink().links(links).id(d => d.id).distance(150).strength(0.1)) // 弹力
@@ -25,11 +34,4 @@ class Layout {
   }
 }
 
-function before(data) {
-  data.nodes.forEach(d => {
-    d.x = Math.random() * 1960
-    // d.y = Math.random() * 1080
-    d.y = d.fy = d.orgRank * 200
-  })
-}
 export default Layout

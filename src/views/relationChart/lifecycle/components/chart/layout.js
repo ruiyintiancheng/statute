@@ -3,7 +3,7 @@ class Layout {
   static setConfig(cfg) {
     this.width = cfg.width
     this.height = cfg.height
-    this.cfg = cfg
+    this._cfg = cfg
   }
 
   static init(data) {
@@ -16,6 +16,10 @@ class Layout {
       node.y = i * 200
       nodes.push(node)
 
+      if (node.queryNode === true) {
+        this._cfg.queryNode = node
+      }
+
       if (i > 0) {
         links.push({
           source: nodes[i - 1],
@@ -24,7 +28,7 @@ class Layout {
       }
     }
 
-    this.cfg.data = { nodes, links }
+    this._cfg.data = { nodes, links }
   }
 }
 

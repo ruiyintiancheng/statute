@@ -101,10 +101,15 @@ function moveCenter(cfg, transform) {
  * 图像缩放到屏幕中间
  */
 function translateCenter(cfg) {
-  const gbox = cfg.g.node().getBBox()
-  const x = gbox.x + gbox.width / 2
-  const y = gbox.y + gbox.height / 2
-  moveCenter(cfg, { x: x, y: y, k: 1 })
+  if (cfg.queryNode) {
+    const x = cfg.queryNode.x
+    const y = cfg.queryNode.y
+    moveCenter(cfg, { x, y, k: 1 })
+  }
+  // const gbox = cfg.g.node().getBBox()
+  // const x = gbox.x + gbox.width / 2
+  // const y = gbox.y + gbox.height / 2
+  // moveCenter(cfg, { x: x, y: y, k: 1 })
 }
 
 const Event = {
