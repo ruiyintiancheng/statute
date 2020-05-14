@@ -158,6 +158,7 @@
                           label="驱动类型:">
               <el-select class="form-input" style="width:200px"
                 v-model="updateFormData.sourceType"
+                @change="updateFormData.isConnect = null"
                 >
                     <el-option  value="Mysql" label="Mysql"></el-option>        
                     <el-option  value="Oracle" label="Oracle"></el-option>        
@@ -168,6 +169,7 @@
               <el-input class="form-input"
                         style="width:200px"
                         v-model.trim="updateFormData.sourceUrl"
+                        @change="updateFormData.isConnect = null"
                         clearable></el-input>
             </el-form-item>
             <el-form-item prop="sourceUsername"
@@ -175,6 +177,7 @@
               <el-input class="form-input"
                         style="width:200px"
                         v-model.trim="updateFormData.sourceUsername"
+                        @change="updateFormData.isConnect = null"
                         clearable></el-input>
             </el-form-item>
             <el-form-item prop="sourcePazzword"
@@ -183,6 +186,7 @@
                         style="width:200px"
                         @focus="updateFormData.sourcePazzword=null"
                         v-model.trim="updateFormData.sourcePazzword"
+                        @change="updateFormData.isConnect = null"
                         type="password"
                         clearable></el-input>
             </el-form-item>
@@ -304,6 +308,9 @@ export default {
           sourceUrl: this.updateFormData.sourceUrl,
           sourceUsername: this.updateFormData.sourceUsername,
           sourcePazzword: this.updateFormData.sourcePazzword
+        }
+        if (this.updateFormData.sourcePazzword !== this.currentPassword) {
+          params.sourcePazzword = encode64(params.sourcePazzword)
         }
         baseRequest('/confSource/isConnect', params).then(response => {
           this.updateFormData.isConnect = 1
