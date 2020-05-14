@@ -99,7 +99,7 @@ export default {
         docOperability: { values: [], has: null },
         docType: { values: [], has: null },
         docFuseField: { values: [], has: null },
-        docIssueTime: { min: '', max: '' }
+        docIssueTime: { min: new Date('1945-10-1'), max: new Date() }
       },
       optionLabels: {
         docSys: {},
@@ -130,8 +130,7 @@ export default {
       // 军民融合领域:AA-011000000000000000-0001
       const param = {
         fCodeIds: 'AA-012000000000000000-0001,AA-006000000000000000-0001,AA-008000000000000000-0001,' +
-         'AA-009000000000000000-0001,AA-003000000000000000-0001,AA-011000000000000000-0001,' +
-         'AA-010000000000000000-0001'
+         'AA-009000000000000000-0001,AA-003000000000000000-0001,AA-011000000000000000-0001'
       }
       baseSearch('/bCode/getOptionByFCodeId', param).then(response => {
         const item = response.data.item
@@ -143,7 +142,7 @@ export default {
           docType: item.docType,
           docFuseField: item.fuseField
         }
-        // console.log(this.optionLabels)
+        this.selectAll()
       })
     },
     openDialog() {
@@ -155,17 +154,13 @@ export default {
     onSubmit() {
       const relations = {}
       for (const key in this.options) {
+        relations[key] = this.options[key]
         if (this.options[key].values) {
-          const values = this.options[key].values
-          if (values && values.length > 0) {
-            relations[key] = this.options[key]
-            relations[key].has = new Set(this.options[key].values)
-          }
-        } else {
-          relations[key] = this.options[key]
+          relations[key].has = new Set(this.options[key].values)
         }
       }
 
+      // console.log(relations)
       this.$emit('selRelation', check)
       this.mainVisible = false
 
@@ -191,18 +186,19 @@ export default {
             flag = flag && arrayInArray(obj[key], ';', relations[key].has)
           }
           if (key === 'docIssueTime') {
-            flag = flag && inData(obj[key], [relations[key].min, relations[key].max])
+            const min = relations[key].min
+            const max = relations[key].max
+            flag = flag && inData(obj[key], [min, max])
           }
         }
-
         return flag
 
         // function inArray(value, set) {
         //   return set.has(value)
         // }
         function arrayInArray(value, separator, set) {
-          if (value === null) {
-            return false
+          if (value === null || value === '' || value === 'null') {
+            value = '其他'
           }
           const newArray = value.split(separator)
           let isSel = false
@@ -214,17 +210,37 @@ export default {
           return isSel
         }
         function inData(value, times) {
+          if (!value) {
+            value = new Date('1945-10-1')
+          }
           const time = new Date(value)
           let isSel = true
-          if (times[1] && time[1] !== '') {
-            isSel = isSel && time <= time[1]
+          if (times[1] && times[1] !== '') {
+            isSel = isSel && time <= times[1]
           }
-          if (time[0] && time[0] !== '') {
-            isSel = isSel && time >= time[0]
+          if (times[0] && times[0] !== '') {
+            isSel = isSel && time >= times[0]
           }
           return isSel
         }
       }
+    },
+    selectAll() {
+      this.options.docSys.values = values(this.optionLabels.docSys)
+      this.options.docUseBroad.values = values(this.optionLabels.docUseBroad)
+      this.options.docAbout.values = values(this.optionLabels.docAbout)
+      this.options.docOperability.values = values(this.optionLabels.docOperability)
+      this.options.docType.values = values(this.optionLabels.docType)
+      this.options.docFuseField.values = values(this.optionLabels.docFuseField)
+      function values(obj) {
+        const result = []
+        for (const name in obj) {
+          result.push(obj[name])
+        }
+        return result
+      }
+
+      this.onSubmit()
     },
     /**
      *  清空

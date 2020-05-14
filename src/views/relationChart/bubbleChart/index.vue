@@ -183,6 +183,7 @@ export default {
 
       // Chart.Brush.init(graph, 'brush')
       Chart.legend(graph, 'legend')
+      this.$refs.relation.selectAll()
       // graph.translateCenter()
       this.graph = graph
     },
@@ -208,14 +209,15 @@ export default {
        * 关系筛选
        */
     selRelation(options) {
-      this.graph.relation(options)
+      if (this.graph) {
+        this.graph.relation(options)
+      }
     },
     /**
        * 打开筛选列表
        */
     relation() {
       this.$refs.relation.openDialog()
-      // this.graph.relation({ related: ['强相关', '不相关'] })
     },
     openList(data) {
       this.$refs.nodesTable.openDialog(data)

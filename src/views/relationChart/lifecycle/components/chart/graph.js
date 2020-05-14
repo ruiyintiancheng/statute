@@ -40,6 +40,14 @@ class Graph {
 
   _init() {
     this._initCanvas()
+
+    // 设置偏移度
+    const offsetId = this.get('offsetId')
+    this.set('offset', function() {
+      const left = document.querySelector(offsetId).offsetLeft
+      const top = document.querySelector(offsetId).offsetTop
+      return [left, top]
+    })
   }
 
   _initCanvas() {

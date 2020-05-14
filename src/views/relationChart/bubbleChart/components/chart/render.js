@@ -45,8 +45,9 @@ const Rander = {
       .attr('text-anchor', 'middle')
       .attr('dy', '0.35em')
       .style('font-size', d => {
-        const size = r(d.data.length)
-        return size > 24 ? size / 2 : 12
+        let size = r(d.data.length)
+        size = size > 24 ? size / 2 : 12
+        return size + 'px'
       })
       .style('fill', 'white')
       .style('user-select', 'none')

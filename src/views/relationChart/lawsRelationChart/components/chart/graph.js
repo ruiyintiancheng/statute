@@ -40,11 +40,20 @@ class Graph {
 
   _init() {
     this._initCanvas()
+
+    // 设置偏移度
+    const offsetId = this.get('offsetId')
+    this.set('offset', function() {
+      const left = document.querySelector(offsetId).offsetLeft
+      const top = document.querySelector(offsetId).offsetTop
+      return [left, top]
+    })
   }
 
   _initCanvas() {
     const svg = d3.select('#' + this.get('container'))
       .append('svg')
+      .attr('id', 'chart_svg')
       .attr('width', '100%')
       .attr('height', '100%')
       .style('margin-bottom', '-3px')

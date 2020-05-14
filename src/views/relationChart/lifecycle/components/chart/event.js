@@ -72,11 +72,14 @@ function nodeClick(cfg) {
 function nodeMenu(cfg) {
   cfg.g.selectAll('g.node').on('contextmenu', d => {
     d3.event.preventDefault()
+
+    const offsetX = d3.event.pageX - cfg.offset()[0]
+    const offsetY = d3.event.pageY - cfg.offset()[1]
     cfg.contextMenuNode = d
     d3.select(`#${cfg.contextMenu}`)
       .style('display', 'block')
-      .style('top', `${d3.event.offsetY + 10}px`)
-      .style('left', `${d3.event.offsetX + 10}px`)
+      .style('top', `${offsetY + 10}px`)
+      .style('left', `${offsetX + 10}px`)
   })
 }
 

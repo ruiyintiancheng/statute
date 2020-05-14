@@ -10,11 +10,19 @@ const Nodes = {
         r: 10,
         color: color
       }
+      if (d.id === '500172') {
+        console.log('option', option)
+      }
       if (d.queryNode === true) {
         option.color = '#ff804c'
         // option.r = 15
       }
-      option.name = d.name === 'null' ? '' : d.name
+      if (option.name === 'null') {
+        option.name = ''
+      }
+      if (d.id === '500172') {
+        console.log('option', option)
+      }
       d.r = option.r
       Nodes.enter(selection, option)
     },
@@ -54,8 +62,11 @@ const Nodes = {
       .attr('r', option.r)
       .style('fill', option.color)
 
-    if (option.title.length > 8) {
-      option.title = option.title.substring(0, 8) + '...'
+    if (option.name.length > 10) {
+      option.name = option.name.substring(0, 10) + '...'
+    }
+    if (option.title.length > 10) {
+      option.title = option.title.substring(0, 10) + '...'
     }
     const texts = [
       { text: option.name, dx: 0, dy: '-0.35em' },

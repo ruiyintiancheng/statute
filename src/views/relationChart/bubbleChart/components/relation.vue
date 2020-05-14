@@ -57,7 +57,7 @@ export default {
       options: {
         docSys: { values: [], has: null },
         fuseField: { values: [], has: null },
-        timeType: { values: [], has: null }
+        timeType: { values: ['1', '2', '3', '4'], has: null }
       },
       optionLabels: {
         docSys: {},
@@ -89,6 +89,7 @@ export default {
           docSys: item.docSys,
           fuseField: item.fuseField
         }
+        this.selectAll()
       })
     },
     handleChange(value) {
@@ -100,14 +101,9 @@ export default {
     onSubmit() {
       const relations = {}
       for (const key in this.options) {
+        relations[key] = this.options[key]
         if (this.options[key].values) {
-          const values = this.options[key].values
-          if (values && values.length > 0) {
-            relations[key] = this.options[key]
-            relations[key].has = new Set(this.options[key].values)
-          }
-        } else {
-          relations[key] = this.options[key]
+          relations[key].has = new Set(this.options[key].values)
         }
       }
 
@@ -135,8 +131,8 @@ export default {
         }
 
         function arrayInArray(value, separator, set) {
-          if (value === null) {
-            return false
+          if (value === null || value === '' || value === 'null') {
+            value = '其他'
           }
           const newArray = value.split(separator)
           let isSel = false
@@ -149,6 +145,19 @@ export default {
         }
       }
     },
+    selectAll() {
+      this.options.docSys.values = values(this.optionLabels.docSys)
+      this.options.fuseField.values = values(this.optionLabels.fuseField)
+      function values(obj) {
+        const result = []
+        for (const name in obj) {
+          result.push(obj[name])
+        }
+        return result
+      }
+
+      this.onSubmit()
+    },
     /**
      *  清空
      */
@@ -156,7 +165,8 @@ export default {
       this.options.docSys.values = []
       this.options.fuseField.values = []
       this.options.timeType.values = []
-      this.$emit('selRelation', null)
+      this.onSubmit()
+      // this.$emit('selRelation', null)
     }
   }
 }

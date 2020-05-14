@@ -63,17 +63,22 @@ function nodeEvent(cfg) {
   cfg.g.selectAll('g.node').selectAll('text')
     .on('mouseover', d => {
       d3.event.preventDefault()
+      const offsetX = d3.event.pageX - cfg.offset()[0] + 10
+      const offsetY = d3.event.pageY - cfg.offset()[1] + 10
+
       title.style('display', 'block')
-        .style('left', `${d3.event.offsetX + 10}px`)
-        .style('top', `${d3.event.offsetY + 10}px`)
+        .style('left', `${offsetX}px`)
+        .style('top', `${offsetY}px`)
         .selectAll('div.title-content').data([d.docIssueOrgText, d.docName, d.docIssueTime])
         .text(text => text || '')
       d3.event.stopPropagation()
     })
     .on('mousemove', d => {
       d3.event.preventDefault()
-      title.style('left', `${d3.event.offsetX + 10}px`)
-        .style('top', `${d3.event.offsetY + 10}px`)
+      const offsetX = d3.event.pageX - cfg.offset()[0] + 10
+      const offsetY = d3.event.pageY - cfg.offset()[1] + 10
+      title.style('left', `${offsetX}px`)
+        .style('top', `${offsetY}px`)
       d3.event.stopPropagation()
     })
     .on('mouseout', d => {
@@ -95,11 +100,13 @@ function nodeClick(cfg) {
 function nodeMenu(cfg) {
   cfg.g.selectAll('g.node').on('contextmenu', d => {
     d3.event.preventDefault()
+    const offsetX = d3.event.pageX - cfg.offset()[0]
+    const offsetY = d3.event.pageY - cfg.offset()[1]
     cfg.contextMenuNode = d
     d3.select(`#${cfg.contextMenu}`)
       .style('display', 'block')
-      .style('left', `${d3.event.offsetX + 10}px`)
-      .style('top', `${d3.event.offsetY + 10}px`)
+      .style('top', `${offsetY + 10}px`)
+      .style('left', `${offsetX + 10}px`)
   })
 }
 

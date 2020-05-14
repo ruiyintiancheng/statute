@@ -47,7 +47,7 @@ const Nodes = {
       .style('font-size', 13)
       .style('cursor', 'pointer')
 
-    node.append('title').text(option.name)
+    // node.append('title').text(option.name)
 
     node.append('circle')
       .attr('r', option.r)

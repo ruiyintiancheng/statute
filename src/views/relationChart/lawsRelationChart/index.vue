@@ -2,8 +2,8 @@
 * 时序关系图
 */
 <template>
-  <div style="width: 100%; height:100%; position: relative">
-    <div v-loading="chartLoading">
+  <div id="chart_main" style="width: 100%; height:100%; position: relative">
+    <div v-loading="chartLoading" style="width: 100%; height: 100%;">
       <div id="chart" :style="{'width': `${chart_width}px`, 'height': `${chart_height}px`}"></div>
       <div id="brush"></div>
       <div id="legend"></div>
@@ -70,7 +70,7 @@ export default {
       return this.height - 30 // - 50
     },
     table_height() {
-      return this.height - 40
+      return this.height - 41
     }
   },
   data() {
@@ -122,6 +122,7 @@ export default {
         width: this.chart_width,
         height: this.chart_height,
         contextMenu: 'contextMenu',
+        offsetId: '#chart_main',
         background: '#26368d' //  #04244A
       })
       graph.data(data)
@@ -130,6 +131,8 @@ export default {
       // Chart.Brush.init(graph, 'brush')
       Chart.legend(graph, 'legend')
       graph.translateCenter()
+      this.$refs.relation.selectAll()
+
       this.graph = graph
     },
     /**
@@ -170,7 +173,9 @@ export default {
        * 关系筛选
        */
     selRelation(options) {
-      this.graph.relation(options)
+      if (this.graph) {
+        this.graph.relation(options)
+      }
     },
     /**
        * 打开筛选列表

@@ -2,7 +2,7 @@
 * 时序关系图
 */
 <template>
-  <div style="width: 100%; height:100%; position: relative">
+  <div id="chart_main" style="width: 100%; height:100%; position: relative">
     <div v-loading="chartLoading">
       <div id="chart" :style="{'width': `${chart_width}px`, 'height': `${chart_height}px`}"></div>
       <div id="brush"></div>
@@ -20,15 +20,15 @@
     </div>
     <!-- 鼠标悬浮提示框 -->
     <div id="title" class="title">
-      <div style="min-height: 16px;">
+      <div style="min-height: 17px;">
         <div class='title-head'>发布单位: </div>
         <div class="title-content"></div>
       </div>
-      <div style="min-height: 16px;">
+      <div style="min-height: 17px;">
         <div class='title-head'>发布法规: </div>
         <div class="title-content"></div>
       </div>
-      <div style="min-height: 16px;">
+      <div style="min-height: 17px;">
         <div class='title-head'>发布时间: </div>
         <div class="title-content"></div>
       </div>
@@ -53,7 +53,7 @@
     </div>
     <nodes-table ref="nodesTable" @moveNode='moveNode'></nodes-table>
     <links-table ref="linksTable"></links-table>
-    <relation ref="relation" @selRelation="selRelation"></relation>
+    <!-- <relation ref="relation" @selRelation="selRelation"></relation> -->
   </div>
 </template>
 
@@ -61,14 +61,14 @@
 import { baseRequest } from '@/api/base'
 import nodesTable from './components/nodesTable'
 import linksTable from './components/linksTable'
-import relation from '../components/relation'
+// import relation from '../components/relation'
 import Chart from './components/chart/index.js'
 import * as d3 from 'd3'
 export default {
   components: {
     nodesTable,
-    linksTable,
-    relation
+    linksTable
+    // relation
   },
   props: {
     width: Number,
@@ -84,7 +84,7 @@ export default {
       return this.height - 30 // - 50
     },
     table_height() {
-      return this.height - 40
+      return this.height - 41
     }
   },
   data() {
@@ -136,6 +136,7 @@ export default {
         width: this.chart_width,
         height: this.chart_height,
         contextMenu: 'contextMenu',
+        offsetId: '#chart_main',
         nodeTitle: 'title',
         background: '#26368d' //  #04244A
       })
@@ -184,16 +185,18 @@ export default {
     /**
        * 关系筛选
        */
-    selRelation(options) {
-      this.graph.relation(options)
-    },
+    // selRelation(options) {
+    //   if (this.graph) {
+    //     this.graph.relation(options)
+    //   }
+    // },
     /**
        * 打开筛选列表
        */
-    relation() {
-      this.$refs.relation.openDialog()
-      // this.graph.relation({ related: ['强相关', '不相关'] })
-    },
+    // relation() {
+    //   this.$refs.relation.openDialog()
+    //   // this.graph.relation({ related: ['强相关', '不相关'] })
+    // },
     /**
        * 右键菜单--查看详情
        */
@@ -202,26 +205,13 @@ export default {
       this.messageData = [
         // { name: 'id', value: node.id },
         { name: '政策法规名称', value: node.docName },
-        { name: '政策法规文号', value: node.docNum },
         { name: '政策原文名称', value: node.docTittle },
         { name: '政策层次', value: node.docSys },
         { name: '发布时间', value: node.docIssueTime },
-        { name: '生效时间', value: node.docEffectiveTime },
-        { name: '废止时间', value: node.docAnnulTime },
-        { name: '发布单位类型', value: node.docIssueOrgType },
         { name: '发布单位名称', value: node.docIssueOrgText },
-        { name: '发文方式', value: node.docIssueType },
-        { name: '适用范围', value: node.docUseBroad },
-        { name: '适用范围描述', value: node.docUseBroadText },
-        { name: '密级', value: node.docSecretClass },
-        { name: '内容体系', value: node.docContentSys },
-        { name: '文章类型', value: node.docType },
-        { name: '领域类型', value: node.docDomainType },
-        { name: '军民融合相关度', value: node.docAbout },
-        { name: '可操作性', value: node.docOperability },
-        { name: '评估重点', value: node.docFocalPoint },
-        { name: '军民融合条款摘录', value: node.docSummary },
-        { name: '关键词', value: node.docKeyWord }
+        { name: '发布单位简称', value: node.orgAbbName },
+        { name: '发布层级', value: node.orgRank },
+        { name: '军民融合领域', value: node.docFuseField }
       ]
       this.messageVisible = true
       d3.select('#contextMenu').style('display', 'none')
