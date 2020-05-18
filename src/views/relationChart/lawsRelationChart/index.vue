@@ -145,9 +145,9 @@ export default {
        * 重置
        */
     refresh() {
-      this.graph.relation(null)
+      // this.graph.relation(null)
       // Chart.Brush.moveAll()
-      this.$refs.relation.clear()
+      this.$refs.relation.selectAll()
     },
     /**
        * 节点定位

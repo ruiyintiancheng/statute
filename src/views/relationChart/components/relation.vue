@@ -108,6 +108,15 @@ export default {
         docOperability: {},
         docType: {},
         docFuseField: {}
+      },
+      temp_options: {
+        docSys: [],
+        docUseBroad: [],
+        docAbout: [],
+        docOperability: [],
+        docType: [],
+        docFuseField: [],
+        docIssueTime: []
       }
     }
   },
@@ -146,12 +155,28 @@ export default {
       })
     },
     openDialog() {
+      this.options.docSys.values = this.temp_options.docSys
+      this.options.docUseBroad.values = this.temp_options.docUseBroad
+      this.options.docAbout.values = this.temp_options.docAbout
+      this.options.docOperability.values = this.temp_options.docOperability
+      this.options.docType.values = this.temp_options.docType
+      this.options.docFuseField.values = this.temp_options.docFuseField
+      this.options.docIssueTime = this.temp_options.docIssueTime
+
       this.mainVisible = true
     },
     /**
      * 查看
      */
     onSubmit() {
+      this.temp_options.docSys = this.options.docSys.values
+      this.temp_options.docUseBroad = this.options.docUseBroad.values
+      this.temp_options.docAbout = this.options.docAbout.values
+      this.temp_options.docOperability = this.options.docOperability.values
+      this.temp_options.docType = this.options.docType.values
+      this.temp_options.docFuseField = this.options.docFuseField.values
+      this.temp_options.docIssueTime = this.options.docIssueTime
+
       const relations = {}
       for (const key in this.options) {
         relations[key] = this.options[key]
@@ -165,6 +190,7 @@ export default {
       this.mainVisible = false
 
       function check(obj) {
+        obj.doc
         let flag = true
         for (const key in relations) {
           if (key === 'docSys') {
@@ -191,6 +217,7 @@ export default {
             flag = flag && inData(obj[key], [min, max])
           }
         }
+
         return flag
 
         // function inArray(value, set) {
@@ -232,6 +259,8 @@ export default {
       this.options.docOperability.values = values(this.optionLabels.docOperability)
       this.options.docType.values = values(this.optionLabels.docType)
       this.options.docFuseField.values = values(this.optionLabels.docFuseField)
+      this.options.docIssueTime = { min: new Date('1945-10-1'), max: new Date() }
+
       function values(obj) {
         const result = []
         for (const name in obj) {
@@ -239,7 +268,6 @@ export default {
         }
         return result
       }
-
       this.onSubmit()
     },
     /**
@@ -252,8 +280,8 @@ export default {
       this.options.docOperability.values = []
       this.options.docType.values = []
       this.options.docFuseField.values = []
-      this.options.docIssueTime.values = []
-      this.$emit('selRelation', null)
+      this.options.docIssueTime = { min: null, max: null }
+      // this.$emit('selRelation', null)
     }
   }
 }

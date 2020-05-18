@@ -2,7 +2,7 @@
 * 时序关系图
 */
 <template>
-  <div id="chart_main" style="width: 100%; height:100%; position: relative">
+  <div id="chart_main" style="width: 100%; height:100%; position: relative;">
     <div v-loading="chartLoading">
       <div id="chart" :style="{'width': `${chart_width}px`, 'height': `${chart_height}px`}"></div>
       <div id="brush"></div>
