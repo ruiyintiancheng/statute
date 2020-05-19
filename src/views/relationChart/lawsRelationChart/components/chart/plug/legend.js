@@ -7,10 +7,11 @@ function legend(graph, id) {
     nodes: [
       { name: '查询法规', color: '#ff804c', translate: 'translate(0)' },
       { name: '政策法规', color: '#4fbaf4', translate: 'translate(84)' },
-      { name: '废止法规', color: '#b8b7b6', translate: 'translate(168)' }
+      { name: '废止法规', color: '#b8b7b6', translate: 'translate(168)' },
+      { name: '定位法规', color: '#9EEA6A', translate: 'translate(252)' }
     ],
     links: [
-      { name: '被引用', color: '#4fbaf4', translate: 'translate(252)' }
+      { name: '被引用', color: '#4fbaf4', translate: 'translate(336)' }
     ]
   }
 

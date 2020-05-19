@@ -130,10 +130,14 @@ export default {
 
       // Chart.Brush.init(graph, 'brush')
       Chart.legend(graph, 'legend')
-      graph.translateCenter()
-      this.$refs.relation.selectAll()
 
       this.graph = graph
+
+      this.$nextTick(() => {
+        graph.translateCenter()
+        this.$refs.relation.selectAll()
+        graph.animation()
+      })
     },
     /**
      * 保存图片
@@ -145,15 +149,16 @@ export default {
        * 重置
        */
     refresh() {
-      // this.graph.relation(null)
-      // Chart.Brush.moveAll()
       this.$refs.relation.selectAll()
+      this.graph.translateCenter()
+      this.graph.animation()
     },
     /**
        * 节点定位
        */
     moveNode(node) {
       this.graph.moveCenter(node.x, node.y, 1)
+      this.graph.animation(node.id)
     },
     /**
        * 打开节点列表

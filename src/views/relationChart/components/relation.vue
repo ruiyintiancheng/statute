@@ -99,7 +99,7 @@ export default {
         docOperability: { values: [], has: null },
         docType: { values: [], has: null },
         docFuseField: { values: [], has: null },
-        docIssueTime: { min: new Date('1945-10-1'), max: new Date() }
+        docIssueTime: { min: new Date('1945/10/01'), max: new Date() }
       },
       optionLabels: {
         docSys: {},
@@ -185,12 +185,10 @@ export default {
         }
       }
 
-      // console.log(relations)
       this.$emit('selRelation', check)
       this.mainVisible = false
 
       function check(obj) {
-        obj.doc
         let flag = true
         for (const key in relations) {
           if (key === 'docSys') {
@@ -217,7 +215,6 @@ export default {
             flag = flag && inData(obj[key], [min, max])
           }
         }
-
         return flag
 
         // function inArray(value, set) {
@@ -238,9 +235,10 @@ export default {
         }
         function inData(value, times) {
           if (!value) {
-            value = new Date('1945-10-1')
+            value = '1945/10/01'
           }
           const time = new Date(value)
+
           let isSel = true
           if (times[1] && times[1] !== '') {
             isSel = isSel && time <= times[1]
@@ -259,7 +257,7 @@ export default {
       this.options.docOperability.values = values(this.optionLabels.docOperability)
       this.options.docType.values = values(this.optionLabels.docType)
       this.options.docFuseField.values = values(this.optionLabels.docFuseField)
-      this.options.docIssueTime = { min: new Date('1945-10-1'), max: new Date() }
+      this.options.docIssueTime = { min: new Date('1945/10/01'), max: new Date() }
 
       function values(obj) {
         const result = []

@@ -11,10 +11,12 @@ const Nodes = {
       }
 
       if (d.queryNode === true) {
+        // option.color = '#9EEA6A'
         option.color = '#ff804c'
-        // option.r = 15
-      }
 
+        option.label = 'query'
+      }
+      d._color = option.color
       d.r = option.r
       Nodes.enter(selection, option)
     },
@@ -123,14 +125,6 @@ const Links = {
       .attr('marker-end', 'url(#markerArrow)')
       .style('fill', 'none')
       .style('stroke', option.color)
-    // link.append('text')
-    //   .attr('dy', '-0.3em')
-    //   .style('font-size', '14px')
-    //   .style('user-select', 'none')
-    //   .append('textPath')
-    //   .attr('text-anchor', 'middle')
-    //   .attr('startOffset', '50%')
-    //   .attr('xlink:href', d => `#${d.id}`)
   },
   /**
    * 修改元素

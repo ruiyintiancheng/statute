@@ -70,7 +70,7 @@ class Graph {
       .attr('id', 'markerArrow')
       .attr('markerWidth', 10)
       .attr('markerHeight', 6)
-      .attr('refX', 9 + 10)
+      .attr('refX', 3 + 10)
       .attr('refY', 3)
       .attr('orient', 'auto')
       .attr('viewBox', '0 0 10 6')
@@ -163,7 +163,9 @@ class Graph {
     this.set('options', options)
     Behavior.relation(this._cfg, options)
   }
-
+  animation(moveId) {
+    Behavior.animation(this._cfg, moveId)
+  }
   /**
    * 导出png图片
    * @param {*} title 图片标题
