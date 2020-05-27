@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-02-18 15:29:45 
  * @Last Modified by: lk
- * @Last Modified time: 2020-02-20 13:57:11
+ * @Last Modified time: 2020-05-27 13:51:43
  * @Description:  学习列表
  */
 
@@ -40,7 +40,7 @@
 import { baseSearch } from '@/api/base'
 export default {
   props: {
-    activeName: String,
+    activeName: [String, Number],
     keyword: String
   },
   data() {

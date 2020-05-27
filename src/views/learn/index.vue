@@ -2,7 +2,7 @@
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-11 11:29:17
+ * @Last Modified time: 2020-05-27 14:29:50
  * @Description:  学习路上
  */
 <template>
@@ -27,30 +27,28 @@
             </div>
         <div class="learn-tabs">
           <div class="inside-color">
-              <ul class="learn-tabs-body clearfix">
-                <li class="learn-tabs-item">
-                  <div :class="{'learn-tabs-option':true, 'active':activeName==='0'}" @click="learnList('0')">
-                    全部
-                  </div>
-                </li>
-                <li class="learn-tabs-item">
-                  <div :class="{'learn-tabs-option':true, 'active':activeName==='1'}" @click="learnList('1')">
-                    习主席
-                  </div>
-                </li>
-                <li class="learn-tabs-item">
-                  <div :class="{'learn-tabs-option':true, 'active':activeName==='2'}" @click="learnList('2')">
-                    十三五
+            <div class="base-container outside-box">
+              <div class="tab-arrow left-arrow" v-if="labels.length > 5" @click="scrollToLeft">
+                <a class="el-icon-arrow-left"></a>
+              </div>
+              <div class="tab-arrow right-arrow" v-if="labels.length > 5" @click="scrollToRight">
+                <a class="el-icon-arrow-right"></a>
+              </div>
+             <div class="learn-tabs-body">
+              <ul class="clearfix" :style="{width:labels.length * 220 + 'px',left:scrollLeft+'px'}">
+                <li class="learn-tabs-item" v-for="(item,index) in labels" :key="item+index">
+                  <div :class="{'learn-tabs-option':true, 'active':activeName===item.labelId}" @click="learnList(item.labelId)">
+                    {{item.labelName}}
                   </div>
                 </li>
               </ul>
+              </div>
+            </div>  
           </div>
         </div>
         <div class="learning-data inside-color">
           <div class="base-container">
-                <learn-list v-if="activeName==='0'" ref="0" :activeName="activeName" :keyword="keyword"></learn-list>
-                <learn-list v-else-if="activeName==='1'" ref="1" :activeName="activeName" :keyword="keyword"></learn-list>
-                <learn-list v-else-if="activeName==='2'" ref="2" :activeName="activeName" :keyword="keyword"></learn-list>
+                <learn-list ref="learnList" :activeName="activeName" :keyword="keyword"></learn-list>
           </div>
         </div>
       </div>
@@ -61,6 +59,7 @@
 import banner from '@/assets/images/learnBanner.png'
 import bottom from '@/assets/images/learnBottom.png'
 import LearnList from './components/LearnList'
+import { baseRequest } from '@/api/base'
 export default {
   name: 'learn',
   components: {
@@ -71,20 +70,105 @@ export default {
       banner,
       bottom,
       keyword: '',
-      activeName: '0'
+      activeName: '0',
+      labels: [
+        {
+          labelId: '0',
+          labelName: '全部'
+        }
+      ],
+      scrollLeft: 0
     }
   },
-  mounted() {
+  created() {
     this.learnList()
+    this.getTabs()
   },
   methods: {
+    getTabs() {
+      baseRequest('/bModuleLabel/selects', { labelType: '0' }).then(response => {
+        this.labels = this.labels.concat(response.data.item)
+        // this.labels = this.labels.concat([
+        //   {
+        //     'addTime': '2020-05-26 14:08:49',
+        //     'addUserId': 0,
+        //     'labelId': 1,
+        //     'labelName': '十三五',
+        //     'labelOrder': 1,
+        //     'updateTime': null,
+        //     'uptUserId': null
+        //   },
+        //   {
+        //     'addTime': '2020-05-26 14:08:49',
+        //     'addUserId': 0,
+        //     'labelId': 1,
+        //     'labelName': '十三五1',
+        //     'labelOrder': 1,
+        //     'updateTime': null,
+        //     'uptUserId': null
+        //   },
+        //   {
+        //     'addTime': '2020-05-26 14:08:49',
+        //     'addUserId': 0,
+        //     'labelId': 1,
+        //     'labelName': '十三五2',
+        //     'labelOrder': 1,
+        //     'updateTime': null,
+        //     'uptUserId': null
+        //   },
+        //   {
+        //     'addTime': '2020-05-26 14:08:49',
+        //     'addUserId': 0,
+        //     'labelId': 1,
+        //     'labelName': '十三五3',
+        //     'labelOrder': 1,
+        //     'updateTime': null,
+        //     'uptUserId': null
+        //   },
+        //   {
+        //     'addTime': '2020-05-26 14:08:49',
+        //     'addUserId': 0,
+        //     'labelId': 1,
+        //     'labelName': '十三五4',
+        //     'labelOrder': 1,
+        //     'updateTime': null,
+        //     'uptUserId': null
+        //   },
+        //   {
+        //     'addTime': '2020-05-26 14:08:49',
+        //     'addUserId': 0,
+        //     'labelId': 21,
+        //     'labelName': '十三五5',
+        //     'labelOrder': 1,
+        //     'updateTime': null,
+        //     'uptUserId': null
+        //   }
+        // ])
+        if (this.labels.length < 5) {
+          this.scrollLeft = 110 * (5 - this.labels.length)
+        }
+      })
+    },
     learnList(name) {
       if (name) {
         this.activeName = name
       }
       this.$nextTick(_ => {
-        this.$refs[this.activeName].searchOption()
+        this.$refs.learnList.searchOption()
       })
+    },
+    scrollToLeft() {
+      if (this.scrollLeft >= 0) {
+        return
+      }
+      this.scrollLeft = this.scrollLeft + 220
+    },
+    scrollToRight() {
+      const maxWidth = (this.labels.length - 5) * -220
+      if (this.scrollLeft <= maxWidth) {
+        return
+      }
+      this.scrollLeft = this.scrollLeft - 220
     }
   }
 }
@@ -114,6 +198,34 @@ export default {
     background-color: #f8faf5;
     height: 100%;
     overflow: hidden;
+    .outside-box{
+      position: relative;
+          .tab-arrow{
+            padding: 0;
+            margin: 0;
+            height: 36px;
+            width: 36px;
+            cursor: pointer;
+            border-radius: 50%;
+            background-color: rgba(31,45,61,.11);
+            color: #fff;
+            position: absolute;
+            font-size: 12px;
+            line-height: 36px;
+            text-align: center;
+            &:hover{
+              background-color: rgba(31,45,61,.23);
+            }
+          &.left-arrow{
+            left: 10px;
+            top: 3px;
+          }
+          &.right-arrow{
+            right: 10px;
+            top: 3px;
+          }
+        }
+    }
   }
   .learning-body {
     // background-color: #def5fb;
@@ -128,9 +240,16 @@ export default {
       .learn-tabs-body{
       position: relative;
       z-index: 1;
-        width: 660px;
-        list-style: none;
+        width: 1100px;
         margin:0 auto;
+        height: 40px;
+        overflow: hidden;
+        ul{
+          list-style: none;
+          position: absolute;
+          top:0;
+          transition:left .25s linear;
+        }
         .learn-tabs-item{
           float: left;
           text-align: center;
