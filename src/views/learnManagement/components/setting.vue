@@ -36,11 +36,14 @@ export default {
   methods: {
     getData() {
       let data = []
-      if (!data || data.length === 0) {
-        data = ['']
-      }
-      this.form = data.map(item => {
-        return { value: item + '' }
+      baseRequest('/bXuexiConfigure/selects', { labelId: this.labelId }).then(response => {
+        data = response.data.item
+        if (!data || data.length === 0) {
+          data = ['']
+        }
+        this.form = data.map(item => {
+          return { value: (item.protId || '') + '' }
+        })
       })
     },
     saveHandle() {

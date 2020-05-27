@@ -4,22 +4,22 @@
                   border
                   :height="tableHeight"
                   >
-                <el-table-column prop="agntName"
+                <el-table-column prop="id"
                                 label="ID"
                                 align="center"
                                 min-width="200">
                 </el-table-column>
-                <el-table-column prop="agntName"
+                <el-table-column prop="docTittle"
                                 label="文件名称"
                                 align="center"
                                 min-width="200">
                 </el-table-column>
-                <el-table-column prop="agntName"
+                <el-table-column prop="source"
                                 label="来源"
                                 align="center"
                                 min-width="200">
                 </el-table-column>
-                <el-table-column prop="agntName"
+                <el-table-column prop="addTime"
                                 label="时间"
                                 align="center"
                                 min-width="200">
@@ -29,7 +29,7 @@
                                 align="center"
                                 min-width="200">
                         <template slot-scope="scope">
-                            <el-button type="danger" size="mini" plain @click="deleteData(scope.row)"></el-button>
+                            <el-button type="danger" size="mini" plain @click="deleteData(scope.row)">删除</el-button>
                         </template>
                 </el-table-column>
                   </el-table>
@@ -45,7 +45,7 @@
     </div>
 </template>
 <script>
-import { baseSearch } from '@/api/base'
+import { baseSearch, baseRequest } from '@/api/base'
 export default {
   props: {
     labelId: Number
@@ -68,15 +68,27 @@ export default {
       if (!page) {
         this.pageNo = 1
       }
-      const param = { pageNo: this.pageNo, pageSize: this.pageSize } // this.$refs.basicTable.getData(url, this.$refs.searchForm.searchParam())
-      baseSearch('', param).then(response => {
+      const param = { labelId: this.labelId, pageNo: this.pageNo, pageSize: this.pageSize } // this.$refs.basicTable.getData(url, this.$refs.searchForm.searchParam())
+      baseSearch('/bXuexiBasic/getSimpleList', param).then(response => {
         this.tableData = response.data.item
         this.total = response.data.total
         this.pageSize = response.data.pageSize
       })
     },
     deleteData(row) {
-
+      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        baseRequest('/bXuexiBasic/delete', { id: row.id }).then(_ => {
+          this.searchOption()
+          this.$message({
+            type: 'success',
+            message: '操作成功'
+          })
+        })
+      })
     },
     handleSizeChange(val) { // 分页
       this.pageSize = val

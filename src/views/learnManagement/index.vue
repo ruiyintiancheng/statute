@@ -35,14 +35,14 @@
                   class="el-icon-edit-outline"
                   type="text"
                   size="mini"
-                  @click="() => updateTreeNode(data)">
+                  @click.stop="() => updateTreeNode(data)">
                 </a>
                 <a
                   title="删除"
                   class="el-icon-close"
                   type="text"
                   size="mini"
-                  @click="() => removeNode(node, data)">
+                  @click.stop="() => removeNode(node, data)">
                 </a>
               </span>
             </span>
@@ -60,7 +60,7 @@
                 <div v-else class="lm-content-none">请选择学习项目</div>
               </el-tab-pane>
               <el-tab-pane label="列表" >
-                <list  v-if="currentId" :labelId="currentId" name="third"></list>
+                <list  v-if="currentId" ref="list" :labelId="currentId" name="third"></list>
                 <div v-else class="lm-content-none">请选择学习项目</div>
               </el-tab-pane>
             </el-tabs>
@@ -100,9 +100,13 @@ export default {
       if (data.children) {
         return
       }
+      if (this.currentId === data.labelId) {
+        return
+      }
       this.currentId = data.labelId
       this.$nextTick(_ => {
         this.$refs.setting.getData()
+        this.$refs.list.searchOption()
       })
     },
     getTreeData() {
@@ -183,7 +187,8 @@ export default {
       const params = {
         labelId,
         newOrder,
-        oldOrder
+        oldOrder,
+        labelType: '0'
       }
       baseRequest('/bModuleLabel/orderLabel', params).then(response => {
         this.getTreeData()

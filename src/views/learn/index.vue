@@ -2,7 +2,7 @@
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
  * @Last Modified by: lk
- * @Last Modified time: 2020-05-27 14:29:50
+ * @Last Modified time: 2020-05-27 17:22:20
  * @Description:  学习路上
  */
 <template>
@@ -88,62 +88,6 @@ export default {
     getTabs() {
       baseRequest('/bModuleLabel/selects', { labelType: '0' }).then(response => {
         this.labels = this.labels.concat(response.data.item)
-        // this.labels = this.labels.concat([
-        //   {
-        //     'addTime': '2020-05-26 14:08:49',
-        //     'addUserId': 0,
-        //     'labelId': 1,
-        //     'labelName': '十三五',
-        //     'labelOrder': 1,
-        //     'updateTime': null,
-        //     'uptUserId': null
-        //   },
-        //   {
-        //     'addTime': '2020-05-26 14:08:49',
-        //     'addUserId': 0,
-        //     'labelId': 1,
-        //     'labelName': '十三五1',
-        //     'labelOrder': 1,
-        //     'updateTime': null,
-        //     'uptUserId': null
-        //   },
-        //   {
-        //     'addTime': '2020-05-26 14:08:49',
-        //     'addUserId': 0,
-        //     'labelId': 1,
-        //     'labelName': '十三五2',
-        //     'labelOrder': 1,
-        //     'updateTime': null,
-        //     'uptUserId': null
-        //   },
-        //   {
-        //     'addTime': '2020-05-26 14:08:49',
-        //     'addUserId': 0,
-        //     'labelId': 1,
-        //     'labelName': '十三五3',
-        //     'labelOrder': 1,
-        //     'updateTime': null,
-        //     'uptUserId': null
-        //   },
-        //   {
-        //     'addTime': '2020-05-26 14:08:49',
-        //     'addUserId': 0,
-        //     'labelId': 1,
-        //     'labelName': '十三五4',
-        //     'labelOrder': 1,
-        //     'updateTime': null,
-        //     'uptUserId': null
-        //   },
-        //   {
-        //     'addTime': '2020-05-26 14:08:49',
-        //     'addUserId': 0,
-        //     'labelId': 21,
-        //     'labelName': '十三五5',
-        //     'labelOrder': 1,
-        //     'updateTime': null,
-        //     'uptUserId': null
-        //   }
-        // ])
         if (this.labels.length < 5) {
           this.scrollLeft = 110 * (5 - this.labels.length)
         }

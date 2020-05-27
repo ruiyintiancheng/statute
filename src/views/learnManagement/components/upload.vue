@@ -4,6 +4,7 @@
                 <el-upload
                     class="avatar-uploader"
                     ref="upload"
+                    :data="{'a':'1'}"
                     :action="uploadUrl"
                     :http-request="sourceUploadRequest"
                     :show-file-list="false"
@@ -18,9 +19,9 @@
             <div class="dialog-contant-default" v-if="uploadDetailVisable">
               <div class="upload-detail-tip">
                 上传成功
-                  <a class="sc" @click="openResultList">3</a>
+                  <a class="sc" @click="openResultList">{{successNum}}</a>
                   个,上传失败
-                  <a class="fa" @click="openResultList">4
+                  <a class="fa" @click="openResultList">{{falseNum}}
                   </a>个
               </div>
             </div>
@@ -40,28 +41,28 @@
                   border
                   :height="tableHeight"
                   >
-                <el-table-column prop="agntName"
+                <el-table-column prop="id"
                                 label="ID"
                                 align="center"
                                 min-width="200">
                 </el-table-column>
-                <el-table-column prop="agntName"
+                <el-table-column prop="fileName"
                                 label="文件名称"
                                 align="center"
                                 min-width="200">
                 </el-table-column>
-                <el-table-column prop="agntName"
+                <el-table-column prop="state"
                                 label="状态"
                                 align="center"
                                 min-width="200">
                 </el-table-column>
-                <el-table-column prop="agntName"
+                <el-table-column prop="addTime"
                                 label="时间"
                                 align="center"
                                 min-width="200">
                 </el-table-column>
-                <el-table-column prop="agntName"
-                                label="上传状态"
+                <el-table-column prop="uploadTimes"
+                                label="上传次数"
                                 align="center"
                                 min-width="200">
                 </el-table-column>
@@ -71,19 +72,21 @@
     </div>
 </template>
 <script>
-// import { baseUpload } from '@/api/base'
+import { baseRequest, baseUpload } from '@/api/base'
 export default {
   props: {
     labelId: Number
   },
   data() {
     return {
-      uploadUrl: '/wsClient/upload',
+      uploadUrl: '/bXuexiBasic/upload',
       loading: false,
       uploadDetailVisable: false,
       uploadResult: false,
       tableData: [],
-      tableHeight: 0
+      tableHeight: 0,
+      successNum: 0,
+      falseNum: 0
     }
   },
   mounted() {
@@ -92,6 +95,9 @@ export default {
   methods: {
     openResultList() {
       this.uploadResult = true
+      baseRequest('/fileUploadHis/selects', { labelId: this.labelId }).then(response => {
+        this.tableData = response.data.item
+      })
     },
     getTableHeight() {
       this.$nextTick(_ => {
@@ -121,21 +127,24 @@ export default {
       }
       var form = new FormData()
       form.append('file', content.file)
-      // this.loading = true
-      this.uploadDetailVisable = true
+      form.append('labelId', this.labelId)
+      this.loading = true
+      // this.uploadDetailVisable = true
 
-      // baseUpload(this.uploadUrl, form).then((response) => {
-      //   this.uploadDetailVisable = true
-      //   this.loading = false
-      // }, _ => {
-      //   this.$refs.upload.clearFiles()
-      //   this.loading = false
-      //   this.$message({
-      //     showClose: true,
-      //     message: '上传失败',
-      //     type: 'error'
-      //   })
-      // })
+      baseUpload(this.uploadUrl, form).then((response) => {
+        this.successNum = response.data.item.successNum
+        this.falseNum = response.data.item.falseNum
+        this.uploadDetailVisable = true
+        this.loading = false
+      }, _ => {
+        this.$refs.upload.clearFiles()
+        this.loading = false
+        this.$message({
+          showClose: true,
+          message: '上传失败',
+          type: 'error'
+        })
+      })
     }
   }
 }
