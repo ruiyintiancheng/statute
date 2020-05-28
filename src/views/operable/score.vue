@@ -1,36 +1,101 @@
 <template>
-    <div class="score clearfix">
-        <!-- <el-scrollbar style="height:100%;" > -->
-        <div class="score-header">
-          <h2 class="score-title">
-              分值: 
-              <span class="score-value">{{fraction}}</span>
+  <div>
+    <el-tabs v-model="activeName">
+      <el-tab-pane label="内容对比" name="first">
+        <div class="score clearfix">
+          <!-- <el-scrollbar style="height:100%;" > -->
+          <div v-if="uploadFileId" class="score-header">
+            <h2 class="score-title">
+                分值: 
+                <span class="score-value">{{fraction}}</span>
+                <a class="score-back" @click="$router.go(-1)">返回</a>
+            </h2>
+          </div>
+          <div v-else class="score-header2">
+            <div class="score-mo" >
+              <span>系统分值: </span>
+              <span style="color: red;">{{score.system}}</span>
+            </div>
+            <div class="score-mo">
+              <div style="float: left; padding-right: 10px;">人工分值: </div>
+              <div style="float: left; width: 70px">
+                <el-input v-model="score.manualScore" @change="changeArtificial"></el-input>
+              </div>
+            </div>
+            <div class="score-mo">
+              <span>综合分值: </span>
+              <span style="color: red;">{{score.synthesize}}</span>
+            </div>
+            <div>
+              <el-button class="score-save" type="primary" size="small" @click="saveScore">保存</el-button>
               <a class="score-back" @click="$router.go(-1)">返回</a>
-          </h2>
+            </div>
+          </div>
+          <div class="score-container first">
+            <div class="score-name">{{$route.query.sourceFileName}}</div>
+            <div class="score-text" v-html="sourceContent"></div>
+          </div>
+          <!-- <div class="score-container last" > -->
+            <!-- <div class="score-name">分值</div> -->
+            <!-- <div class="score-text" v-html="targetContent"></div> -->
+          <!-- </div> -->
+          <!-- </el-scrollbar> -->
         </div>
-        <div class="score-container first">
-          <div class="score-name">{{$route.query.sourceFileName}}</div>
-          <div class="score-text" v-html="sourceContent"></div>
+      </el-tab-pane>  
+      <el-tab-pane label="帮助" name="third">
+        <div>
+          <help></help>
         </div>
-        <!-- <div class="score-container last" > -->
-          <!-- <div class="score-name">分值</div> -->
-          <!-- <div class="score-text" v-html="targetContent"></div> -->
-        <!-- </div> -->
-        <!-- </el-scrollbar> -->
-    </div>
+      </el-tab-pane>
+    </el-tabs>  
+    
+  </div>
 </template>
 <script>
 import { baseRequest } from '@/api/base'
+import help from './help'
 export default {
+  components: {
+    help
+  },
   data() {
     return {
+      activeName: 'first',
       sourceContent: '',
       targetContent: '',
-      fraction: ''
+      fraction: '',
+
+      uploadFileId: null,
+      targetFileId: null,
+      score: {
+        actionId: null,
+        system: 0, // 系统分值
+        manualScore: 0, // 人工分值
+        tempArtificial: 0,
+        synthesize: 0, // 综合分值
+        formula: {
+          s: 0.5,
+          m: 0.5,
+          x: 0
+        }
+      }
     }
   },
   mounted() {
+    this.uploadFileId = this.$route.query.uploadFileId
+    this.targetFileId = this.$route.query.targetFileId
+    this.score.actionId = this.$route.query.menuId
+
     this.$nextTick(_ => {
+      document.querySelector('.el-tabs__nav-scroll').style.backgroundColor = 'white'
+      document.querySelector('.el-tabs__nav-scroll').style.paddingLeft = '30px'
+
+      const x = document.querySelectorAll('.el-tabs__item')
+      for (let i = 0; i < x.length; i++) {
+        x[i].style.fontSize = '17px'
+        x[i].style.fontWeight = 600
+      }
+
       this.getData()
     })
     window.addEventListener('resize', function() {
@@ -41,14 +106,40 @@ export default {
     getData() {
       const params = {
         targetFileId: this.$route.query.targetFileId,
-        uploadFileId: this.$route.query.uploadFileId
+        uploadFileId: this.$route.query.uploadFileId,
+        actionId: this.score.actionId
       }
       baseRequest('/wsClient/operabilityCheck', params).then(response => {
         this.initArticle(response)
       })
     },
+    // 计算综合分值
+    changeArtificial(val) {
+      if (!isNaN(val) && parseInt(val) <= 100 && parseInt(val) >= 0) {
+        this.computedScore()
+        this.score.tempArtificial = val
+      } else {
+        this.score.manualScore = this.score.tempArtificial
+      }
+    },
+    computedScore() {
+      const s = this.score.formula.s
+      const m = this.score.formula.m
+      const x = this.score.formula.x
+      const num = this.score.system * s + this.score.manualScore * m + x
+      this.score.synthesize = num.toFixed(2)
+    },
     initArticle(response) {
       this.fraction = response.data.item.fraction
+      this.score.system = response.data.item.fraction
+      this.score.manualScore = response.data.item.manualScore || 0
+      const formula = response.data.item.formula
+      if (formula) {
+        this.score.formula = formula
+      }
+      this.score.tempArtificial = this.score.manualScore
+      this.computedScore()
+
       const sourceFile = response.data.item.sourceDocContent
       const checkResult = response.data.item.checkResult
       // 数据处理
@@ -101,6 +192,27 @@ export default {
       // targetContent += `<span style="opacity:0;">${sourceFile.slice(sourceIndex)}</span>`
       this.sourceContent = sourceContent
       // this.targetContent = targetContent
+    },
+    // 保存人工分值
+    saveScore() {
+      const params = {
+        sourceId: this.targetFileId,
+        manualScore: this.score.manualScore
+      }
+      baseRequest('/operabilityHis/add', params)
+        .then(response => {
+          this.$message({
+            showClose: true,
+            message: '人工分值保存成功',
+            type: 'success'
+          })
+        }, _ => {
+          this.$message({
+            showClose: true,
+            message: '人工分值保存失败',
+            type: 'error'
+          })
+        })
     }
   }
 }
@@ -117,6 +229,21 @@ export default {
           // background-color: #DCDFE6;
           // position:absolute;
           // top:60px;
+        }
+        .score-header2{
+          height: 60px;
+          width: 60%;
+          margin:0px auto;
+          line-height: 60px;
+          .score-save {
+            background-color: #3164b7;
+            color: white;
+          }
+          .score-back{
+            color:rgb(3, 126, 251);
+            font-size: 14px;
+            float: right;
+          }
         }
         .score-title{
           // position: relative;
@@ -186,4 +313,10 @@ export default {
   overflow-x: hidden;
   }
 }
+  .score-mo {
+    float: left;
+    padding-right: 50px;
+    font-size: 1.3em;
+    font-weight: bold;
+  }
 </style>

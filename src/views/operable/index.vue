@@ -50,6 +50,7 @@ export default {
   },
   data() {
     return {
+      menuId: null,
       item: {},
       // 上传文件
       uploadFileId: null,
@@ -64,6 +65,9 @@ export default {
   created() {
   },
   mounted() {
+    const path = this.$route.path
+    this.menuId = path.slice(path.lastIndexOf('/') + 1)
+
     this.$nextTick(() => {
       document.querySelector('.el-upload-list.el-upload-list--text').style.display = 'none'
     })
@@ -88,7 +92,8 @@ export default {
         query: {
           uploadFileId: this.uploadFileId,
           targetFileId: this.targetFileId,
-          sourceFileName: this.sourceFileName
+          sourceFileName: this.sourceFileName,
+          menuId: this.menuId
         }
       })
     },

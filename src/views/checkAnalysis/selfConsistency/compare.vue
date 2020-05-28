@@ -10,7 +10,28 @@
     <el-tabs v-model="activeName">
       <el-tab-pane label="内容对比" name="first">
         <div class="tab-main" style="margin: 0px 30px;">
-            <div style="padding: 10px 0 20px 0;"><h2>分值: <span style="color: red;">{{fraction}}</span></h2></div>
+            <div v-if="uploadFileId" style="padding: 0 0 10px 0;  line-height: 50px;">
+              <h2>分值: <span style="color: red;">{{score.system}}</span></h2>
+            </div>
+            <div v-else style="padding: 0 0 10px 0;  line-height: 50px;">
+              <div class="score mo" >
+                <span class="score title">系统分值: </span>
+                <span style="color: red;">{{score.system}}</span>
+              </div>
+              <div class="score mo">
+                <div style="float: left; padding-right: 10px;">人工分值: </div>
+                <div style="float: left; width: 70px">
+                  <el-input v-model="score.manualScore" @change="changeArtificial"></el-input>
+                </div>
+              </div>
+              <div class="score mo">
+                <span>综合分值: </span>
+                <span style="color: red;">{{score.synthesize}}</span>
+              </div>
+              <div>
+               <el-button class="menu" type="primary" size="small" @click="saveScore">保存</el-button>
+              </div>
+            </div>
             <div id="compare_main" style="position: relative;">
               <div class="compare_col" :style="{width: `${textWidth}px`, 'background-color': '#ffffff'}">
                 <div ref="compare_left" id="compare_left" @scroll="handleScroll('left')" :style="{height: `${textHeight}px`, 'overflow-y': 'auto', position: 'relative', color: 'gray'}">
@@ -54,17 +75,22 @@
           <compare-table ref="compareTable"></compare-table>
         </div>
       </el-tab-pane>
+      <el-tab-pane label="帮助" name="third">
+        <help></help>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
 import compareTable from './compareTable'
+import help from './help'
 import { baseRequest } from '@/api/base'
 import * as d3 from 'd3'
 export default {
   components: {
-    compareTable
+    compareTable,
+    help
   },
   props: {},
   computed: {},
@@ -80,7 +106,19 @@ export default {
       contrastFileId: null,
       sourceFileName: null,
       targetFileName: null,
-      fraction: null,
+
+      score: {
+        actionId: null,
+        system: 0, // 系统分值
+        manualScore: 0, // 人工分值
+        tempArtificial: 0,
+        synthesize: 0, // 综合分值
+        formula: {
+          s: 0.5,
+          m: 0.5,
+          x: 0
+        }
+      },
 
       sourceContent: null,
       targetContent: null,
@@ -103,11 +141,13 @@ export default {
     this.contrastFileId = this.$route.query.contrastFileId
     this.sourceFileName = this.$route.query.sourceFileName
     this.targetFileName = this.$route.query.targetFileName
+    this.score.actionId = this.$route.query.menuId
 
     const width = document.querySelector('.tab-main').offsetWidth
     this.textWidth = (width - 150 - 30) / 2 - 20
     const height = document.querySelector('.app-main').offsetHeight
     this.textHeight = height - 135
+
     this.$nextTick(function() {
       document.querySelector('.el-tabs__nav-scroll').style.backgroundColor = 'white'
       document.querySelector('.el-tabs__nav-scroll').style.paddingLeft = '30px'
@@ -121,32 +161,66 @@ export default {
     })
   },
   methods: {
-    getSize() {
-      // const source = document.querySelector('#source_textarea')
-      // console.log('source实际高度', source.scrollHeight)
-      // console.log('source滚动高度', source.scrollTop)
-      // console.log('source当前高度', source.offsetHeight)
-
-      // const target = document.querySelector('#target_textarea')
-      // console.log('target实际高度', target.scrollHeight)
-      // console.log('target滚动高度', target.scrollTop)
-      // console.log('target当前高度', target.offsetHeight)
+    // 计算综合分值
+    changeArtificial(val) {
+      if (isNaN(val) || !(parseInt(val) <= 100 && parseInt(val) >= 0)) {
+        this.score.manualScore = 0
+      }
+      this.score.tempArtificial = val
+      this.computedScore()
+    },
+    computedScore() {
+      const s = this.score.formula.s
+      const m = this.score.formula.m
+      const x = this.score.formula.x
+      const num = this.score.system * s + this.score.manualScore * m + x
+      this.score.synthesize = num.toFixed(2)
+    },
+    // 保存人工分值
+    saveScore() {
+      const params = {
+        sourceId: this.targetFileId,
+        targetId: this.contrastFileId,
+        manualScore: this.score.manualScore
+      }
+      baseRequest('/selfConsistentHis/add', params)
+        .then(response => {
+          this.$message({
+            showClose: true,
+            message: '人工分值保存成功',
+            type: 'success'
+          })
+        }, _ => {
+          this.$message({
+            showClose: true,
+            message: '人工分值保存失败',
+            type: 'error'
+          })
+        })
     },
     getData() {
       const params = {
         targetFileId: this.targetFileId,
         uploadFileId: this.uploadFileId,
-        contrastFileId: this.contrastFileId
+        contrastFileId: this.contrastFileId,
+        actionId: this.score.actionId
       }
 
       const url = '/wsClient/selfConsCheck'
-      // const url = 'http://localhost:8090/demo/json'
       baseRequest(url, params).then(response => {
+        this.score.system = response.data.item.fraction
+        this.score.manualScore = response.data.item.manualScore || 0
+        const formula = response.data.item.formula
+        if (formula) {
+          this.score.formula = formula
+        }
+        this.score.tempArtificial = this.score.manualScore
+        this.computedScore()
+
         this.mainLoading = false
         const sourceFile = response.data.item.sourceDocContent
         const targetFile = response.data.item.targetDocContent
         const checkResult = response.data.item.checkResult
-        this.fraction = response.data.item.fraction
 
         const sourceLabelResult = response.data.item.sourceLabelResult
         sourceLabelResult.docFileName = this.sourceFileName
@@ -303,6 +377,15 @@ export default {
         this.$refs.compare_left.scrollTop += scale
         this.$refs.compare_right.scrollTop += scale
       })
+        .on('click', _ => {
+          if (this.currentNode) {
+            this.currentNode.sourceDiv.style.color = '#037efb'
+            this.currentNode.sourceDiv.style.border = null
+            this.currentNode.targetDiv.style.color = '#037efb'
+            this.currentNode.targetDiv.style.border = null
+            this.score_show = false
+          }
+        })
 
       const g = svg.append('g')
 
@@ -321,13 +404,9 @@ export default {
         .style('stroke', '#037efb')
         .style('stroke-width', 2.5)
         .style('cursor', 'pointer')
-        // .on('mousemove', function(d) {
-        //   d3.select(this).style('stroke-width', 3)
-        // })
-        // .on('mouseout', function(d) {
-        //   d3.select(this).style('stroke-width', 1)
-        // })
         .on('click', d => {
+          d3.event.preventDefault()
+          d3.event.stopPropagation()
           let scrollTop = d.sourceDiv.offsetTop
           if (scrollTop > this.textHeight / 2) {
             scrollTop -= this.textHeight / 4
@@ -449,6 +528,22 @@ export default {
 </script>
 
 <style scoped>
+  .menu {
+    background-color: #3164b7;
+    color: white;
+  }
+
+  .score.mo {
+    float: left;
+    padding-right: 50px;
+    font-size: 1.3em;
+    font-weight: bold;
+  }
+
+  /* .score.title {
+
+  } */
+
   .line {
     position: relative;
     display: block;
