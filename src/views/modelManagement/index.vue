@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2020-05-26 09:21:42 
  * @Last Modified by: wk
- * @Last Modified time: 2020-05-27 15:44:25
+ * @Last Modified time: 2020-05-28 17:39:17
  * @Description:  模型管理
  */
 <template>
@@ -16,13 +16,11 @@
         <el-menu class="el-menu-vertical-demo"
                  style="height:90%;overflow:auto"
                  :default-active=" zhuanzf(defaultIndex)"
-                 @select="menuchange"
-                 @open="handleOpen"
-                 @close="handleClose">
+                 @select="menuchange">
           <el-menu-item v-for="item in leftData"
-                        :key="item.labelId"
-                        :index="zhuanzf(item.labelId)">
-            <span slot="title">{{item.labelName}}</span>
+                        :key="item.id"
+                        :index="zhuanzf(item.id)">
+            <span slot="title">{{item.formulaName}}</span>
           </el-menu-item>
 
         </el-menu>
@@ -82,7 +80,7 @@
       </el-col>
     </el-row>
     <el-dialog :title="dialogTitle[operateStatus]"
-               :visible.sync="parentFormVisible"
+               :visible.sync="pringBox"
                width="550px"
                custom-class="dialog-default autoHeight">
       <div class="dialog-contant-default">
@@ -92,19 +90,28 @@
                  style="    margin-left: calc(50% - 185px)"
                  :model="updateFormData"
                  label-width="120px">
-          <el-form-item prop="labelName"
-                        label="模型名称">
+          <el-form-item prop="formulaName"
+                        label="公式名称">
             <el-input class="form-input"
                       style="width:200px"
-                      v-model="updateFormData.labelName"
+                      v-model="updateFormData.formulaName"
                       clearable></el-input>
           </el-form-item>
-
+          <el-form-item label="菜单"
+                        prop="actionId">
+            <el-select v-model="updateFormData.actionId"
+                       placeholder="">
+              <el-option v-for="(item,index) in menus"
+                         :key="index"
+                         :label="item"
+                         :value="index"></el-option>
+            </el-select>
+          </el-form-item>
         </el-form>
       </div>
       <div slot="footer"
            class="dialog-footer">
-        <el-button @click="parentFormVisible = false">取消</el-button>
+        <el-button @click="pringBox = false">取消</el-button>
         <el-button type="primary"
                    @click="saveOperate()">保存</el-button>
       </div>
@@ -117,17 +124,19 @@ export default {
   name: 'modelManagement',
   data() {
     return {
+      menus: [],
       defaultIndex: null,
       leftData: {}, // 左侧菜单数据
       activeIndex: null, // 选中菜单id
       updateFormData: {
-        labelName: ''
+        formulaName: '',
+        actionId: ''
       },
       outsideRules: {
-        labelName: [
+        formulaName: [
           { required: true, message: '该项为必填项' }
         ],
-        userName: [
+        actionId: [
           { required: true, message: '该项为必填项' }
         ]
       },
@@ -137,7 +146,7 @@ export default {
         2: '修改',
         3: '删除'
       },
-      parentFormVisible: false, // 父类数据弹框开关
+      pringBox: false, // 父类数据弹框开关
       seachData: {
         s: '',
         m: '',
@@ -147,6 +156,9 @@ export default {
   },
   mounted() {
     this.searchOption()
+    baseRequest('/formula/getFormulaTree').then(response => {
+      this.menus = response.data.item
+    })
   },
   methods: {
     coefficientChange(evnet, max, min, p) {
@@ -155,21 +167,25 @@ export default {
       }
     },
     searchOption() {
-      baseRequest('/bXuexiLabel/selects').then(response => {
-        this.leftData = response.data.item
-        for (const i in this.leftData) {
-          if (i === '0') {
-            this.defaultIndex = this.leftData[i].labelId
-            this.activeIndex = this.leftData[i].labelId
-            baseRequest('/formula/select', this.defaultIndex).then(response => {
-              this.seachData = response.data.item
-            })
+      baseRequest('/formula/selects', {}).then(response => {
+        if (response.data.item) {
+          this.leftData = response.data.item
+          for (const i in this.leftData) {
+            if (i === '0') {
+              this.defaultIndex = this.leftData['0'].id
+              this.activeIndex = this.leftData['0'].id
+              baseRequest('/formula/select', { id: this.defaultIndex }).then(response => {
+                this.seachData = response.data.item ? response.data.item : { m: '', x: '', s: '' }
+              })
+            }
           }
+        } else {
+          this.leftData = {}
         }
       })
     },
     restScore() {
-      baseRequest('/formula/select', this.activeIndex).then(response => {
+      baseRequest('/formula/select', { id: this.activeIndex }).then(response => {
         this.seachData = response.data.item
       })
     },
@@ -180,18 +196,29 @@ export default {
         type: 'warning'
       }).then(() => {
         const sum = this.seachData.s + this.seachData.m
-        console.log(sum)
         const py = this.seachData.x
-        if (sum <= 1 && py >= -100 && py <= 100) {
-          const params = this.seachData
-          params.labelId = this.activeIndex
-          baseRequest('/formula/update', params).then(response => {
-            this.$Message.success('操作成功')
-            this.searchOption()
-          })
-        } else {
-          this.$Message.warning('系统系数+人工系数总和不能大于1,偏移量在-100~100之间')
+
+        if (this.seachData.s || this.seachData.m) {
+          if (parseInt(sum) > 1) {
+            this.$Message.warning('系统系数+人工系数总和不能大于1')
+            return
+          }
         }
+        if (this.seachData.x) {
+          if (parseInt(py) < -100 && parseInt(py) > 100) {
+            this.$Message.warning('偏移量在-100~100之间')
+            return
+          }
+        }
+        const params = this.seachData
+        params.id = this.activeIndex
+        params.s = parseInt(this.seachData.s) ? parseInt(this.seachData.s) : ''
+        params.m = parseInt(this.seachData.s) ? parseInt(this.seachData.s) : ''
+        params.x = parseInt(this.seachData.x) ? parseInt(this.seachData.x) : ''
+        baseRequest('/formula/update', params).then(response => {
+          this.$Message.success('操作成功')
+          this.searchOption()
+        })
       })
     },
     delParent() {
@@ -200,7 +227,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        baseRequest('/bModuleLabel/deleteFormulaLabel', { labelId: this.activeIndex }).then(response => {
+        baseRequest('/formula/delete', { id: this.activeIndex }).then(response => {
           this.$Message.success('操作成功')
           this.searchOption()
         })
@@ -209,18 +236,21 @@ export default {
     modParent() {
       this.operateStatus = 2
       for (const i of this.leftData) {
-        if (i.labelId === this.activeIndex) {
-          this.updateFormData.labelName = i.labelName
+        if (i.id === this.activeIndex) {
+          this.updateFormData.formulaName = i.formulaName
+          this.updateFormData.actionId = this.menus[i.actionId]
+          this.pringBox = true
+          // alert(3)
         }
       }
-      this.parentFormVisible = true
     },
     addParent() {
       this.operateStatus = 1
-      for (var i in this.updateFormData) {
-        this.updateFormData[i] = ''
-      }
-      this.parentFormVisible = true
+      // for (var i in this.updateFormData) {
+      //   this.updateFormData[i] = ''
+      // }
+      this.updateFormData.formulaName = ''
+      this.pringBox = true
       this.$nextTick(_ => {
         this.$refs.formOutside.clearValidate()
       })
@@ -228,27 +258,30 @@ export default {
     saveOperate() {
       let url = null
       if (this.operateStatus === 1) {
-        url = '/bModuleLabel/addFormulaLabel'
-        baseRequest(url, this.updateFormData).then(response => {
-          this.parentFormVisible = false
-          this.$Message.success('操作成功')
-          this.searchOption()
+        this.$refs.formOutside.validate(valid => {
+          if (valid) {
+            url = '/formula/add'
+            baseRequest(url, this.updateFormData).then(response => {
+              this.pringBox = false
+              this.$Message.success('操作成功')
+              this.searchOption()
+            })
+          }
         })
       } else if (this.operateStatus === 2) {
-        url = '/bXuexiLabel/update'
-        baseRequest(url, { labelId: this.activeIndex, labelName: this.updateFormData.labelName }).then(response => {
-          this.parentFormVisible = false
+        url = '/formula/update'
+        baseRequest(url, { id: this.activeIndex, formulaName: this.updateFormData.formulaName }).then(response => {
+          this.pringBox = false
           this.$Message.success('操作成功')
           this.searchOption()
         })
       }
     },
     menuchange(val) {
-      this.activeIndex = val
+      this.activeIndex = parseInt(val)
       baseRequest('/formula/select', { id: this.activeIndex }).then(response => {
-        this.seachData = response.data.item
+        this.seachData = response.data.item ? response.data.item : { m: '', x: '', s: '' }
       })
-      console.log(val + '-----------------')
     },
     handleOpen(key, keyPath) {
       console.log(key, keyPath)
