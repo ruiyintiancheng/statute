@@ -2,7 +2,7 @@
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
  * @Last Modified by: lk
- * @Last Modified time: 2020-05-28 10:07:21
+ * @Last Modified time: 2020-05-28 11:45:40
  * @Description:  学习路上
  */
 <template>
@@ -132,6 +132,7 @@ export default {
   overflow: hidden;
   .learning-head,.learning-bottom {
     position: absolute;
+    width: 100%;
     img {
       width: 100%;
       display: block;
