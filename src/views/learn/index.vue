@@ -2,11 +2,11 @@
  * @Author: wk
  * @Date: 2019-12-26 11:08:37 
  * @Last Modified by: lk
- * @Last Modified time: 2020-05-27 17:22:20
+ * @Last Modified time: 2020-05-28 11:45:40
  * @Description:  学习路上
  */
 <template>
-  <div class="learning"
+  <div class="learning" :style="{minHeight:containHeight+'px'}"
        >
     <div class="learning-head">
       <img :src="banner">
@@ -80,6 +80,11 @@ export default {
       scrollLeft: 0
     }
   },
+  computed: {
+    containHeight() {
+      return this.$store.state.app.containHeight - 55
+    }
+  },
   created() {
     this.learnList()
     this.getTabs()
@@ -124,8 +129,10 @@ export default {
   height: 100%;
   background-color: #def5fb;
   position: relative;
+  overflow: hidden;
   .learning-head,.learning-bottom {
     position: absolute;
+    width: 100%;
     img {
       width: 100%;
       display: block;

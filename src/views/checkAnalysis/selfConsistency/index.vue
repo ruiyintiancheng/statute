@@ -57,6 +57,7 @@ export default {
   },
   data() {
     return {
+      menuId: null,
       item: {},
       // 上传文件
       uploadFileId: null,
@@ -75,6 +76,9 @@ export default {
   created() {
   },
   mounted() {
+    const path = this.$route.path
+    this.menuId = path.slice(path.lastIndexOf('/') + 1)
+
     this.$nextTick(() => {
       document.querySelector('.el-upload-list.el-upload-list--text').style.display = 'none'
     })
@@ -105,7 +109,8 @@ export default {
           targetFileId: this.targetFileId,
           contrastFileId: this.contrastFileId,
           sourceFileName: this.sourceFileName,
-          targetFileName: this.targetFileName
+          targetFileName: this.targetFileName,
+          menuId: this.menuId
         }
       })
     },
@@ -152,7 +157,7 @@ export default {
         this.item.fileId = null
         this.$message({
           showClose: true,
-          message: '上传失败',
+          message: '文件上传失败',
           type: 'error'
         })
       })

@@ -50,14 +50,22 @@ export default {
       if (this.form.length <= 0) {
         return
       }
-      const params = []
+      const protIdList = []
       for (const iterator of this.form) {
         if (!iterator.value) {
           this.$message.warning('爬虫选项不能为空')
           return
         } else {
-          params.push(iterator.value)
+          if (protIdList.find(item => item === iterator.value)) {
+            this.$message.warning('爬虫选项不能重复')
+            return
+          }
+          protIdList.push(iterator.value)
         }
+      }
+      const params = {
+        protIdList,
+        labelId: this.labelId
       }
       baseRequest('/bXuexiConfigure/batchAdd', params).then(_ => {
         this.$message.success('操作成功')

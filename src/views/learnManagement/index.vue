@@ -56,7 +56,7 @@
                 <div v-else class="lm-content-none">请选择学习项目</div>
               </el-tab-pane>
               <el-tab-pane label="上传">
-                <upload  v-if="currentId" :labelId="currentId" name="second"></upload>
+                <upload  v-if="currentId" :labelId="currentId" name="second" @refreshList="refreshList"></upload>
                 <div v-else class="lm-content-none">请选择学习项目</div>
               </el-tab-pane>
               <el-tab-pane label="列表" >
@@ -108,6 +108,9 @@ export default {
         this.$refs.setting.getData()
         this.$refs.list.searchOption()
       })
+    },
+    refreshList() {
+      this.$refs.list.searchOption()
     },
     getTreeData() {
       baseRequest('/bModuleLabel/selects', { labelType: '0' }).then(response => {
