@@ -68,7 +68,7 @@ export default {
       if (!page) {
         this.pageNo = 1
       }
-      const param = { labelId: this.labelId, pageNo: this.pageNo, pageSize: this.pageSize } // this.$refs.basicTable.getData(url, this.$refs.searchForm.searchParam())
+      const param = { moduleId: this.labelId, pageNo: this.pageNo, pageSize: this.pageSize } // this.$refs.basicTable.getData(url, this.$refs.searchForm.searchParam())
       baseSearch('/bXuexiBasic/getSimpleList', param).then(response => {
         this.tableData = response.data.item
         this.total = response.data.total

@@ -134,6 +134,7 @@ export default {
       baseUpload(this.uploadUrl, form).then((response) => {
         this.successNum = response.data.item.successNum
         this.falseNum = response.data.item.falseNum
+        this.$emit('refreshList')
         this.uploadDetailVisable = true
         this.loading = false
       }, _ => {
