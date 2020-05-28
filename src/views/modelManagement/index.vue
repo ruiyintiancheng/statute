@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2020-05-26 09:21:42 
  * @Last Modified by: wk
- * @Last Modified time: 2020-05-28 17:39:17
+ * @Last Modified time: 2020-05-28 18:26:00
  * @Description:  模型管理
  */
 <template>
@@ -195,26 +195,25 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        const sum = this.seachData.s + this.seachData.m
-        const py = this.seachData.x
-
+        const sum = this.seachData.s * 1 + this.seachData.m * 1
+        const py = this.seachData.x * 1
         if (this.seachData.s || this.seachData.m) {
-          if (parseInt(sum) > 1) {
+          if (sum > 1) {
             this.$Message.warning('系统系数+人工系数总和不能大于1')
             return
           }
         }
         if (this.seachData.x) {
-          if (parseInt(py) < -100 && parseInt(py) > 100) {
+          if (py < -100 && py > 100) {
             this.$Message.warning('偏移量在-100~100之间')
             return
           }
         }
         const params = this.seachData
         params.id = this.activeIndex
-        params.s = parseInt(this.seachData.s) ? parseInt(this.seachData.s) : ''
-        params.m = parseInt(this.seachData.s) ? parseInt(this.seachData.s) : ''
-        params.x = parseInt(this.seachData.x) ? parseInt(this.seachData.x) : ''
+        params.s = this.seachData.s ? this.seachData.s : ''
+        params.m = this.seachData.m ? this.seachData.m : ''
+        params.x = this.seachData.x ? this.seachData.x : ''
         baseRequest('/formula/update', params).then(response => {
           this.$Message.success('操作成功')
           this.searchOption()
