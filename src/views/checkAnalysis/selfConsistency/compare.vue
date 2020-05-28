@@ -76,7 +76,8 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="帮助" name="third">
-        <help></help>
+        <help :system="score.system" :manualScore="score.tempArtificial" :synthesize="score.synthesize"
+              :s="score.formula.s" :m="score.formula.m" :x="score.formula.x"></help>
       </el-tab-pane>
     </el-tabs>
   </div>

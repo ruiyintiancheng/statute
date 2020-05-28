@@ -1,18 +1,27 @@
 /*
- * 标签对比
+ * 帮助
  */
 <template>
   <div class="my_main">
-    <span class="line">综合分值计算公式：</span><br/>
-    <span class="line">系统分值 * 系数 + 人工分值 * 系数 + 偏移度</span>
+    <span class="line">公式：</span><br/>
+    <span class="line" style="margin-left: 2em;">综合分值 = 系统分值 * 系数 + 人工分值 * 系数 + 偏移度</span><br/>
+    <span class="line">计算结果：</span><br/>
+    <span class="line" style="margin-left: 2em;">{{synthesize}} = {{system}} * {{s}} + {{manualScore}} * {{m}} + {{x}}</span>
   </div>
 </template>
 <script>
 export default {
+  props: {
+    system: [String, Number],
+    manualScore: [String, Number],
+    synthesize: [String, Number],
+    s: [String, Number],
+    m: [String, Number],
+    x: [String, Number]
+  },
   data() {
     return {
-      tableHeight: 0,
-      tableData: []
+
     }
   },
   computed: {
@@ -38,6 +47,3 @@ export default {
     
   }
 </style>
-
-
-
