@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2020-05-29 10:39:20 
  * @Last Modified by: wk
- * @Last Modified time: 2020-05-29 11:53:08
+ * @Last Modified time: 2020-05-29 13:56:25
  * @Description:  模型管理
  */
 <template>
@@ -33,13 +33,13 @@
                  class="el-icon-edit-outline"
                  type="text"
                  size="mini"
-                 @click.stop="() => modParent()">
+                 @click.stop="() => modParent(data)">
               </a>
               <a title="删除"
                  class="el-icon-close"
                  type="text"
                  size="mini"
-                 @click.stop="() => delParent()">
+                 @click.stop="() => delParent(node, data)">
               </a>
             </span>
           </span>
@@ -242,35 +242,28 @@ export default {
         })
       })
     },
-    delParent() {
-      if (this.activeIndex) {
-        this.$confirm('此操作将永久删除该模型, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          baseRequest('/formula/delete', { id: this.activeIndex }).then(response => {
-            this.$Message.success('操作成功')
-            this.searchOption()
-          })
+    delParent(node, data) {
+      this.$confirm('此操作将永久删除该模型, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        baseRequest('/formula/delete', { id: data.id }).then(response => {
+          this.$Message.success('操作成功')
+          this.searchOption()
         })
-      } else {
-        this.$message.warning('请选择公式')
-      }
+      })
     },
-    modParent() {
-      if (this.activeIndex) {
-        this.operateStatus = 2
-        for (const i of this.treeData) {
-          if (i.id === this.activeIndex) {
-            this.updateFormData.formulaName = i.formulaName
-            this.updateFormData.actionId = this.menus[i.actionId]
-            this.pringBox = true
-            // alert(3)
-          }
+    modParent(data) {
+      this.operateStatus = 2
+      this.activeIndex = data.id
+      for (const i of this.treeData) {
+        if (data.id === this.activeIndex) {
+          this.updateFormData.formulaName = i.formulaName
+          this.updateFormData.actionId = this.menus[i.actionId]
+          this.pringBox = true
+          // alert(3)
         }
-      } else {
-        this.$message.warning('请选择公式')
       }
     },
     addParent() {
