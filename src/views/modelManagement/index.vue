@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2020-05-29 10:39:20 
  * @Last Modified by: wk
- * @Last Modified time: 2020-05-29 13:56:25
+ * @Last Modified time: 2020-05-29 14:11:22
  * @Description:  模型管理
  */
 <template>
@@ -256,9 +256,9 @@ export default {
     },
     modParent(data) {
       this.operateStatus = 2
-      this.activeIndex = data.id
+      this.defaultIndex = data.id
       for (const i of this.treeData) {
-        if (data.id === this.activeIndex) {
+        if (i.id === this.defaultIndex) {
           this.updateFormData.formulaName = i.formulaName
           this.updateFormData.actionId = this.menus[i.actionId]
           this.pringBox = true
@@ -291,7 +291,8 @@ export default {
         })
       } else if (this.operateStatus === 2) {
         url = '/formula/update'
-        baseRequest(url, { id: this.activeIndex, formulaName: this.updateFormData.formulaName }).then(response => {
+        this.updateFormData.id = this.defaultIndex
+        baseRequest(url, this.updateFormData).then(response => {
           this.pringBox = false
           this.$Message.success('操作成功')
           this.searchOption()
