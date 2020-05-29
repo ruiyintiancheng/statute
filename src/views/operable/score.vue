@@ -143,6 +143,11 @@ export default {
 
       const sourceFile = response.data.item.sourceDocContent
       const checkResult = response.data.item.checkResult
+
+      if (!checkResult) {
+        this.sourceContent = sourceFile
+        return
+      }
       // 数据处理
       const sourceArray = []
       const targetArray = []
