@@ -1,88 +1,83 @@
 /*
  * @Author: wk 
- * @Date: 2020-05-29 10:39:20 
+ * @Date: 2020-05-26 09:21:42 
  * @Last Modified by: wk
- * @Last Modified time: 2020-05-29 11:53:08
+ * @Last Modified time: 2020-05-29 11:46:02
  * @Description:  模型管理
  */
 <template>
-  <div class="model-management clearfix">
-    <div class="root-tree">
-      <header class="tree-header">
-        <span class="tree-title">
-          学习项目
-        </span>
-        <span class="tree-add">
-          <el-button type="text"
-                     @click="addParent">
-            <i class="el-icon-plus"
-               title="添加"></i>
-          </el-button>
-        </span>
-      </header>
-      <div class="tree-content">
-        <el-tree @node-click="menuchange"
-                 :data="treeData"
-                 node-key="id"
-                 :props="defaultProps">
-          <span class="custom-tree-node"
-                slot-scope="{ node, data }">
-            <span :style="{color:data.id === activeIndex?'#409EFF':''}">{{ node.label }}</span>
-            <span v-if="!data.children">
-              <a title="修改"
-                 class="el-icon-edit-outline"
-                 type="text"
-                 size="mini"
-                 @click.stop="() => modParent()">
-              </a>
-              <a title="删除"
-                 class="el-icon-close"
-                 type="text"
-                 size="mini"
-                 @click.stop="() => delParent()">
-              </a>
-            </span>
-          </span>
-        </el-tree>
-      </div>
-    </div>
-    <div class="lm-content">
-      <div class="demo-input-size conter-view">
-        <span>综合分值 =</span>
-        <span>系统分值(s)</span>
-        <span class="xing">*</span>
-        <el-input placeholder=""
-                  style="width:140px"
-                  @change="coefficientChange($event,1,0,'系统系数')"
-                  v-model="seachData.s"
-                  size="small"
-                  clearable>
-        </el-input>
-        <span>+ 人工分值(m)</span>
-        <span class="xing">*</span>
-        <el-input placeholder=""
-                  style="width:140px"
-                  @change="coefficientChange($event,1,0,'人工系数')"
-                  v-model="seachData.m"
-                  size="small"
-                  clearable>
-        </el-input>
-        <span>+ 偏移量(x)</span>
-        <span class="xing">*</span>
-        <el-input placeholder=""
-                  style="width:140px"
-                  @change="coefficientChange($event,100,-100,'偏移量系数')"
-                  v-model="seachData.x"
-                  size="small"
-                  clearable>
-        </el-input>
-      </div>
-      <div class="submiite">
-        <el-button type="primary"
-                   @click="saveScore">保存</el-button>
-        <el-button @click="restScore">恢复</el-button>
-      </div>
-    </div>
+  <div class="modelManagement"
+       style="height:100%">
+    <el-row class="tac"
+            style="height:100%">
+
+      <el-col :span="5"
+              style="height:100%">
+        <el-menu class="el-menu-vertical-demo"
+                 style="height:90%;overflow:auto"
+                 @select="menuchange">
+          <el-menu-item v-for="item in leftData"
+                        :key="item.id"
+                        :index="zhuanzf(item.id)">
+            <span slot="title">{{item.formulaName}}</span>
+          </el-menu-item>
+
+        </el-menu>
+        <div class="container">
+          <el-button type="primary"
+                     size="mini"
+                     @click="addParent"
+                     plain>添加</el-button>
+          <el-button type="info"
+                     size="mini"
+                     @click="modParent"
+                     plain>修改</el-button>
+          <el-button type="danger"
+                     size="mini"
+                     @click="delParent"
+                     plain>删除</el-button>
+        </div>
+      </el-col>
+      <el-col :span="19"
+              style="height:100%"
+              class="conter">
+        <div class="demo-input-size conter-view">
+          <span>综合分值 =</span>
+          <span>系统分值(s)</span>
+          <span class="xing">*</span>
+          <el-input placeholder=""
+                    style="width:140px"
+                    @change="coefficientChange($event,1,0,'系统系数')"
+                    v-model="seachData.s"
+                    size="small"
+                    clearable>
+          </el-input>
+          <span>+ 人工分值(m)</span>
+          <span class="xing">*</span>
+          <el-input placeholder=""
+                    style="width:140px"
+                    @change="coefficientChange($event,1,0,'人工系数')"
+                    v-model="seachData.m"
+                    size="small"
+                    clearable>
+          </el-input>
+          <span>+ 偏移量(x)</span>
+          <span class="xing">*</span>
+          <el-input placeholder=""
+                    style="width:140px"
+                    @change="coefficientChange($event,100,-100,'偏移量系数')"
+                    v-model="seachData.x"
+                    size="small"
+                    clearable>
+          </el-input>
+        </div>
+        <div class="submiite">
+          <el-button type="primary"
+                     @click="saveScore">保存</el-button>
+          <el-button @click="restScore">恢复</el-button>
+        </div>
+      </el-col>
+    </el-row>
     <el-dialog :title="dialogTitle[operateStatus]"
                :visible.sync="pringBox"
                width="550px"
@@ -128,14 +123,10 @@ export default {
   name: 'modelManagement',
   data() {
     return {
-      defaultProps: {
-        children: 'children',
-        label: 'formulaName'
-      },
       menus: [],
       defaultIndex: null,
-      treeData: {}, // 左侧菜单数据
-      activeIndex: '', // 选中菜单id
+      leftData: {}, // 左侧菜单数据
+      activeIndex: null, // 选中菜单id
       updateFormData: {
         formulaName: '',
         actionId: ''
@@ -177,41 +168,30 @@ export default {
     searchOption() {
       baseRequest('/formula/selects', {}).then(response => {
         if (response.data.item) {
-          this.treeData = response.data.item
-          if (this.activeIndex) {
-            baseRequest('/formula/select', { id: this.activeIndex }).then(response => {
-              this.seachData = response.data.item ? response.data.item : { m: '', x: '', s: '' }
-            })
-          }
-
-          // for (const i in this.treeData) {
+          this.leftData = response.data.item
+          baseRequest('/formula/select', { id: this.activeIndex }).then(response => {
+            this.seachData = response.data.item ? response.data.item : { m: '', x: '', s: '' }
+          })
+          // for (const i in this.leftData) {
           //   if (i === '0') {
-          //     this.defaultIndex = this.treeData[i].id
-          //     this.activeIndex = this.treeData[i].id
+          //     this.defaultIndex = this.leftData[i].id
+          //     this.activeIndex = this.leftData[i].id
           //     baseRequest('/formula/select', { id: this.defaultIndex }).then(response => {
           //       this.seachData = response.data.item ? response.data.item : { m: '', x: '', s: '' }
           //     })
           //   }
           // }
         } else {
-          this.treeData = {}
+          this.leftData = {}
         }
       })
     },
     restScore() {
-      if (!this.activeIndex) {
-        this.$Message.warning('请选择公式')
-        return
-      }
       baseRequest('/formula/select', { id: this.activeIndex }).then(response => {
         this.seachData = response.data.item
       })
     },
     saveScore() {
-      if (!this.activeIndex) {
-        this.$Message.warning('请选择公式')
-        return
-      }
       this.$confirm('是否确认更改?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -261,7 +241,7 @@ export default {
     modParent() {
       if (this.activeIndex) {
         this.operateStatus = 2
-        for (const i of this.treeData) {
+        for (const i of this.leftData) {
           if (i.id === this.activeIndex) {
             this.updateFormData.formulaName = i.formulaName
             this.updateFormData.actionId = this.menus[i.actionId]
@@ -306,7 +286,7 @@ export default {
       }
     },
     menuchange(val) {
-      this.activeIndex = parseInt(val.id)
+      this.activeIndex = parseInt(val)
       baseRequest('/formula/select', { id: this.activeIndex }).then(response => {
         this.seachData = response.data.item ? response.data.item : { m: '', x: '', s: '' }
       })
@@ -323,80 +303,34 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.model-management {
-  height: 100%;
-  padding: 10px;
-  .root-tree {
-    height: 100%;
-    float: left;
-    width: 220px;
-    border: 1px solid #dcdfe6;
+<style lang="scss" scoped>
+.modelManagement {
+  .container {
+    width: 100%;
+    height: 10%;
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 5%;
     background-color: #fff;
-    .custom-tree-node {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 14px;
-      padding-right: 8px;
-    }
-    .tree-header {
-      height: 40px;
-      line-height: 40px;
-      background-color: #f3f3f3;
-      padding-left: 15px;
-      font-size: 14px;
-      color: #9d9399;
-      position: relative;
-      .tree-add {
-        position: absolute;
-        right: 15px;
-      }
-    }
-    .tree-content {
-      .el-icon-close {
-        color: #f56c6c;
-      }
-      // .el-icon-edit{
-      //   color:#409EFF;
-      // }
-    }
+    border-right: 1px solid #e6e6e6;
+    border-top: 1px solid #e6e6e6;
   }
-  .lm-content {
-    height: 100%;
-    width: calc(100% - 235px);
-    margin-left: 15px;
-    float: left;
-    position: relative;
-    border: 1px solid #dcdfe6;
+  .conter {
     background-color: #fff;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
-    .el-tabs {
-      height: 100%;
-      .el-tabs__content {
-        height: calc(100% - 40px);
-        overflow: auto;
-      }
-      .lm-content-none {
-        text-align: center;
-        margin-top: 180px;
-        font-size: 25px;
-        font-weight: 600;
-        letter-spacing: 1px;
-        color: #409eff;
-      }
-    }
-    .conter-view {
-      margin-top: 25%;
-      margin-left: 50%;
-      position: absolute;
-      left: -410px;
-    }
+    text-align: center;
+    position: relative;
     .submiite {
       position: absolute;
       right: 90px;
       bottom: 40px;
+    }
+    .conter-view {
+      margin-top: 25%;
+    }
+    .xing {
+      font-size: 22px;
+      position: relative;
+      top: 5px;
     }
   }
 }
