@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2020-05-29 10:39:20 
  * @Last Modified by: wk
- * @Last Modified time: 2020-05-29 14:11:22
+ * @Last Modified time: 2020-05-29 14:22:52
  * @Description:  模型管理
  */
 <template>
@@ -10,7 +10,7 @@
     <div class="root-tree">
       <header class="tree-header">
         <span class="tree-title">
-          学习项目
+          公式管理
         </span>
         <span class="tree-add">
           <el-button type="text"
