@@ -4,11 +4,12 @@
 <template>
   <div class="my_main tab_compare_table">
     <el-table :data="tableData" style="width: 100%;" :max-height="tableHeight"
+      :highlight-current-row="false"
       :header-cell-style="{color:'gray', 'background-color': '#d8dadb', fontSize:'16px'}"
       :border="true" :fit="true">
-      <el-table-column label="标签类型" align="center"> 
+      <el-table-column label="" align="center" class-name="label-type-name"> 
         <template slot-scope="scope">
-          <div style="color: #037efa">
+          <div style="color: gray">
             <span>{{scope.row.a}}</span>
           </div>
         </template>
@@ -39,7 +40,7 @@ export default {
   },
   mounted() {
     this.$nextTick(function() {
-      this.tableHeight = document.querySelector('.app-main').offsetHeight - 156
+      this.tableHeight = document.querySelector('.app-main').offsetHeight - 116
     })
   },
   methods: {
@@ -56,7 +57,7 @@ export default {
           htmlStr += '<br/>'
         }
         const diffClass = arrMap[target].some(nIt => nIt === item) ? '' : 'diff-word'
-        htmlStr += `<label class='compare-word ${diffClass}'>${item}</label>`
+        htmlStr += `<span class='compare-word ${diffClass}'>${item}</span>`
       })
       return htmlStr
     },
@@ -82,10 +83,10 @@ export default {
 </script>
 <style lang="scss" scoped>
   .my_main {
-    margin: 20px 50px;
-    padding: 30px;
+    margin:20px 50px 10px;
+    // padding: 30px;
     background-color: white;
-    border: 1px solid #dddddd;
+    // border: 1px solid #dddddd;
   }
 
   .circle {
@@ -102,14 +103,31 @@ export default {
 
 <style lang="scss">
 .tab_compare_table{
+    .el-table--enable-row-hover .el-table__body tr:hover>td {
+        background-color: #fff;
+    }
+    .el-table--enable-row-hover .el-table__body tr:hover>.label-type-name {
+        background-color: #d8dadb;
+    }
+    .label-type-name,th.label-type-name.is-leaf{
+      background-color: rgb(216, 218, 219);
+      border-bottom: 1px solid #ccc;
+      font-weight: 700;
+      font-size: 15px;
+      &:hover{
+        background-color: #d8dadb;
+      }
+    }
     .compare-word{
       line-height: 30px;
       font-weight: normal;
     }
     .diff-word{
-      border: 1px solid red;
-      padding: 4px 6px;
+      // border: 1px solid red;
+      padding: 5px 8px;
       border-radius: 4px;
+      background-color: #F56C6C;
+      color: #fff;
     }
 }
 </style>
