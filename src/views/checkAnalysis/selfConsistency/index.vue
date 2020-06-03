@@ -10,7 +10,7 @@
     <div class="box box_centre" style="margin: 0 auto; top: 20%;">
       <!-- 目标文件 -->
       <div class="content box_centre">
-        <div class="line">
+        <div class="line clearfix">
           <div class="cell">目标文件:</div>
           <div class="cell" style="width: 500px;"><el-input v-model="sourceFileName" :disabled="true" placeholder=""></el-input></div>
           <div class="cell">
@@ -26,14 +26,14 @@
             </el-upload>
           </div>
         </div>
-        <div class="line">
+        <div class="line clearfix">
           <div class="cell">对比公文:</div>
           <div class="cell" style="width: 500px;"><el-input v-model="targetFileName" :disabled="true" placeholder=""></el-input></div>
           <div class="cell">
             <el-button class="menu2" size="small" @click="openDialog('target')">选择库中公文</el-button>
           </div>
         </div>
-        <div class="line" style="text-align: center;">
+        <div class="line clearfix" style="text-align: center;">
           <div><el-button class="menu" size="small" @click="compare">开始对比</el-button></div>
         </div>
       </div>
@@ -199,7 +199,7 @@ export default {
   .line {
     line-height: 40px;
     height: 50px;
-    width: 780px;
+    width: 900px;
     position: relative;
   }
   .cell {

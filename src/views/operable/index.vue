@@ -175,7 +175,7 @@ export default {
   .line {
     line-height: 40px;
     height: 50px;
-    width: 780px;
+    width: 900px;
     position: relative;
     margin-top: 20px;
   }
