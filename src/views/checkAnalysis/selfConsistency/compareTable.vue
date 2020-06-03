@@ -2,7 +2,7 @@
  * 标签对比
  */
 <template>
-  <div class="my_main">
+  <div class="my_main tab_compare_table">
     <el-table :data="tableData" style="width: 100%;" :max-height="tableHeight"
       :header-cell-style="{color:'gray', 'background-color': '#d8dadb', fontSize:'16px'}"
       :border="true" :fit="true">
@@ -13,8 +13,16 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column  prop="b" label="目标文件" align="center"></el-table-column>
-      <el-table-column  prop="c" label="对比公文" align="center"></el-table-column>
+      <el-table-column  prop="b" label="目标文件" align="center">
+        <template slot-scope="scope">
+          <div v-html="scope.$index===0?scope.row.b:compareColumn(scope.row,'b','c')"></div>
+        </template>
+      </el-table-column>
+      <el-table-column  prop="c" label="对比公文" align="center">
+           <template slot-scope="scope">
+             <div v-html="scope.$index===0?scope.row.b:compareColumn(scope.row,'c','b')"></div>
+            </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -35,6 +43,23 @@ export default {
     })
   },
   methods: {
+    compareColumn(row, source, target) {
+      let htmlStr = ''
+      const arrb = row.b.split(';')
+      const arrc = row.c.split(';')
+      const arrMap = {
+        b: arrb,
+        c: arrc
+      }
+      arrMap[source].forEach((item, index) => {
+        if (index !== 0) {
+          htmlStr += '<br/>'
+        }
+        const diffClass = arrMap[target].some(nIt => nIt === item) ? '' : 'diff-word'
+        htmlStr += `<label class='compare-word ${diffClass}'>${item}</label>`
+      })
+      return htmlStr
+    },
     openDialog(source, target) {
       const table = []
       table.push({ a: '文件名称', b: source.docFileName, c: target.docFileName })
@@ -55,7 +80,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
   .my_main {
     margin: 20px 50px;
     padding: 30px;
@@ -75,3 +100,16 @@ export default {
 
 
 
+<style lang="scss">
+.tab_compare_table{
+    .compare-word{
+      line-height: 30px;
+      font-weight: normal;
+    }
+    .diff-word{
+      border: 1px solid red;
+      padding: 4px 6px;
+      border-radius: 4px;
+    }
+}
+</style>
