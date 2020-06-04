@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2020-06-02 15:15:55 
  * @Last Modified by: wk
- * @Last Modified time: 2020-06-03 11:03:22
+ * @Last Modified time: 2020-06-04 14:51:59
  * @Description:  搜索
  */
  <template>
@@ -520,9 +520,9 @@ export default {
       this.updateFormData.docAnnulEndTime = ''
     },
     seacrHandle() {
-      if (this.dataValue.length <= 0) {
-        return false
-      }
+      // if (this.dataValue.length <= 0) {
+      //   return false
+      // }
       this.$emit('seacrHandle', { docTittle: this.dataValue })
     },
     advancedSearch() { // 打开表单

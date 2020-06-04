@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2020-06-02 16:50:54 
  * @Last Modified by: wk
- * @Last Modified time: 2020-06-04 14:16:26
+ * @Last Modified time: 2020-06-04 14:30:14
  * @Description:  添加修改
  */
 <template>
@@ -516,10 +516,13 @@ export default {
       if (this.form.length <= 1) {
         return
       }
-      this.form.splice(index, 1)
-      baseRequest('/bDocBasic/delAnnexDoc', { id: this.articleId, annexIndex: index }).then(response => {
+      if (this.form[index].value) {
+        baseRequest('/bDocBasic/delAnnexDoc', { id: this.articleId, annexIndex: index + 1 }).then(response => {
 
-      })
+        })
+      }
+
+      this.form.splice(index, 1)
     },
     articleSelection(item) {
       // const checknodes = this.$refs.dispatch.getCheckedNodes()
