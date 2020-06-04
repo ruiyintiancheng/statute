@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-23 11:16:27 
  * @Last Modified by: lk
- * @Last Modified time: 2020-06-03 18:28:55
+ * @Last Modified time: 2020-06-04 14:54:58
  * @Description:  首页
  */
 <template>
@@ -96,27 +96,34 @@ export default {
     height: 100%;
     background-repeat: no-repeat;
     background-size: cover;
+    overflow: auto;
     .has-border{
       border-bottom:1px solid #fff;
     }
     .home-main{
-      height: calc(100% - 60px);
-      position: relative;
+      height: calc(100% - 70px);
+      // position: relative;
+      padding-top: 127px;
     }
     .home-search{
       width: 920px;
-      position: absolute;
-      left: 50%;
-      margin-left: -460px;
-      top:127px;
+      // position: absolute;
+      // left: 50%;
+      // margin-left: -460px;
+      // top:127px;
+      margin:0 auto;
+      .el-input-group{
+        overflow: hidden;
+      }
     }
     .home-options{
       height:342px;
       width: 100%;
-      top: 50%;
-      left: 0;
-      margin-top:-171px;
-      position: absolute;
+      // top: 50%;
+      // left: 0;
+      // margin-top:-171px;
+      // position: absolute;
+      margin: 127px auto 100px;
       .home-item{
         cursor: pointer;
         width: 240px;
@@ -155,7 +162,7 @@ export default {
       position: absolute;
       left: 50%;
       margin-left: -425px;
-      bottom:0;
+      bottom:17px;
       font-size: 14px;
       color:#fff;
       letter-spacing: 4px;
@@ -170,3 +177,12 @@ export default {
   }
 </style>
 
+<style lang="scss">
+  .dashboard-container{
+    .home-search{
+      .el-input-group{
+        overflow: hidden;
+      }
+    }
+  }
+</style>
