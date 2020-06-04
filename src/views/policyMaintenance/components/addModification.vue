@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2020-06-02 16:50:54 
  * @Last Modified by: wk
- * @Last Modified time: 2020-06-03 18:34:20
+ * @Last Modified time: 2020-06-04 14:16:26
  * @Description:  添加修改
  */
 <template>
@@ -621,7 +621,7 @@ export default {
         form.append('annexIndex', index + 1)
         this.loading = true
 
-        baseUpload('/bDocBasic/uploadDoc', form).then((response) => {
+        baseUpload('/bDocBasic/uploadAnnexDoc', form).then((response) => {
           this.loading = false
           this.articleId = response.data.item.id
         }, _ => {
