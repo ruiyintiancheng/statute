@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2020-05-29 10:39:20 
  * @Last Modified by: wk
- * @Last Modified time: 2020-05-29 14:22:52
+ * @Last Modified time: 2020-06-02 17:42:20
  * @Description:  模型管理
  */
 <template>
@@ -134,7 +134,7 @@ export default {
       },
       menus: [],
       defaultIndex: null,
-      treeData: {}, // 左侧菜单数据
+      treeData: [], // 左侧菜单数据
       activeIndex: '', // 选中菜单id
       updateFormData: {
         formulaName: '',
@@ -194,7 +194,7 @@ export default {
           //   }
           // }
         } else {
-          this.treeData = {}
+          this.treeData = []
         }
       })
     },
