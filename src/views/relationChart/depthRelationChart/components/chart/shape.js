@@ -1,7 +1,7 @@
 const Nodes = {
   default: {
     enter(selection, d) {
-      const color = d.docState === 'running' ? '#4fbaf4' : '#b8b7b6'
+      const color = d.docState === 'running' ? '#02A7FD' : '#b8b7b6'
 
       const option = {
         name: d.orgAbbName || d.docIssueOrgText || '',
@@ -76,8 +76,7 @@ const Nodes = {
     const text = node.append('text')
       .attr('text-anchor', 'start')
       .style('user-select', 'none')
-      // .style('pointer-events', 'none')
-      .style('fill', 'white')
+      .style('fill', '#02A7FD')
 
     text.selectAll('tspan').data(texts)
       .enter()
@@ -110,20 +109,20 @@ const Links = {
   default: {
     enter(selection, d) {
       const option = {
-        color: '#4fbaf4'
+        color: '#02A7FD'
       }
       Links.enter(selection, option)
     },
     update(selection, d) {
       const option = {
-        color: '#4fbaf4',
+        color: '#02A7FD',
         t: 1000
       }
       Links.update(selection, option)
     },
     exit(selection, d) {
       const option = {
-        color: '#4fbaf4',
+        color: '#02A7FD',
         t: 1000
       }
       Links.exit(selection, option)

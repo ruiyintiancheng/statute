@@ -7,6 +7,7 @@ const Brush = {
   init(graph, id) {
     const width = 125
     const height = graph.get('height')
+    const background = graph.get('background')
 
     const brush = d3.brushY()
       .extent([[0, 0], [10, height - 40]])
@@ -28,14 +29,14 @@ const Brush = {
     this.graph = graph
 
     const brushGroup = graph.get('svg').append('g').classed('brushg', true)
+      .attr('transform', 'translate(10, 0)')
 
     brushGroup.append('rect')
       .attr('x', 0)
       .attr('y', 0)
       .attr('width', width)
       .attr('height', height)
-      .style('fill', '#26368d')
-      // .style('stroke', 'white')
+      .style('fill', background)
 
     // 绘制笔刷
     brushGroup.append('rect')
@@ -63,8 +64,8 @@ const Brush = {
       .call(axis)
 
     axisg.select('.domain').style('stroke', 'none')
-    axisg.selectAll('line').style('stroke', 'white')
-    axisg.selectAll('text').style('fill', 'white')
+    axisg.selectAll('line').style('stroke', 'black')
+    axisg.selectAll('text').style('fill', 'black')
 
     brushGroup.insert('g', '.brush')
       .classed('nodes', true)

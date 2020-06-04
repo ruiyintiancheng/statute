@@ -1,6 +1,6 @@
 <template>
-  <div class="base-container">
-    <div class="main-title" style="height: 80px;">
+  <div class="">
+    <div class="main-title base-container" style="height: 80px;">
       <div style="height: 50px; line-height: 50px; opacity: 0.5;">
         <span>{{name}}</span>
       </div>
@@ -40,18 +40,20 @@ export default {
     'depth-relationChart': depthRelationChart
   },
   computed: {
-    chart_width() {
-      return document.querySelector('.base-container').offsetWidth
-    },
-    chart_height() {
-      return document.querySelector('.app-main').offsetHeight - 80
-    }
+    // chart_width() {
+    //   return document.querySelector('.app-main').offsetWidth
+    // },
+    // chart_height() {
+    //   return document.querySelector('.app-main').offsetHeight - 80
+    // }
   },
   data() {
     return {
       active: 0,
       id: null,
-      name: null
+      name: null,
+      chart_width: null,
+      chart_height: null
     }
   },
   mounted() {
@@ -59,8 +61,15 @@ export default {
     // this.name = this.$route.params.name
     this.active = this.$route.query.type
     this.loadName()
+    this.$nextTick(() => {
+      this.getSize()
+    })
   },
   methods: {
+    getSize() {
+      this.chart_width = document.querySelector('.app-main').offsetWidth
+      this.chart_height = document.querySelector('.app-main').offsetHeight - 80
+    },
     loadName() {
       baseRequest('/gVertex/select', { id: this.id }).then(response => {
         this.name = response.data.item.docName
@@ -76,6 +85,10 @@ export default {
 }
 </script>
 <style scoped>
+.main-chart {
+  overflow: hidden;
+}
+
 .mao-nav {
   font-size: 16px;
   text-align: center;

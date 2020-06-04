@@ -3,11 +3,53 @@ import * as d3 from 'd3'
 
 function canvas(cfg) {
   cfg.svg.on('click', function() {
+    if (cfg.event_nodeClick) {
+      clearNodeClick(cfg)
+      cfg.event_nodeClick = null
+    }
     if (cfg.contextMenu) {
       d3.select(`#${cfg.contextMenu}`)
         .style('display', 'none')
     }
   })
+}
+
+// 节点点击效果
+function handleNodeClick(cfg) {
+  const id = cfg.event_nodeClick
+  const links = cfg.data.links
+  links.forEach(d => {
+    d._clickShow = false
+    d.source._clickShow = d.target._clickShow = false
+    if (d.source.id === id || d.target.id === id) {
+      d._clickShow = true
+    }
+  })
+  cfg.g.selectAll('g.link')
+    .style('opacity', d => {
+      if (d._clickShow === true) {
+        d.source._clickShow = d.target._clickShow = true
+        return 1
+      }
+      return 0.2
+    })
+
+  cfg.g.selectAll('g.node')
+    .style('opacity', d => {
+      return d._clickShow === true ? 1 : 0.2
+    })
+}
+// 节点点击取消效果
+function clearNodeClick(cfg) {
+  cfg.g.selectAll('g.node')
+    .style('opacity', d => {
+      return d._show ? 1 : 0.2
+    })
+
+  cfg.g.selectAll('g.link')
+    .style('opacity', d => {
+      return d.source._show && d.target._show ? 1 : 0.2
+    })
 }
 /**
  * 画布缩放
@@ -47,7 +89,7 @@ function zoome(cfg) {
   */
 function drag(cfg) {
   const drag = d3.drag() // 拖拽
-    // .on('start', nodeEvent.dragStart)
+    // .on('start', d => {})
     .on('drag', d => {
       d.x = d3.event.x
       d.y = d3.event.y
@@ -64,7 +106,10 @@ function drag(cfg) {
  */
 function nodeClick(cfg) {
   cfg.g.selectAll('g.node').on('click', d => {
-    console.log('click', d)
+    d3.event.preventDefault()
+    d3.event.stopPropagation()
+    cfg.event_nodeClick = d.id
+    handleNodeClick(cfg)
   })
 }
 
