@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-02-26 15:34:09 
  * @Last Modified by: lk
- * @Last Modified time: 2020-04-13 14:32:07
+ * @Last Modified time: 2020-06-03 18:16:58
  * @Description:  采集任务
  */
 <template>
@@ -256,7 +256,7 @@
                     <el-input-number style="width:200px;" v-model="updateFormData.sysDiskAllNum"  :min="1"  ></el-input-number>&nbsp;&nbsp;KB
                   </el-form-item>
                   <el-form-item prop="sysState"
-                                label="代理状态">
+                                label="状态">
                       <el-radio v-model="updateFormData.sysState" label="1">停用</el-radio>
                       <el-radio v-model="updateFormData.sysState" label="2">启用</el-radio>
                   </el-form-item>

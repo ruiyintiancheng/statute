@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-03-02 09:42:50 
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-09 15:28:26
+ * @Last Modified time: 2020-06-03 18:16:41
  * @Description:  系统环境
  */
  <template>
@@ -68,7 +68,7 @@
                     <el-input-number style="width:200px;" v-model="iFormData.sysDiskAllNum"  :min="1"  ></el-input-number>&nbsp;&nbsp;KB
                   </el-form-item>
                   <el-form-item prop="sysState"
-                                label="代理状态">
+                                label="状态">
                       <el-radio v-model="iFormData.sysState" label="1">停用</el-radio>
                       <el-radio v-model="iFormData.sysState" label="2">启用</el-radio>
                   </el-form-item>

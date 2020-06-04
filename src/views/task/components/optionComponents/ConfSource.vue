@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-03-02 09:42:50 
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-05 16:30:44
+ * @Last Modified time: 2020-06-03 18:14:58
  * @Description:  数据源
  */
  <template>
@@ -53,7 +53,7 @@
                         clearable></el-input>
             </el-form-item>
             <el-form-item prop="sourceState"
-                          label="目标状态">
+                          label="状态">
                 <el-radio v-model="formData.sourceState" label="1">停用</el-radio>
                 <el-radio v-model="formData.sourceState" label="2">启用</el-radio>
             </el-form-item>

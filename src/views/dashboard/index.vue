@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-23 11:16:27 
  * @Last Modified by: lk
- * @Last Modified time: 2020-04-26 11:37:15
+ * @Last Modified time: 2020-06-03 18:28:55
  * @Description:  首页
  */
 <template>
@@ -108,7 +108,7 @@ export default {
       position: absolute;
       left: 50%;
       margin-left: -460px;
-      top:6%;
+      top:127px;
     }
     .home-options{
       height:342px;

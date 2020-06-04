@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2018-08-11 11:43:38
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-10 11:08:02
+ * @Last Modified time: 2020-06-03 17:59:19
  * @Description:  登录页面
  */
 <template>
@@ -280,7 +280,7 @@ export default {
           border-radius: 0px;
           padding: 2px 5px;
           color: #7ca6ee;
-          font-size: 12px;
+          font-size: 14px;
           &::-webkit-input-placeholder {
             color: #7ca6ee;
           }

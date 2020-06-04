@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2018-09-21 14:54:24 
  * @Last Modified by: lk
- * @Last Modified time: 2020-04-27 17:36:47
+ * @Last Modified time: 2020-06-03 18:25:31
  * @Description:  
  */
 <template>
@@ -239,8 +239,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .navbar {
-  height: 60px;
-  line-height: 60px;
+  height: 70px;
+  line-height: 70px;
   &.currentColor {
     background-color: $mainColor;
   }
@@ -254,17 +254,17 @@ export default {
   .left-menu {
     float: left;
     margin-left: 60px;
-    margin-top: 18px;
+    margin-top: 23px;
     li {
       margin-left: 10px;
       height: 27px;
       line-height: 24px;
       &.actived {
-        border-bottom: 2px solid #fff;
+        border-bottom: 3px solid #fff;
       }
       a {
         color: #fff;
-        font-size: 14px;
+        font-size: 16px;
         padding: 0 5px;
         height: 24px;
       }
@@ -279,7 +279,7 @@ export default {
         height: 28px;
         position: relative;
         margin-right: 70px;
-        margin-top: 15px;
+        margin-top: 20px;
         border-radius: 20px;
         overflow: hidden;
         background-color: $mainColor;

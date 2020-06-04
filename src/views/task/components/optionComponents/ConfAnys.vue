@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-03-02 09:42:50 
  * @Last Modified by: lk
- * @Last Modified time: 2020-03-09 17:32:07
+ * @Last Modified time: 2020-06-03 18:16:41
  * @Description:  其他下载
  */
  <template>
@@ -115,7 +115,7 @@
                               clearable></el-input>
                   </el-form-item>
                   <el-form-item prop="ifsState"
-                                label="代理状态">
+                                label="状态">
                       <el-radio v-model="iFormData.ifsState" label="1">停用</el-radio>
                       <el-radio v-model="iFormData.ifsState" label="2">启用</el-radio>
                   </el-form-item>

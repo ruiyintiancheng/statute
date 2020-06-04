@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-02-26 15:34:09 
  * @Last Modified by: lk
- * @Last Modified time: 2020-04-13 14:32:26
+ * @Last Modified time: 2020-06-03 18:16:51
  * @Description:  代理服务
  */
 <template>
@@ -190,7 +190,7 @@
                       clearable></el-input>
           </el-form-item>
           <el-form-item prop="agntState"
-                        label="代理状态">
+                        label="状态">
               <el-radio v-model="updateFormData.agntState" label="1">停用</el-radio>
               <el-radio v-model="updateFormData.agntState" label="2">启用</el-radio>
           </el-form-item>
