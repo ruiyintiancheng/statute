@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 16:50:14 
  * @Last Modified by: lk
- * @Last Modified time: 2020-06-04 18:10:59
+ * @Last Modified time: 2020-06-05 18:37:51
  * @Description:  数据统计
  */
 <template>
@@ -166,7 +166,7 @@
               :lg="12">
 
         <div class="statistics-card top-card">
-          <div class="statistics-card-title">政策层级统计</div>
+          <div class="statistics-card-title">军地政策层级统计</div>
           <div class="statistics-card-context">
             <custom-echarts ref="zhengcecengcitongji"
                             propsHeight="400px"
@@ -178,7 +178,7 @@
       <el-col :sm="12"
               :lg="12">
         <div class="statistics-card top-card">
-          <div class="statistics-card-title">政策法规逐年发布趋势</div>
+          <div class="statistics-card-title">{{headSwitch?'':'军地'}}政策法规逐年发布趋势</div>
           <div class="statistics-card-context">
             <custom-echarts ref="fabuliangqushiChart"
                             propsHeight="400px"
@@ -190,7 +190,7 @@
       <el-col :sm="12"
               :lg="12">
         <div class="statistics-card">
-          <div class="statistics-card-title">公文发布类型统计</div>
+          <div class="statistics-card-title">军地公文发布类型统计</div>
           <div class="statistics-card-context">
             <custom-echarts ref="ziduanbaosongtongjiChart"
                             propsHeight="400px"

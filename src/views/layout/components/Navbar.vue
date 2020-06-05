@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2018-09-21 14:54:24 
  * @Last Modified by: lk
- * @Last Modified time: 2020-06-03 18:25:31
+ * @Last Modified time: 2020-06-05 15:15:00
  * @Description:  
  */
 <template>
@@ -156,10 +156,18 @@ export default {
       if (this.$route.name === component) {
         return true
       } else {
-        if (this.$route.name === 'search' && component === 'analysisIndex') {
-          return true
+        if (component) {
+          if (this.$route.name === 'search' && component === 'analysisIndex') {
+            return true
+          } else {
+            return false
+          }
         } else {
-          return false
+          if (this.$route.path.startsWith('/' + item.name)) {
+            return true
+          } else {
+            return false
+          }
         }
       }
     },

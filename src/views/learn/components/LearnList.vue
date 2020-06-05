@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-02-18 15:29:45 
  * @Last Modified by: lk
- * @Last Modified time: 2020-05-27 13:51:43
+ * @Last Modified time: 2020-06-05 18:33:46
  * @Description:  学习列表
  */
 
@@ -75,8 +75,12 @@ export default {
   },
   methods: {
     jumpDetails(id) { // 跳转讲话内容
+      let name = 'verbiage'
+      if (id === '1189') {
+        name = 'code'
+      }
       this.$router.push({
-        name: 'verbiage',
+        name: name,
         query: {
           crawlConId: id
         }

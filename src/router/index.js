@@ -2,7 +2,7 @@
  * @Author: lk
  * @Date: 2019-02-01 17:36:33
  * @Last Modified by: lk
- * @Last Modified time: 2020-04-26 16:07:03
+ * @Last Modified time: 2020-06-05 18:31:01
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -97,6 +97,20 @@ export const constantRouterMap = [
         name: 'search',
         path: '/search',
         component: _import('searchResult/index'),
+        meta: {
+          type: '1'
+        }
+      }
+    ]
+  },
+  {
+    path: '/',
+    component: Layout,
+    children: [
+      {
+        name: 'code',
+        path: '/code',
+        component: _import('read/index'),
         meta: {
           type: '1'
         }

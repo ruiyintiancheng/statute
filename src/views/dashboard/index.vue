@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-23 11:16:27 
  * @Last Modified by: lk
- * @Last Modified time: 2020-06-04 14:54:58
+ * @Last Modified time: 2020-06-05 15:35:02
  * @Description:  首页
  */
 <template>
@@ -102,16 +102,16 @@ export default {
     }
     .home-main{
       height: calc(100% - 70px);
-      // position: relative;
-      padding-top: 127px;
+      position: relative;
+      // padding-top: 127px;
     }
     .home-search{
       width: 920px;
-      // position: absolute;
-      // left: 50%;
-      // margin-left: -460px;
-      // top:127px;
-      margin:0 auto;
+      position: absolute;
+      left: 50%;
+      margin-left: -460px;
+      top: 13.5%;
+      // margin:0 auto;
       .el-input-group{
         overflow: hidden;
       }
@@ -119,11 +119,11 @@ export default {
     .home-options{
       height:342px;
       width: 100%;
-      // top: 50%;
-      // left: 0;
+      top: 31%;
+      left: 0;
       // margin-top:-171px;
-      // position: absolute;
-      margin: 127px auto 100px;
+      position: absolute;
+      // margin: 127px auto 100px;
       .home-item{
         cursor: pointer;
         width: 240px;
@@ -158,16 +158,16 @@ export default {
     }
     .home-bottom{
       width: 850px;
-      height: 11%;
+      height: 100px;
       position: absolute;
       left: 50%;
       margin-left: -425px;
-      bottom:17px;
+      bottom:0px;
       font-size: 14px;
       color:#fff;
       letter-spacing: 4px;
       text-align: center;
-      padding-top:2.5%;
+      padding-top:35px;
       img{
         position: absolute;
         top:0;
