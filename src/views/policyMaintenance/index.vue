@@ -32,21 +32,22 @@
             <el-button icon="el-icon-plus"
                        @click="addParent"
                        plain>新增</el-button>
+            <el-button icon="el-icon-refresh"
+                       plain
+                       @click="openFullScreen"
+                       type="info">同步运算</el-button>
             <el-upload ref="upload"
                        action="/bDocBasic/upload"
-                       style="display:inline-block;margin:0 5px;"
+                       style="display:inline-block;margin:0 5px; position: relative;"
                        :http-request="sourceUploadRequest"
                        :show-file-list="false"
                        :auto-upload="true">
               <el-button icon="el-icon-upload"
                          plain
                          type="primary">批量导入</el-button>
+              <span style="font-size:13px;color:#c9c9c9; position: absolute;bottom:-14px;left:5px">(zip/doc/docx格式)</span>
             </el-upload>
 
-            <el-button icon="el-icon-refresh"
-                       plain
-                       @click="openFullScreen"
-                       type="info">同步运算</el-button>
           </div>
         </div>
       </div>
@@ -610,12 +611,12 @@ export default {
       this.$router.push({ name: 'taskOption', query: { protId: row.protId }})
     },
     sourceUploadRequest(content) {
-      const patt = new RegExp('.*\.(zip|txt|doc|docx)$')
+      const patt = new RegExp('.*\.(zip|doc|docx)$')
       if (!patt.test(content.file.name)) {
         this.$refs.upload.clearFiles
         this.$message({
           showClose: true,
-          message: '错误的文件类型,请选择zip/txt/doc/docx文件上传',
+          message: '错误的文件类型,请选择zip/doc/docx文件上传',
           type: 'error'
         })
         return
@@ -637,6 +638,7 @@ export default {
 
       baseUpload('/bDocBasic/upload', form).then((response) => {
         this.loading = false
+        this.$Message.success('上传成功')
       }, _ => {
         this.$refs.upload.clearFiles()
         this.loading = false
@@ -660,7 +662,7 @@ export default {
     margin: 0 auto;
     text-align: center;
     .search-button {
-      margin: 10px auto;
+      margin: 8px auto 15px auto;
     }
   }
 }
