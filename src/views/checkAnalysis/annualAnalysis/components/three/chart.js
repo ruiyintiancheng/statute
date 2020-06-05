@@ -108,7 +108,6 @@ function loadEvent() {
     const obj = findObj(event, mouse, raycaster, objs.children)
     if (obj) {
       cfg.nodeClick(obj.userData)
-      console.log('controls', controls)
     }
   }
 }
