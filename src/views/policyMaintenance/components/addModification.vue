@@ -443,7 +443,7 @@ export default {
 
         params.issueOrgText = params.issueOrgText ? params.issueOrgText.join(';') : ''
         params.issueOrgType = params.issueOrgType ? params.issueOrgType.join(';') : ''
-        // console.log(params)
+
         baseRequest('/bDocBasic/update', params).then(response => {
           this.$parent.searchOption()
           this.pringBox = false
