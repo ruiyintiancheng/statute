@@ -54,8 +54,13 @@ function draw(data) {
   // var axisHelper = new THREE.AxisHelper(250)
   // scene.add(axisHelper)
 
-  camera.position.set(cfg.xSize - width / 4 - 50, 161, 176)
-  controls.target = new THREE.Vector3(cfg.xSize - width / 4, 0, -82)
+  if (cfg.xSize < width) {
+    camera.position.set(cfg.xSize - 50, 161, 176)
+    controls.target = new THREE.Vector3(cfg.xSize, 0, -82)
+  } else {
+    camera.position.set(cfg.xSize - width / 4 - 50, 161, 176)
+    controls.target = new THREE.Vector3(cfg.xSize - width / 4, 0, -82)
+  }
   controls.update()
   // camera.position.set(300, 300, 200)
   // camera.lookAt(scene.position)
