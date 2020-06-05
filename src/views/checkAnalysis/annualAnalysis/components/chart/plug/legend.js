@@ -2,22 +2,23 @@ import * as d3 from 'd3'
 
 function legend(graph, id) {
   const width = graph.get('width')
-  const height = 40
+  const height = 30
   const legends = {
     nodes: [
-      { name: '查询法规', color: '#ff804c', translate: 'translate(0)' },
-      { name: '政策法规', color: '#02A7FD', translate: 'translate(84)' },
-      { name: '未收录法规', color: '#b8b7b6', translate: 'translate(168)' },
-      { name: '定位法规', color: '#9EEA6A', translate: 'translate(265)' }
+      { name: '近3年发布的政策', color: '#9EEA6A', translate: 'translate(0)' },
+      { name: '3-5年未修订', color: '#4fbaf4', translate: 'translate(135)' },
+      { name: '5-10年未修订', color: '#ff804c', translate: 'translate(237)' },
+      { name: '10年以上未修订', color: 'red', translate: 'translate(347)' }
     ],
     links: [
-      { name: '被引用', color: '#02A7FD', translate: 'translate(349)' }
+      // { name: '被引用', color: '#4fbaf4', translate: 'translate(252)' }
     ]
   }
 
   const g = d3.select(`#${id}`)
     .style('width', `${width}px`)
     .style('height', `${height}px`)
+    .style('border-top', '#ccc 1px solid')
     .append('svg')
     .attr('width', '100%')
     .attr('height', '100%')
