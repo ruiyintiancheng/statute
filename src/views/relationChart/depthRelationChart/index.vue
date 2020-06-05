@@ -36,8 +36,9 @@
     <!-- 鼠标右键菜单 -->
     <div id="contextMenu" class="contextMenu">
       <ul>
-        <li @click="menuMessage">查看详情</li>
-        <li @click="menuText" class='end'>查看原文</li>
+        <li class="first" @click="menuMessage">标签信息</li>
+        <li @click="menuText">查看原文</li>
+        <li class='last' @click="menuInfo">政策快照</li>
       </ul>
     </div>
     <!-- 详细信息 -->
@@ -51,9 +52,20 @@
         <el-table-column prop="value" label="内容"></el-table-column>
       </el-table>
     </div>
+    <el-dialog title="政策文章" width="90%" custom-class="dialog-default"
+        :visible.sync="policyVisible" 
+        :close-on-click-modal='false'
+        append-to-body
+        v-el-drag-dialog>
+      <div class="dialog-contant-default file-download-log policy">
+           <policy :crawlConId=policyId></policy>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="policyVisible = false">关闭</el-button>
+      </div>
+    </el-dialog>
     <nodes-table ref="nodesTable" @moveNode='moveNode'></nodes-table>
     <links-table ref="linksTable"></links-table>
-    <!-- <relation ref="relation" @selRelation="selRelation"></relation> -->
   </div>
 </template>
 
@@ -61,14 +73,14 @@
 import { baseRequest } from '@/api/base'
 import nodesTable from './components/nodesTable'
 import linksTable from './components/linksTable'
-// import relation from '../components/relation'
+import policy from '@/views/relationChart/components/policy'
 import Chart from './components/chart/index.js'
 import * as d3 from 'd3'
 export default {
   components: {
     nodesTable,
-    linksTable
-    // relation
+    linksTable,
+    policy
   },
   props: {
     width: Number,
@@ -93,7 +105,10 @@ export default {
       chart_data: null,
       messageData: [],
       messageVisible: false,
-      chartLoading: true
+      chartLoading: true,
+
+      policyVisible: false,
+      policyId: ''
     }
   },
   created() {
@@ -138,7 +153,7 @@ export default {
         contextMenu: 'contextMenu',
         offsetId: '#chart_main',
         nodeTitle: 'title',
-        background: '#26368d' //  #04244A
+        background: '#F9FAFF' //  #04244A
       })
       graph.data(data)
       graph.render()
@@ -217,17 +232,18 @@ export default {
       d3.select('#contextMenu').style('display', 'none')
     },
     /**
-       * 右键菜单--查看引用
-       */
-    menuSource() {
-      d3.select('#contextMenu').style('display', 'none')
-    },
-    /**
        * 右键菜单--查看原文
        */
     menuText() {
       const node = this.graph.get('contextMenuNode')
       window.open(node.docUri, '_blank')
+    },
+    /** 右键菜单 -- 政策快照 */
+    menuInfo() {
+      const node = this.graph.get('contextMenuNode')
+      this.policyId = node.id + ''
+      this.policyVisible = true
+      d3.select('#contextMenu').style('display', 'none')
     }
   }
 }
@@ -256,4 +272,9 @@ export default {
 	.title-content {
 		margin-left: 75px;
 	}
+</style>
+<style lang="scss" scoped>
+  #chart {
+    border: 1px solid #ccc;
+  }
 </style>

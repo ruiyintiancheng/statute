@@ -6,18 +6,17 @@ function legend(graph, id) {
   const legends = {
     nodes: [
       { name: '查询法规', color: '#ff804c', translate: 'translate(0)' },
-      { name: '政策法规', color: '#4fbaf4', translate: 'translate(84)' },
-      { name: '废止法规', color: '#b8b7b6', translate: 'translate(168)' }
+      { name: '政策法规', color: '#02A7FD', translate: 'translate(84)' },
+      { name: '未收录法规', color: '#b8b7b6', translate: 'translate(168)' }
     ],
     links: [
-      { name: '被引用', color: '#4fbaf4', translate: 'translate(252)' }
+      { name: '被引用', color: '#02A7FD', translate: 'translate(265)' }
     ]
   }
 
   const g = d3.select(`#${id}`)
     .style('width', `${width}px`)
     .style('height', `${height}px`)
-    .style('border-top', '#ccc 1px solid')
     .append('svg')
     .attr('width', '100%')
     .attr('height', '100%')

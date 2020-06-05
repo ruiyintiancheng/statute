@@ -1,7 +1,7 @@
 const Nodes = {
   default: {
     enter(selection, d, i) {
-      const color = d.docState === 'running' ? '#4fbaf4' : '#b8b7b6'
+      const color = d.docState === 'running' ? '#02A7FD' : '#b8b7b6'
       const option = {
         i: i,
         name: d.docName,
@@ -58,11 +58,11 @@ const Nodes = {
     const text = node.append('text')
       .attr('y', 0)
       .style('user-select', 'none')
-      .style('fill', 'white')
+      .style('fill', '02A7FD')
 
     const time = node.append('text')
       .attr('dy', '0.35em')
-      .style('fill', 'white')
+      .style('fill', '02A7FD')
       .text(d => d.docIssueTime)
 
     if (option.i % 2 === 0) {
@@ -111,7 +111,7 @@ const Links = {
   default: {
     enter(selection, d) {
       const option = {
-        color: '#4fbaf4'
+        color: '#02A7FD'
       }
       Links.enter(selection, option)
     },

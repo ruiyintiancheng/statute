@@ -3,13 +3,12 @@
   position: absolute;
   display: block;
   bottom: 30px;
-  right: -50px;
+  right: 10px;
   width: 50px;
   font-size: 14px;
   background-color: white;
   cursor: pointer;
 }
-
 .graph-web-toolbar > ul {
   margin: 0px;
   box-sizing: border-box;
@@ -35,22 +34,12 @@
 .contextMenu {
   display: none;
   position: absolute;
-  width: 80px;
+  width: 90px;
   top: 200px;
   left: 50px;
-  /* border: 1px solid black; */
-  background-color: black;
+  opacity: 0.7;
   color: white;
   letter-spacing: 2px;
-}
-
-.contextMenu ul > li {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  list-style: none;
-  border-bottom: 1px solid #ffffff;
 }
 
 .contextMenu > ul {
@@ -61,7 +50,22 @@
   user-select: none;
   padding: 0px;
 }
-.contextMenu ul > li.end {
+
+.contextMenu ul > li {
+  padding: 8px;
+  list-style: none;
+  border-bottom: 1px solid #ffffff;
+  background-color: black;
+}
+
+.contextMenu ul > li.first {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.contextMenu ul > li.last {
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
   border-bottom: 0;
 }
 
@@ -72,7 +76,7 @@
 
 /* 详情弹框 */
 .message {
-  width: 300px;
+  width: 600px;
   height: 100%;
   position: absolute;
   bottom: 0px;

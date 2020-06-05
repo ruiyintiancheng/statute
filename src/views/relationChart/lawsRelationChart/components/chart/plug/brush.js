@@ -6,6 +6,7 @@ import Data from '../data.js'
 const Brush = {
   init(graph, id) {
     const width = graph.get('width')
+    const background = graph.get('background')
     const height = 50
 
     const brush = d3.brushX()
@@ -30,12 +31,11 @@ const Brush = {
     const svg = d3.select('#' + id)
       .style('width', `${width}px`)
       .style('height', `${height}px`)
-      .style('border-bottom', '#ccc 1px solid')
       .append('svg')
       .attr('width', '100%')
       .attr('height', '100%')
       .style('margin-bottom', '-3px')
-      .style('background-color', 'white')
+      .style('background-color', background)
 
     this.brushg = svg.append('g')
       .classed('brush', true)

@@ -17,11 +17,11 @@
         <li @click="savePng"><div class="text">保存图片</div></li>
       </ul>
     </div>
-    <div id="contextMenu"
-         class="contextMenu">
+    <div id="contextMenu" class="contextMenu">
       <ul>
-        <li @click="menuMessage">查看详情</li>
-        <li @click="menuText" class='end'>查看原文</li>
+        <li class="first" @click="menuMessage">标签信息</li>
+        <li @click="menuText">查看原文</li>
+        <li class='last' @click="menuInfo">政策快照</li>
       </ul>
     </div>
     <div v-show="messageVisible"
@@ -29,17 +29,29 @@
          class="message">
       <div class="message-title">
         <span class="message-title-content">详细信息</span>
-        <span class="message-close"
-              @click="messageVisible = false">×</span>
+        <span class="message-close" @click="messageVisible = false">×</span>
       </div>
-      <el-table :data="messageData" style="width: 100%" :height=table_height>
-        <el-table-column prop="name" label="名称" width="110"></el-table-column>
-        <el-table-column prop="value" label="内容"></el-table-column>
+      <el-table border stripe :data="messageData" style="width: 100%" :height=table_height>
+        <el-table-column align="center" prop="name" label="名称" width="150"></el-table-column>
+        <el-table-column align="center" prop="value" label="内容"></el-table-column>
       </el-table>
     </div>
+    <el-dialog title="政策文章" width="90%" custom-class="dialog-default"
+        :visible.sync="policyVisible" 
+        :close-on-click-modal='false'
+        append-to-body
+        v-el-drag-dialog>
+      <div class="dialog-contant-default file-download-log policy">
+           <policy :crawlConId=policyId></policy>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="policyVisible = false">关闭</el-button>
+      </div>
+    </el-dialog>
     <nodes-table ref="nodesTable" @moveNode='moveNode'></nodes-table>
     <links-table ref="linksTable"></links-table>
     <relation ref="relation" @selRelation="selRelation"></relation>
+    
   </div>
 </template>
 
@@ -49,12 +61,14 @@ import nodesTable from './components/nodesTable'
 import linksTable from './components/linksTable'
 import relation from '../components/relation'
 import Chart from './components/chart/index.js'
+import policy from '@/views/relationChart/components/policy'
 import * as d3 from 'd3'
 export default {
   components: {
     nodesTable,
     linksTable,
-    relation
+    relation,
+    policy
   },
   props: {
     width: Number,
@@ -79,7 +93,10 @@ export default {
       chart_data: null,
       messageData: [],
       messageVisible: false,
-      chartLoading: true
+      chartLoading: true,
+
+      policyVisible: false,
+      policyId: ''
     }
   },
   created() {
@@ -123,7 +140,7 @@ export default {
         height: this.chart_height,
         contextMenu: 'contextMenu',
         offsetId: '#chart_main',
-        background: '#26368d' //  #04244A
+        background: '#F9FAFF'
       })
       graph.data(data)
       graph.render()
@@ -211,20 +228,14 @@ export default {
         { name: '密级', value: node.docSecretClass },
         { name: '内容体系', value: node.docContentSys },
         { name: '文章类型', value: node.docType },
-        { name: '领域类型', value: node.docDomainType },
-        { name: '军民融合相关度', value: node.docAbout },
-        { name: '可操作性', value: node.docOperability },
-        { name: '评估重点', value: node.docFocalPoint },
-        { name: '军民融合条款摘录', value: node.docSummary },
-        { name: '关键词', value: node.docKeyWord }
+        { name: '领域类型', value: node.docDomainType }
+        // { name: '军民融合相关度', value: node.docAbout },
+        // { name: '可操作性', value: node.docOperability },
+        // { name: '评估重点', value: node.docFocalPoint },
+        // { name: '军民融合条款摘录', value: node.docSummary },
+        // { name: '关键词', value: node.docKeyWord }
       ]
       this.messageVisible = true
-      d3.select('#contextMenu').style('display', 'none')
-    },
-    /**
-       * 右键菜单--查看引用
-       */
-    menuSource() {
       d3.select('#contextMenu').style('display', 'none')
     },
     /**
@@ -233,12 +244,22 @@ export default {
     menuText() {
       const node = this.graph.get('contextMenuNode')
       window.open(node.docUri, '_blank')
+    },
+    /** 右键菜单 -- 政策快照 */
+    menuInfo() {
+      const node = this.graph.get('contextMenuNode')
+      this.policyId = node.id + ''
+      this.policyVisible = true
+      d3.select('#contextMenu').style('display', 'none')
     }
   }
 }
 </script>
-
 <style scoped>
   @import '../components/chart.css';
-
+</style>
+<style lang="scss" scoped>
+  #chart {
+    border: 1px solid #ccc;
+  }
 </style>
