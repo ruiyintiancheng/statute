@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 16:50:14 
  * @Last Modified by: lk
- * @Last Modified time: 2020-06-04 14:57:17
+ * @Last Modified time: 2020-06-04 18:10:59
  * @Description:  数据统计
  */
 <template>
@@ -761,7 +761,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss"> 
 .statistics-container {
   background-color: #f9faff;
   padding: 0 15px 30px;

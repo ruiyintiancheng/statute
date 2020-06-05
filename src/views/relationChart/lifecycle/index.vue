@@ -2,7 +2,7 @@
  * @Author: wlq
  * @Date: 2020/1/8
  * @Last Modified by: lk
- * @Last Modified time: 2020-04-23 11:09:07
+ * @Last Modified time: 2020-06-05 11:56:18
  * @Description:  生命周期图
  */
 <template>
@@ -17,6 +17,10 @@
         <li @click="openNodesTable"><div class="text">政策列表</div></li>
         <li @click="savePng"><div class="text">保存图片</div></li>
       </ul>
+      <div class="graph-web-toolbar-switch" ref="toolbarSwitch" @click="$emit('switchHandle',$refs.toolbarSwitch)">
+        <i class="el-icon-d-arrow-left"></i>
+        <i class="el-icon-d-arrow-right"></i>
+      </div>
     </div>
     <div id="contextMenu" class="contextMenu">
       <ul>

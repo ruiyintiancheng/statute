@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div :style="{height:chart_height,overflow:'hidden'}">
     <div class="main-title base-container" style="height: 80px;">
       <div style="height: 50px; line-height: 50px; opacity: 0.5;">
         <span>{{name}}</span>
@@ -17,14 +17,14 @@
       </el-row>
     </div>
     <div class="main-chart" :style="{width: `${chart_width}px`, height: `${chart_height}px`}">
-      <lawsrelation-chart v-if="active === '0'" ref="lawsRelationChart"
-          :width=chart_width :height=chart_height :id=id :name=name></lawsrelation-chart>
+      <lawsrelation-chart v-if="active === '0'" ref="lawsRelationChart" @switchHandle="switchHandle"
+          :width="chart_width" :height="chart_height" :id="id" :name="name"></lawsrelation-chart>
           
       <lifecycle v-else-if="active === '1'"
-          :width=chart_width :height=chart_height :id=id :name=name></lifecycle>
+          :width="chart_width" :height="chart_height" :id="id" :name="name" @switchHandle="switchHandle"></lifecycle>
 
       <depth-relationChart v-if="active === '2'" ref="depthRelationChart"
-          :width=chart_width :height=chart_height :id=id :name=name></depth-relationChart>    
+          :width="chart_width" :height="chart_height" :id="id" :name="name" @switchHandle="switchHandle"></depth-relationChart>    
     </div>
   </div>
 </template>
@@ -64,11 +64,28 @@ export default {
     this.$nextTick(() => {
       this.getSize()
     })
+    window.addEventListener('resize', function() {
+      this.getSize()
+    }.bind(this), false)
   },
   methods: {
+    switchHandle(switchDom) {
+      const toolbarDom = switchDom.parentNode
+      const leftDom = switchDom.querySelector('.el-icon-d-arrow-left')
+      const rightDom = switchDom.querySelector('.el-icon-d-arrow-right')
+      if (leftDom.style.display === 'none') {
+        leftDom.style.display = 'inline'
+        rightDom.style.display = 'none'
+        toolbarDom.style.right = '-50px'
+      } else {
+        leftDom.style.display = 'none'
+        rightDom.style.display = 'inline'
+        toolbarDom.style.right = '0px'
+      }
+    },
     getSize() {
-      this.chart_width = document.querySelector('.app-main').offsetWidth
-      this.chart_height = document.querySelector('.app-main').offsetHeight - 80
+      this.chart_width = document.querySelector('.main-container').offsetWidth
+      this.chart_height = document.querySelector('.main-container').offsetHeight - 80
     },
     loadName() {
       baseRequest('/gVertex/select', { id: this.id }).then(response => {

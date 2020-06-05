@@ -57,7 +57,7 @@ export default {
       }
     },
     setCurrentHeight() {
-      this.height = document.body.offsetHeight - 60
+      this.height = document.body.offsetHeight - 70
       this.$store.dispatch('setContainHeight', { height: this.height })
     }
   }
