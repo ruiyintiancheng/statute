@@ -53,7 +53,7 @@ export function getGridTextCfg() {
 
   const zTick = []
   zTick.push({ position: getZ('是'), text: '新形式新任务' })
-  zTick.push({ position: getZ('否'), text: '否' })
+  zTick.push({ position: getZ('否'), text: '其它' })
 
   return {
     x: (x.range()[1] * 2 + 1) * grid,

@@ -44,7 +44,7 @@ function draw(data) {
   // 光源设置
   // 点光源
   var point = new THREE.PointLight(0xffffff)
-  point.position.set(cfg.xSize / 2, cfg.ySize, cfg.zSize) // 点光源位置
+  point.position.set(cfg.xSize, cfg.ySize, cfg.zSize) // 点光源位置
   scene.add(point) // 点光源添加到场景中
   // 环境光
   var ambient = new THREE.AmbientLight(0x888888)
@@ -54,8 +54,8 @@ function draw(data) {
   // var axisHelper = new THREE.AxisHelper(250)
   // scene.add(axisHelper)
 
-  camera.position.set(cfg.xSize - 200, 200, 200)
-  controls.target = new THREE.Vector3(cfg.xSize, 0, 0)
+  camera.position.set(cfg.xSize - width / 4 - 50, 161, 176)
+  controls.target = new THREE.Vector3(cfg.xSize - width / 4, 0, -82)
   controls.update()
   // camera.position.set(300, 300, 200)
   // camera.lookAt(scene.position)
@@ -103,6 +103,7 @@ function loadEvent() {
     const obj = findObj(event, mouse, raycaster, objs.children)
     if (obj) {
       cfg.nodeClick(obj.userData)
+      console.log('controls', controls)
     }
   }
 }

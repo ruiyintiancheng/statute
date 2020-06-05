@@ -47,10 +47,6 @@
           <div class='title-head'>发布数量: </div>
           <div class="title-content"></div>
         </div>
-        <div style="min-height: 17px;">
-          <div class='title-head'>新形式新任务: </div>
-          <div class="title-content"></div>
-        </div>
       </div>
       <!-- 鼠标右键菜单 -->
       <!-- <div id="contextMenu" class="contextMenu">
@@ -110,7 +106,7 @@ export default {
       id: '1',
       name: '气泡',
       activeName: '筛选',
-      toolbarShow: true,
+      toolbarShow: false,
       chart_width: 0,
       chart_height: 0,
       toolbarWidth: 300,
@@ -138,7 +134,7 @@ export default {
         container: '#chart',
         width: this.chart_width,
         height: this.chart_height,
-        background: '#26368d',
+        background: '#F3F3F3',
         nodeClick: this.openList,
         nodeMove: this.nodeMove
       })
@@ -175,7 +171,7 @@ export default {
       title.style('display', 'block')
         .style('left', `${d.x + 10}px`)
         .style('top', `${d.y + 10}px`)
-        .selectAll('div.title-content').data([d.year, d.count, d.newSituaTask])
+        .selectAll('div.title-content').data([d.year, d.count])
         .text(text => text || '')
     },
     /** 关系筛选 */

@@ -123,8 +123,8 @@ function createSpriteText(text) {
   const canvas = document.createElement('canvas')
   canvas.width = 500
   const ctx = canvas.getContext('2d')
-  ctx.fillStyle = '#ffff00'
-  ctx.font = '80px Arial'
+  ctx.fillStyle = '#253B8B'
+  ctx.font = '80px Microsoft YaHei'
   ctx.lineWidth = 4
   ctx.fillText(text, 0, 90)
   const texture = new THREE.Texture(canvas)

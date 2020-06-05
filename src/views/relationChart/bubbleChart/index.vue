@@ -5,7 +5,7 @@
   <div>
     <div style="width: 100%; height:100%; position: relative">
       <div v-loading="chartLoading">
-        <div id="chart" :style="{'width': `${chart_width}px`, 'height': `${chart_height}px`}"></div>
+        <div id="bubbleChart" :style="{'width': `${chart_width}px`, 'height': `${chart_height}px`}"></div>
         <div id="brush"></div>
         <div id="legend"></div>
       </div>
@@ -169,7 +169,7 @@ export default {
     },
     init(data) {
       const graph = new Chart.Graph({
-        container: 'chart',
+        container: 'bubbleChart',
         width: this.chart_width,
         height: this.chart_height,
         // contextMenu: 'contextMenu',
