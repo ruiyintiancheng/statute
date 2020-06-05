@@ -6,7 +6,7 @@ const Nodes = {
       const option = {
         name: d.docName,
         time: d.docIssueTime,
-        r: 20,
+        r: 12,
         color: color
       }
 
@@ -22,7 +22,7 @@ const Nodes = {
     },
     update(selection, d) {
       const option = {
-        r: 20,
+        r: 12,
         t: 1000
       }
 
@@ -46,7 +46,7 @@ const Nodes = {
   enter(selection, option) {
     const node = selection.append('g')
       .classed('node', true)
-      .style('font-size', 16)
+      .style('font-size', 14)
       .style('cursor', 'pointer')
 
     // node.append('title').text(option.name)
@@ -125,6 +125,7 @@ const Links = {
       .attr('marker-end', 'url(#markerArrow)')
       .style('fill', 'none')
       .style('stroke', option.color)
+      .style('stroke-width', 2)
   },
   /**
    * 修改元素

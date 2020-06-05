@@ -27,7 +27,7 @@ function zoome(cfg) {
         nodes.select('path').attr('transform', d => `scale(${1 / k})`)
         nodes.selectAll('text').attr('transform', d => `scale(${1 / k})`)
 
-        links.selectAll('path').style('stroke-width', d => 1 / k)
+        links.selectAll('path').style('stroke-width', d => 2 / k)
       }
 
       // 隐藏文字
@@ -70,17 +70,20 @@ function nodeClick(cfg) {
 }
 
 function nodeMenu(cfg) {
-  cfg.g.selectAll('g.node').on('contextmenu', d => {
-    d3.event.preventDefault()
+  cfg.g.selectAll('g.node')
+    .filter(d => {
+      return d.docState === 'running'
+    }).on('contextmenu', d => {
+      d3.event.preventDefault()
 
-    const offsetX = d3.event.pageX - cfg.offset()[0]
-    const offsetY = d3.event.pageY - cfg.offset()[1]
-    cfg.contextMenuNode = d
-    d3.select(`#${cfg.contextMenu}`)
-      .style('display', 'block')
-      .style('top', `${offsetY + 10}px`)
-      .style('left', `${offsetX + 10}px`)
-  })
+      const offsetX = d3.event.pageX - cfg.offset()[0]
+      const offsetY = d3.event.pageY - cfg.offset()[1]
+      cfg.contextMenuNode = d
+      d3.select(`#${cfg.contextMenu}`)
+        .style('display', 'block')
+        .style('top', `${offsetY + 10}px`)
+        .style('left', `${offsetX + 10}px`)
+    })
 }
 
 /**

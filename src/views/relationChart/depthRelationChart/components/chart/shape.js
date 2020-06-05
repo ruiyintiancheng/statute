@@ -7,11 +7,8 @@ const Nodes = {
         name: d.orgAbbName || d.docIssueOrgText || '',
         title: d.docTittle || d.docName || '',
         time: d.docIssueTime,
-        r: 10,
+        r: 12,
         color: color
-      }
-      if (d.id === '500172') {
-        console.log('option', option)
       }
       if (d.queryNode === true) {
         option.color = '#ff804c'
@@ -19,9 +16,6 @@ const Nodes = {
       }
       if (option.name === 'null') {
         option.name = ''
-      }
-      if (d.id === '500172') {
-        console.log('option', option)
       }
       d.r = option.r
       Nodes.enter(selection, option)
@@ -52,7 +46,7 @@ const Nodes = {
   enter(selection, option) {
     const node = selection.append('g')
       .classed('node', true)
-      .style('font-size', 13)
+      .style('font-size', 14)
       .style('cursor', 'pointer')
 
     // node.append('title')

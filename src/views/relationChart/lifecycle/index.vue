@@ -80,7 +80,7 @@ export default {
       return this.width
     },
     chart_height() {
-      return this.height - 30
+      return this.height - 40
     },
     table_height() {
       return this.height - 41

@@ -97,7 +97,7 @@ export default {
       return this.width
     },
     chart_height() {
-      return this.height - 30 // - 50
+      return this.height - 40 // - 50
     },
     table_height() {
       return this.height - 41

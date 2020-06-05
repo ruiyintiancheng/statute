@@ -70,7 +70,7 @@ class Graph {
       .attr('id', 'markerArrow')
       .attr('markerWidth', 10)
       .attr('markerHeight', 6)
-      .attr('refX', 3 + 10)
+      .attr('refX', 3 + 12)
       .attr('refY', 3)
       .attr('orient', 'auto')
       .attr('viewBox', '0 0 10 6')

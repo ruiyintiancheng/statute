@@ -40,7 +40,7 @@ const Nodes = {
   enter(selection, option) {
     const node = selection.append('g')
       .classed('node', true)
-      .style('font-size', 13)
+      .style('font-size', 14)
       .style('cursor', 'pointer')
 
     node.append('title').text(option.name)

@@ -17,6 +17,8 @@ class Layout {
     data.nodes.forEach(d => {
       if (d.queryNode === true) {
         this._cfg.queryNode = d
+        // d.x = d.fx = this.width / 2
+        // d.y = d.fy = this.height / 2
       }
       d.x = Math.random() * 1960
       d.y = Math.random() * 1080
@@ -27,6 +29,8 @@ class Layout {
       .force('link', d3.forceLink().links(links).id(d => d.id).distance(100).strength(0.1)) // 弹力
       .force('charge', d3.forceManyBody().strength(-500)) // 多体力(万有引力)
       .force('collide', d3.forceCollide().radius(40)) // 碰撞力
+      .force('x', d3.forceX(this.width / 2))
+      .force('y', d3.forceY(this.height / 2))
       .stop()
 
     for (var i = 0; i < 300; ++i) { // 采用静态布局

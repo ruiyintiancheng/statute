@@ -114,17 +114,21 @@ function nodeClick(cfg) {
 }
 
 function nodeMenu(cfg) {
-  cfg.g.selectAll('g.node').on('contextmenu', function(d) {
-    d3.event.preventDefault()
+  cfg.g.selectAll('g.node')
+    .filter(d => {
+      return d.docState === 'running'
+    })
+    .on('contextmenu', function(d) {
+      d3.event.preventDefault()
 
-    const offsetX = d3.event.pageX - cfg.offset()[0]
-    const offsetY = d3.event.pageY - cfg.offset()[1]
-    cfg.contextMenuNode = d
-    d3.select(`#${cfg.contextMenu}`)
-      .style('display', 'block')
-      .style('top', `${offsetY + 10}px`)
-      .style('left', `${offsetX + 10}px`)
-  })
+      const offsetX = d3.event.pageX - cfg.offset()[0]
+      const offsetY = d3.event.pageY - cfg.offset()[1]
+      cfg.contextMenuNode = d
+      d3.select(`#${cfg.contextMenu}`)
+        .style('display', 'block')
+        .style('top', `${offsetY + 10}px`)
+        .style('left', `${offsetX + 10}px`)
+    })
 }
 
 /**
