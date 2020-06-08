@@ -74,8 +74,10 @@ function loadEvent() {
   // 声明raycaster和mouse变量
   var raycaster = new THREE.Raycaster()
   var mouse = new THREE.Vector2()
-  renderer.domElement.addEventListener('click', onMouseClick, false)
+
+  // renderer.domElement.addEventListener('click', onMouseClick, false)
   document.querySelector(cfg.container).addEventListener('mousemove', onMousemove)
+  document.querySelector(cfg.container).addEventListener('click', onMouseClick, false)
 
   // 鼠标移动事件
   function onMousemove(event) {

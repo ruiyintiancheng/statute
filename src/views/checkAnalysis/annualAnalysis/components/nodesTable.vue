@@ -84,9 +84,10 @@ export default {
 
   },
   methods: {
-    openDialog(data) {
+    openDialog(data, type) {
       this.mainVisible = true
       this.nodeData = data
+
       this.searchOption()
       this.setTabHeight()
     },
@@ -105,6 +106,12 @@ export default {
         newSituaTask: this.nodeData.newSituaTask,
         pageNo: this.pageNo,
         pageSize: this.pageSize
+      }
+      if (this.nodeData.docSys) {
+        param.docSys = this.nodeData.docSys
+      }
+      if (this.nodeData.fuseField) {
+        param.fuseField = this.nodeData.fuseField
       }
       baseSearch('/bDocBasic/getSimpleList', param).then(response => {
         this.tableData = response.data.item

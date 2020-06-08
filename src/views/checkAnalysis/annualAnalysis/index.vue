@@ -177,11 +177,16 @@ export default {
     /** 关系筛选 */
     selRelation(options) {
       if (this.graph) {
-        this.getData(options)
+        if (!options.docSys || !options.fuseField || !options.timeType) {
+          Chart.data([])
+        } else {
+          this.getData(options)
+        }
       }
     },
     openList(data) {
-      this.$refs.nodesTable.openDialog(data)
+      const param = this.$refs.relation.quearyParams()
+      this.$refs.nodesTable.openDialog({ ...data, ...param })
     },
     /** 菜单折叠 */
     clickToolbar() {

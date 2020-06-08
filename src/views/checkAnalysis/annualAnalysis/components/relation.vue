@@ -130,6 +130,16 @@ export default {
       }
       return param
     },
+    quearyParams() {
+      const param = {}
+      if (this.options.docSys.values.length > 0) {
+        param.docSys = this.options.docSys.values.join('|')
+      }
+      if (this.options.fuseField.values.length > 0) {
+        param.fuseField = this.options.fuseField.values.join('|')
+      }
+      return param
+    },
     /**
      *  清空
      */
