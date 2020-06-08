@@ -28,8 +28,8 @@ export default {
   },
   data() {
     return {
-      article: `<a name='1'>中华人民共和国民法典</a></br>
-<a name='2'>（2020年5月28日第十三届全国人民代表大会第三次会议通过）</a></br>
+      article: `<h3 style="text-align:center;"><a name='1'>中华人民共和国民法典</a></h3>
+<h3 style="text-align:center;"><a name='2'>（2020年5月28日第十三届全国人民代表大会第三次会议通过）</h4>
 <a name='3'></a></br>
 <a name='4'>第一编  总    则</a></br>
 <a name='5'>第一章  基本规定</a></br>
@@ -2998,5 +2998,12 @@ export default {
             line-height: 29px;
         }
     }
+}
+</style>
+<style lang="scss">
+.read{
+  .el-scrollbar__wrap{
+    overflow-x: hidden;
+  }
 }
 </style>
