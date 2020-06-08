@@ -2,64 +2,16 @@
  * @Author: lk 
  * @Date: 2019-12-24 16:50:14 
  * @Last Modified by: lk
- * @Last Modified time: 2020-06-05 18:37:51
+ * @Last Modified time: 2020-06-08 11:21:25
  * @Description:  数据统计
  */
 <template>
   <div class="statistics-container">
     <div class="statistical-screening">
-      <div class="screening">
-        <el-row :gutter="24"
-                v-if="headSwitch">
-          <el-col :sm="6"
-                  :lg="6"
-                  class="screening-item">
-            <img src="@/assets/images/总量.png"
-                 style="width:66px;height:66px"
-                 alt="">
-            <div class="imgr">
-              <p class="imgr-num">{{totalSum}}</p>
-              <p class="imgr-word">政策法规总数</p>
-              <!-- <span>asdf </span> -->
-            </div>
-          </el-col>
-          <el-col :sm="6"
-                  :lg="6"
-                  class="screening-item">
-            <img src="@/assets/images/all2.png"
-                 alt="">
-            <div class="imgr">
-              <p class="imgr-num">{{fuseTotalSum}}</p>
-              <p class="imgr-word">军地政策法规总数</p>
-              <!-- <span>asdf </span> -->
-            </div>
-          </el-col>
-          <el-col :sm="6"
-                  :lg="6"
-                  class="screening-item">
-            <img src="@/assets/images/zhence.png"
-                 alt="">
-            <div class="imgr">
-              <p class="imgr-num">{{speSum}}</p>
-              <p class="imgr-word">基础政策</p>
-              <!-- <span>asdf </span> -->
-            </div>
-          </el-col>
-          <el-col :sm="6"
-                  :lg="6"
-                  class="screening-item">
-            <img src="@/assets/images/renwu.png"
-                 alt="">
-            <div class="imgr">
-              <p class="imgr-num">{{basicSum}}</p>
-              <p class="imgr-word">具体政策</p>
-              <!-- <span>asdf </span> -->
-            </div>
-          </el-col>
-        </el-row>
-        <el-form :inline="true"
+      <div class="screening base-container">
+                <el-form :inline="true"
+                style="margin-left: 140px;"
                  v-if="!headSwitch"
-                 style="position: relative;top:40%;z-index:9999"
                  :model="screenData"
                  class="demo-form-inline">
           <el-form-item label="发文机构 :"
@@ -98,6 +50,61 @@
                        @click="back2Home">返回</el-button>
           </el-form-item>
         </el-form>
+        <el-row :gutter="70"
+                >
+          <el-col :span="4.8"
+                  class="screening-item">
+            <img src="@/assets/images/总量.png"
+                 style="width:66px;height:66px"
+                 alt="">
+            <div class="imgr">
+              <p class="imgr-num">{{totalSum}}</p>
+              <p class="imgr-word">政策法规总数</p>
+              <!-- <span>asdf </span> -->
+            </div>
+          </el-col>
+          <el-col :span="4.8"
+                  class="screening-item">
+            <img src="@/assets/images/all2.png"
+                 alt="">
+            <div class="imgr">
+              <p class="imgr-num"> <template v-if="!headSwitch"><span class="inside-num">{{fuseTotalSumItem}}</span>/</template>{{fuseTotalSum}}</p>
+              <p class="imgr-word">军地政策法规总数</p>
+              <!-- <span>asdf </span> -->
+            </div>
+          </el-col>
+          <el-col :span="4.8"
+                  class="screening-item">
+            <img src="@/assets/images/zhence.png"
+                 alt="">
+            <div class="imgr">
+              <p class="imgr-num"> <template v-if="!headSwitch"><span class="inside-num">{{speSumItem}}</span>/</template>{{speSum}}</p>
+              <p class="imgr-word">基础政策</p>
+              <!-- <span>asdf </span> -->
+            </div>
+          </el-col>
+          <el-col :span="4.8"
+                  class="screening-item">
+            <img src="@/assets/images/renwu.png"
+                 alt="">
+            <div class="imgr">
+              <p class="imgr-num"> <template v-if="!headSwitch"><span class="inside-num">{{basicSumItem}}</span>/</template>{{basicSum}}</p>
+              <p class="imgr-word">具体政策</p>
+              <!-- <span>asdf </span> -->
+            </div>
+          </el-col>
+          <el-col :span="4.8"
+                  class="screening-item">
+            <img src="@/assets/images/more2.png"
+             style="width:66px;height:66px"
+                 alt="">
+            <div class="imgr">
+              <p class="imgr-num"> <template v-if="!headSwitch"><span class="inside-num">{{otherSumItem}}</span>/</template>{{otherSum}}</p>
+              <p class="imgr-word">其他政策</p>
+              <!-- <span>asdf </span> -->
+            </div>
+          </el-col>
+        </el-row>
       </div>
       <el-popover v-if="headSwitch"
                   placement="bottom"
@@ -226,10 +233,15 @@ export default {
   data() {
     return {
       organization: [], // 发文机构选项
-      totalSum: null, // 综合
-      fuseTotalSum: null, // 总数
-      speSum: null, // 具体
-      basicSum: null, // 基础
+      totalSum: 0, // 综合
+      fuseTotalSum: 0, // 总数
+      speSum: 0, // 具体
+      basicSum: 0, // 基础
+      otherSum: 0, // 其他
+      fuseTotalSumItem: 0, // 总数
+      speSumItem: 0, // 具体
+      basicSumItem: 0, // 基础
+      otherSumItem: 0, // 基础
       param: {
         webSite: '',
         beltRoad: '0',
@@ -360,6 +372,11 @@ export default {
         this.cakeLikeValue = response.data.item.issueOrgTypeStatisticsMap.seriesList
         this.cakeLikeName = response.data.item.issueOrgTypeStatisticsMap.legendList
         this.piesTittle = response.data.item.issueOrgTypeStatisticsMap.title
+
+        this.fuseTotalSumItem = response.data.item.docSysSum.fuseTotalSum
+        this.speSumItem = response.data.item.docSysSum.speSum
+        this.basicSumItem = response.data.item.docSysSum.basicSum
+        this.otherSumItem = response.data.item.docSysSum.otherSum
         this.histogram()
         this.brokenLineDiagram()
         this.pieChart()
@@ -739,6 +756,7 @@ export default {
         this.fuseTotalSum = response.data.item.docSysSum.fuseTotalSum
         this.speSum = response.data.item.docSysSum.speSum
         this.basicSum = response.data.item.docSysSum.basicSum
+        this.otherSum = response.data.item.docSysSum.otherSum
         this.histogramValue = response.data.item.ministryPolicyReleaseMap.seriesList
         this.histogramName = response.data.item.ministryPolicyReleaseMap.xAxisList
         this.barTittle = response.data.item.ministryPolicyReleaseMap.title
@@ -774,8 +792,8 @@ export default {
     // top: 15px;
     // border: 1px solid #ccc;
     .screening {
-      width: 80%;
-      height: 60px;
+      // width: 80%;
+      // height: 60px;
       // border: 1px solid #000;
       margin: 0 auto;
       .screening-item {
@@ -799,6 +817,9 @@ export default {
             margin-bottom: 5px;
             position: relative;
             top: -10px;
+            .inside-num{
+              color:#f56c6c;
+            }
           }
           .imgr-word {
             height: 20px;
