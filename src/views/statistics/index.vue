@@ -9,8 +9,8 @@
   <div class="statistics-container">
     <div class="statistical-screening">
       <div class="screening base-container">
-                <el-form :inline="true"
-                style="margin-left: 140px;"
+        <el-form :inline="true"
+                 style="margin-left: 140px;"
                  v-if="!headSwitch"
                  :model="screenData"
                  class="demo-form-inline">
@@ -50,8 +50,7 @@
                        @click="back2Home">返回</el-button>
           </el-form-item>
         </el-form>
-        <el-row :gutter="70"
-                >
+        <el-row :gutter="70">
           <el-col :span="4.8"
                   class="screening-item">
             <img src="@/assets/images/总量.png"
@@ -96,7 +95,7 @@
           <el-col :span="4.8"
                   class="screening-item">
             <img src="@/assets/images/more2.png"
-             style="width:66px;height:66px"
+                 style="width:66px;height:66px"
                  alt="">
             <div class="imgr">
               <p class="imgr-num"> <template v-if="!headSwitch"><span class="inside-num">{{otherSumItem}}</span>/</template>{{otherSum}}</p>
@@ -232,6 +231,8 @@ export default {
   },
   data() {
     return {
+      publishStart: null,
+      publishEnd: null,
       organization: [], // 发文机构选项
       totalSum: 0, // 综合
       fuseTotalSum: 0, // 总数
@@ -345,6 +346,8 @@ export default {
       parma.issueOrg = this.screenData.Dispatch.length > 0 ? this.screenData.Dispatch[this.screenData.Dispatch.length - 1] : ''
       parma.startDate = this.screenData.date1
       parma.endDate = this.screenData.date2
+      this.publishStart = this.screenData.date1
+      this.publishEnd = this.screenData.date2
       if (parma.endDate && parma.startDate) {
         if (parma.startDate > parma.endDate) {
           this.$message({
@@ -467,39 +470,39 @@ export default {
       }
     },
     segment() {
-      if (this.screenData.date1 && this.screenData.date2) {
+      if (this.publishStart && this.publishEnd) {
         // const name = ''
         if (this.brokenLineDiagramName.length === 1) {
           return [[{
             name: this.brokenLineDiagramName[0],
-            xAxis: this.screenData.date1
+            xAxis: this.publishStart
           }, {
-            xAxis: this.screenData.date2
+            xAxis: this.publishEnd
           }]]
         }
-        if (this.screenData.date1 < this.screenData.date2) {
-          if (this.brokenLineDiagramName[0] < this.screenData.date1 && this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1] >= this.screenData.date2) {
+        if (this.publishStart < this.publishEnd) {
+          if (this.brokenLineDiagramName[0] < this.publishStart && this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1] >= this.publishEnd) {
             return [[{
-              name: this.screenData.date1 + '-' + this.screenData.date2,
-              xAxis: this.screenData.date1
+              name: this.publishStart + '-' + this.publishEnd,
+              xAxis: this.publishStart
             }, {
-              xAxis: this.screenData.date2
+              xAxis: this.publishEnd
             }]]
-          } else if (this.brokenLineDiagramName[0] > this.screenData.date1 && this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1] >= this.screenData.date2) {
+          } else if (this.brokenLineDiagramName[0] > this.publishStart && this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1] >= this.publishEnd) {
             return [[{
-              name: this.brokenLineDiagramName[0] + '-' + this.screenData.date2,
+              name: this.brokenLineDiagramName[0] + '-' + this.publishEnd,
               xAxis: this.brokenLineDiagramName[0]
             }, {
-              xAxis: this.screenData.date2
+              xAxis: this.publishEnd
             }]]
-          } else if (this.brokenLineDiagramName[0] <= this.screenData.date1 && this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1] < this.screenData.date2) {
+          } else if (this.brokenLineDiagramName[0] <= this.publishStart && this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1] < this.publishEnd) {
             return [[{
-              name: this.screenData.date1 + '-' + this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1],
-              xAxis: this.screenData.date1
+              name: this.publishStart + '-' + this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1],
+              xAxis: this.publishStart
             }, {
               xAxis: this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1]
             }]]
-          } else if (this.brokenLineDiagramName[0] > this.screenData.date1 && this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1] < this.screenData.date2) {
+          } else if (this.brokenLineDiagramName[0] > this.publishStart && this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1] < this.publishEnd) {
             return []
           }
         }
@@ -549,19 +552,19 @@ export default {
           type: 'line',
           itemStyle: {
             color: function(params) {
-              if (this.screenData.date1 && this.screenData.date2) {
-                if (this.screenData.date1 === this.screenData.date2) {
-                  if (params.name === this.screenData.date1) {
+              if (this.publishStart && this.publishEnd) {
+                if (this.publishStart === this.publishEnd) {
+                  if (params.name === this.publishStart) {
                     return 'red'
                   }
                 }
               } else {
-                if (this.screenData.date1) {
-                  if (params.name === this.screenData.date1) {
+                if (this.publishStart) {
+                  if (params.name === this.publishStart) {
                     return 'red'
                   }
-                } else if (this.screenData.date2) {
-                  if (params.name === this.screenData.date2) {
+                } else if (this.publishEnd) {
+                  if (params.name === this.publishEnd) {
                     return 'red'
                   }
                 } else {
@@ -734,7 +737,10 @@ export default {
     back2Home() {
       this.headSwitch = true
       this.getOldOption()
+      this.startTime()
       this.$nextTick(_ => {
+        this.publishStart = null
+        this.publishEnd = null
         this.$refs.baosongqingkuangChart.initChart()
         this.$refs.baosongqingkuangChart.chart.resize()
         this.$refs.baosongqingkuangChart.resizeFun()
@@ -779,7 +785,7 @@ export default {
   }
 }
 </script>
-<style lang="scss"> 
+<style lang="scss">
 .statistics-container {
   background-color: #f9faff;
   padding: 0 15px 30px;
@@ -817,8 +823,8 @@ export default {
             margin-bottom: 5px;
             position: relative;
             top: -10px;
-            .inside-num{
-              color:#f56c6c;
+            .inside-num {
+              color: #f56c6c;
             }
           }
           .imgr-word {
