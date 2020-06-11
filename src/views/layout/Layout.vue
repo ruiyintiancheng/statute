@@ -3,7 +3,7 @@
     <navbar></navbar>
     <div class="main-container clearfix" :style="{height:height-55+'px'}">
       <sidebar class="sidebar-container"  v-if="showSideBar" :style="{height:(height - 55)+'px',backgroundColor:'#3164b7'}"></sidebar>
-      <app-main class="app-main" ref="appMain" :style="{minHeight:(height - 55)+'px',width:(showSideBar?'calc(100% - 210px)':'100%'),float:showSideBar?'left':'none',height:showSideBar?'100%':'auto'}"></app-main>
+      <app-main class="app-main" ref="appMain" :style="{minHeight:(height - 55)+'px',width:(showSideBar?'calc(100% - 300px)':'100%'),float:showSideBar?'left':'none',height:showSideBar?'100%':'auto'}"></app-main>
     </div>
     <bottom-bar></bottom-bar>
   </div>

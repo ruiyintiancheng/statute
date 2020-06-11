@@ -7,6 +7,7 @@ const getters = {
   containHeight: state => state.app.containHeight,
   dialogHeight: state => state.app.dialogHeight,
   appWidth: state => state.app.appWidth,
+  leftBarTitle: state => state.app.leftBarTitle,
   bgColor: state => state.app.bgColor,
   token: state => state.user.token,
   avatar: state => state.user.avatar,

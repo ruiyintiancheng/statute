@@ -1,14 +1,14 @@
 /*
  * @Author: lk 
  * @Date: 2018-09-21 14:54:24 
- * @Last Modified by: lk
- * @Last Modified time: 2020-06-05 15:15:00
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-06-11 16:41:21
  * @Description:  
  */
 <template>
   <div :class="{navbar:true,'no-text-select':true,'currentColor':$route.name!=='home'}">
     <div class="base-container clearfix">
-      <div class="logo">
+      <div :class="{'logo':true, 'leftbar-logo':hasSideBar}">
         <a href="javascript:;">军地政策法规智能辅助系统</a>
       </div>
       <ul class="left-menu clearfix">
@@ -117,7 +117,16 @@ export default {
       'userId',
       'loginName',
       'name'
-    ])
+    ]),
+    hasSideBar() {
+      if (this.$route.meta && this.$route.meta.type === '1') {
+        return false
+      } else if (this.$route.meta && this.$route.meta.type === '2') {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   data() {
     return {
@@ -156,14 +165,23 @@ export default {
       if (this.$route.name === component) {
         return true
       } else {
+        const path = this.$route.params.path || this.$route.path
         if (component) {
-          if (this.$route.name === 'search' && component === 'analysisIndex') {
+          if ((this.$route.name === 'search' || (this.$route.params.path === '/search')) && component === 'analysisIndex') {
             return true
           } else {
-            return false
+            if (this.$route.params.path) {
+              if (path.startsWith('/' + item.name)) {
+                return true
+              } else {
+                return false
+              }
+            } else {
+              return false
+            }
           }
         } else {
-          if (this.$route.path.startsWith('/' + item.name)) {
+          if (path.startsWith('/' + item.name)) {
             return true
           } else {
             return false
@@ -201,6 +219,7 @@ export default {
       })
     },
     linkTo(name, title) {
+      this.$store.dispatch('setleftBarTitle', title)
       const parmObj = {
         leftRoutes: this.permission_left_map[name],
         path: '/' + name
@@ -246,9 +265,17 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@media (max-width: 1910px) {
+  .navbar{
+    .leftbar-logo{
+      display: none;
+    }
+  }
+}
 .navbar {
   height: 70px;
   line-height: 70px;
+  position: relative;
   &.currentColor {
     background-color: $mainColor;
   }
@@ -258,16 +285,24 @@ export default {
     font-weight: bold;
     color: #fff;
     letter-spacing: 2px;
+    margin-right: 60px;
+    &.leftbar-logo{
+      position:absolute;
+      left: 26px;
+    }
   }
   .left-menu {
     float: left;
-    margin-left: 60px;
+    margin-left: 0px;
     margin-top: 23px;
     li {
       margin-left: 10px;
       height: 27px;
       line-height: 24px;
       &.actived {
+        border-bottom: 3px solid #fff;
+      }
+      &:hover {
         border-bottom: 3px solid #fff;
       }
       a {
@@ -326,7 +361,7 @@ export default {
           left: -30px;
           width: 26px;
           height: 26px;
-          background-position: 55px 210px;
+          background-position: 55px 300px;
         }
       }
     }

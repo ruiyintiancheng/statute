@@ -73,14 +73,14 @@ export default {
       const toolbarDom = switchDom.parentNode
       const leftDom = switchDom.querySelector('.el-icon-d-arrow-left')
       const rightDom = switchDom.querySelector('.el-icon-d-arrow-right')
-      if (leftDom.style.display === 'none') {
-        leftDom.style.display = 'inline'
-        rightDom.style.display = 'none'
-        toolbarDom.style.right = '-50px'
-      } else {
+      if (rightDom.style.display === 'none') {
         leftDom.style.display = 'none'
         rightDom.style.display = 'inline'
         toolbarDom.style.right = '0px'
+      } else {
+        leftDom.style.display = 'inline'
+        rightDom.style.display = 'none'
+        toolbarDom.style.right = '-50px'
       }
     },
     getSize() {
@@ -110,6 +110,7 @@ export default {
   font-size: 16px;
   text-align: center;
   color: #666;
+  margin-top: -3px;
 }
 .mao-nav a {
   line-height: 1.8;
@@ -118,7 +119,7 @@ export default {
 .mao-nav .active > a {
   color: #128bed;
   border-bottom: 4px solid #128bed;
-  padding-bottom: 5px;
+  padding-bottom: 7px;
 }
 .mao-nav .disabled > a {
   color: #C0C4CC;

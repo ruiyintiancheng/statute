@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2020-02-18 15:29:45 
- * @Last Modified by: lk
- * @Last Modified time: 2020-06-05 18:33:46
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-06-11 14:39:31
  * @Description:  学习列表
  */
 
@@ -79,11 +79,13 @@ export default {
       if (id === '1189') {
         name = 'code'
       }
+      const path = this.$route.params.path || this.$route.path
       this.$router.push({
         name: name,
         query: {
           crawlConId: id
-        }
+        },
+        params: { path }
       })
     },
     searchOption(page) {

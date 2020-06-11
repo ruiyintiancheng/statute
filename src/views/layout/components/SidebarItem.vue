@@ -5,15 +5,27 @@
       <router-link v-if="!item.children || item.children.length === 0" :to="item.path"
         :key="item.path">
           <el-menu-item class="item" :index="item.path" :class="{'submenu-title-noDropdown':!isNest}">
-            <svg-icon v-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
-            <span v-if="item.meta&&item.meta.title" slot="title">{{item.meta.title}}</span>
+            <template v-if="item.meta&&item.meta.icon === 'zzx'">
+              <svg-icon v-if="$route.path.endsWith(item.path)" icon-class="zzxa"></svg-icon>
+              <svg-icon v-else icon-class="zzx"></svg-icon>
+            </template>
+            <template v-else-if="item.meta&&item.meta.icon === 'sxx'">
+              <svg-icon v-if="$route.path.endsWith(item.path)" icon-class="sxxa"></svg-icon>
+              <svg-icon v-else icon-class="sxx"></svg-icon>
+            </template>
+            <template v-else-if="item.meta&&item.meta.icon === 'kcz'">
+              <svg-icon v-if="$route.path.endsWith(item.path)" icon-class="kcza"></svg-icon>
+              <svg-icon v-else icon-class="kcz"></svg-icon>
+            </template>
+            <svg-icon v-else-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
+            <span v-if="item.meta&&item.meta.title" slot="title">&nbsp;&nbsp;{{item.meta.title}}</span>
           </el-menu-item>
       </router-link>
 
       <el-submenu v-else :index="item.path" :key="item.path">
         <template slot="title">
           <svg-icon v-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
-          <span v-if="item.meta&&item.meta.title" slot="title">{{item.meta.title}}</span>
+          <span v-if="item.meta&&item.meta.title" slot="title">&nbsp;&nbsp;{{item.meta.title}}</span>
         </template>
 
         <template v-for="child in item.children">
@@ -23,7 +35,7 @@
             <el-tooltip effect="dark" :key="child.path" :visible-arrow="true" :disabled="!(child.meta&&child.meta.title&&titleLength(child.meta.title))" :content="child.meta.title" popper-class="left-menu-tooltip" placement="right">
                 <el-menu-item :index="child.path" @click="goPath(child.path)" >
                   <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"></svg-icon>
-                  <span v-if="child.meta&&child.meta.title" >{{child.meta.title}}</span>
+                  <span v-if="child.meta&&child.meta.title" >&nbsp;&nbsp;{{child.meta.title}}</span>
                 </el-menu-item>
             </el-tooltip>
           </template>
@@ -97,6 +109,11 @@ export default {
       height:100%;
       .el-menu{
         height:100%;
+        .svg-icon{
+          width:1.5em;
+          height:1.5em;
+          vertical-align: -0.4em;
+        }
       }
     }
 }

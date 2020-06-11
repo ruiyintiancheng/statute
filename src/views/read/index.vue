@@ -2,11 +2,11 @@
     <div class="read base-container clearfix">
             <div class="catalog" :style="{height:catalogHeight + 'px'}">
          <el-scrollbar wrapClass="scrollbar-wrapper" style="height:100%">
-                <a class="catalog-one" v-for="(it1,index1) in catalogData" :key="it1+index1" :href="'#'+it1.index">{{it1.menu}}
+                <a :class="{'catalog-one':true}" v-for="(it1,index1) in catalogData" :key="it1+index1" :href="'#'+it1.index"><span class="catalog-name">{{it1.menu}}</span>
                     <template v-if="it1.children">
-                        <a  class="catalog-one" v-for="(it2,index2) in it1.children" :key="it2+index2" :href="'#'+it2.index" @click.stop="jumpRowHandle(it2.index)">&nbsp;&nbsp;{{it2.menu}}
+                        <a  class="catalog-one" v-for="(it2,index2) in it1.children" :key="it2+index2" :href="'#'+it2.index" @click.stop="jumpRowHandle(it2.index)"><span class="catalog-name">&nbsp;&nbsp;{{it2.menu}}</span>
                             <template v-if="it2.children">
-                                <a :title="it3.menu" class="catalog-two" v-for="(it3,index3) in it2.children" :href="'#'+it3.index" :key="it3+index3" @click.stop="jumpRowHandle(it3.index)">&nbsp;&nbsp;&nbsp;&nbsp;{{it3.menu}}</a>
+                                <a :title="it3.menu" class="catalog-two" v-for="(it3,index3) in it2.children" :href="'#'+it3.index" :key="it3+index3" @click.stop="jumpRowHandle(it3.index)"><span class="catalog-name">&nbsp;&nbsp;&nbsp;&nbsp;{{it3.menu}}</span></a>
                             </template>
                         </a>
                     </template>
@@ -2968,14 +2968,21 @@ export default {
         position: absolute;
         a{
             display: block;
+            & .catalog-name:hover{
+              color:#409EFF;
+            }
         }
         .catalog-one{
             line-height: 38px;
-            font-weight: normal;
+            font-weight: 600;
             cursor: pointer;
             overflow:hidden;
             text-overflow:ellipsis;
             white-space:nowrap;
+            margin-top:12px;
+            .catalog-first{
+              margin-top: 0px;
+            }
         }
         .catalog-two{
             line-height: 38px;

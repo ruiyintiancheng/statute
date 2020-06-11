@@ -87,13 +87,17 @@ export default {
         return
       }
 
+      const path = this.$route.params.path ? this.$route.params.path : this.$route.path
       this.$router.push({
-        path: '/score',
+        name: 'score',
         query: {
           uploadFileId: this.uploadFileId,
           targetFileId: this.targetFileId,
           sourceFileName: this.sourceFileName,
           menuId: this.menuId
+        },
+        params: {
+          path
         }
       })
     },

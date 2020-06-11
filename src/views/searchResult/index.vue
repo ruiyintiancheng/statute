@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2019-12-24 20:48:17 
- * @Last Modified by: 1k
- * @Last Modified time: 2020-05-11 14:23:56
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-06-11 11:28:24
  * @Description:  查询列表
  */
 <template>
@@ -26,7 +26,7 @@
         <div class="data-bar"
              v-for="(item,index) in tabularData"
              :key="index">
-          <a @click="$router.push({name:'policy',query:{crawlConId:item.id}})"
+          <a @click="jumpPage(item.id)"
              style="color:#666">
             <h4>
               <span v-if="judgingBody(item.issueOrgText)"
@@ -101,6 +101,10 @@ export default {
     this.routingQuery()
   },
   methods: {
+    jumpPage(crawlConId) {
+      const path = this.$route.params.path ? this.$route.params.path : this.$route.path
+      this.$router.push({ name: 'policy', query: { crawlConId }, params: { path }})
+    },
     judgingBody(str) { // 判断标题发布机构是否有值
       if (str && str !== '') {
         if (str.indexOf('EA-') === -1) {
@@ -216,6 +220,7 @@ export default {
       // }
     },
     openChart(item, type) {
+      const path = this.$route.params.path ? this.$route.params.path : this.$route.path
       this.$router.push({
         name: 'relationChart',
         query: {
@@ -224,7 +229,8 @@ export default {
         },
         params: {
           modelAnalysis: item.modelAnalysis ? '1' : '0',
-          modelLifeCycle: item.modelLifeCycle ? '1' : '0'
+          modelLifeCycle: item.modelLifeCycle ? '1' : '0',
+          path: path
         }
       })
     },

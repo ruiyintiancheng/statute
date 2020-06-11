@@ -13,7 +13,8 @@ const app = {
     containHeight: null,
     appWidth: null,
     dialogHeight: null,
-    bgColor: '#304156' // 主题背景颜色
+    bgColor: '#304156', // 主题背景颜色
+    leftBarTitle: '军民融合'
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {
@@ -59,6 +60,9 @@ const app = {
     SET_BG_COLOR: (state, bgColor) => {
       bgColor = bgColor || '#304156'
       state.bgColor = bgColor
+    },
+    SET_LFTE_BAR_TITLE: (state, leftBarTitle) => {
+      state.leftBarTitle = leftBarTitle
     }
   },
   actions: {
@@ -84,6 +88,9 @@ const app = {
     },
     setBgColor({ commit }, bgColor) {
       commit('SET_BG_COLOR', bgColor)
+    },
+    setleftBarTitle({ commit }, leftBarTitle) {
+      commit('SET_LFTE_BAR_TITLE', leftBarTitle)
     }
   }
 }

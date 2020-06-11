@@ -3,7 +3,7 @@
   position: absolute;
   display: block;
   bottom: 40px;
-  right: -50px;
+  right: 0px;
   width: 50px;
   font-size: 14px;
   background-color: white;
@@ -30,7 +30,7 @@
   color:#409EFF;
 }
 
-.graph-web-toolbar > .graph-web-toolbar-switch > .el-icon-d-arrow-right{
+.graph-web-toolbar > .graph-web-toolbar-switch > .el-icon-d-arrow-left{
   display: none;
 }
 

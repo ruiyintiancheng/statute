@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2020-02-26 15:34:09 
- * @Last Modified by: lk
- * @Last Modified time: 2020-04-17 17:34:52
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-06-11 15:07:46
  * @Description:  采集任务
  */
 <template>
@@ -289,12 +289,14 @@ export default {
       })
     },
     addModel() {
-      this.$router.push({ name: 'taskOption' })
+      const path = this.$route.params.path ? this.$route.params.path : this.$route.path
+      this.$router.push({ name: 'taskOption', params: { path }})
     },
 
     // 修改表单
     updateOption(row) {
-      this.$router.push({ name: 'taskOption', query: { protId: row.protId }})
+      const path = this.$route.params.path ? this.$route.params.path : this.$route.path
+      this.$router.push({ name: 'taskOption', query: { protId: row.protId }, params: { path }})
     }
   }
 }

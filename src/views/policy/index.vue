@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2019-11-02 16:39:31 
- * @Last Modified by: lk
- * @Last Modified time: 2020-03-17 14:16:47
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-06-11 11:01:53
  * @Description:  政策文章
  */
 <template>
@@ -97,7 +97,7 @@ export default {
       let crawlConId = ''
       if (id) {
         crawlConId = id
-        this.$router.push({ name: 'policy', query: { crawlConId }})
+        this.$router.push({ name: 'policy', query: { 'crawlConId': crawlConId }})
       } else {
         crawlConId = this.$route.query.crawlConId
       }

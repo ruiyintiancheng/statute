@@ -1,20 +1,21 @@
 /*
  * @Author: lk 
  * @Date: 2020-02-26 14:37:59 
- * @Last Modified by: lk
- * @Last Modified time: 2020-03-11 17:12:48
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-06-11 16:43:11
  * @Description:  左菜单
  */
  <template>
-  <el-scrollbar wrapClass="scrollbar-wrapper no-text-select" :style="{backgroundColor:'#def5fb'}">
-    <el-menu
+  <el-scrollbar wrapClass="scrollbar-wrapper no-text-select" :style="{backgroundColor:'#081c3c'}">
+    <el-menu class="sidebar-menu"
            mode="vertical"
       :show-timeout="200"
       :default-active="$route.path"
-      background-color="#3164b7"
+      background-color="#081c3c"
       text-color="#fff"
-      active-text-color="#409EFF">
+      active-text-color="#0362fd">
 
+    <div class="sidebar-title">{{leftBarTitle}}</div>
       <sidebar-item :routes="permission_left_routers"></sidebar-item>
 
 
@@ -51,7 +52,8 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters([
-      'permission_left_routers'
+      'permission_left_routers',
+      'leftBarTitle'
     ]) },
   components: {
     SidebarItem
@@ -73,5 +75,21 @@ export default {
       }
     }
 }
-
+.sidebar-menu{
+  .sidebar-title{
+    height: 75px;
+    line-height: 75px;
+    font-weight: bold;
+    color:#fff;
+    font-size: 20px;
+    padding-left: 20px;
+  }
+  .el-submenu__title,.el-menu-item{
+    font-size: 16px;
+    &:hover{
+      background-color: #414242 !important;
+      color:#bbbbbb;
+    }
+  }
+}
 </style>

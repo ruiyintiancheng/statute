@@ -101,9 +101,9 @@ export default {
         })
         return
       }
-
+      const path = this.$route.params.path ? this.$route.params.path : this.$route.path
       this.$router.push({
-        path: '/selfCompare',
+        name: 'selfCompare',
         query: {
           uploadFileId: this.uploadFileId,
           targetFileId: this.targetFileId,
@@ -111,6 +111,9 @@ export default {
           sourceFileName: this.sourceFileName,
           targetFileName: this.targetFileName,
           menuId: this.menuId
+        },
+        params: {
+          path
         }
       })
     },
