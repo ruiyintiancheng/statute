@@ -8,7 +8,7 @@
 <template>
   <div :class="{navbar:true,'no-text-select':true,'currentColor':$route.name!=='home'}">
     <div class="base-container clearfix">
-      <div :class="{'logo':true, 'leftbar-logo':hasSideBar}">
+      <div :class="{'logo':true}">
         <a href="javascript:;">军地政策法规智能辅助系统</a>
       </div>
       <ul class="left-menu clearfix">
@@ -17,7 +17,7 @@
         </li>
         <!-- <li :class="{actived:$route.name==='statistics'}">
           <router-link to="/statistics">数据统计</router-link>
-        </li>
+        </li>, 'leftbar-logo':hasSideBar
         <li :class="{actived:$route.name==='search'}">
           <router-link to="/analysis">模型分析</router-link>
         </li>
