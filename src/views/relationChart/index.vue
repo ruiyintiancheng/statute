@@ -117,7 +117,8 @@ export default {
 }
 .mao-nav .active > a {
   color: #128bed;
-  border-bottom: 2px solid #128bed;
+  border-bottom: 4px solid #128bed;
+  padding-bottom: 5px;
 }
 .mao-nav .disabled > a {
   color: #C0C4CC;

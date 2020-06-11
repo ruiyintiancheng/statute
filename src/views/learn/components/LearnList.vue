@@ -15,7 +15,7 @@
               @click="jumpDetails(item.id)">
             <div class="item-frame">
               <div class="item-title">{{item.docTittle}}</div>
-              <div class="item-date">{{item.docIssueTime | timeFiltering}}</div>
+              <div class="item-date">{{(item.id === '1189'?'2020-05-28': item.docIssueTime) | timeFiltering}}</div>
               <div class="item-speaker">{{item.docType}}</div>
               <div class=" source"
                   style="font-size:12px">{{item.docSource}}</div>
