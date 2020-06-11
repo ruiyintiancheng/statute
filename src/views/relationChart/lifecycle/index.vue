@@ -61,6 +61,7 @@ import { baseRequest } from '@/api/base'
 import nodesTable from './components/nodesTable'
 import linksTable from './components/linksTable'
 import Chart from './components/chart/index.js'
+import { legend } from '@/views/relationChart/components/legend.js'
 import policy from '@/views/relationChart/components/policy'
 import * as d3 from 'd3'
 export default {
@@ -80,7 +81,7 @@ export default {
       return this.width
     },
     chart_height() {
-      return this.height - 40
+      return this.height - 50
     },
     table_height() {
       return this.height - 41
@@ -138,7 +139,12 @@ export default {
       graph.render()
 
       Chart.Brush.init(graph, 'brush')
-      Chart.legend(graph, 'legend')
+      legend({
+        container: '#legend',
+        width: this.chart_width,
+        height: 50,
+        background: '#ffffff'
+      })
       this.$nextTick(() => {
         graph.translateCenter()
       })

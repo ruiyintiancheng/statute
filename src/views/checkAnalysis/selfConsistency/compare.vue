@@ -65,7 +65,7 @@
               </div>
             </div>
             <div id="compare_score" class="compare_score" v-show="score_show"
-              :style="{left: `${textWidth + 10}px`, top: `${score_top}px`}">
+              :style="{left: `${textWidth + 40}px`, top: `${score_top}px`}">
                 相似度评分: {{score_text}}
             </div>
         </div>
@@ -128,7 +128,7 @@ export default {
       targetResult: [],
       scrollStop: false,
 
-      currentNode: null,
+      isCurrent: false,
       score_show: false,
       score_text: 0,
       score_top: 0
@@ -244,7 +244,8 @@ export default {
         const targetArray = []
         const sourceSet = new Set()
         const targetSet = new Set()
-        checkResult.forEach(d => {
+        checkResult.forEach((d, i) => {
+          d.index = i
           d.sourceId = `source${d.OUT_SOURCE_START}-${d.OUT_SOURCE_END}`
           d.targetId = `target${d.OUT_TARGET_START}-${d.OUT_TARGET_END}`
 
@@ -301,6 +302,13 @@ export default {
           // this.initRightChart()
           this.initMiddleChart()
           this.initNodeChart()
+
+          this.checkResult.forEach(d => {
+            const docSource = document.querySelector(`#${d.sourceId}`)
+            docSource.addEventListener('click', () => {
+              this.clickSourceDiv(d)
+            }, false)
+          })
         })
       }, _ => {
         this.mainLoading = false
@@ -312,57 +320,55 @@ export default {
         d.sourceDiv = docSource
         d.source_offsetTop = docSource.offsetTop
         docSource.style.color = '#037efb'
-        // docSource.style.border = '1px solid'
 
         const docTarget = document.querySelector(`#${d.targetId}`)
         d.targetDiv = docTarget
         d.target_offsetTop = docTarget.offsetTop
         docTarget.style.color = '#037efb'
-        // docTarget.style.border = '1px solid'
       })
     },
     // 左侧上传栏遮罩
-    initLeftChart() {
-      const width = document.querySelector('#compare_left_text').offsetWidth
-      const height = document.querySelector('#compare_left_text').scrollHeight
-      const svg = d3.select('#compare_left_chart').append('svg')
-        .attr('width', width)
-        .attr('height', height)
+    // initLeftChart() {
+    //   const width = document.querySelector('#compare_left_text').offsetWidth
+    //   const height = document.querySelector('#compare_left_text').scrollHeight
+    //   const svg = d3.select('#compare_left_chart').append('svg')
+    //     .attr('width', width)
+    //     .attr('height', height)
 
-      const g = svg.append('g')
-      const node = g.selectAll('g.node')
-        .data(this.checkResult, d => d.sourceId).enter()
-        .append('g').classed('node', true)
-      node.append('rect')
-        .attr('width', this.textWidth)
-        .attr('height', d => d.sourceDiv.offsetHeight)
-        .attr('x', 0)
-        .attr('y', d => d.sourceDiv.offsetTop)
-        .style('fill', 'gray')
-        .style('opacity', 0)
-    },
+    //   const g = svg.append('g')
+    //   const node = g.selectAll('g.node')
+    //     .data(this.checkResult, d => d.sourceId).enter()
+    //     .append('g').classed('node', true)
+    //   node.append('rect')
+    //     .attr('width', this.textWidth)
+    //     .attr('height', d => d.sourceDiv.offsetHeight)
+    //     .attr('x', 0)
+    //     .attr('y', d => d.sourceDiv.offsetTop)
+    //     .style('fill', 'gray')
+    //     .style('opacity', 0)
+    // },
     // 右侧目标栏遮罩
-    initRightChart() {
-      const width = document.querySelector('#compare_right_text').offsetWidth
-      const height = document.querySelector('#compare_right_text').scrollHeight
+    // initRightChart() {
+    //   const width = document.querySelector('#compare_right_text').offsetWidth
+    //   const height = document.querySelector('#compare_right_text').scrollHeight
 
-      const svg = d3.select('#compare_right_chart').append('svg')
-        .attr('width', width)
-        .attr('height', height)
+    //   const svg = d3.select('#compare_right_chart').append('svg')
+    //     .attr('width', width)
+    //     .attr('height', height)
 
-      const g = svg.append('g')
-      const node = g.selectAll('g.node')
-        .data(this.checkResult, d => d.targetId).enter()
-        .append('g').classed('node', true)
+    //   const g = svg.append('g')
+    //   const node = g.selectAll('g.node')
+    //     .data(this.checkResult, d => d.targetId).enter()
+    //     .append('g').classed('node', true)
 
-      node.append('rect')
-        .attr('width', this.textWidth)
-        .attr('height', d => d.targetDiv.offsetHeight)
-        .attr('x', 0)
-        .attr('y', d => d.targetDiv.offsetTop)
-        .style('fill', 'gray')
-        .style('opacity', 0)
-    },
+    //   node.append('rect')
+    //     .attr('width', this.textWidth)
+    //     .attr('height', d => d.targetDiv.offsetHeight)
+    //     .attr('x', 0)
+    //     .attr('y', d => d.targetDiv.offsetTop)
+    //     .style('fill', 'gray')
+    //     .style('opacity', 0)
+    // },
     // 中间遮罩
     initMiddleChart() {
       const width = document.querySelector('#compare_middle_chart').offsetWidth
@@ -379,19 +385,13 @@ export default {
         this.$refs.compare_right.scrollTop += scale
       })
         .on('click', _ => {
-          if (this.currentNode) {
-            this.currentNode.sourceDiv.style.color = '#037efb'
-            this.currentNode.sourceDiv.style.border = null
-            this.currentNode.targetDiv.style.color = '#037efb'
-            this.currentNode.targetDiv.style.border = null
+          if (this.isCurrent) {
+            this.defaultStyle()
             this.score_show = false
           }
         })
 
       const g = svg.append('g')
-
-      const scoreg = g.append('g').classed('score', true)
-      scoreg.append('text').attr('text-anchor', 'middle')
 
       const node = g.selectAll('g.node')
         .data(this.checkResult).enter()
@@ -408,34 +408,7 @@ export default {
         .on('click', d => {
           d3.event.preventDefault()
           d3.event.stopPropagation()
-          let scrollTop = d.sourceDiv.offsetTop
-          if (scrollTop > this.textHeight / 2) {
-            scrollTop -= this.textHeight / 4
-          }
-          const rightScrollTop = (d.targetDiv.offsetTop + d.targetDiv.offsetHeight / 2) -
-            (d.sourceDiv.offsetTop + d.sourceDiv.offsetHeight / 2 - scrollTop)
-
-          this.$refs.compare_left.scrollTop = scrollTop
-          this.$refs.compare_right.scrollTop = rightScrollTop
-          this.updateMiddleChart()
-
-          if (this.currentNode) {
-            this.currentNode.sourceDiv.style.color = '#037efb'
-            this.currentNode.sourceDiv.style.border = null
-            this.currentNode.targetDiv.style.color = '#037efb'
-            this.currentNode.targetDiv.style.border = null
-          }
-          this.currentNode = d
-
-          d.sourceDiv.style.color = 'red'
-          d.sourceDiv.style.border = '1px solid'
-          d.targetDiv.style.color = 'red'
-          d.targetDiv.style.border = '1px solid'
-
-          // 显示相似度评分
-          this.score_show = true
-          this.score_text = parseInt(d.SCORE * 100)
-          this.score_top = d.sourceDiv.offsetTop - scrollTop
+          this.clickPath(d)
         })
     },
     // 右侧缩略遮罩
@@ -489,6 +462,49 @@ export default {
            L${width},${d.targetDiv.offsetTop + d.targetDiv.offsetHeight / 2 - rightScrollTop}`
         })
     },
+    clickSourceDiv(d) {
+      this.defaultStyle()
+      d.sourceDiv.style.color = 'red'
+      d.sourceDiv.style.border = '1px solid'
+      this.isCurrent = true
+
+      const svg = d3.select('#compare_middle_chart').select('svg')
+      svg.select('g').selectAll('g.node')
+        .style('opacity', node => {
+          return node.sourceId === d.sourceId ? 1 : 0.1
+        })
+    },
+    clickPath(d) {
+      let scrollTop = d.sourceDiv.offsetTop
+      if (scrollTop > this.textHeight / 2) {
+        scrollTop -= this.textHeight / 4
+      }
+      const rightScrollTop = (d.targetDiv.offsetTop + d.targetDiv.offsetHeight / 2) -
+            (d.sourceDiv.offsetTop + d.sourceDiv.offsetHeight / 2 - scrollTop)
+
+      this.$refs.compare_left.scrollTop = scrollTop
+      this.$refs.compare_right.scrollTop = rightScrollTop
+      this.updateMiddleChart()
+
+      this.defaultStyle()
+      d.sourceDiv.style.color = 'red'
+      d.sourceDiv.style.border = '1px solid'
+      d.targetDiv.style.color = 'red'
+      d.targetDiv.style.border = '1px solid'
+
+      const svg = d3.select('#compare_middle_chart').select('svg')
+      svg.select('g').selectAll('g.node')
+        .style('opacity', node => node.index === d.index ? 1 : 0.2)
+        .select('path')
+        .style('stroke', node => node.index === d.index ? 'red' : '#037efb')
+
+      // 显示相似度评分
+      this.score_show = true
+      this.score_text = parseInt(d.SCORE * 100)
+      this.score_top = d.sourceDiv.offsetTop - scrollTop
+
+      this.isCurrent = true
+    },
     handleScroll(type) {
       if (this.scrollStop) {
         console.log('stop')
@@ -508,6 +524,22 @@ export default {
 
       // console.log()
     },
+    // 恢复到初始样式
+    defaultStyle() {
+      this.checkResult.forEach(d => {
+        d.sourceDiv.style.color = '#037efb'
+        d.sourceDiv.style.border = null
+
+        d.targetDiv.style.color = '#037efb'
+        d.targetDiv.style.border = null
+      })
+
+      const svg = d3.select('#compare_middle_chart').select('svg')
+      svg.select('g').selectAll('g.node')
+        .style('opacity', 1)
+        .select('path')
+        .style('stroke', '#037efb')
+    },
     getLength(str) {
       var b = 0
       const l = str.length // 初始化字节数递加变量并获取字符串参数的字符个数
@@ -520,9 +552,8 @@ export default {
           }
         }
         return b // 返回字节数
-      } else {
-        return 0 // 如果参数为空，则返回0个
       }
+      return 0 // 如果参数为空，则返回0个
     }
   }
 }
