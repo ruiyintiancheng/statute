@@ -99,7 +99,7 @@ export function handleData(data, id) {
           }
           // 2. 修订剔除 doc_type
           if (flag) {
-            flag = flag && isRevise(link)
+            flag = flag && !isRevise(link)
           }
           // 3. 通知、解读、批复类的附加 doc_type
           if (isDocType(link)) {

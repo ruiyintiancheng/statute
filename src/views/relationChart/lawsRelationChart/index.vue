@@ -133,7 +133,7 @@ export default {
         })
         handleData(response.data.item, this.id)
         this.chart_data = response.data.item
-        console.log(this.chart_data)
+
         this.init(this.chart_data)
         this.chartLoading = false
       }, _ => {
