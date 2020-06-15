@@ -52,7 +52,7 @@
         <el-button @click="policyVisible = false">关闭</el-button>
       </div>
     </el-dialog>
-    <nodes-table ref="nodesTable" @moveNode='moveNode'></nodes-table>
+    <nodes-table ref="nodesTable" :id=id @moveNode='moveNode'></nodes-table>
     <links-table ref="linksTable"></links-table>
     <relation ref="relation" @selRelation="selRelation"></relation>
     
@@ -61,7 +61,7 @@
 
 <script>
 import { baseRequest } from '@/api/base'
-import nodesTable from './components/nodesTable'
+import nodesTable from '@/views/relationChart/components/nodesTable'
 import linksTable from './components/linksTable'
 import relation from '../components/relation'
 import { legend } from '@/views/relationChart/components/legend.js'
