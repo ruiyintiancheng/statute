@@ -8,16 +8,16 @@
 <template>
   <div :class="{navbar:true,'no-text-select':true,'currentColor':$route.name!=='home'}">
     <div class="base-container clearfix">
-      <div :class="{'logo':true}">
+      <div :class="{'logo':true,'leftbar-logo':hasSideBar}">
         <a href="javascript:;">军地政策法规智能辅助系统</a>
       </div>
-      <ul class="left-menu clearfix">
+      <ul :class="{'left-menu':true,clearfix,'leftbar-menu':hasSideBar}">
         <li :class="{actived:$route.name==='home'}">
           <router-link to="/">首页</router-link>
         </li>
         <!-- <li :class="{actived:$route.name==='statistics'}">
           <router-link to="/statistics">数据统计</router-link>
-        </li>, 'leftbar-logo':hasSideBar
+        </li>, 
         <li :class="{actived:$route.name==='search'}">
           <router-link to="/analysis">模型分析</router-link>
         </li>
@@ -265,13 +265,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@media (max-width: 1910px) {
-  .navbar{
-    .leftbar-logo{
-      display: none;
-    }
-  }
-}
 .navbar {
   height: 70px;
   line-height: 70px;
@@ -295,6 +288,10 @@ export default {
     float: left;
     margin-left: 0px;
     margin-top: 23px;
+    &.leftbar-menu{
+      position:absolute;
+      left: 360px;
+    }
     li {
       margin-left: 10px;
       height: 27px;

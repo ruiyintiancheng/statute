@@ -336,7 +336,7 @@ export default {
     startTime() {
       const date = new Date()
       this.$nextTick(_ => {
-        this.screenData.date1 = date.getFullYear() + ''
+        this.screenData.date1 = (date.getFullYear() - 10) + ''
         this.screenData.date2 = date.getFullYear() + ''
       })
     },
