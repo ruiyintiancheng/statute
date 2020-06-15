@@ -11,7 +11,7 @@
       <div :class="{'logo':true,'leftbar-logo':hasSideBar}">
         <a href="javascript:;">军地政策法规智能辅助系统</a>
       </div>
-      <ul :class="{'left-menu':true,clearfix,'leftbar-menu':hasSideBar}">
+      <ul :class="{'left-menu':true, 'clearfix' : true,'leftbar-menu':hasSideBar}">
         <li :class="{actived:$route.name==='home'}">
           <router-link to="/">首页</router-link>
         </li>

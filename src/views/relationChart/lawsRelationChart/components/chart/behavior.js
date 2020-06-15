@@ -39,6 +39,16 @@ function animation(cfg, moveId) {
         })
     })
 }
+/** 剪枝 */
+function shear(cfg, isShear) {
+  if (isShear) {
+    cfg.g.selectAll('g.node').style('display', d => d.isShow ? null : 'none')
+    cfg.g.selectAll('g.link').style('display', d => d.isShow ? null : 'none')
+  } else {
+    cfg.g.selectAll('g.node').style('display', null)
+    cfg.g.selectAll('g.link').style('display', null)
+  }
+}
 
 const Behavior = {
   showAll(cfg) {
@@ -70,7 +80,8 @@ const Behavior = {
         return d.source._show && d.target._show ? 1 : 0.2
       })
   },
-  animation
+  animation,
+  shear
 }
 
 export default Behavior

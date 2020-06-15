@@ -10,6 +10,7 @@
     </div>
     <div class="graph-web-toolbar">
       <ul>
+        <li @click="handleShear"><div class="text">{{shear ? '剪枝' : '全部'}}</div></li>
         <li @click="relation"><div class="text">筛选</div></li>
         <li @click="openNodesTable"><div class="text">政策列表</div></li>
         <li @click="openLinksTable"><div class="text">关系列表</div></li>
@@ -64,9 +65,11 @@ import { baseRequest } from '@/api/base'
 import nodesTable from '@/views/relationChart/components/nodesTable'
 import linksTable from './components/linksTable'
 import relation from '../components/relation'
+import policy from '@/views/relationChart/components/policy'
 import { legend } from '@/views/relationChart/components/legend.js'
 import Chart from './components/chart/index.js'
-import policy from '@/views/relationChart/components/policy'
+import { handleData } from './components/data.js'
+
 import * as d3 from 'd3'
 export default {
   components: {
@@ -101,7 +104,8 @@ export default {
       chartLoading: true,
 
       policyVisible: false,
-      policyId: ''
+      policyId: '',
+      shear: true
     }
   },
   created() {
@@ -127,7 +131,9 @@ export default {
           d.source += ''
           d.target += ''
         })
+        handleData(response.data.item, this.id)
         this.chart_data = response.data.item
+        console.log(this.chart_data)
         this.init(this.chart_data)
         this.chartLoading = false
       }, _ => {
@@ -208,6 +214,10 @@ export default {
       if (this.graph) {
         this.graph.relation(options)
       }
+    },
+    handleShear() {
+      this.graph.shear(this.shear)
+      this.shear = !this.shear
     },
     /**
        * 打开筛选列表

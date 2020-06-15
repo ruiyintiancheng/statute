@@ -66,8 +66,21 @@ class Graph {
     this.set('g', g)
 
     // 添加箭头
-    svg.append('defs').append('marker')
+    const defs = svg.append('defs')
+    defs.append('marker')
       .attr('id', 'markerArrow')
+      .attr('markerWidth', 10)
+      .attr('markerHeight', 6)
+      .attr('refX', 3 + 16)
+      .attr('refY', 3)
+      .attr('orient', 'auto')
+      .attr('viewBox', '0 0 10 6')
+      .append('path')
+      .attr('d', 'M 0,0 L10,3 L0,6 L5,3 L0,0')
+      .style('fill', '#4fbaf4')
+
+    defs.append('marker')
+      .attr('id', 'markerArrow2')
       .attr('markerWidth', 10)
       .attr('markerHeight', 6)
       .attr('refX', 3 + 12)

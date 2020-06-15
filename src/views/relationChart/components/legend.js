@@ -14,7 +14,7 @@ export function legend(cfg) {
       { name: '定位法规', color: '#9EEA6A', translate: 'translate(295)' }
     ],
     links: [
-      { name: '被引用', color: '#02A7FD', translate: 'translate(379)' }
+      { name: '被引用', color: '#a0dbf9', translate: 'translate(379)' }
     ]
   }
 

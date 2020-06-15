@@ -125,7 +125,6 @@ const Links = {
       .attr('marker-end', 'url(#markerArrow)')
       .style('fill', 'none')
       .style('stroke', option.color)
-      .style('stroke-width', 2)
   },
   /**
    * 修改元素

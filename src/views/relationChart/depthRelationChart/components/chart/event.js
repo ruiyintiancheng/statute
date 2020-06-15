@@ -65,7 +65,9 @@ function zoome(cfg) {
         nodes.select('circle').attr('transform', d => `scale(${1 / k})`)
         nodes.selectAll('text').attr('transform', d => `scale(${1 / k})`)
 
-        links.selectAll('path').style('stroke-width', d => 2 / k)
+        links.selectAll('path')
+          .attr('marker-end', 'url(#markerArrow2)')
+          .style('stroke-width', d => 2 / k)
       }
 
       // 隐藏文字
