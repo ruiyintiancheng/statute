@@ -92,21 +92,21 @@ export function handleData(data, id) {
         parent.get(d).forEach(link => {
           const key = link.source + '##' + link.target
           let flag = true
-          flag = !linkSet.has(key)
+          if (linkSet.has(key) || nodeSet.has()) {
+            linkSet.add(key)
+            flag = false
+          }
+
           // 1. 同类型判断docDomainType
           if (flag) {
             flag = flag && isDocDomainType(link)
           }
+
           // 2. 修订剔除 doc_type
           if (flag) {
             flag = flag && !isRevise(link)
           }
-          // 3. 通知、解读、批复类的附加 doc_type
-          if (isDocType(link)) {
-            nodeSet.add(link.source)
-            linkSet.add(key)
-            flag = false
-          }
+
           if (flag) {
             arr.push(link.source)
             linkSet.add(key)
@@ -116,6 +116,29 @@ export function handleData(data, id) {
     })
     nexts = arr
   }
+
+  // 附加通知公告
+  nexts = Array.from(nodeSet)
+  nexts.forEach(d => {
+    if (parent.has(d)) {
+      parent.get(d).forEach(link => {
+        const key = link.source + '##' + link.target
+        let flag = true
+        if (linkSet.has(key) || nodeSet.has()) {
+          linkSet.add(key)
+          flag = false
+        }
+        // 3. 通知、解读、批复类的附加 doc_type
+        if (flag) {
+          flag = flag && isDocType(link)
+        }
+        if (flag) {
+          nodeSet.add(link.source)
+          linkSet.add(key)
+        }
+      })
+    }
+  })
 
   nodes.forEach(d => {
     d.isShow = nodeSet.has(d.id)
