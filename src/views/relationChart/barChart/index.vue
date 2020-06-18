@@ -25,9 +25,9 @@
             <!-- <li v-show="toolbarShow" @click="clickToolbar"><div class="text no-text-select">收起</div></li> -->
           </ul>
         </div>
-        <div class="graph-web-tabpane" style="width: 300px">
-          <relation-pane ref="relation" v-show="activeName==='筛选'" :width="260" :height="toolbarHeight" @selRelation="selRelation"></relation-pane>
-          <explain-pane v-show="activeName==='帮助'" :width="260" :height="toolbarHeight"></explain-pane>
+        <div class="graph-web-tabpane" :style="{width: `${toolbarWidth}px`}">
+          <relation-pane ref="relation" v-show="activeName==='筛选'" :width="toolbarWidth" :height="toolbarHeight" @selRelation="selRelation"></relation-pane>
+          <explain-pane v-show="activeName==='帮助'" :width="toolbarWidth" :height="toolbarHeight"></explain-pane>
         </div>
       </div>
       
@@ -95,7 +95,7 @@ export default {
       toolbarShow: false,
       chart_width: 0,
       chart_height: 0,
-      toolbarWidth: 300,
+      toolbarWidth: 240,
       toolbarHeight: 0
     }
   },
@@ -112,7 +112,7 @@ export default {
     getSize() {
       this.chart_width = document.querySelector('.app-main').offsetWidth
       this.chart_height = document.querySelector('.app-main').offsetHeight - 50
-      this.toolbarHeight = document.querySelector('.app-main').offsetHeight
+      this.toolbarHeight = this.chart_height - 54
     },
     init() {
       this.graph = true
@@ -182,7 +182,7 @@ export default {
     /** 菜单折叠 */
     clickToolbar() {
       this.toolbarShow = !this.toolbarShow
-      this.$refs.toolbarSwitch.style.right = this.toolbarShow ? '300px' : 0
+      this.$refs.toolbarSwitch.style.right = this.toolbarShow ? this.toolbarWidth + 'px' : 0
     },
     /** 类型切换 */
     clickTypeSwitch() {
@@ -198,7 +198,7 @@ export default {
     display: block;
     top: 0;
     right: 0;
-    height: calc(100% - 30px);
+    height: calc(100% - 50px);
     font-size: 14px;
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
@@ -208,6 +208,7 @@ export default {
     display: block;
     top: 0;
     right: 0;
+    background-color: white;
     cursor: pointer;
   }
 
@@ -217,8 +218,9 @@ export default {
     height: 54px;
     font-size: 18px;
     text-align: center;
-    background-color: #26378b;
-    color: #ffffff;
+    // background-color: #26378b;
+    border: 1px solid #c0bfbf;
+    color: #253B8B;
     // transform: translateY(-50%);
     box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
   }
@@ -259,7 +261,8 @@ export default {
   .graph-web-tabpane {
     transition: width 0.75s;
     height: calc(100% - 55px);
-    overflow: hidden;
+    overflow-x: hidden; 
+    overflow-y: auto;
     padding:0 15px;
     color:#333333;
   }

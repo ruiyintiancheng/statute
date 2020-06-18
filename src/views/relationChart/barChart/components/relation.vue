@@ -2,7 +2,7 @@
  * 筛选列表
  */
 <template>
-<div >
+<div>
   <div class="oprate-item">
     <div class="check-group-label">政策层次:</div>
     <div class="check-group">
@@ -40,7 +40,7 @@
     </div>
   </div>
   <div class="clear-button">
-    <el-button size='small' @click="clear" style="width: 236px">清空</el-button>
+    <el-button size='small' @click="clear" style="width: 140px">清空</el-button>
   </div>
 </div>
 </template>
@@ -167,8 +167,9 @@ export default {
     font-weight: 600;
   }
   .clear-button{
-    margin-top:15px;
+    margin-top: 5px;
     text-align: center;
+    margin-bottom: 5px;
   }
   // .check-group {
     // margin-left: 35px;

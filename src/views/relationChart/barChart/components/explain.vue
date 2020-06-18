@@ -45,9 +45,8 @@ export default {
   padding: 15px 10px;
   color:#666;
   .explain-item{
-    padding: 10px 0;
     line-height: 30px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
   }
 }
