@@ -58,7 +58,7 @@ const Nodes = {
     const text = node.append('text')
       .attr('text-anchor', 'start')
       .style('user-select', 'none')
-      // .style('pointer-events', 'none')
+      .style('pointer-events', 'none')
       .style('fill', '#02A7FD')
 
     text.selectAll('tspan').data(circleText(option.name, option.time))

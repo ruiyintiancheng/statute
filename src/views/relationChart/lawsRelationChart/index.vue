@@ -10,7 +10,7 @@
     </div>
     <div class="graph-web-toolbar">
       <ul>
-        <li @click="handleShear"><div class="text">{{shear ? '剪枝' : '全部'}}</div></li>
+        <li @click="handleShear"><div class="text">{{shearState ? '全部' : '剪枝'}}</div></li>
         <li @click="relation"><div class="text">筛选</div></li>
         <li @click="openNodesTable"><div class="text">政策列表</div></li>
         <li @click="openLinksTable"><div class="text">关系列表</div></li>
@@ -105,7 +105,7 @@ export default {
 
       policyVisible: false,
       policyId: '',
-      shear: true
+      shearState: false
     }
   },
   created() {
@@ -198,14 +198,34 @@ export default {
        */
     openNodesTable() {
       const nodes = this.graph.get('data').nodes
-      this.$refs.nodesTable.openDialog(nodes)
+      const arr = []
+      nodes.forEach(d => {
+        if (this.shearState) {
+          if (d.isShow) {
+            arr.push(d)
+          }
+        } else {
+          arr.push(d)
+        }
+      })
+      this.$refs.nodesTable.openDialog(arr)
     },
     /**
        * 打开关系列表
        */
     openLinksTable() {
       const links = this.graph.get('data').links
-      this.$refs.linksTable.openDialog(links)
+      const arr = []
+      links.forEach(d => {
+        if (this.shearState) {
+          if (d.isShow) {
+            arr.push(d)
+          }
+        } else {
+          arr.push(d)
+        }
+      })
+      this.$refs.linksTable.openDialog(arr)
     },
     /**
        * 关系筛选
@@ -216,8 +236,8 @@ export default {
       }
     },
     handleShear() {
-      this.graph.shear(this.shear)
-      this.shear = !this.shear
+      this.shearState = !this.shearState
+      this.graph.shear(this.shearState)
     },
     /**
        * 打开筛选列表
