@@ -17,10 +17,10 @@
         <!-- <li @click="refresh"><div class="text">还原</div></li> -->
         <li @click="savePng"><div class="text">保存图片</div></li>
       </ul>
-      <div class="graph-web-toolbar-switch" ref="toolbarSwitch" @click="$emit('switchHandle',$refs.toolbarSwitch)">
+      <!-- <div class="graph-web-toolbar-switch" ref="toolbarSwitch" @click="$emit('switchHandle',$refs.toolbarSwitch)">
         <i class="el-icon-d-arrow-left"></i>
         <i class="el-icon-d-arrow-right"></i>
-      </div>
+      </div> -->
     </div>
     <!-- 鼠标悬浮提示框 -->
     <div id="title" class="title">

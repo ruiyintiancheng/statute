@@ -49,7 +49,7 @@
                     :style="{backgroundImage:'url('+cutter+')',cursor:'pointer'}"></i>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item disabled >{{name}}</el-dropdown-item>
-                    <el-dropdown-item command="update" divided>修改用户信息</el-dropdown-item>
+                    <el-dropdown-item command="update">修改用户信息</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
 
@@ -358,7 +358,7 @@ export default {
           left: -30px;
           width: 26px;
           height: 26px;
-          background-position: 55px 300px;
+          background-position: 55px 210px;
         }
       }
     }
