@@ -28,7 +28,7 @@ export function legends(cfg) {
   const height = cfg.height || 30
   // 背景颜色
   const background = cfg.background || '#ffffff'
-  const g = d3.select(container)
+  const svg = d3.select(container)
     .style('width', width + 'px')
     .style('height', height + 'px')
     .append('svg')
@@ -36,7 +36,7 @@ export function legends(cfg) {
     .attr('height', '100%')
     .style('margin-bottom', '-3px')
     .style('background-color', background)
-    .append('g')
+  const g = svg.append('g')
     .style('font-size', '14px')
 
   // add Node
@@ -54,18 +54,18 @@ export function legends(cfg) {
     .text(d => d.name)
 
   // add Link
-  const linkg = g.selectAll('g.link').data(data.links).enter()
-    .append('g')
-    .classed('link', true)
+  // const linkg = g.selectAll('g.link').data(data.links).enter()
+  //   .append('g')
+  //   .classed('link', true)
 
-  linkg.append('path')
-    .attr('d', 'M 0,8 L10,8 L10,-8 L0,-8 Z')
-    .style('fill', d => d.color)
+  // linkg.append('path')
+  //   .attr('d', 'M 0,8 L10,8 L10,-8 L0,-8 Z')
+  //   .style('fill', d => d.color)
 
-  linkg.append('text')
-    .attr('dx', 25)
-    .attr('dy', 4)
-    .text(d => d.name)
+  // linkg.append('text')
+  //   .attr('dx', 25)
+  //   .attr('dy', 4)
+  //   .text(d => d.name)
 
   // 位置自适应
   let dx = 6
@@ -74,12 +74,17 @@ export function legends(cfg) {
       d3.select(this).attr('transform', `translate(${dx})`)
       dx += d3.select(this).node().getBBox().width + 10
     })
-  dx += 20
-  g.selectAll('g.link')
-    .each(function() {
-      d3.select(this).attr('transform', `translate(${dx})`)
-      dx += d3.select(this).node().getBBox().width + 10
-    })
+
+  g.append('text')
+    .attr('dy', 4)
+    .text('说明：深色为其它，浅色为新任务')
+    .attr('transform', `translate(${dx + 100})`)
+  // dx += 20
+  // g.selectAll('g.link')
+  //   .each(function() {
+  //     d3.select(this).attr('transform', `translate(${dx})`)
+  //     dx += d3.select(this).node().getBBox().width + 10
+  //   })
 
   // 居中显示
   const gWidth = g.node().getBBox().width

@@ -10,7 +10,10 @@
         <div ref="legend"></div>
       </div>
       <!-- 展开按钮 -->
-      <div class="graph-toolbar-open" v-show="!toolbarShow" @click="clickToolbar"><div class="text no-text-select">展开</div></div>
+      <div class="graph-toolbar-open" ref="toolbarSwitch" @click="clickToolbar">
+        <div v-show="!toolbarShow" class="graph-web-toolbar-switch"><i class="el-icon-d-arrow-left"></i></div>
+        <div v-show="toolbarShow" class="graph-web-toolbar-switch"><i class="el-icon-d-arrow-right"></i></div>
+      </div>
       <!-- 选项菜单 -->
       <div class="graph-toolbar" v-show="toolbarShow">
         <div class="graph-web-toolbar">
@@ -19,26 +22,17 @@
             <li :class="activeName === '帮助'? 'active' : null " @click="activeName='帮助'"><div class="text  no-text-select">帮助</div></li>
             <!-- <li :class="activeName === '政策列表'? 'active' : null " @click="clickInfo"><div class="text">政策列表</div></li> -->
             <!-- <li @click="clickTypeSwitch"><div class="text  no-text-select">切换年/月</div></li> -->
-            <li v-show="toolbarShow" @click="clickToolbar"><div class="text no-text-select">收起</div></li>
+            <!-- <li v-show="toolbarShow" @click="clickToolbar"><div class="text no-text-select">收起</div></li> -->
           </ul>
         </div>
-        <!-- v-show="toolbarShow" -->
-        <div class="graph-web-tabpane" :style="{'width': `${toolbarWidth}px`}">
-          <!-- <el-tabs v-model="activeName">
-            <el-tab-pane name="筛选"> -->
-              <relation-pane ref="relation" v-show="activeName==='筛选'" :width="260" :height="toolbarHeight" @selRelation="selRelation"></relation-pane>
-            <!-- </el-tab-pane> -->
-              <explain-pane v-show="activeName==='帮助'" :width="260" :height="toolbarHeight"></explain-pane>
-            <!-- </el-tab-pane>
-            <el-tab-pane name="政策列表">
-              <info-pane ref="infoPane" :width="260" :height="toolbarHeight"></info-pane>
-            </el-tab-pane>
-          </el-tabs> -->
+        <div class="graph-web-tabpane" style="width: 300px">
+          <relation-pane ref="relation" v-show="activeName==='筛选'" :width="260" :height="toolbarHeight" @selRelation="selRelation"></relation-pane>
+          <explain-pane v-show="activeName==='帮助'" :width="260" :height="toolbarHeight"></explain-pane>
         </div>
       </div>
       
       <!-- 鼠标悬浮提示框 -->
-      <div id="title" class="title">
+      <div id="title" ref="title" class="title">
         <div style="min-height: 17px;">
           <div class='title-head'>发布时间: </div>
           <div class="title-content"></div>
@@ -160,10 +154,16 @@ export default {
         return
       }
       title.style('display', 'block')
-        .style('left', `${d.x + 10}px`)
-        .style('top', `${d.y + 10}px`)
         .selectAll('div.title-content').data([d.year, d.newSituaTask, d.other])
         .text(text => text || '')
+
+      const titleWidth = this.$refs.title.offsetWidth
+      const titleHeight = this.$refs.title.offsetHeight
+      d.x = d.x + 10 + titleWidth > this.chart_width ? d.x - 10 - titleWidth : d.x + 10
+      d.y = d.y + 10 + titleHeight > this.chart_height ? d.y - 10 - titleHeight : d.y + 10
+
+      title.style('left', `${d.x}px`)
+        .style('top', `${d.y}px`)
     },
     /** 关系筛选 */
     selRelation(options) {
@@ -182,7 +182,7 @@ export default {
     /** 菜单折叠 */
     clickToolbar() {
       this.toolbarShow = !this.toolbarShow
-      // this.toolbarWidth = this.toolbarShow ? 300 : 0
+      this.$refs.toolbarSwitch.style.right = this.toolbarShow ? '300px' : 0
     },
     /** 类型切换 */
     clickTypeSwitch() {
@@ -208,17 +208,20 @@ export default {
     display: block;
     top: 0;
     right: 0;
-    font-size: 12px;
-    background-color: #26378b;
-    height: 54px;
-    line-height: 54px;
-    color:#fff;
-    padding:0 20px;
     cursor: pointer;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;    
   }
-  
 
+  .graph-toolbar-open > .graph-web-toolbar-switch {
+    line-height: 54px;
+    width: 28px;
+    height: 54px;
+    font-size: 18px;
+    text-align: center;
+    background-color: #26378b;
+    color: #ffffff;
+    // transform: translateY(-50%);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+  }
   .graph-web-toolbar {
     cursor: pointer;
     background-color: #26378b;
