@@ -1,8 +1,8 @@
 /*
  * @Author: wk 
  * @Date: 2020-05-29 10:39:20 
- * @Last Modified by: wk
- * @Last Modified time: 2020-06-02 17:42:20
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-07-14 11:57:45
  * @Description:  模型管理
  */
 <template>
@@ -47,7 +47,28 @@
       </div>
     </div>
     <div class="lm-content">
-      <div class="demo-input-size conter-view">
+      <div class="demo-input-size conter-view" v-if="nameType === 2">
+        <span>综合占比 =</span>
+        <span>操作性占比(k)</span>
+        <span class="xing">*</span>
+        <el-input placeholder=""
+                  style="width:140px"
+                  @change="coefficientChange($event,1,0,'操作性占比')"
+                  v-model="seachData.k"
+                  size="small"
+                  clearable>
+        </el-input>
+        <span>+ 时效性占比(h)</span>
+        <span class="xing">*</span>
+        <el-input placeholder=""
+                  style="width:140px"
+                  @change="coefficientChange($event,1,0,'时效性占比')"
+                  v-model="seachData.h"
+                  size="small"
+                  clearable>
+        </el-input>
+      </div>
+      <div class="demo-input-size conter-view" v-else>
         <span>综合分值 =</span>
         <span>系统分值(s)</span>
         <span class="xing">*</span>
@@ -128,6 +149,7 @@ export default {
   name: 'modelManagement',
   data() {
     return {
+      nameType: '',
       defaultProps: {
         children: 'children',
         label: 'formulaName'
@@ -158,7 +180,9 @@ export default {
       seachData: {
         s: '',
         m: '',
-        x: ''
+        x: '',
+        k: '',
+        h: ''
       }
     }
   },
@@ -231,11 +255,25 @@ export default {
             return
           }
         }
+        if (this.seachData.k) {
+          if (this.seachData.k < 0 || this.seachData.k > 1) {
+            this.$Message.warning('操作性占比在0~1之间')
+            return
+          }
+        }
+        if (this.seachData.h) {
+          if (this.seachData.h < 0 || this.seachData.h > 1) {
+            this.$Message.warning('时效性占比在0~1之间')
+            return
+          }
+        }
         const params = this.seachData
         params.id = this.activeIndex
         params.s = this.seachData.s ? this.seachData.s : ''
         params.m = this.seachData.m ? this.seachData.m : ''
         params.x = this.seachData.x ? this.seachData.x : ''
+        params.k = this.seachData.k ? this.seachData.k : ''
+        params.h = this.seachData.h ? this.seachData.h : ''
         baseRequest('/formula/update', params).then(response => {
           this.$Message.success('操作成功')
           this.searchOption()
@@ -301,6 +339,7 @@ export default {
     },
     menuchange(val) {
       this.activeIndex = parseInt(val.id)
+      this.nameType = val.formulaType
       baseRequest('/formula/select', { id: this.activeIndex }).then(response => {
         this.seachData = response.data.item ? response.data.item : { m: '', x: '', s: '' }
       })
