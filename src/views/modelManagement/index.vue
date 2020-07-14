@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2020-05-29 10:39:20 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-07-14 11:57:45
+ * @Last Modified time: 2020-07-14 13:45:44
  * @Description:  模型管理
  */
 <template>
@@ -204,7 +204,7 @@ export default {
           this.treeData = response.data.item
           if (this.activeIndex) {
             baseRequest('/formula/select', { id: this.activeIndex }).then(response => {
-              this.seachData = response.data.item ? response.data.item : { m: '', x: '', s: '' }
+              this.seachData = response.data.item ? response.data.item : { m: '', x: '', s: '', k: '', h: '' }
             })
           }
 
