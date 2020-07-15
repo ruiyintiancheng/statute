@@ -54,7 +54,7 @@
         <el-input placeholder=""
                   style="width:140px"
                   @change="coefficientChange($event,1,0,'操作性占比')"
-                  v-model="seachData.k"
+                  v-model="seachData.s"
                   size="small"
                   clearable>
         </el-input>
@@ -63,7 +63,7 @@
         <el-input placeholder=""
                   style="width:140px"
                   @change="coefficientChange($event,1,0,'时效性占比')"
-                  v-model="seachData.h"
+                  v-model="seachData.m"
                   size="small"
                   clearable>
         </el-input>
@@ -180,9 +180,7 @@ export default {
       seachData: {
         s: '',
         m: '',
-        x: '',
-        k: '',
-        h: ''
+        x: ''
       }
     }
   },
@@ -241,39 +239,35 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        const sum = this.seachData.s * 1 + this.seachData.m * 1
-        const py = this.seachData.x * 1
-        if (this.seachData.s || this.seachData.m) {
-          if (sum > 1) {
+        // 草案评估
+        if (this.nameType === 2) {
+          if (this.seachData.s && (this.seachData.s < 0 || this.seachData.s > 1)) {
+            this.$Message.warning('操作性占比在0~1之间')
+            return
+          }
+          if (this.seachData.m && (this.seachData.m < 0 || this.seachData.m > 1)) {
+            this.$Message.warning('时效性占比在0~1之间')
+            return
+          }
+        } else { // 自洽性分析 可操作分析
+          const sum = this.seachData.s * 1 + this.seachData.m * 1
+          const py = this.seachData.x * 1
+          if ((this.seachData.s || this.seachData.m) && sum > 1) {
             this.$Message.warning('系统系数+人工系数总和不能大于1')
             return
           }
-        }
-        if (this.seachData.x) {
-          if (py < -100 || py > 100) {
+          if (this.seachData.x && (py < -100 || py > 100)) {
             this.$Message.warning('偏移量在-100~100之间')
             return
           }
         }
-        if (this.seachData.k) {
-          if (this.seachData.k < 0 || this.seachData.k > 1) {
-            this.$Message.warning('操作性占比在0~1之间')
-            return
-          }
-        }
-        if (this.seachData.h) {
-          if (this.seachData.h < 0 || this.seachData.h > 1) {
-            this.$Message.warning('时效性占比在0~1之间')
-            return
-          }
-        }
+
         const params = this.seachData
         params.id = this.activeIndex
         params.s = this.seachData.s ? this.seachData.s : ''
         params.m = this.seachData.m ? this.seachData.m : ''
         params.x = this.seachData.x ? this.seachData.x : ''
-        params.k = this.seachData.k ? this.seachData.k : ''
-        params.h = this.seachData.h ? this.seachData.h : ''
+
         baseRequest('/formula/update', params).then(response => {
           this.$Message.success('操作成功')
           this.searchOption()

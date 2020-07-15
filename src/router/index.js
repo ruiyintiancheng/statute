@@ -205,17 +205,43 @@ export const constantRouterMap = [
     path: '/',
     component: Layout,
     children: [
-      {
+      { // 自洽性性分析
         name: 'selfCheck',
         path: '/selfCheck',
         component: _import('checkAnalysis/selfConsistency/index'),
         meta: { type: '2' }
       },
-      {
+      { // 可操作分析
         name: 'selfCompare',
         path: '/selfCompare',
         component: _import('checkAnalysis/selfConsistency/compare'),
         meta: { type: '2' }
+      },
+      { // 草案评估
+        name: 'draft-index',
+        path: '/draft-index',
+        component: _import('checkAnalysis/draftEvaluation/draft'),
+        meta: { type: '2' },
+        children: [
+          {
+            name: 'draft-body1',
+            path: '/draft-body1',
+            component: _import('checkAnalysis/draftEvaluation/body1'),
+            meta: { type: '2' }
+          },
+          {
+            name: 'draft-body2',
+            path: '/draft-body2',
+            component: _import('checkAnalysis/draftEvaluation/body2'),
+            meta: { type: '2' }
+          },
+          {
+            name: 'draft-body3',
+            path: '/draft-body3',
+            component: _import('checkAnalysis/draftEvaluation/body3'),
+            meta: { type: '2' }
+          }
+        ]
       }
       // {
       //   name: 'selfSearch',
