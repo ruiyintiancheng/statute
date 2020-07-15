@@ -100,7 +100,7 @@
             <!-- <el-table-column  prop="fuseField" label="军民让融合领域" align="center" width="200"></el-table-column> -->
             <el-table-column width="130" label="发布日期" align="center"> 
               <template slot-scope="scope">
-                <span>{{dateFormat('yyyy-MM-dd', new Date(scope.row.docIssueTime))}}</span>
+                <span>{{dateFormat('yyyy-MM-dd', scope.row.docIssueTime)}}</span>
               </template>
             </el-table-column>
             <el-table-column width="200" label="操作" align="center" fixed="right"> 
@@ -259,7 +259,12 @@ export default {
       this.pageNo = val
       this.searchOption(true)
     },
-    dateFormat(fmt, date) {
+    dateFormat(fmt, time) {
+      if (time === null) {
+        return ''
+      }
+      const date = new Date(time)
+
       let ret
       const opt = {
         'y+': date.getFullYear().toString(), // 年
