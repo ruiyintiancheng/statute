@@ -211,7 +211,7 @@
           <el-option v-for="(text,item) in DOC_TIMELINESS"
                      :key="item"
                      :label="text"
-                     :value="item"></el-option>
+                     :value="text"></el-option>
 
         </el-select>
       </el-form-item>
@@ -481,7 +481,7 @@ export default {
     searchOperate() { // 高级搜索的搜索
       // const params = Object.assign(this.updateFormData, { content: this.dataValue })
       const params = {}
-      params.Dispatch = this.Dispatch
+      // params.Dispatch = this.Dispatch
       params.docTittle = this.dataValue
       params.endTime = this.updateFormData.endTime
       params.docEffEndTime = this.updateFormData.docEffEndTime
@@ -490,12 +490,12 @@ export default {
       params.docEffStartTime = this.updateFormData.docEffStartTime
       params.docAnnulStartTime = this.updateFormData.docAnnulStartTime
       // params.orderby = this.updateFormData.orderby
-      params.issueOrgText = this.updateFormData.issueOrgText.join('|')
-      params.docUseBroad = this.updateFormData.docUseBroad.join('|')
-      params.docType = this.updateFormData.docType.join('|')
-      params.docTimeliness = this.updateFormData.docTimeliness
-      params.fuseField = this.updateFormData.fuseField.join('|')
-      params.docSys = this.updateFormData.docSys.join('|')
+      params.issueOrgText = this.updateFormData.issueOrgText.filter(item => item !== '全部').join('|')
+      params.docUseBroad = this.updateFormData.docUseBroad.filter(item => item !== '全部').join('|')
+      params.docType = this.updateFormData.docType.filter(item => item !== '全部').join('|')
+      params.docTimeliness = this.updateFormData.docTimeliness.filter(item => item !== '全部').join('|')
+      params.fuseField = this.updateFormData.fuseField.filter(item => item !== '全部').join('|')
+      params.docSys = this.updateFormData.docSys.filter(item => item !== '全部').join('|')
       this.$emit('searchOperate', params)
       this.seniorForm = false
       this.generalSearch = true

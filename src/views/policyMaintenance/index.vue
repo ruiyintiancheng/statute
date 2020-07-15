@@ -32,10 +32,10 @@
             <el-button icon="el-icon-plus"
                        @click="addParent"
                        plain>新增</el-button>
-            <el-button icon="el-icon-refresh"
+            <!-- <el-button icon="el-icon-refresh"
                        plain
                        @click="openFullScreen"
-                       type="info">同步运算</el-button>
+                       type="info">同步运算</el-button> -->
             <el-upload ref="upload"
                        action="/bDocBasic/upload"
                        style="display:inline-block;margin:0 5px; position: relative;"
@@ -68,60 +68,40 @@
         </div> -->
       </div>
       <div>
-        <el-table :data="data"
+        <el-table :data="tabledata"
                   v-show="tableToggle"
                   border
                   :height="tableHeight">
           <el-table-column label="政策法规名称"
                            align="center"
+                           show-overflow-tooltip
                            min-width="200">
-            <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docName"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docName|written}}</div>
-              </el-tooltip>
+            <template slot-scope="scope" >
+               {{scope.row.docName}}
             </template>
           </el-table-column>
           <el-table-column label="政策法规文号"
                            align="center"
+                           show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docNum"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docNum|written}}</div>
-              </el-tooltip>
+                {{scope.row.docNum}}
             </template>
           </el-table-column>
           <el-table-column label="政策原文名称"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docTittle"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docTittle|written}}</div>
-              </el-tooltip>
+               {{scope.row.docTittle}}
             </template>
           </el-table-column>
           <el-table-column label="政策原文名称"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docPositioning"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docPositioning|written}}</div>
-              </el-tooltip>
+             {{scope.row.docPositioning}}
             </template>
           </el-table-column>
           <el-table-column label="发布时间"
@@ -144,288 +124,184 @@
           </el-table-column>
           <el-table-column label="发布单位类型"
                            align="center"
+                             show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.issueOrgType"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.issueOrgType|written}}</div>
-              </el-tooltip>
+               {{scope.row.issueOrgType}}
+             
             </template>
           </el-table-column>
           <el-table-column label="发布单位名称"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.issueOrgText"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.issueOrgText|written}}</div>
-              </el-tooltip>
+             
+               {{scope.row.issueOrgText}}
+            
             </template>
           </el-table-column>
           <el-table-column label="发文方式"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.issueType"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.issueType|written}}</div>
-              </el-tooltip>
+             
+               {{scope.row.issueType}}
             </template>
           </el-table-column>
           <el-table-column label="适用范围"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docUseBroad"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docUseBroad|written}}</div>
-              </el-tooltip>
+           
+                {{scope.row.docUseBroad}}
             </template>
           </el-table-column>
           <el-table-column label="适用范围描述"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docUseBroadText"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docUseBroadText|written}}</div>
-              </el-tooltip>
+            
+                {{scope.row.docUseBroadText}}
             </template>
           </el-table-column>
           <el-table-column label="密级"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docSecretClass"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docSecretClass|written}}</div>
-              </el-tooltip>
+                 {{scope.row.docSecretClass}}
             </template>
           </el-table-column>
           <el-table-column label="内容体系"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docContentSys"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docContentSys|written}}</div>
-              </el-tooltip>
+               {{scope.row.docContentSys}}
             </template>
           </el-table-column>
           <el-table-column label="文章类型"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docType"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docType|written}}</div>
-              </el-tooltip>
+                {{scope.row.docType}}
             </template>
           </el-table-column>
           <el-table-column label="领域类型"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docDomainType"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docDomainType|written}}</div>
-              </el-tooltip>
+                 {{scope.row.docDomainType}}
             </template>
           </el-table-column>
           <el-table-column label="军民融合相关度"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.about"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.about|written}}</div>
-              </el-tooltip>
+                {{scope.row.about}}
             </template>
           </el-table-column>
           <el-table-column label="可操作性"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docOperability"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docOperability|written}}</div>
-              </el-tooltip>
+                 {{scope.row.docOperability}}
             </template>
           </el-table-column>
           <el-table-column label="评估重点"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docFocalPoint"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docFocalPoint|written}}</div>
-              </el-tooltip>
+               {{scope.row.docFocalPoint}}
             </template>
           </el-table-column>
           <el-table-column label="来源网站"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docSource"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docSource|written}}</div>
-              </el-tooltip>
+                {{scope.row.docSource}}
             </template>
           </el-table-column>
           <el-table-column label="链接地址"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docUri"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docUri|written}}</div>
-              </el-tooltip>
+                {{scope.row.docUri}}
             </template>
           </el-table-column>
           <el-table-column label="文件路径"
                            align="center"
+                           show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docFile"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docFile|written}}</div>
-              </el-tooltip>
+              {{scope.row.docFile}}
             </template>
           </el-table-column>
           <el-table-column label="关联法规名称"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.fDocTittle"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.fDocTittle|written}}</div>
-              </el-tooltip>
+                {{scope.row.fDocTittle}}
             </template>
           </el-table-column>
           <el-table-column label="关联法规文号"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.fDocNum"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.fDocNum|written}}</div>
-              </el-tooltip>
+               {{scope.row.fDocNum}}
             </template>
           </el-table-column>
           <el-table-column label="军民融合条款摘录"
+                        show-overflow-tooltip
                            align="center"
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docSummary"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docSummary|written}}</div>
-              </el-tooltip>
+                 {{scope.row.docSummary}}
             </template>
           </el-table-column>
           <el-table-column label="关键词"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docKeyWord"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docKeyWord|written}}</div>
-              </el-tooltip>
+               {{scope.row.docKeyWord}}
             </template>
           </el-table-column>
           <el-table-column label="政策体系"
                            align="center"
+                            show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.docSys"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.docSys|written}}</div>
-              </el-tooltip>
+                 {{scope.row.docSys}}
             </template>
           </el-table-column>
           <el-table-column label="军民融合领域"
                            align="center"
+                           show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.fuseField"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.fuseField|written}}</div>
-              </el-tooltip>
+                {{scope.row.fuseField}}
             </template>
           </el-table-column>
           <el-table-column label="是否属于新形式新任务"
                            align="center"
+                           show-overflow-tooltip
                            min-width="200">
             <template slot-scope="scope">
-              <el-tooltip :content="scope.row.newSituaTask"
-                          popper-class="select-down"
-                          :popper-append-to-body="false"
-                          placement="top"
-                          effect="light">
-                <div> {{scope.row.newSituaTask|written}}</div>
-              </el-tooltip>
+                {{scope.row.newSituaTask}}
             </template>
           </el-table-column>
 
@@ -481,7 +357,6 @@ import Search from './components/searchPolicy'
 import addModification from './components/addModification'
 // const url = '/confProtInfo/selects'
 export default {
-  name: 'task',
   components: {
     Search,
     addModification
@@ -490,7 +365,6 @@ export default {
     return {
       searchParam: {},
       fileList: [], // 上传文件列表
-
       pageNo: 1,
       total: null,
       pageSize: 15,
@@ -498,7 +372,7 @@ export default {
       // tableHeight: 0,
       searchToggle: true,
       tableToggle: true,
-      data: [],
+      tabledata: null,
       cjVisible: false,
       dlVisible: false,
       currentProtId: null
@@ -520,11 +394,11 @@ export default {
   },
   filters: {
     written(val) {
-      if (val.length > 18) {
-        return val.substr(0, 18) + '...'
-      } else {
-        return val
-      }
+      // if (val.length > 18) {
+      //   return val.substr(0, 18) + '...'
+      // } else {
+      return val
+      // }
     }
   },
   methods: {
@@ -581,9 +455,13 @@ export default {
       // this.$refs.basicTable.getData(url, this.$refs.searchForm.searchParam())
       this.searchParam.pageNo = this.pageNo
       this.searchParam.pageSize = this.pageSize
-
       baseSearch('/bDocBasic/selects', this.searchParam).then(response => {
-        this.data = response.data.item
+        this.tabledata = response.data.item
+        // if (this.tabledata) {
+        //   for (const i in this.tabledata) {
+        //     this.$set(this.tabledata, i, response.data.item[i])
+        //   }
+        // }
         this.total = response.data.total
         this.pageSize = response.data.pageSize
       })
