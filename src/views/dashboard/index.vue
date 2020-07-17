@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2019-12-23 11:16:27 
- * @Last Modified by: lk
- * @Last Modified time: 2020-06-05 15:35:02
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-07-17 11:15:35
  * @Description:  首页
  */
 <template>
@@ -19,16 +19,16 @@
             统计概览
           </p>
         </div>
-        <div class="home-item"  @click="$router.push({name:'search'})">
+        <div class="home-item"  @click="$router.push({name:'analysisIndex'})">
           <img :src="fenxi">
           <p class="home-item-text">
-            全文检索
+            政策分析
           </p>
         </div>
-        <div class="home-item" @click="$router.push({name:'analysisIndex'})">
+        <div class="home-item" @click="linkTo('relationChartBarChartIndex')">
           <img :src="math">
           <p class="home-item-text">
-            政策分析
+            校验分析
           </p>
         </div>
         <div class="home-item" @click="$router.push({name:'learnIndex'})">
@@ -54,8 +54,15 @@ import math from '@/assets/images/math.png'
 import study from '@/assets/images/study.png'
 import Navbar from '../layout/components/Navbar'
 import Search from '@/components/Search'
+import { mapGetters } from 'vuex'
 export default {
   name: 'home',
+  computed: {
+    ...mapGetters([
+      'permission_left_map',
+      'add_routers'
+    ])
+  },
   components: {
     Navbar,
     Search
@@ -67,7 +74,8 @@ export default {
       all,
       fenxi,
       math,
-      study
+      study,
+      fathPath: ''
     }
   },
   methods: {
@@ -86,6 +94,51 @@ export default {
           params: JSON.stringify(params)
         }
       })
+    },
+    linkTo(component) {
+      let name = ''
+      const currentRoute = this.add_routers.find(item => {
+        if (item.children && item.children.length > 0) {
+          const route = item.children[0]
+          if (route.name === component) {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return false
+        }
+      })
+      if (currentRoute) {
+        let fullPath = currentRoute.children[0].path
+        fullPath = fullPath.split('/')[0]
+        name = fullPath
+      } else {
+        this.$message.error('抱歉，您没有权限访问此页面')
+        return
+      }
+      this.$store.dispatch('setleftBarTitle', '校验分析')
+      const parmObj = {
+        leftRoutes: this.permission_left_map[name],
+        path: '/' + name
+      }
+      this.$store.dispatch('GenerateLeftRoutes', parmObj).then(() => {
+        if (this.permission_left_map[name] && this.permission_left_map[name].length > 0) {
+          this.getFathPath(this.permission_left_map[name])
+          if (this.fathPath) {
+            this.$router.push(this.fathPath)
+          }
+        }
+      }).catch(() => {
+        alert('error submit!!')
+      })
+    },
+    getFathPath(map) {
+      if ((!map[0].children || map[0].children.length === 0) && map[0].component) {
+        this.fathPath = map[0].path
+      } else {
+        this.getFathPath(map[0].children)
+      }
     }
   }
 }

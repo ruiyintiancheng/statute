@@ -26,6 +26,7 @@ const getters = {
   setting: state => state.user.setting,
   sideTitle: state => state.permission.sideTitle,
   permission_routers: state => state.permission.routers,
+  add_routers: state => state.permission.addRouters,
   permission_top_routers: state => state.permission.topRouters,
   permission_left_map: state => state.permission.leftMap,
   permission_left_routers: state => state.permission.leftRouters,
