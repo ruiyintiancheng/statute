@@ -1,8 +1,8 @@
 /*
  * @Author: wk 
  * @Date: 2020-06-02 15:15:55 
- * @Last Modified by: wk
- * @Last Modified time: 2020-06-04 14:51:59
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-07-16 09:36:56
  * @Description:  搜索
  */
  <template>
@@ -205,13 +205,13 @@
                    multiple
                    collapse-tags
                    style="width:100%"
-                   @change="selectControl($event,'docTimeliness','DOC_TIMELINESS')"
+                   @change="selectContro($event,'docTimeliness','DOC_TIMELINESS')"
                    v-model="updateFormData.docTimeliness"
                    clearable>
           <el-option v-for="(text,item) in DOC_TIMELINESS"
                      :key="item"
                      :label="text"
-                     :value="text"></el-option>
+                     :value="item"></el-option>
 
         </el-select>
       </el-form-item>
@@ -450,6 +450,33 @@ export default {
         const all = []
         for (const key in this[options]) {
           all.push(this[options][key])
+        }
+        if (val.length === all.length - 1) {
+          if (this.repeatedEngravingForm[prop].length === all.length) {
+            this.updateFormData[prop] = []
+            this.repeatedEngravingForm[prop] = []
+          } else if (this.repeatedEngravingForm[prop].length < all.length) {
+            this.updateFormData[prop] = all
+            this.repeatedEngravingForm[prop] = all
+          }
+        }
+      }
+    },
+    selectContro(val, prop, options) {
+      if (val.length && val[val.length - 1] === '0') {
+        const all = []
+        for (const key in this[options]) {
+          all.push(key)
+        }
+        this.updateFormData[prop] = all
+        this.repeatedEngravingForm[prop] = all
+      } else if (val.find(item => item === '0')) {
+        this.updateFormData[prop] = this.updateFormData[prop].filter(item => item !== '0')
+        this.repeatedEngravingForm[prop] = this.updateFormData[prop].filter(item => item !== '0')
+      } else if (val.find(item => item !== '0')) {
+        const all = []
+        for (const key in this[options]) {
+          all.push(key)
         }
         if (val.length === all.length - 1) {
           if (this.repeatedEngravingForm[prop].length === all.length) {

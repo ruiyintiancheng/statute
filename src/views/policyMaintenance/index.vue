@@ -1,8 +1,8 @@
 /*
  * @Author: wk 
  * @Date: 2020-05-29 17:02:49 
- * @Last Modified by: wk
- * @Last Modified time: 2020-06-04 11:13:07
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-07-16 09:44:31
  * @Description:  政策数据维护
  */
 <template>
@@ -45,7 +45,7 @@
               <el-button icon="el-icon-upload"
                          plain
                          type="primary">批量导入</el-button>
-              <span style="font-size:13px;color:#c9c9c9; position: absolute;bottom:-14px;left:5px">(zip/doc/docx格式)</span>
+              <div style="font-size:12px;color:#c9c9c9; position: absolute;bottom:-14px;left:5px;widht:60px">zip/doc/docx格式</div>
             </el-upload>
 
           </div>
@@ -96,7 +96,7 @@
                {{scope.row.docTittle}}
             </template>
           </el-table-column>
-          <el-table-column label="政策原文名称"
+          <el-table-column label="定位"
                            align="center"
                             show-overflow-tooltip
                            min-width="200">
