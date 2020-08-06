@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2018-09-21 14:54:24 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-06-11 16:41:21
+ * @Last Modified time: 2020-08-04 15:28:07
  * @Description:  
  */
 <template>
@@ -31,7 +31,7 @@
       </ul>
       <ul class="right-menu clearfix">
         <li class="right-menu-item"
-            v-if="$route.name!=='home'">
+            v-if="$route.name!=='home' && isPc">
           <div class="search-input">
             <i class="search-icon"
                :style="{backgroundImage:'url('+cutter+')'}"
@@ -109,7 +109,24 @@ import cutter from '@/assets/images/cutter.png'
 import { mapGetters } from 'vuex'
 import { tranformStr } from '@/utils/index'
 import { saveUpdate } from '@/utils/validate'
+function IsPC() {
+  var userAgentInfo = navigator.userAgent
+  var Agents = ['Android', 'iPhone',
+    'SymbianOS', 'Windows Phone',
+    'iPad', 'iPod']
+  var flag = true
+  for (var v = 0; v < Agents.length; v++) {
+    if (userAgentInfo.indexOf(Agents[v]) > 0) {
+      flag = false
+      break
+    }
+  }
+  return flag
+}
 export default {
+  created() {
+    this.isPc = IsPC()
+  },
   computed: {
     ...mapGetters([
       'permission_top_routers',
@@ -130,6 +147,7 @@ export default {
   },
   data() {
     return {
+      isPc: true,
       cutter,
       searchVal: '',
       fathPath: '',
@@ -267,6 +285,7 @@ export default {
 <style lang="scss" scoped>
 .navbar {
   height: 70px;
+  min-width: 1200px;
   line-height: 70px;
   position: relative;
   &.currentColor {

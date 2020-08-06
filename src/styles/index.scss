@@ -8,6 +8,7 @@
 
 body {
   height: 100%;
+  width: 100%;
   background-color: #f9faff;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -99,6 +100,7 @@ html {
 
 #app{
   height: 100%;
+  overflow: hidden;
 }
 
 .app-main{

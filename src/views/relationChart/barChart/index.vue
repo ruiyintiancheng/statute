@@ -2,7 +2,7 @@
 * 堆栈图
 */
 <template>
-  <div>
+  <div v-if="refrash">
     <div style="width: 100%; height:100%; position: relative">
       <div v-loading="chartLoading">
         <div id="chart" ref="chart" :style="{'width': `${chart_width}px`, 'height': `${chart_height}px`}"></div>
@@ -86,6 +86,7 @@ export default {
   },
   data() {
     return {
+      refrash: true,
       graph: null,
       chartLoading: true,
       width: 1000,
@@ -107,8 +108,26 @@ export default {
       this.init()
       document.querySelector('.el-tabs__header.is-top').style.display = 'none'
     })
+
+    window.addEventListener('resize', _ => {
+      this.resetSize()
+    }, false)
+
+    window.addEventListener('orientationchange', _ => {
+      this.resetSize()
+    }, false)
   },
   methods: {
+    resetSize() {
+      this.refrash = false
+      this.$nextTick(_ => {
+        this.refrash = true
+        this.$nextTick(_ => {
+          this.getSize()
+          this.init()
+        })
+      })
+    },
     getSize() {
       this.chart_width = document.querySelector('.app-main').offsetWidth
       this.chart_height = document.querySelector('.app-main').offsetHeight - 50

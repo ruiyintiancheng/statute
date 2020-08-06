@@ -41,6 +41,9 @@ export default {
     window.addEventListener('resize', function() {
       this.setCurrentHeight()
     }.bind(this), false)
+    window.addEventListener('orientationchange', function() {
+      this.setCurrentHeight()
+    }.bind(this), false)
   },
   data() {
     return {
