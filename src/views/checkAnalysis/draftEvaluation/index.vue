@@ -150,11 +150,12 @@ export default {
   
   .box_centre {
     position: absolute;
-    margin: auto;
-    top: 0;
+    /* margin: auto; */
+    top: 20%;
     bottom: 0;
-    left: 0;
+    left: 50%;
     right: 0;
+    transform: translateX(-50%);
   }
 
   .content {

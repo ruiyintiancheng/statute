@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2018-08-11 11:43:38
- * @Last Modified by: lk
- * @Last Modified time: 2020-06-03 17:59:19
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-08-10 16:28:39
  * @Description:  登录页面
  */
 <template>
@@ -49,6 +49,20 @@ const errorMsg = {
   username: '',
   password: '',
   captcha: ''
+}
+function IsPC() {
+  var userAgentInfo = navigator.userAgent
+  var Agents = ['Android', 'iPhone',
+    'SymbianOS', 'Windows Phone',
+    'iPad', 'iPod']
+  var flag = true
+  for (var v = 0; v < Agents.length; v++) {
+    if (userAgentInfo.indexOf(Agents[v]) > 0) {
+      flag = false
+      break
+    }
+  }
+  return flag
 }
 export default {
   name: 'login',
@@ -160,7 +174,12 @@ export default {
               }
               this.$store.dispatch('LoginByUsername', response.data.item.token).then(() => {
                 // this.loading = false
-                this.$router.push({ path: '/' })
+                if (IsPC()) {
+                  this.$router.push({ path: '/' })
+                } else {
+                  location.href = location.origin + location.pathname
+                  // location.href = location.href.substring(0, location.href.lastIndexOf('login'))
+                }
               }).catch(() => {
                 this.loading = false
               })

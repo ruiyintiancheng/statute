@@ -1,10 +1,3 @@
-/*
- * @Author: lk 
- * @Date: 2019-12-23 11:16:27 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-08-04 14:35:05
- * @Description:  首页
- */
 <template>
   <div class="dashboard-container" :style="{backgroundImage:'url('+bj+')'}" >
     <navbar class="has-border"></navbar>

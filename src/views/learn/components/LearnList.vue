@@ -75,10 +75,10 @@ export default {
   },
   methods: {
     jumpDetails(id) { // 跳转讲话内容
-      let name = 'verbiage'
-      if (id === '1189') {
-        name = 'code'
-      }
+      // let name = 'verbiage'
+      // if (id === '1189') {
+      const name = 'code'
+      // }
       const path = this.$route.params.path || this.$route.path
       this.$router.push({
         name: name,
