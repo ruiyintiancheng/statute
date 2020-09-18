@@ -11,6 +11,8 @@
               class="text-search"
               ref="searchInput"
               @keyup.enter.native="seacrHandle"
+              @focus="focusHandle"
+              @blur="blurHandle"
               v-model="dataValue">
       <el-button slot="prepend"
                  @click.stop="advancedSearch">高级搜索 <i class="el-icon-arrow-down"></i></el-button>
@@ -19,6 +21,16 @@
                  icon="el-icon-search"
                  @click="seacrHandle">搜索</el-button>
     </el-input>
+    <div class="history-popular" v-if="historyVisable">
+      <ul class="history-popular-box" v-if="historyList && historyList.length >0">
+        <li ><h4 class="history-popula-title">搜索历史</h4></li>
+        <li class="history-popular-item" v-for="(item,index) in historyList" :key="index" @click="setTextSearch(item)"><a>{{item}}</a></li>
+      </ul>
+      <ul class="history-popular-box" v-if="popularList && popularList.length >0">
+        <li ><h4 class="history-popula-title">推荐词</h4></li>
+        <li class="history-popular-item" v-for="(item,index) in popularList" :key="index" @click="setTextSearch(item)"><a>{{item}}</a></li>
+      </ul>
+    </div>
     <!-- 高级搜索 -->
     <el-form ref="form"
              v-if="seniorForm"
@@ -215,6 +227,9 @@ import { baseRequest } from '@/api/base'
 export default {
   data() {
     return {
+      historyList: [],
+      popularList: [],
+      historyVisable: false,
       Dispatch: [], // 发文机构
       organization: [],
       repeatedEngravingForm: {
@@ -320,6 +335,25 @@ export default {
     document.body.removeEventListener(this.pannalHandle)
   },
   methods: {
+    focusHandle() {
+      if (!this.seniorForm) {
+        baseRequest('/searchKeywords/getHistroy').then(response => {
+          this.historyList = response.data.item.histroy
+          const historyLength = this.historyList.length || 0
+          const needNum = 10 - historyLength
+          this.popularList = response.data.item.recommend
+          if (this.popularList && this.popularList.length > 0) {
+            this.popularList = this.popularList.slice(0, needNum)
+          }
+          this.historyVisable = true
+        })
+      }
+    },
+    blurHandle() {
+      setTimeout(_ => {
+        this.historyVisable = false
+      }, 200)
+    },
     articleSelection(item) {
       // const checknodes = this.$refs.dispatch.getCheckedNodes()
       const arr = []
@@ -376,6 +410,10 @@ export default {
     },
     setText(val) {
       this.dataValue = val
+    },
+    setTextSearch(val) {
+      this.dataValue = val
+      this.seacrHandle()
     },
     setParams(params) {
       this.Dispatch = params.Dispatch
