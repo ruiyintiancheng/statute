@@ -7,7 +7,7 @@ function legend(graph, id) {
     nodes: [
       { name: '查询法规', color: '#ff804c', translate: 'translate(0)' },
       { name: '政策法规', color: '#02A7FD', translate: 'translate(84)' },
-      { name: '未收录法规', color: '#b8b7b6', translate: 'translate(168)' },
+      { name: '废止公文', color: '#b8b7b6', translate: 'translate(168)' },
       { name: '定位法规', color: '#9EEA6A', translate: 'translate(265)' }
     ],
     links: [
