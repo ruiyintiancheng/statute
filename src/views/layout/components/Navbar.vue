@@ -2,14 +2,15 @@
  * @Author: lk 
  * @Date: 2018-09-21 14:54:24 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-08-04 15:28:07
+ * @Last Modified time: 2020-10-28 16:30:01
  * @Description:  
  */
 <template>
   <div :class="{navbar:true,'no-text-select':true,'currentColor':$route.name!=='home'}">
     <div class="base-container clearfix">
       <div :class="{'logo':true,'leftbar-logo':hasSideBar}">
-        <a href="javascript:;">军地政策法规智能辅助系统</a>
+        <p>军民融合工作政策制度</p>
+        <p>数据挖掘与可视化平台</p>
       </div>
       <ul :class="{'left-menu':true, 'clearfix' : true,'leftbar-menu':hasSideBar}">
         <li :class="{actived:$route.name==='home'}">
@@ -292,12 +293,23 @@ export default {
     background-color: $mainColor;
   }
   .logo {
-    float: left;
-    font-size: 20px;
+    // float: left;
+    // font-size: 20px;
+    // font-weight: bold;
+    // color: #fff;
+    // letter-spacing: 2px;
+    // margin-right: 60px;
+        float: left;
+    font-size: 18px;
     font-weight: bold;
     color: #fff;
     letter-spacing: 2px;
     margin-right: 60px;
+    line-height: 27px;
+    margin-top: 8px;
+    a{
+      // display: block;
+    }
     &.leftbar-logo{
       position:absolute;
       left: 26px;

@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2018-08-11 11:43:38
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-08-10 16:28:39
+ * @Last Modified time: 2020-10-28 16:35:48
  * @Description:  登录页面
  */
 <template>
@@ -12,8 +12,11 @@
         <img class="login-sign" :src="sign">
       </div>
       <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-        <h1 class="login-title">
-          军地政策法规智能辅助系统
+        <h1 class="login-title" style="margin-top:100px;">
+          军民融合工作政策制度
+        </h1>
+        <h1 class="login-title" style="margin-bottom:50px;">
+          数据挖掘与可视化平台
         </h1>
         <el-form-item prop="username">
           <i class="login-icon user" :style="{backgroundImage:'url('+cutter+')'}"></i>
@@ -235,7 +238,7 @@ export default {
       left: 550px;
       box-shadow: 1px 0px 11px 0px #dde2ee;
       .login-title{
-        line-height: 222px;
+        line-height: 40px;
         font-size: 20px;
         font-weight: bold;
         color:#4574be;

@@ -33,7 +33,7 @@
       </div>
       <div class="home-bottom">
         <img :src="wline" width="100%">
-        军地政策法规智能辅助系统
+        军民融合工作政策制度 数据挖掘与可视化平台
       </div>
     </div>
   </div>
