@@ -7,10 +7,10 @@ function getColor(d, type) {
   if (val > y - 3) {
     return type ? '#6ACC85' : '#5FAD63'
   }
-  if (val <= y - 3 && val > y - 5) {
+  if (val <= y - 3 && val >= y - 5) {
     return type ? '#1A93FA' : '#1661CD'
   }
-  if (val <= y - 5 && val > y - 10) {
+  if (val <= y - 6 && val >= y - 10) {
     return type ? '#FBAD29' : '#CC8043'
   }
   return type ? '#F46B7B' : '#CE3649'

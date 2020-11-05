@@ -5,7 +5,7 @@ const data = {
   nodes: [
     { name: '近3年发布的政策', color: '#6ACC85' },
     { name: '3-5年未修订', color: '#1A93FA' },
-    { name: '5-10年未修订', color: '#FBAD29' },
+    { name: '6-10年未修订', color: '#FBAD29' },
     { name: '10年以上未修订', color: '#F46B7B' }
   ],
   links: [
