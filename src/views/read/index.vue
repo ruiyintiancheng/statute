@@ -6,15 +6,7 @@
                       <a v-if="it1.level === 1" :class="{'catalog-one':true}" :title="it1.catalog"  :key="it1+index1" :href="'#'+it1.size"><span class="catalog-name">{{it1.catalog}}</span></a>
                       <a v-else-if="it1.level === 2" class="catalog-two" :title="it1.catalog" :key="it1+index1" :href="'#'+it1.size"><span class="catalog-name">{{it1.catalog}}</span></a>
                       <a v-else-if="it1.level === 3" class="catalog-three" :title="it1.catalog" :key="it1+index1" :href="'#'+it1.size"><span class="catalog-name">{{it1.catalog}}</span></a>
-                      <!-- <a v-else-if="it1.level === 2" class="catalog-one" :key="it1+index1" :href="'#'+it1.size"><span class="catalog-name">&nbsp;&nbsp;{{it2.catalog}}</span></a> -->
                     </template>
-                          <!-- <template v-if="it1.children">
-                              <a  class="catalog-one" v-for="(it2,index2) in it1.children" :key="it2+index2" :href="'#'+it2.index"><span class="catalog-name">&nbsp;&nbsp;{{it2.menu}}</span>
-                                  <template v-if="it2.children">
-                                      <a :title="it3.menu" class="catalog-two" v-for="(it3,index3) in it2.children" :href="'#'+it3.index" :key="it3+index3" ><span class="catalog-name">&nbsp;&nbsp;&nbsp;&nbsp;{{it3.menu}}</span></a>
-                                  </template>
-                              </a>
-                          </template> -->
               </el-scrollbar>
             </div>
         <div class="read-article article" :class="{'just-content':!catalogData || catalogData.length ===0}">
