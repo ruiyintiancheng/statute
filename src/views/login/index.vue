@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2018-08-11 11:43:38
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-10-28 16:35:48
+ * @Last Modified time: 2020-11-12 12:37:37
  * @Description:  登录页面
  */
 <template>
@@ -29,12 +29,12 @@
           <el-input name="password"  :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="请输入密码" clearable/>
           <div class="login-form-hr"></div>
         </el-form-item>
-        <el-form-item prop="captcha" class="captcha">
+        <!-- <el-form-item prop="captcha" class="captcha">
           <i class="login-icon cap" :style="{backgroundImage:'url('+cutter+')'}"></i>
           <el-input name="captcha" placeholder="请输入验证码" clearable v-model="loginForm.captcha" @keyup.enter.native="handleLogin"/>
           <a class="login-captcha" @click="handleCaptcha"><img :src="verifyCode" /></a>
           <div class="login-form-hr"></div>
-        </el-form-item>
+        </el-form-item> -->
         <el-button class="login-button" type="primary" :loading="loading" @click.native.prevent="handleLogin">登&nbsp;&nbsp;录</el-button>
       </el-form>
     </div>
@@ -70,11 +70,7 @@ function IsPC() {
 export default {
   name: 'login',
   created() {
-    // if (getToken()) {
-    //   this.$router.push('/')
-    // } else {
-    this.handleCaptcha()
-    // }
+    // this.handleCaptcha()
   },
   data() {
     return {
@@ -162,16 +158,16 @@ export default {
                   errorMsg['password'] = ''
                   console.log('密码错误')
                 }
-                if (validateMsg.hasOwnProperty('verifyCode')) {
-                  this.verifyCode = 'data:image/png;base64,' + validateMsg.verifyCode
-                  this.verifyRandom = validateMsg.verifyRandom
-                  console.log('验证码错误')
-                  this.$nextTick(function() {
-                    errorMsg.captcha = validateMsg.captcha
-                    this.$refs.loginForm.validateField('captcha')
-                    errorMsg['captcha'] = ''
-                  })
-                }
+                // if (validateMsg.hasOwnProperty('verifyCode')) {
+                //   this.verifyCode = 'data:image/png;base64,' + validateMsg.verifyCode
+                //   this.verifyRandom = validateMsg.verifyRandom
+                //   console.log('验证码错误')
+                //   this.$nextTick(function() {
+                //     errorMsg.captcha = validateMsg.captcha
+                //     this.$refs.loginForm.validateField('captcha')
+                //     errorMsg['captcha'] = ''
+                //   })
+                // }
                 this.loading = false
                 return
               }
