@@ -3,7 +3,7 @@
  */
 <template>
   <div class="my_main">
-    <h3 style="text-align: center;">可操作性评分帮助说明</h3>
+    <p class="title">可操作性评分帮助说明</p>
     <p>对当前要进行可操作性分析的文章，逐句进行以下可操作性性分析分值在0到100之间。</p>
     <p>一是政策主体是否明确，主要包括：发布主体、执行主体、监督主体、政策受体。</p>
     <p>二是对操作性项进行量化分析评分，主要包含：明确的单位类型、明确的数值范围、明确的工作内容、明确的检查内容等方面进行评分。</p>
@@ -43,18 +43,33 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+  // .my_main {
+  //   margin: 20px 50px;
+  //   padding: 30px 90px;
+  //   background-color: white;
+  //   border: 1px solid #dddddd;
+  //   line-height: 1.5;
+  //   p {
+  //     text-indent: 2em;
+  //     letter-spacing: 1px;
+  //   }
+  //   .retract {
+  //     text-indent: 4em
+  //   }
+  // }
+
   .my_main {
-    margin: 20px 50px;
-    padding: 30px 90px;
+    margin: 0 30px;
+    // padding: 30px 90px;
     background-color: white;
-    border: 1px solid #dddddd;
-    line-height: 1.5;
-    p {
-      text-indent: 2em;
-      letter-spacing: 1px;
-    }
-    .retract {
-      text-indent: 4em
+    // border: 1px solid #dddddd;
+    line-height: 2;
+    font-size: 14px;
+    color: #666666;
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #141414
     }
   }
 </style>
