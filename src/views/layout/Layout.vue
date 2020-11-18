@@ -1,7 +1,7 @@
 <template>
   <div class="app-wrapper" >
     <navbar></navbar>
-    <div class="main-container clearfix" :style="{height:height-55+'px',margin:'0 auto',width:(showSideBar?'1200px':'100%'),marginTop:showSideBar?'20px':'0'}">
+    <div class="main-container clearfix" :style="{overflow:showSideBar?'hidden':'auto',height:height-55+'px',margin:'0 auto',width:(showSideBar?'1200px':'100%'),marginTop:showSideBar?'20px':'0'}">
       <sidebar class="sidebar-container"  v-if="showSideBar" :style="{backgroundColor:'#3164b7',marginRight:'20px'}"></sidebar>
       <app-main class="app-main" ref="appMain" :style="{minHeight:(height - 75)+'px',width:(showSideBar?'992px':'100%'),float:showSideBar?'left':'none',height:showSideBar?'calc(100% - 20px)':'auto'}"></app-main>
     </div>
@@ -69,7 +69,7 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
   .main-container{
-    overflow: hidden;
+    // overflow: hidden;
     overflow-x: hidden;
     width: 100%;
   }
