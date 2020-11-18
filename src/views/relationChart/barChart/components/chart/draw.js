@@ -42,7 +42,7 @@ export function drawBase(cfg) {
     .attr('height', cfg.height)
 
   const g = group.append('g').attr('clip-path', 'url(#clip-barchart)')
-
+  g.append('g').classed('grid', true)
   g.append('g').classed('bar', true)
 
   cfg.svg = svg
@@ -56,6 +56,7 @@ export function drawClear(cfg) {
   const group = cfg.group
   const g = cfg.g
   group.select('g.yAxis').remove()
+  g.select('g.yAxis').remove()
   g.select('g.xAxis').remove()
   g.select('g.bar').selectAll('g.node').remove()
 }
@@ -84,10 +85,25 @@ export function drawAxis(cfg) {
       return '' + v
     })
   const xAxisg = g.select('g.xAxis').call(xAxis)
+    .call(g => g.selectAll('.tick text')
+      .attr('text-anchor', 'end')
+      .attr('transform', `translate(-5, 0)rotate(-45)`)
+    )
 
   const yScale = d3.scaleLinear().domain([maxCount, 0]).range([0, gridHeight])
   const yAxis = d3.axisLeft(yScale).ticks(5).tickSizeOuter(0)
   const yAxisg = group.select('g.yAxis').call(yAxis)
+    .call(g => g.select('.domain').remove())
+    .call(g => g.selectAll('.tick line').remove())
+
+  g.select('g.grid')
+    .call(d3.axisRight(yScale).ticks(5).tickSize(xScale.range()[1]).tickSizeOuter(0))
+    .call(g => g.select('.domain').remove())
+    .call(g => g.selectAll('.tick line')
+      .attr('stroke-opacity', 0.5)
+      .attr('stroke-dasharray', '2,2')
+    )
+    .call(g => g.selectAll('.tick text').remove())
 
   cfg.xAxisg = xAxisg
   cfg.yAxisg = yAxisg

@@ -6,52 +6,58 @@
  * @Description:  自洽性校验--比对结果
  */
 <template>
-  <div v-loading="mainLoading">
+  <div v-loading="mainLoading" style="color: #141414">
     <el-tabs v-model="activeName">
       <el-tab-pane label="内容对比" name="first">
         <div class="tab-main" style="margin: 0px 30px;">
-            <div v-if="uploadFileId" style="padding: 0 0 10px 0;  line-height: 50px;">
-              <h2>分值: <span style="color: red;">{{score.system}}</span></h2>
+            <div v-if="uploadFileId" style="padding: 0 0 10px 0; line-height: 50px; margin: 0 136px;">
+              <div class="score-mo" >
+                <span class="score-label">分值: </span>
+                <span class="score-value">{{score.system}}</span>
+              </div>
             </div>
-            <div v-else style="padding: 0 0 10px 0;  line-height: 50px;">
-              <div class="score mo" >
-                <span class="score title">系统分值: </span>
-                <span style="color: red;">{{score.system}}</span>
+            <div v-else style="padding: 0 0 10px 0;  line-height: 50px; margin: 0 136px;">
+              <div class="score-mo" >
+                <span class="score-label">系统分值: </span>
+                <span class="score-value">{{score.system}}</span>
               </div>
-              <div class="score mo">
-                <div style="float: left; padding-right: 10px;">人工分值: </div>
-                <div style="float: left; width: 70px">
-                  <el-input v-model="score.manualScore" @change="changeArtificial"></el-input>
-                </div>
+              <div class="score-mo">
+                <span class="score-label">人工分值: </span>
+                <el-input class="score-input" v-model="score.manualScore" @change="changeArtificial" />
               </div>
-              <div class="score mo">
-                <span>综合分值: </span>
-                <span style="color: red;">{{score.synthesize}}</span>
+              <div class="score-mo">
+                <span class="score-label">综合分值: </span>
+                <span class="score-value">{{score.synthesize}}</span>
               </div>
-              <div>
-               <el-button class="menu" type="primary" size="small" @click="saveScore">保存</el-button>
+              <div style="line-height: 30px;">
+                <el-button class="menu" type="primary" size="small" @click="saveScore" style="width: 93px;">保存</el-button>
               </div>
             </div>
             <div id="compare_main" style="position: relative;">
               <div class="compare_col" :style="{width: `${textWidth}px`, 'background-color': '#ffffff'}">
-                <div ref="compare_left" id="compare_left" @scroll="handleScroll('left')" :style="{height: `${textHeight}px`, 'overflow-y': 'auto', position: 'relative', color: 'gray'}">
-                  <div style="font-size: 16px; padding: 10px 10px 0;">
-                    <span style="font-weight: 600; color: black;">目标文件: </span>
+                <div class="compore-head">
+                  <span class="compore-head-title">目标文件</span>
+                  <div class="compore-head-line" />
+                </div>
+                <div ref="compare_left" id="compare_left" @scroll="handleScroll('left')" :style="{height: `${textHeight}px`, 'overflow-y': 'auto', position: 'relative', color: '#666666'}">
+                  <div class="compore-file-title">
                     <span>{{sourceFileName}}</span>
                   </div>
-                  <div class="line"></div>
                   <div id="compare_left_text" class="compare_textarea" v-html="sourceContent"></div>
                   <div :style="{height: `${ textHeight }px`}"></div>
                   <div id="compare_left_chart" class="compare_shade"></div>
                 </div>
               </div>
-              <div class="compare_col" :style="{width: '150px'}">
+              <div class="compare_col" style="width: 83px;">
                 <div id="compare_middle_chart" style=""></div>
               </div>
               <div class="compare_col" :style="{width: `${textWidth}px`, 'background-color': '#ffffff'}">
-                <div ref="compare_right" id="compare_right" @scroll="handleScroll('right')" :style="{height: `${textHeight}px`, 'overflow-y': 'auto', position: 'relative', color: 'gray'}">
-                  <div style="font-size: 16px; padding: 10px 5px 0 5px;">
-                    <span style="font-weight: 600; color: black;">对比公文: </span>
+                <div class="compore-head">
+                  <span class="compore-head-title">对比公文</span>
+                  <div class="compore-head-line" />
+                </div>
+                <div ref="compare_right" id="compare_right" @scroll="handleScroll('right')" :style="{height: `${textHeight}px`, 'overflow-y': 'auto', position: 'relative', color: '#666666'}">
+                  <div class="compore-file-title">
                     <span>{{targetFileName}}</span>
                   </div>
                   <div class="line"></div>
@@ -145,7 +151,7 @@ export default {
     this.score.actionId = this.$route.query.menuId
 
     const width = document.querySelector('.tab-main').offsetWidth
-    this.textWidth = (width - 150 - 30) / 2 - 20
+    this.textWidth = (width - 83 - 30) / 2
     const height = document.querySelector('.app-main').offsetHeight
     this.textHeight = height - 135
 
@@ -327,48 +333,6 @@ export default {
         docTarget.style.color = '#037efb'
       })
     },
-    // 左侧上传栏遮罩
-    // initLeftChart() {
-    //   const width = document.querySelector('#compare_left_text').offsetWidth
-    //   const height = document.querySelector('#compare_left_text').scrollHeight
-    //   const svg = d3.select('#compare_left_chart').append('svg')
-    //     .attr('width', width)
-    //     .attr('height', height)
-
-    //   const g = svg.append('g')
-    //   const node = g.selectAll('g.node')
-    //     .data(this.checkResult, d => d.sourceId).enter()
-    //     .append('g').classed('node', true)
-    //   node.append('rect')
-    //     .attr('width', this.textWidth)
-    //     .attr('height', d => d.sourceDiv.offsetHeight)
-    //     .attr('x', 0)
-    //     .attr('y', d => d.sourceDiv.offsetTop)
-    //     .style('fill', 'gray')
-    //     .style('opacity', 0)
-    // },
-    // 右侧目标栏遮罩
-    // initRightChart() {
-    //   const width = document.querySelector('#compare_right_text').offsetWidth
-    //   const height = document.querySelector('#compare_right_text').scrollHeight
-
-    //   const svg = d3.select('#compare_right_chart').append('svg')
-    //     .attr('width', width)
-    //     .attr('height', height)
-
-    //   const g = svg.append('g')
-    //   const node = g.selectAll('g.node')
-    //     .data(this.checkResult, d => d.targetId).enter()
-    //     .append('g').classed('node', true)
-
-    //   node.append('rect')
-    //     .attr('width', this.textWidth)
-    //     .attr('height', d => d.targetDiv.offsetHeight)
-    //     .attr('x', 0)
-    //     .attr('y', d => d.targetDiv.offsetTop)
-    //     .style('fill', 'gray')
-    //     .style('opacity', 0)
-    // },
     // 中间遮罩
     initMiddleChart() {
       const width = document.querySelector('#compare_middle_chart').offsetWidth
@@ -402,7 +366,7 @@ export default {
           return `M ${0},${d.sourceDiv.offsetTop + d.sourceDiv.offsetHeight / 2}
            L${width},${d.targetDiv.offsetTop + d.targetDiv.offsetHeight / 2}`
         })
-        .style('stroke', '#037efb')
+        .style('stroke', '#3365b5')
         .style('stroke-width', 2.5)
         .style('cursor', 'pointer')
         .on('click', d => {
@@ -511,18 +475,6 @@ export default {
         return
       }
       this.updateMiddleChart()
-      // if (type === 'left') {
-      //   const scrollTop = this.$refs.compare_left.scrollTop
-      //   this.$refs.compare_right.scrollTop = scrollTop
-      //   this.updateMiddleChart()
-      // }
-      // if (type === 'right') {
-      //   const scrollTop = this.$refs.compare_right.scrollTop
-      //   this.$refs.compare_left.scrollTop = scrollTop
-      //   this.updateMiddleChart()
-      // }
-
-      // console.log()
     },
     // 恢复到初始样式
     defaultStyle() {
@@ -539,47 +491,49 @@ export default {
         .style('opacity', 1)
         .select('path')
         .style('stroke', '#037efb')
-    },
-    getLength(str) {
-      var b = 0
-      const l = str.length // 初始化字节数递加变量并获取字符串参数的字符个数
-      if (l) { // 如果存在字符串，则执行计划
-        for (var i = 0; i < l; i++) { // 遍历字符串，枚举每个字符
-          if (str.charCodeAt(i) > 255) { // 字符编码大于255，说明是双字节字符
-            b += 2 // 则累加2个
-          } else {
-            b++ // 否则递加一次
-          }
-        }
-        return b // 返回字节数
-      }
-      return 0 // 如果参数为空，则返回0个
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .menu {
-    background-color: #3164b7;
+    background-color: #3365B5;
     color: white;
   }
 
-  .score.mo {
+  .score-mo {
     float: left;
     padding-right: 50px;
-    font-size: 1.3em;
-    font-weight: bold;
+    line-height: 36px;
+    .score-label {
+      display: block;
+      float: left;
+      margin-right: 5px;
+      height: 30px;
+      font-size: 14px;
+      color: #141414;
+    }
+    .score-value {
+      display: block;
+      float: left;
+      height: 30px;
+      font-weight: bold;
+      font-size: 24px;
+      color: #db0b0b;
+    }
+    .score-input {
+      display: block;
+      float: left;
+      width: 100px;
+      height: 36px; 
+    }
   }
-
-  /* .score.title {
-
-  } */
 
   .line {
     position: relative;
     display: block;
-     width: 100%;
+    width: 100%;
     height: 1px;
     margin: 12px 0;
     background-color: #DCDFE6;
@@ -606,6 +560,21 @@ export default {
   }
   .compare_col {
     float: left;
+    .compore-head {
+      .compore-head-title {
+        font-size: 14px;
+      }
+      .compore-head-line {
+        border-bottom: 1px solid #3365b5;
+        width: 99px;
+        margin-top: 10px;
+      }
+    }
+    .compore-file-title {
+      margin: 20px 0 30px 0;
+      font-weight: bold;
+      color: #141414;
+    }
   }
 
   .textarea_error {
@@ -637,7 +606,18 @@ export default {
     padding: 5px 10px;
     border: 1px solid #dcdfe6;
     border-radius: 4px;
-    color: #037efa;
+    color: #3365b5;
     background: white;
   }
+
+  /deep/ .el-tabs {
+    .el-tabs__item.is-active {
+      color: #3365b5;
+    }
+    .el-tabs__active-bar {
+      background-color: #3365b5;
+    }
+  }
+  
+
 </style>

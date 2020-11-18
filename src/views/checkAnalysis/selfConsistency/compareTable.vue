@@ -2,14 +2,14 @@
  * 标签对比
  */
 <template>
-  <div class="my_main tab_compare_table">
+  <div class="my_main tab_compare_table-zq">
     <el-table :data="tableData" style="width: 100%;" :max-height="tableHeight"
       :highlight-current-row="false"
-      :header-cell-style="{color:'gray', 'background-color': '#d8dadb', fontSize:'16px'}"
+      :header-cell-style="{color: '#141414', 'background-color': '#F5F5F5', fontSize:'16px'}"
       :border="true" :fit="true">
       <el-table-column label="" align="center" class-name="label-type-name"> 
         <template slot-scope="scope">
-          <div style="color: gray">
+          <div style="color: #141414;">
             <span>{{scope.row.a}}</span>
           </div>
         </template>
@@ -98,24 +98,21 @@ export default {
     -webkit-border-radius: 50%;
   }
 </style>
-
-
-
 <style lang="scss">
-.tab_compare_table{
+  .tab_compare_table-zq {
     .el-table--enable-row-hover .el-table__body tr:hover>td {
-        background-color: #fff;
-    }
+          background-color: #fff;
+      }
     .el-table--enable-row-hover .el-table__body tr:hover>.label-type-name {
-        background-color: #d8dadb;
-    }
+          background-color: #F5F5F5;
+      }
     .label-type-name,th.label-type-name.is-leaf{
-      background-color: rgb(216, 218, 219);
-      border-bottom: 1px solid #ccc;
+      background-color: #F5F5F5;
+      border-bottom: 1px solid #EDEDED;
       font-weight: 700;
       font-size: 15px;
       &:hover{
-        background-color: #d8dadb;
+        background-color: #F5F5F5;
       }
     }
     .compare-word{
@@ -123,11 +120,10 @@ export default {
       font-weight: normal;
     }
     .diff-word{
-      // border: 1px solid red;
       padding: 5px 8px;
       border-radius: 4px;
       background-color: #F56C6C;
       color: #fff;
     }
-}
+  }
 </style>

@@ -139,7 +139,7 @@ export default {
         container: this.$refs.chart,
         width: this.chart_width,
         height: this.chart_height,
-        background: '#F3F3F3',
+        background: '#FFFFFF',
         nodeClick: this.openList,
         nodeMove: this.nodeMove
       })

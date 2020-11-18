@@ -9,6 +9,7 @@ function zoom(cfg) {
         return
       }
 
+      cfg.g.select('g.grid').attr('transform', `translate(${x}) scale(1)`)
       cfg.g.select('g.bar').attr('transform', `translate(${x}) scale(1)`)
       cfg.g.select('g.xAxis').attr('transform', `translate(${x}, ${cfg.gridHeight}) scale(1)`)
     })
