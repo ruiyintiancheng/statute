@@ -11,11 +11,11 @@
            mode="vertical"
       :show-timeout="200"
       :default-active="$route.path"
-      background-color="#081c3c"
-      text-color="#fff"
-      active-text-color="#0362fd">
+      background-color="#fff"
+      text-color="#141414"
+      active-text-color="#3365B5">
 
-    <div class="sidebar-title">{{leftBarTitle}}</div>
+    <!-- <div class="sidebar-title">{{leftBarTitle}}</div> -->
       <sidebar-item :routes="permission_left_routers"></sidebar-item>
 
 

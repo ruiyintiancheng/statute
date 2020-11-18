@@ -8,11 +8,11 @@
 <template>
   <div :class="{navbar:true,'no-text-select':true,'currentColor':$route.name!=='home'}">
     <div class="base-container clearfix">
-      <div :class="{'logo':true,'leftbar-logo':hasSideBar}">
+      <div :class="{'logo':true}">
         <p>军民融合工作政策制度</p>
         <p>数据挖掘与可视化平台</p>
       </div>
-      <ul :class="{'left-menu':true, 'clearfix' : true,'leftbar-menu':hasSideBar}">
+      <ul :class="{'left-menu':true, 'clearfix' : true}">
         <li :class="{actived:$route.name==='home'}">
           <router-link to="/">首页</router-link>
         </li>

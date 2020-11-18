@@ -1,9 +1,9 @@
 <template>
   <div class="app-wrapper" >
     <navbar></navbar>
-    <div class="main-container clearfix" :style="{height:height-55+'px'}">
-      <sidebar class="sidebar-container"  v-if="showSideBar" :style="{height:(height - 55)+'px',backgroundColor:'#3164b7'}"></sidebar>
-      <app-main class="app-main" ref="appMain" :style="{minHeight:(height - 55)+'px',width:(showSideBar?'calc(100% - 300px)':'100%'),float:showSideBar?'left':'none',height:showSideBar?'100%':'auto'}"></app-main>
+    <div class="main-container clearfix" :style="{height:height-55+'px',margin:'0 auto',width:(showSideBar?'1200px':'100%'),marginTop:showSideBar?'20px':'0'}">
+      <sidebar class="sidebar-container"  v-if="showSideBar" :style="{backgroundColor:'#3164b7',marginRight:'20px'}"></sidebar>
+      <app-main class="app-main" ref="appMain" :style="{minHeight:(height - 75)+'px',width:(showSideBar?'992px':'100%'),float:showSideBar?'left':'none',height:showSideBar?'calc(100% - 20px)':'auto'}"></app-main>
     </div>
     <bottom-bar></bottom-bar>
   </div>
@@ -69,7 +69,7 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
   .main-container{
-    overflow: auto;
+    overflow: hidden;
     overflow-x: hidden;
     width: 100%;
   }
@@ -79,6 +79,7 @@ export default {
     height: 100%;
     width: 100%;
     overflow: hidden;
+    background-color: #F7F7F7;
   }
   .drawer-bg {
     background: #000;
