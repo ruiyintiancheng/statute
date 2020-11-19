@@ -64,14 +64,16 @@
               <span class="form-label">发布日期:</span>
               <el-date-picker v-model.trim="option.startTime"
                   style="width:140px" type="date"
-                  format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="年-月-日">
+                  format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="年-月-日"
+                  :picker-options="pickerOptionsStart">
               </el-date-picker>
             </div>
             <div>
               <span>&nbsp;--&nbsp;</span>
               <el-date-picker v-model.trim="option.endTime"
                   style="width:139px" type="date"
-                  format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="年-月-日">
+                  format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="年-月-日"
+                  :picker-options="pickerOptionsEnd">
               </el-date-picker>
             </div>
           </el-col>
@@ -173,7 +175,27 @@ export default {
       pageSize: 10,
       radio: null,
       currentRow: null,
-      searchType: null
+      searchType: null,
+      pickerOptionsStart: {
+        disabledDate: (time) => {
+          if (this.option.endTime) {
+            let date = this.option.endTime
+            date = date.replace(/-/g, '/')
+            const newDate = new Date(date).getTime()
+            return time.getTime() > newDate
+          }
+        }
+      },
+      pickerOptionsEnd: {
+        disabledDate: (time) => {
+          if (this.option.startTime) {
+            let date = this.option.startTime
+            date = date.replace(/-/g, '/')
+            const newDate = new Date(date).getTime()
+            return time.getTime() < newDate
+          }
+        }
+      }
     }
   },
   computed: {},

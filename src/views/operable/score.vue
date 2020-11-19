@@ -3,8 +3,33 @@
     <el-tabs v-model="activeName">
       <el-tab-pane label="内容对比" name="first">
         <div class="score clearfix">
+          <div v-if="uploadFileId" style="padding: 0 0 10px 0; line-height: 50px; margin: 0 136px;">
+            <div class="score-mo" >
+              <span class="score-label">分值: </span>
+              <span class="score-value">{{fraction}}</span>
+              <a class="score-back" @click="$router.go(-1)">返回</a>
+            </div>
+          </div>
+          <div v-else style="padding: 0 0 10px 0;  line-height: 50px; margin: 0 136px;">
+            <div class="score-mo" >
+              <span class="score-label">系统分值: </span>
+              <span class="score-value">{{score.system}}</span>
+            </div>
+            <div class="score-mo">
+              <span class="score-label">人工分值: </span>
+              <el-input class="score-input" v-model="score.manualScore" @change="changeArtificial" />
+            </div>
+            <div class="score-mo">
+              <span class="score-label">综合分值: </span>
+              <span class="score-value">{{score.synthesize}}</span>
+            </div>
+            <div style="line-height: 30px;">
+              <el-button class="menu" type="primary" size="small" @click="saveScore" style="width: 93px;">保存</el-button>
+              <a class="score-back" @click="$router.go(-1)">返回</a>
+            </div>
+          </div>
           <!-- <el-scrollbar style="height:100%;" > -->
-          <div v-if="uploadFileId" class="score-header">
+          <!-- <div v-if="uploadFileId" class="score-header">
             <h2 class="score-title">
                 分值: 
                 <span class="score-value">{{fraction}}</span>
@@ -30,7 +55,7 @@
               <el-button class="score-save" type="primary" size="small" @click="saveScore">保存</el-button>
               <a class="score-back" @click="$router.go(-1)">返回</a>
             </div>
-          </div>
+          </div> -->
           <div class="score-container first">
             <div class="score-name">{{$route.query.sourceFileName}}</div>
             <div class="score-text" v-html="sourceContent"></div>
@@ -224,6 +249,34 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+  .score-mo {
+    float: left;
+    padding-right: 50px;
+    line-height: 36px;
+    .score-label {
+      display: block;
+      float: left;
+      margin-right: 5px;
+      height: 30px;
+      font-size: 14px;
+      color: #141414;
+    }
+    .score-value {
+      display: block;
+      float: left;
+      height: 30px;
+      font-weight: bold;
+      font-size: 24px;
+      color: #db0b0b;
+    }
+    .score-input {
+      display: block;
+      float: left;
+      width: 100px;
+      height: 36px; 
+    }
+  }
+
     .score {
         // padding-bottom:30px;
         height:100%;
