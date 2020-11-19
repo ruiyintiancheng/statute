@@ -1,8 +1,8 @@
 /*
  * @Author: wk 
  * @Date: 2019-10-17 19:59:27 
- * @Last Modified by: lk
- * @Last Modified time: 2020-04-13 14:33:29
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-11-18 13:50:32
  * @Description:  用户管理
  */
 <template>
@@ -430,7 +430,7 @@ export default {
       this.$nextTick(_ => {
         const formDom = document.querySelector('.form-search')
         const formHeight = formDom ? formDom.offsetHeight : 0
-        this.tableHeight = document.body.offsetHeight - formHeight - 288
+        this.tableHeight = document.body.offsetHeight - formHeight - 328
       })
     },
     handleSizeChange(val) { // 分页

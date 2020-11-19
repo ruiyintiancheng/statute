@@ -2,11 +2,11 @@
  * @Author: lk 
  * @Date: 2018-08-11 11:43:38
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-11-12 12:37:37
+ * @Last Modified time: 2020-11-19 10:36:29
  * @Description:  登录页面
  */
 <template>
-  <div class="login-container">
+  <!-- <div class="login-container">
     <div class="login-area clearfix">
       <div class="login-image">
         <img class="login-sign" :src="sign">
@@ -29,15 +29,38 @@
           <el-input name="password"  :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="请输入密码" clearable/>
           <div class="login-form-hr"></div>
         </el-form-item>
-        <!-- <el-form-item prop="captcha" class="captcha">
+        <el-form-item prop="captcha" class="captcha">
           <i class="login-icon cap" :style="{backgroundImage:'url('+cutter+')'}"></i>
           <el-input name="captcha" placeholder="请输入验证码" clearable v-model="loginForm.captcha" @keyup.enter.native="handleLogin"/>
           <a class="login-captcha" @click="handleCaptcha"><img :src="verifyCode" /></a>
           <div class="login-form-hr"></div>
-        </el-form-item> -->
+        </el-form-item>
         <el-button class="login-button" type="primary" :loading="loading" @click.native.prevent="handleLogin">登&nbsp;&nbsp;录</el-button>
       </el-form>
     </div>
+  </div> -->
+  <div class="login">
+      <div class="login-main">
+        <div class="login-title">
+          <p>军民融合工作政策制度</p>
+          <p>数据挖掘与可视化平台</p>
+        </div>
+        <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
+           <el-form-item class="login-item" prop="username">
+             <img class="login-item-icon" src="../../assets/images/login-user.png" alt="">
+            <el-input class="login-item-input"  name="username" type="text" v-model="loginForm.username"   placeholder="请输入用户名"/>
+          </el-form-item>
+           <el-form-item class="login-item" prop="password">
+             <img class="login-item-icon" src="../../assets/images/login-lock.png" alt="">
+             <el-input class="login-item-input"  name="password"  :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="请输入密码"/>
+          </el-form-item>
+           <el-form-item class="login-item" prop="captcha">
+             <img class="login-item-icon" src="../../assets/images/login-dun.png" alt="">
+             <el-input class="login-item-input"  name="captcha" placeholder="请输入验证码" v-model="loginForm.captcha" @keyup.enter.native="handleLogin"/>
+          </el-form-item>
+        </el-form>
+         <el-button class="login-button" type="primary" :loading="loading" @click.native.prevent="handleLogin">登&nbsp;&nbsp;录</el-button>
+      </div>
   </div>
 </template>
 
@@ -70,7 +93,7 @@ function IsPC() {
 export default {
   name: 'login',
   created() {
-    // this.handleCaptcha()
+    this.handleCaptcha()
   },
   data() {
     return {
@@ -158,16 +181,16 @@ export default {
                   errorMsg['password'] = ''
                   console.log('密码错误')
                 }
-                // if (validateMsg.hasOwnProperty('verifyCode')) {
-                //   this.verifyCode = 'data:image/png;base64,' + validateMsg.verifyCode
-                //   this.verifyRandom = validateMsg.verifyRandom
-                //   console.log('验证码错误')
-                //   this.$nextTick(function() {
-                //     errorMsg.captcha = validateMsg.captcha
-                //     this.$refs.loginForm.validateField('captcha')
-                //     errorMsg['captcha'] = ''
-                //   })
-                // }
+                if (validateMsg.hasOwnProperty('verifyCode')) {
+                  this.verifyCode = 'data:image/png;base64,' + validateMsg.verifyCode
+                  this.verifyRandom = validateMsg.verifyRandom
+                  console.log('验证码错误')
+                  this.$nextTick(function() {
+                    errorMsg.captcha = validateMsg.captcha
+                    this.$refs.loginForm.validateField('captcha')
+                    errorMsg['captcha'] = ''
+                  })
+                }
                 this.loading = false
                 return
               }
@@ -317,6 +340,79 @@ export default {
     position: static;
     .login-area{
       margin: 184px auto;
+    }
+  }
+}
+</style>
+<style lang="scss" scoped>
+.login{
+  width: 100%;
+  height: 100%;
+  background-image: url('../../assets/images/login-bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+  position: relative;
+  .login-main{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    .login-title{
+      font-size: 30px;
+      font-weight: bold;
+      color: #FFFFFF;
+      line-height: 45px;
+      letter-spacing: 5px;
+      text-align: center;
+    }
+    .login-form{
+      margin-top:45px;
+      .login-item{
+        position: relative;
+        .login-item-icon{
+          position: absolute;
+          top: 50%;
+          margin-top: -9px;
+          left: 31px;
+          height: 18px;
+          width: 18px;
+        }
+        .login-item-input{
+          width: 485px;
+          /deep/ .el-input__inner{
+            height: 56px;
+            line-height: 56px;
+            // border: 2px solid #3365B5;
+            opacity: 0.6;
+            border-radius: 28px;
+            background-color: #000;
+            font-size: 16px;
+            font-weight: 400;
+            color: #FFFFFF;
+            padding-left: 70px;
+            border:2px solid #000;
+            &:focus{
+              border-color: #409EFF;
+            }
+          }
+        }
+        &.is-error{
+          .login-item-input{
+            /deep/ .el-input__inner{
+              border-color: #F56C6C !important;
+            }
+          }
+        }
+      }
+    }
+    .login-button{
+      width: 485px;
+      height: 56px;
+      background: #3365B5;
+      border-radius: 28px;
+      margin-top: 20px;
+      border: none;
     }
   }
 }

@@ -2,12 +2,12 @@
  * @Author: lk 
  * @Date: 2018-09-21 14:54:24 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-10-28 16:30:01
+ * @Last Modified time: 2020-11-19 11:03:35
  * @Description:  
  */
 <template>
   <div :class="{navbar:true,'no-text-select':true,'currentColor':$route.name!=='home'}">
-    <div class="base-container clearfix">
+    <div class="base-container clearfix" style="height:100%;">
       <div :class="{'logo':true}">
         <p>军民融合工作政策制度</p>
         <p>数据挖掘与可视化平台</p>
@@ -34,9 +34,13 @@
         <li class="right-menu-item"
             v-if="$route.name!=='home' && isPc">
           <div class="search-input">
-            <i class="search-icon"
+            <div class="search-box">
+                <!-- <i class="search-icon"
                :style="{backgroundImage:'url('+cutter+')'}"
-               @click="searchHandle"></i>
+               @click="searchHandle"></i> -->
+              <!-- <svg-icon class="search-svg" icon-class="search" /> -->
+              <img class="search-img" @click="searchHandle" src="../../../assets/images/search.png" alt="">
+            </div>
             <input type="text"
                    v-model.trim="searchVal">
           </div>
@@ -46,8 +50,7 @@
           <span class="log-out">
               <el-dropdown trigger="click" @command="handleCommand">
                   <i class="log-user"
-                    @click="userManagement"
-                    :style="{backgroundImage:'url('+cutter+')',cursor:'pointer'}"></i>
+                    @click="userManagement" ></i>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item disabled >{{name}}</el-dropdown-item>
                     <el-dropdown-item command="update">修改用户信息</el-dropdown-item>
@@ -285,9 +288,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .navbar {
-  height: 70px;
+  height: 90px;
   min-width: 1200px;
-  line-height: 70px;
+  line-height: 90px;
   position: relative;
   &.currentColor {
     background-color: $mainColor;
@@ -305,11 +308,11 @@ export default {
     color: #fff;
     letter-spacing: 2px;
     margin-right: 60px;
-    line-height: 27px;
-    margin-top: 8px;
-    a{
+    line-height: 30px;
+    margin-top: 16px;
+    // a{
       // display: block;
-    }
+    // }
     &.leftbar-logo{
       position:absolute;
       left: 26px;
@@ -318,20 +321,22 @@ export default {
   .left-menu {
     float: left;
     margin-left: 0px;
-    margin-top: 23px;
+    // margin-top: 33px;
+    height: 100%;
     &.leftbar-menu{
       position:absolute;
       left: 360px;
     }
     li {
-      margin-left: 10px;
-      height: 27px;
-      line-height: 24px;
+      height: 100%;
+      margin-left: 30px;
+      // line-height: 24px;
+      letter-spacing: 2px;
       &.actived {
-        border-bottom: 3px solid #fff;
+        border-bottom: 4px solid #3365B5;
       }
       &:hover {
-        border-bottom: 3px solid #fff;
+        border-bottom: 4px solid #3365B5;
       }
       a {
         color: #fff;
@@ -346,28 +351,46 @@ export default {
     .right-menu-item {
       float: left;
       .search-input {
-        width: 270px;
-        height: 28px;
+        width: 150px;
+        height: 30px;
         position: relative;
         margin-right: 70px;
-        margin-top: 20px;
-        border-radius: 20px;
+        margin-top: 30px;
+        border-radius: 4px;
         overflow: hidden;
-        background-color: $mainColor;
-        border: 1px solid #fff;
-        .search-icon {
+        background-color: #213350;
+        .search-box{
+          height: 20px;
+          width: 40px;
           position: absolute;
-          top: 0px;
-          right: 5px;
-          width: 26px;
-          height: 26px;
-          background-position: 55px 112px;
-          cursor: pointer;
+          top: 5px;
+          right: 0px;
+          border-left: 1px solid #647185;
+          color: #fff;
+          padding-left: 10px;
+          padding-top:3px;
+          .search-img{
+            width: 15px;
+            height: 15px;
+            display: block;
+            cursor: pointer;
+          }
+          .search-svg{
+            display: block;
+          }
+          .search-icon {
+            width: 26px;
+            height: 26px;
+            color: #000;
+            background-position: 55px 112px;
+            display: block;
+            cursor: pointer;
+          }
         }
         input {
           position: absolute;
           height: 100%;
-          width: calc(100% - 30px);
+          width: calc(100% - 45px);
           top: 0;
           left: 0;
           background-color: transparent;
@@ -380,16 +403,18 @@ export default {
         }
       }
       .log-out {
-        font-size: 14px;
+        font-size: 16px;
         color: #fff;
         position: relative;
         .log-user {
+          background-image: url('.././../../assets/images/tx.png');
+          cursor: pointer;
           position: absolute;
-          top: -17px;
-          left: -30px;
-          width: 26px;
-          height: 26px;
-          background-position: 55px 210px;
+          top: -21px;
+          left: -40px;
+          width: 30px;
+          height: 30px;
+          // background-position: 55px 210px;
         }
       }
     }

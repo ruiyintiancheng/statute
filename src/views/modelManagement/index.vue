@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2020-05-29 10:39:20 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-07-14 13:45:44
+ * @Last Modified time: 2020-11-18 14:13:18
  * @Description:  模型管理
  */
 <template>
@@ -52,7 +52,7 @@
         <span>操作性占比(k)</span>
         <span class="xing">*</span>
         <el-input placeholder=""
-                  style="width:140px"
+                  style="width:80px"
                   @change="coefficientChange($event,1,0,'操作性占比')"
                   v-model="seachData.s"
                   size="small"
@@ -61,7 +61,7 @@
         <span>+ 时效性占比(h)</span>
         <span class="xing">*</span>
         <el-input placeholder=""
-                  style="width:140px"
+                  style="width:80px"
                   @change="coefficientChange($event,1,0,'时效性占比')"
                   v-model="seachData.m"
                   size="small"
@@ -73,7 +73,7 @@
         <span>系统分值(s)</span>
         <span class="xing">*</span>
         <el-input placeholder=""
-                  style="width:140px"
+                  style="width:80px"
                   @change="coefficientChange($event,1,0,'系统系数')"
                   v-model="seachData.s"
                   size="small"
@@ -82,7 +82,7 @@
         <span>+ 人工分值(m)</span>
         <span class="xing">*</span>
         <el-input placeholder=""
-                  style="width:140px"
+                  style="width:80px"
                   @change="coefficientChange($event,1,0,'人工系数')"
                   v-model="seachData.m"
                   size="small"
@@ -91,7 +91,7 @@
         <span>+ 偏移量(x)</span>
         <span class="xing">*</span>
         <el-input placeholder=""
-                  style="width:140px"
+                  style="width:80px"
                   @change="coefficientChange($event,100,-100,'偏移量系数')"
                   v-model="seachData.x"
                   size="small"
@@ -415,10 +415,12 @@ export default {
       }
     }
     .conter-view {
+      // margin-left: 50%;
+      // position: absolute;
+      // left: -410px;
+      margin: 0 auto;
+      text-align: center;
       margin-top: 25%;
-      margin-left: 50%;
-      position: absolute;
-      left: -410px;
     }
     .submiite {
       position: absolute;

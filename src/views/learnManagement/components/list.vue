@@ -7,7 +7,7 @@
                 <el-table-column prop="id"
                                 label="ID"
                                 align="center"
-                                min-width="200">
+                                min-width="50">
                 </el-table-column>
                 <el-table-column prop="docTittle"
                                 label="文件名称"
@@ -17,7 +17,7 @@
                 <el-table-column prop="source"
                                 label="来源"
                                 align="center"
-                                min-width="200">
+                                min-width="80">
                 </el-table-column>
                 <el-table-column prop="addTime"
                                 label="时间"
@@ -60,7 +60,7 @@ export default {
   },
   computed: {
     tableHeight() {
-      return this.$store.state.app.containHeight - 180
+      return this.$store.state.app.containHeight - 220
     }
   },
   methods: {

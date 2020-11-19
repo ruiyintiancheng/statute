@@ -6,16 +6,34 @@
         :key="item.path">
           <el-menu-item class="item" :index="item.path" :class="{'submenu-title-noDropdown':!isNest}">
             <template v-if="item.meta&&item.meta.icon === 'zzx'">
-              <svg-icon v-if="$route.path.endsWith(item.path)" icon-class="zzxa"></svg-icon>
-              <svg-icon v-else icon-class="zzx"></svg-icon>
+              <!-- <svg-icon v-if="$route.path.endsWith(item.path)" icon-class="zzxa"></svg-icon>
+              <svg-icon v-else icon-class="zzx"></svg-icon> -->
+              <img class="si-bt" v-if="$route.path.endsWith(item.path)" src="../../../assets/images/zzxfxa.png" alt="">
+              <img v-else src="../../../assets/images/zzxfx.png" alt="">
             </template>
             <template v-else-if="item.meta&&item.meta.icon === 'sxx'">
-              <svg-icon v-if="$route.path.endsWith(item.path)" icon-class="sxxa"></svg-icon>
-              <svg-icon v-else icon-class="sxx"></svg-icon>
+              <!-- <svg-icon v-if="$route.path.endsWith(item.path)" icon-class="sxxa"></svg-icon>
+              <svg-icon v-else icon-class="sxx"></svg-icon> -->
+              <img class="si-bt" v-if="$route.path.endsWith(item.path)" src="../../../assets/images/sxxfxa.png" alt="">
+              <img v-else src="../../../assets/images/sxxfx.png" alt="">
             </template>
             <template v-else-if="item.meta&&item.meta.icon === 'kcz'">
-              <svg-icon v-if="$route.path.endsWith(item.path)" icon-class="kcza"></svg-icon>
-              <svg-icon v-else icon-class="kcz"></svg-icon>
+              <!-- <svg-icon v-if="$route.path.endsWith(item.path)" icon-class="kcza"></svg-icon>
+              <svg-icon v-else icon-class="kcz"></svg-icon> -->
+              <img class="si-bt" v-if="$route.path.endsWith(item.path)" src="../../../assets/images/kczfxa.png" alt="">
+              <img v-else src="../../../assets/images/kczfx.png" alt="">
+            </template>
+            <template v-else-if="item.meta&&item.meta.icon === 'ac2'">
+              <!-- <svg-icon v-if="$route.path.endsWith(item.path)" icon-class="kcza"></svg-icon>
+              <svg-icon v-else icon-class="kcz"></svg-icon> -->
+              <img class="si-bt" v-if="$route.path.endsWith(item.path)" src="../../../assets/images/sjfzfxa.png" alt="">
+              <img v-else src="../../../assets/images/sjfzfx.png" alt="">
+            </template>
+            <template v-else-if="item.meta&&item.meta.icon === 'ac1'">
+              <!-- <svg-icon v-if="$route.path.endsWith(item.path)" icon-class="kcza"></svg-icon>
+              <svg-icon v-else icon-class="kcz"></svg-icon> -->
+              <img class="si-bt" v-if="$route.path.endsWith(item.path)" src="../../../assets/images/wbpgfxa.png" alt="">
+              <img v-else src="../../../assets/images/wbpgfx.png" alt="">
             </template>
             <svg-icon v-else-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
             <span v-if="item.meta&&item.meta.title" slot="title">&nbsp;&nbsp;{{item.meta.title}}</span>
@@ -105,10 +123,14 @@ export default {
 .scrollbar-wrapper{
     height:100%;
     overflow-x: hidden;
+    .si-bt{
+        margin-top: -1px;
+    }
     .el-scrollbar__view{
       height:100%;
-      .el-menu{
-        height:100%;
+      /deep/.el-menu{
+        height:auto;
+        border-right: none;
         .svg-icon{
           width:1.5em;
           height:1.5em;

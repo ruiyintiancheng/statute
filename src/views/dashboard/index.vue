@@ -2,6 +2,9 @@
   <div class="dashboard-container" :style="{backgroundImage:'url('+bj+')'}" >
     <navbar class="has-border"></navbar>
     <div class="base-container home-main">
+      <div class="home-title">
+        军民融合工作政策制度&nbsp;&nbsp;数据挖掘与可视化平台
+      </div>
       <div class="home-search">
         <search @seacrHandle="seacrHandle" @searchOperate="searchOperate"></search>
       </div>
@@ -29,17 +32,17 @@
           <p class="home-item-text">
             学习路上
           </p>
-        </div>
+        </div> 
       </div>
-      <div class="home-bottom">
+      <!-- <div class="home-bottom">
         <img :src="wline" width="100%">
         军民融合工作政策制度 数据挖掘与可视化平台
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 <script>
-import bj from '@/assets/images/bj.jpg'
+import bj from '@/assets/images/bg.png'
 import wline from '@/assets/images/wline.png'
 import all from '@/assets/images/all.png'
 import fenxi from '@/assets/images/fenxi.png'
@@ -143,20 +146,34 @@ export default {
     background-repeat: no-repeat;
     background-size: cover;
     overflow: auto;
+    background-position: 50% 50%;
     .has-border{
-      border-bottom:1px solid #fff;
+      border-bottom:1px solid #243348;
     }
     .home-main{
-      height: calc(100% - 70px);
-      position: relative;
+      height: calc(100% - 90px);
+      // position: relative;
       // padding-top: 127px;
     }
+    .home-title{
+      font-size: 37px;
+      font-weight: bold;
+      color: #FFFFFF;
+      letter-spacing: 4px;
+      position: absolute;
+      top: 18%;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
     .home-search{
-      width: 920px;
+      width: 1090px;
+      height: 54px;
       position: absolute;
       left: 50%;
-      margin-left: -460px;
-      top: 13.5%;
+      transform: translateX(-50%);
+      top: 28.1%;
+      z-index: 99;
       // margin:0 auto;
       .el-input-group{
         overflow: hidden;
@@ -164,9 +181,10 @@ export default {
     }
     .home-options{
       height:342px;
-      width: 100%;
-      top: 31%;
-      left: 0;
+      top: 44%;
+      left: 50%;
+      width: 1200px;
+      transform: translateX(-50%);
       // margin-top:-171px;
       position: absolute;
       // margin: 127px auto 100px;
@@ -174,9 +192,10 @@ export default {
         cursor: pointer;
         width: 240px;
         height: 100%;
+        background-image: url('../../assets/images/item-bg.png');
         float: left;
         margin-left: 80px;
-        background-color: #96b4e1;
+        // background-color: #96b4e1;
         border-radius: 8px;
         text-align: center;
         box-shadow: 0px 20px 20px -20px #111;

@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2019-12-24 19:52:31 
- * @Last Modified by: 1k
- * @Last Modified time: 2020-05-11 17:36:10
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-11-19 10:45:25
  * @Description:  高级搜索
  */
  <template>
@@ -13,13 +13,14 @@
               @keyup.enter.native="seacrHandle"
               @focus="focusHandle"
               @blur="blurHandle"
+              style="height:54px;"
               v-model="dataValue">
       <el-button slot="prepend"
                  @click.stop="advancedSearch">高级搜索 <i class="el-icon-arrow-down"></i></el-button>
       <el-button slot="append"
+                class="search-btn"
                  v-if="generalSearch"
-                 icon="el-icon-search"
-                 @click="seacrHandle">搜索</el-button>
+                 @click="seacrHandle">搜 索</el-button>
     </el-input>
     <div class="history-popular" v-if="historyVisable">
       <ul class="history-popular-box" v-if="historyList && historyList.length >0">
@@ -492,3 +493,21 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.search{
+  .text-search{
+    input{
+      height: 54px;
+    }
+    .el-input-group__append{
+      border: none;
+      background-color: #3365B5;
+      color: #fff;
+      width: 99px;
+    }
+    .search-btn{
+      margin:0 auto;
+    }
+  }
+}
+</style>

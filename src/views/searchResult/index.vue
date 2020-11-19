@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 20:48:17 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-06-11 11:28:24
+ * @Last Modified time: 2020-11-19 11:06:45
  * @Description:  查询列表
  */
 <template>
@@ -164,6 +164,12 @@ export default {
         }
       } else {
         params.wd = this.getParams()
+      }
+      // 判断输入空返回空
+      if (this.keyword === 'null') {
+        this.tabularData = []
+        this.total = 0
+        return
       }
       this.listLoading = true
       baseRequest('/esIndex/queryDoc', params).then(response => {

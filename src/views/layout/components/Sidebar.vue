@@ -2,16 +2,15 @@
  * @Author: lk 
  * @Date: 2020-02-26 14:37:59 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-06-11 16:43:11
+ * @Last Modified time: 2020-11-18 14:24:25
  * @Description:  左菜单
  */
  <template>
-  <el-scrollbar wrapClass="scrollbar-wrapper no-text-select" :style="{backgroundColor:'#081c3c'}">
+  <el-scrollbar wrapClass="scrollbar-wrapper no-text-select">
     <el-menu class="sidebar-menu"
            mode="vertical"
       :show-timeout="200"
       :default-active="$route.path"
-      background-color="#fff"
       text-color="#141414"
       active-text-color="#3365B5">
 
@@ -66,7 +65,6 @@ export default {
 
 <style lang="scss">
 .scrollbar-wrapper{
-    height:100%;
     overflow-x: hidden;
     .el-scrollbar__view{
       height:100%;
@@ -76,6 +74,9 @@ export default {
     }
 }
 .sidebar-menu{
+  padding: 10px 0;
+  border-radius: 6px;
+  font-size: 16px;
   .sidebar-title{
     height: 75px;
     line-height: 75px;
@@ -84,12 +85,15 @@ export default {
     font-size: 20px;
     padding-left: 20px;
   }
-  .el-submenu__title,.el-menu-item{
+  /deep/.el-submenu__title,.el-menu-item{
     font-size: 16px;
     &:hover{
-      background-color: #414242 !important;
-      color:#bbbbbb;
+      // color:#3365B5;
+      // background-color: #fff;
     }
+  }
+  .el-menu-item.is-active{
+    font-weight: bold;
   }
 }
 </style>

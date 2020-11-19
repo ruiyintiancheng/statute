@@ -92,6 +92,7 @@ label {
 .sidebar-container{
   width:188px;
   float: left;
+  background-color: #F7F7F7;
 }
 html {
   height: 100%;
@@ -109,6 +110,7 @@ html {
   overflow: auto;
   // overflow: hidden;
   background-color: #fff;
+  border-radius: 6px;
 }
 
 *,

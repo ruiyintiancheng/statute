@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2019-02-12 15:42:54 
- * @Last Modified by: lk
- * @Last Modified time: 2020-04-13 14:33:58
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-11-18 13:58:23
  * @Description:  菜单管理
  */
 <template>
@@ -183,7 +183,7 @@
                                 <svg-icon v-if="scope.row.actionIcon" :iconClass='scope.row.actionIcon' style="width:96px; height: 20px;"/>
                             </template>
                         </el-table-column>
-                        <el-table-column  label="操作" align="center" width="280" fixed="right"> 
+                        <el-table-column  label="操作" align="center" width="150" fixed="right"> 
                             <template slot-scope="scope">
                                 <el-button type="primary" plain size="mini" @click="updateOption(scope.row)">修改</el-button>         
                                 <el-button type="danger" plain size="mini" @click="deleteOption(scope.row)">删除</el-button>         
@@ -288,7 +288,7 @@ export default {
   },
   computed: {
     tableHeight: function() {
-      return this.$store.state.app.containHeight - 296
+      return this.$store.state.app.containHeight - 376
     }
   },
   data() {
@@ -377,7 +377,7 @@ export default {
   },
   created() {
     this.getOption()
-    this.containHeight = this.$store.state.app.containHeight - 80
+    this.containHeight = this.$store.state.app.containHeight - 100
   },
   watch: {
     filterText(val) {

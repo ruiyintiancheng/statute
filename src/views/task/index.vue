@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-02-26 15:34:09 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-06-11 15:07:46
+ * @Last Modified time: 2020-11-18 14:03:55
  * @Description:  采集任务
  */
 <template>
@@ -214,7 +214,7 @@ export default {
   },
   computed: {
     tableHeight: function() {
-      return this.$store.state.app.containHeight - 290
+      return this.$store.state.app.containHeight - 310
     }
   },
   mounted() {

@@ -12,8 +12,10 @@
   line-height: 55px;
   text-align: center;
   color: #fff;
-  font-size: 12px;
-  background-color: #565757;
+  background: #000D21;
+  
+  font-size: 14px;
+  color: #999999;
 }
 </style>
 
