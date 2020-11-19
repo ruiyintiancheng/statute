@@ -57,7 +57,6 @@ export default {
      */
     getData(id, callback) {
       this.id = id
-      console.log('getData')
       document.getElementById('chart').innerHTML = ''
       const params = { id: this.id }
       const url = process.env.CHART_API + '/chart/selectLegalAssAnalysis'
@@ -143,11 +142,10 @@ export default {
           }
         })
         callback(ids, pic)
-
-        var a = document.createElement('a')
-        a.download = 'png'
-        a.href = canvas.toDataURL('image/png')
-        a.click()
+        // var a = document.createElement('a')
+        // a.download = 'png'
+        // a.href = canvas.toDataURL('image/png')
+        // a.click()
       }
     }
   }

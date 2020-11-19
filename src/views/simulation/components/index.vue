@@ -2,7 +2,7 @@
     <div class="simulation-index">
             <el-form :inline="true" :model="updateFormData" >
                 <el-form-item label="领域" prop="fuseField">
-                    <el-select style="width:275px;" v-model="updateFormData.fuseField" placeholder=""
+                    <el-select style="width:220px;" v-model="updateFormData.fuseField" placeholder=""
                         multiple
                         collapse-tags
                         @change="selectControl($event,'fuseField','Military_Integration')">
@@ -14,7 +14,7 @@
                 </el-form-item>
                 <el-form-item prop="docUseBroad"
                     label="波及范围">
-                    <el-select style="width:275px;"
+                    <el-select style="width:220px;"
                     placeholder=""
                     multiple
                     collapse-tags
@@ -28,7 +28,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item >
-                    <el-input style="width:275px;" v-model.trim="updateFormData.content" clear placeholder="请输入重大事件关键词"></el-input>
+                    <el-input style="width:220px;" v-model.trim="updateFormData.content" clear placeholder="请输入重大事件关键词"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="searchHandle()">分析</el-button>
@@ -212,9 +212,9 @@ export default {
 </script>
 <style lang="scss">
     .simulation-index{
-        margin: 15px auto 0;
+        margin: 15px 30px 15px;
         padding-bottom: 15px;
-        width: 1100px;
+        // width: 1100px;
           .searchBody {
             .search-tip{
                 font-size: 30px;

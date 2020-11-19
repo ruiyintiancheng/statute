@@ -6,9 +6,31 @@
  * @Description:  草案评估
  */
 <template>
-  <div style="width:100%; height: 100%; position: relative;">
-    <div class="box box_centre">
+  <div style="width:100%; position: relative;">
+    <div class="search-body">
       <!-- 目标文件 -->
+      <div class="content">
+        <div class="item clearfix">
+          <div class="cell cell-title">草案:</div>
+          <div class="cell cell-input"><el-input v-model="sourceFileName" :disabled="true" placeholder=""></el-input></div>
+          <div class="cell cell-menus">
+            <el-upload
+              ref="upload"
+              :action="uploadUrl"
+              :on-change="sourceChange"
+              :file-list="fileList"
+              :http-request="sourceUploadRequest"
+              :auto-upload="true">
+              <el-button slot="trigger" class="menu" size="small">上传</el-button>
+            </el-upload>
+          </div>
+        </div>
+        <div class="item submit clearfix">
+          <div><el-button class="menu" size="small" @click="compare">开始评估</el-button></div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="box box_centre">
       <div class="content box_centre">
         <div class="line clearfix" style="text-align: center;">
           <div class="cell">草案:</div>
@@ -29,7 +51,7 @@
           <div><el-button class="menu" size="small" @click="compare">开始评估</el-button></div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -132,44 +154,42 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  .search-body {
+    font-size: 16px;
+    color: #141414;
+
+    .content {
+      margin-top: 100px;
+    }
+  }
+
+  .item {
+    position: relative;
+    margin: 0px auto;
+    line-height: 50px;
+    width: 613px;
+    .cell {
+      padding: 0 10px;
+      float: left;
+    }
+    .cell-input {
+      width: 340px;
+    }
+  }
+
+  .submit {
+    margin-top: 50px;
+    text-align: center;
+  }
+
   .menu {
-    background-color: #3164b7;
+    background-color: #3365b5;
     color: white;
   }
   .menu2 {
-    background-color: white;
-    color: black;
-  }
-
-  .box {
-    width: 900px;
-    height: 250px;
-    border: 1px solid #dddddd;
-  }
-  
-  .box_centre {
-    position: absolute;
-    /* margin: auto; */
-    top: 20%;
-    bottom: 0;
-    left: 50%;
-    right: 0;
-    transform: translateX(-50%);
-  }
-
-  .content {
-    width: 800px;
-    height: 100px;
-  }
-
-  .line {
-    line-height: 40px;
-    height: 50px;
-    position: relative;
-  }
-  .cell {
-    padding: 0 10px;
-    float: left;
+    background-color: #fff;
+    border: 1px solid #3365b5;
+    color: #3365b5;
   }
 </style>
