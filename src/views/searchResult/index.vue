@@ -51,6 +51,10 @@
             <el-button :disabled="!item.modelAnalysis"
                        size="small"
                        @click="openChart(item, '2')">政策法规响应层级分析</el-button>
+            <el-button :disabled="!item.modelAnalysis"
+                       :loading="downIndex === index && downloading === true"
+                       size="small"
+                       @click="download(item, index)">下载报告</el-button> 
           </div>
         </div>
         <el-pagination v-if="total || total === 0"
@@ -73,15 +77,19 @@
         <p>3.请您尝试用类似词或常见词</p>
       </div>
     </div>
+    <downPng  ref="downPng"></downPng>
   </div>
 </template>
 <script>
 import { baseRequest } from '@/api/base'
+import { basicDownload } from '@/utils/download'
 import Search from '@/components/Search'
+import downPng from '@/views/relationChart/lawsRelationChartPng/index'
 export default {
   name: 'searchResult',
   components: {
-    Search
+    Search,
+    downPng
   },
   data() {
     return {
@@ -94,13 +102,31 @@ export default {
       hasData: true,
       keyword: '',
       literalexcess: false,
-      listLoading: false
+      listLoading: false,
+
+      downIndex: null,
+      downloading: false
     }
   },
   mounted() {
     this.routingQuery()
   },
   methods: {
+    // 下载报告
+    download(item, index) {
+      this.$refs.downPng.getData(item.id, (ids, png) => {
+        this.downIndex = index
+        this.downloading = true
+        basicDownload('/cmprs/zWord/wordTemplateExport', {
+          id: item.id, nodeDatas: ids, imageBase64: png
+        })
+          .then(_ => {
+            this.downloading = false
+          }, _ => {
+            this.downloading = false
+          })
+      })
+    },
     jumpPage(crawlConId) {
       const path = this.$route.params.path ? this.$route.params.path : this.$route.path
       this.$router.push({ name: 'policy', query: { crawlConId }, params: { path }})
