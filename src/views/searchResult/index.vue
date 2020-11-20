@@ -117,9 +117,8 @@ export default {
       this.$refs.downPng.getData(item.id, (ids, png) => {
         this.downIndex = index
         this.downloading = true
-        basicDownload('/cmprs/zWord/wordTemplateExport', {
-          id: item.id, nodeDatas: ids, imageBase64: png
-        })
+        const url = '/zWord/wordTemplateExport'
+        basicDownload(url, { id: item.id, nodeDatas: ids, imageBase64: png })
           .then(_ => {
             this.downloading = false
           }, _ => {
