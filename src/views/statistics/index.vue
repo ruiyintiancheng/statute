@@ -1,19 +1,17 @@
 /*
  * @Author: lk 
  * @Date: 2019-12-24 16:50:14 
- * @Last Modified by: lk
- * @Last Modified time: 2020-06-08 11:21:25
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-11-19 18:39:02
  * @Description:  数据统计
  */
 <template>
   <div class="statistics-container">
-    <div class="statistical-screening">
+    <div class="statistics-item statistics-first">
+          <div class="statistical-screening">
       <div class="screening base-container">
-        <el-form :inline="true"
-                 style="margin-left: 140px;"
-                 v-if="!headSwitch"
-                 :model="screenData"
-                 class="demo-form-inline">
+        <el-form class="statistics-options" :inline="true"
+                 :model="screenData">
           <el-form-item label="发文机构 :"
                         style="margin-right:50px">
             <el-cascader v-model="screenData.Dispatch"
@@ -32,7 +30,7 @@
                               v-model="screenData.date1"></el-date-picker>
             </el-col>
             <el-col class="line"
-                    style="color: #606266;font-size: 14px;font-weight: 700;"
+                    style="color: #fff;font-size: 14px;font-weight: 700;"
                     :span="2">&nbsp;至</el-col>
             <el-col :span="11">
               <el-date-picker type="year"
@@ -44,22 +42,64 @@
             </el-col>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary"
+            <el-button class="search-btn" type="primary"
                        @click="screenSubmit">查询</el-button>
-            <el-button type="primary"
-                       @click="back2Home">返回</el-button>
+            <el-button class="search-btn" type="primary"
+                       @click="back2Home">重置</el-button>
+            <!-- <el-button type="primary"
+                       @click="back2Home">返回</el-button> -->
           </el-form-item>
         </el-form>
-        <el-row :gutter="70">
-          <el-col :span="4.8"
+        <div class="statistics-result clearfix">
+          <div class="screening-item">
+            <div class="screening-item-quan quan1">
+              <div class="screeing-item-value">
+                <p>{{totalSum}}</p>
+              </div>
+            </div>
+            <div class="screening-item-text">政策法规总数</div>
+          </div>
+          <div class="screening-item">
+            <div class="screening-item-quan quan2">
+              <div class="screeing-item-value">
+                <p v-if="!headSwitch">{{fuseTotalSumItem}}</p>
+                <p>{{fuseTotalSum}}</p>
+              </div>
+            </div>
+            <div class="screening-item-text">军地政策法规总数</div>
+          </div>
+          <div class="screening-item">
+            <div class="screening-item-quan quan3">
+              <div class="screeing-item-value">
+                <p v-if="!headSwitch">{{speSumItem}}</p>
+                <p>{{speSum}}</p>
+              </div>
+            </div>
+            <div class="screening-item-text">基础政策</div>
+          </div>
+          <div class="screening-item">
+            <div class="screening-item-quan quan4">
+              <div class="screeing-item-value">
+                <p v-if="!headSwitch">{{basicSumItem}}</p>
+                <p>{{basicSum}}</p>
+              </div>
+            </div>
+            <div class="screening-item-text">具体政策</div>
+          </div>
+          <div class="screening-item">
+            <div class="screening-item-quan quan5">
+              <div class="screeing-item-value">
+                <p v-if="!headSwitch">{{otherSumItem}}</p>
+                <p>{{otherSum}}</p>
+              </div>
+            </div>
+            <div class="screening-item-text">其他政策</div>
+          </div>
+          <!-- <el-col :span="4.8"
                   class="screening-item">
-            <img src="@/assets/images/总量.png"
-                 style="width:66px;height:66px"
-                 alt="">
             <div class="imgr">
               <p class="imgr-num">{{totalSum}}</p>
               <p class="imgr-word">政策法规总数</p>
-              <!-- <span>asdf </span> -->
             </div>
           </el-col>
           <el-col :span="4.8"
@@ -69,7 +109,6 @@
             <div class="imgr">
               <p class="imgr-num"> <template v-if="!headSwitch"><span class="inside-num">{{fuseTotalSumItem}}</span>/</template>{{fuseTotalSum}}</p>
               <p class="imgr-word">军地政策法规总数</p>
-              <!-- <span>asdf </span> -->
             </div>
           </el-col>
           <el-col :span="4.8"
@@ -79,7 +118,6 @@
             <div class="imgr">
               <p class="imgr-num"> <template v-if="!headSwitch"><span class="inside-num">{{speSumItem}}</span>/</template>{{speSum}}</p>
               <p class="imgr-word">基础政策</p>
-              <!-- <span>asdf </span> -->
             </div>
           </el-col>
           <el-col :span="4.8"
@@ -89,7 +127,6 @@
             <div class="imgr">
               <p class="imgr-num"> <template v-if="!headSwitch"><span class="inside-num">{{basicSumItem}}</span>/</template>{{basicSum}}</p>
               <p class="imgr-word">具体政策</p>
-              <!-- <span>asdf </span> -->
             </div>
           </el-col>
           <el-col :span="4.8"
@@ -100,12 +137,11 @@
             <div class="imgr">
               <p class="imgr-num"> <template v-if="!headSwitch"><span class="inside-num">{{otherSumItem}}</span>/</template>{{otherSum}}</p>
               <p class="imgr-word">其他政策</p>
-              <!-- <span>asdf </span> -->
             </div>
-          </el-col>
-        </el-row>
+          </el-col> -->
+        </div>
       </div>
-      <el-popover v-if="headSwitch"
+      <!-- <el-popover v-if="headSwitch"
                   placement="bottom"
                   width="330"
                   class="screening-screen"
@@ -151,73 +187,64 @@
         </el-form>
         <span slot="reference"
               style="cursor: pointer;">筛选 <i class="el-icon-arrow-down"></i></span>
-      </el-popover>
+      </el-popover> -->
     </div>
-    <el-row :gutter="48">
-      <el-col v-show="headSwitch"
-              :sm="12"
-              :lg="12">
-        <div class="statistics-card top-card">
-          <div class="statistics-card-title">政策法规收录统计</div>
+    </div>
+      <div v-show="headSwitch" >
+        <div class="statistics-card card1">
+          <div class="statistics-card-title base-container">政策法规收录统计</div>
           <div class="statistics-card-context">
             <custom-echarts ref="baosongqingkuangChart"
-                            propsHeight="400px"
+                            propsHeight="500px"
                             id="baosongqingkuang"
                             :option="baosongqingkuang"></custom-echarts>
           </div>
         </div>
-      </el-col>
-      <el-col v-show="!headSwitch"
-              :sm="12"
-              :lg="12">
-
-        <div class="statistics-card top-card">
-          <div class="statistics-card-title">军地政策层级统计</div>
+      </div>
+      <div v-show="!headSwitch" >
+        <div class="statistics-card card1">
+          <div class="statistics-card-title base-container">军地政策层级统计</div>
           <div class="statistics-card-context">
             <custom-echarts ref="zhengcecengcitongji"
-                            propsHeight="400px"
+                            propsHeight="500px"
                             id="zhengcecengcitongji"
                             :option="zhengcecengcitongji"></custom-echarts>
           </div>
         </div>
-      </el-col>
-      <el-col :sm="12"
-              :lg="12">
-        <div class="statistics-card top-card">
-          <div class="statistics-card-title">{{headSwitch?'':'军地'}}政策法规逐年发布趋势</div>
-          <div class="statistics-card-context">
+      </div>
+      <div >
+        <div class="statistics-card card2">
+          <div class="statistics-card-title base-container white">{{headSwitch?'':'军地'}}政策法规逐年发布趋势</div>
+          <div class="statistics-card-context" style="width:1200px;">
             <custom-echarts ref="fabuliangqushiChart"
-                            propsHeight="400px"
+                            propsHeight="500px"
                             id="fabuliangqushi"
                             :option="fabuliangqushi"></custom-echarts>
           </div>
         </div>
-      </el-col>
-      <el-col :sm="12"
-              :lg="12">
-        <div class="statistics-card">
-          <div class="statistics-card-title">军地公文发布类型统计</div>
+      </div>
+      <div >
+        <div class="statistics-card card3">
+          <div class="statistics-card-title base-container">军地公文发布类型统计</div>
           <div class="statistics-card-context">
             <custom-echarts ref="ziduanbaosongtongjiChart"
-                            propsHeight="400px"
+                            propsHeight="500px"
                             id="ziduanbaosongtongji"
                             :option="ziduanbaosongtongji"></custom-echarts>
           </div>
         </div>
-      </el-col>
-      <el-col :sm="12"
-              :lg="12">
-        <div class="statistics-card">
-          <div class="statistics-card-title">军民融合领域</div>
+      </div>
+      <div >
+        <div class="statistics-card card4">
+          <div class="statistics-card-title base-container white">军民融合领域</div>
           <div class="statistics-card-context">
             <custom-echarts ref="wentitongjiChart"
-                            propsHeight="400px"
+                            propsHeight="500px"
                             id="wentitongji"
                             :option="wentitongji"></custom-echarts>
           </div>
         </div>
-      </el-col>
-    </el-row>
+      </div>
   </div>
 </template>
 <script>
@@ -342,6 +369,10 @@ export default {
     },
     // 筛选的确认
     screenSubmit(state) {
+      if (this.screenData.Dispatch.length <= 0 && !this.screenData.date1 && !this.screenData.date2) {
+        this.back2Home()
+        return
+      }
       const parma = {}
       parma.issueOrg = this.screenData.Dispatch.length > 0 ? this.screenData.Dispatch[this.screenData.Dispatch.length - 1] : ''
       parma.startDate = this.screenData.date1
@@ -470,6 +501,7 @@ export default {
       }
     },
     segment() {
+      console.log(this.publishEnd)
       if (this.publishStart && this.publishEnd) {
         // const name = ''
         if (this.brokenLineDiagramName.length === 1) {
@@ -481,6 +513,9 @@ export default {
           }]]
         }
         if (this.publishStart < this.publishEnd) {
+          if (this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1] < this.publishStart || this.brokenLineDiagramName[0] > this.publishEnd) {
+            return []
+          } else
           if (this.brokenLineDiagramName[0] < this.publishStart && this.brokenLineDiagramName[this.brokenLineDiagramName.length - 1] >= this.publishEnd) {
             return [[{
               name: this.publishStart + '-' + this.publishEnd,
@@ -534,10 +569,35 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: this.brokenLineDiagramName
+          data: this.brokenLineDiagramName,
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ['#ffffff'],
+              width: 1,
+              type: 'solid',
+              opacity: 0.1
+            }
+          }
+
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          axisLine: {
+            lineStyle: {
+              color: '#ffffff',
+              opacity: 0.1
+            }
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ['#ffffff'],
+              width: 1,
+              type: 'solid',
+              opacity: 0.1
+            }
+          }
         },
         // visualMap: {
         //   show: false,
@@ -607,14 +667,14 @@ export default {
           // orient: 'vertical',
           bottom: 'bottom',
           data: this.pieChartName,
-          y: '75%'
+          y: '85%'
         },
         color: ['#13e0ee', '#6341c7', '#25c25c', '#d001fd', '#fd5f4e', '#ff9102', '#0267ff'],
         series: [
           {
             name: '',
             type: 'pie',
-            radius: ['38%', '50%'],
+            radius: ['46%', '60%'],
             center: ['50%', '40%'],
             data: this.pieChartValue,
             itemStyle: {
@@ -649,13 +709,13 @@ export default {
           // orient: 'vertical',
           bottom: 'bottom',
           data: this.cakeLikeName,
-          y: '75%'
+          y: '82%'
         },
         series: [
           {
             name: '',
             type: 'pie',
-            radius: '50%',
+            radius: '60%',
             center: ['50%', '40%'],
             // roseType: 'area',
             data: this.cakeLikeValue,
@@ -692,13 +752,13 @@ export default {
           // orient: 'vertical',
           bottom: 'bottom',
           data: this.policyLevelName,
-          y: '75%'
+          y: '85%'
         },
         series: [
           {
             name: '',
             type: 'pie',
-            radius: '50%',
+            radius: '60%',
             center: ['50%', '40%'],
             // roseType: 'area',
             data: this.policyLevelValue,
@@ -788,52 +848,102 @@ export default {
 <style lang="scss">
 .statistics-container {
   background-color: #f9faff;
-  padding: 0 15px 30px;
+  // padding: 0 15px 30px;
   overflow: hidden;
+  .statistics-item{
+    width: 100%;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+    &.statistics-first{
+      background-image: url('../../assets/images/gl-bg1.png');
+      height: 538px;
+    }
+    .statistics-result{
+      margin: 108px auto 0;
+      width: 1105px;
+    }
+  }
   .statistical-screening {
     width: 1200px;
-    height: 60px;
     margin: 25px auto 0 auto;
     position: relative;
     // top: 15px;
     // border: 1px solid #ccc;
+    .statistics-options{
+      margin-top:50px;
+      margin-left: 206px;
+      .el-form-item__label{
+        color: #fff;
+      }
+      .el-input{
+        opacity: 0.4;
+      }
+      .el-input__inner{
+        color: #fff;
+        background-color: #1F2D43;
+        border: none;
+        
+      }
+      .search-btn{
+        background-color: #3365B5;
+        border: none;
+      }
+    }
     .screening {
       // width: 80%;
       // height: 60px;
       // border: 1px solid #000;
       margin: 0 auto;
       .screening-item {
-        height: 60px;
-        img {
-          vertical-align: middle;
-          display: inline-block;
+        // height: 60px;
+        float: left;
+        width: 145px;
+        margin-right: 95px;
+        &:last-child{
+          margin-right: 0;
         }
-        .imgr {
-          vertical-align: middle;
-          display: inline-block;
-          height: 60px;
-          line-height: 60px;
-          margin-left: 10px;
-          // text-align: center;
-          .imgr-num {
-            height: 20px;
-            font-weight: 600;
-            // line-height: 20px;
-            font-size: 24px;
-            margin-bottom: 5px;
-            position: relative;
-            top: -10px;
-            .inside-num {
-              color: #f56c6c;
+        .screening-item-quan{
+          height: 145px;
+          width: 100%;
+          position: relative;
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-position: 50% 50%;
+          &.quan1{
+            background-image: url('../../assets/images/quan1.png');
+          }
+          &.quan2{
+            background-image: url('../../assets/images/quan2.png');
+          }
+          &.quan3{
+            background-image: url('../../assets/images/quan3.png');
+          }
+          &.quan4{
+            background-image: url('../../assets/images/quan4.png');
+          }
+          &.quan5{
+            background-image: url('../../assets/images/quan5.png');
+          }
+          .screeing-item-value{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            p{
+              font-size: 24px;
+              font-family: Microsoft YaHei;
+              font-weight: bold;
+              color: #0CD1F7;
             }
           }
-          .imgr-word {
-            height: 20px;
-            position: relative;
-            top: -10px;
-            color: #48494a;
-            // line-height: 20px;
-          }
+        }
+        .screening-item-text{
+          margin-top:16px;
+          font-size: 14px;
+          color: #FFFFFF;
+          text-align: center;
         }
       }
     }
@@ -844,50 +954,54 @@ export default {
     }
   }
   .statistics-card {
-    height: 420px;
-    margin-top: 48px;
-    border-radius: 5px;
-    background-color: #fff;
-    box-shadow: 0px 0px 0px #e9f0fe, 0px 0px 20px #e9f0fe, 0 0px 10px #e9f0fe,
-      0px 15px 10px #e9f0fe;
+    height: 400px;
     position: relative;
-    &.top-card {
-      margin-top: 40px;
-      .statistics-card-context {
-        width: 100%;
-        position: absolute;
-        top: 5px;
-        left: 0;
-      }
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+    overflow: hidden;
+    &.card1{
+      background-image: url('../../assets/images/card1.png');
+      height: 575px;
     }
+    &.card2{
+      background-image: url('../../assets/images/card2.png');
+      height: 575px;
+    }
+    &.card3{
+      background-image: url('../../assets/images/card3.png');
+      height: 575px;
+    }
+    &.card4{
+      background-image: url('../../assets/images/card4.png');
+      height: 575px;
+    }
+
     .statistics-card-title {
       text-align: left;
-      font-weight: bold;
       font-size: 20px;
-      height: 40px;
-      line-height: 40px;
-      margin-left: 40px;
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+      color: #141414;
       position: relative;
       letter-spacing: 1px;
-      &::before {
-        content: "";
-        width: 6px;
-        height: 18px;
-        background-color: #1f73f3;
-        position: absolute;
-        top: 10px;
-        left: -15px;
+      margin-top:50px;
+      &.white{
+        color: #fff;
       }
+      // &::before {
+      //   content: "";
+      //   width: 6px;
+      //   height: 18px;
+      //   background-color: #1f73f3;
+      //   position: absolute;
+      //   top: 10px;
+      //   left: -15px;
+      // }
     }
-    .statistics-card-context {
-      margin-left: 20px;
-      height: 190px;
-      p {
-        margin: 0;
-        height: 52px;
-        line-height: 52px;
-        font-size: 18px;
-      }
+    .statistics-card-context{
+      width: 1100px;
+      margin: 0 auto;
     }
   }
   .statistics-status {

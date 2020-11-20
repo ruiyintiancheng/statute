@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <el-tabs v-model="activeName">
+  <div class="operable-score">
+    <el-tabs v-model="activeName" style="width:125%;">
       <el-tab-pane label="内容对比" name="first">
         <div class="score clearfix">
           <div v-if="uploadFileId" style="padding: 0 0 10px 0; line-height: 50px; margin: 0 136px;">
@@ -249,6 +249,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.operable-score{
+  height: calc(100%);
+  overflow: auto;
+}
   .score-mo {
     float: left;
     padding-right: 50px;
@@ -280,6 +284,7 @@ export default {
     .score {
         // padding-bottom:30px;
         height:100%;
+        width: 100%;
         // overflow-x: hidden;
         .score-header{
           height: 60px;
@@ -326,8 +331,9 @@ export default {
           // overflow-x: hidden;
             // margin-top:10px;
             // margin-bottom:30px;
-            width: 50%;
+            width: 40%;
             margin:0px auto 30px;
+            margin-left: 20%;
             // float:left;
             min-height: calc(100% - 90px);
             white-space: pre-line; 
