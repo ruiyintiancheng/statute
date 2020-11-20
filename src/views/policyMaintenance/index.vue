@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2020-05-29 17:02:49 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-11-18 14:14:18
+ * @Last Modified time: 2020-11-20 14:01:43
  * @Description:  政策数据维护
  */
 <template>
@@ -380,7 +380,7 @@ export default {
   },
   computed: {
     tableHeight: function() {
-      return this.$store.state.app.containHeight - 340
+      return this.$store.state.app.containHeight - 380
     }
   },
   mounted() {

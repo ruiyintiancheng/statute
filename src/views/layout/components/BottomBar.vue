@@ -8,7 +8,7 @@
   height: 55px;
   width: 100%;
   z-index: 1002;
-  border-top: 1px solid #47525a;
+  /* border-top: 1px solid #47525a; */
   line-height: 55px;
   text-align: center;
   color: #fff;

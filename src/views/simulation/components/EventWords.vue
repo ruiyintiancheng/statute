@@ -136,7 +136,7 @@ export default {
   },
   computed: {
     tableHeight: function() {
-      return this.$store.state.app.containHeight - 350
+      return this.$store.state.app.containHeight - 390
     }
   },
   created() {

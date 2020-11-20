@@ -1,9 +1,10 @@
 <template>
   <div class="app-wrapper" >
     <navbar></navbar>
-    <div class="main-container clearfix" :style="{overflow:showSideBar?'hidden':'auto',height:height-55+'px',margin:'0 auto',width:(showSideBar?'1200px':'100%'),marginTop:showSideBar?'20px':'0'}">
+    <div class="main-container clearfix" :style="{overflow:showSideBar?'hidden':'auto',height:height-(showSideBar?75:55)+'px',margin:'0 auto',width:(showSideBar?'1200px':'100%'),marginTop:showSideBar?'20px':'0'}">
       <sidebar class="sidebar-container"  v-if="showSideBar" :style="{marginRight:'20px',height:'calc(100% - 20px)'}"></sidebar>
-      <app-main class="app-main" ref="appMain" :style="{minHeight:(height - 75)+'px',width:(showSideBar?'992px':'100%'),float:showSideBar?'left':'none',height:showSideBar?'calc(100% - 20px)':'auto',borderRadius:showSideBar?'6px':'0'}"></app-main>
+        <!-- <app-main class="app-main" ref="appMain" :style="{minHeight:(height - 95)+'px',width:(showSideBar?'992px':'100%'),float:showSideBar?'left':'none',height:showSideBar?'calc(100% - 20px)':'auto',borderRadius:showSideBar?'6px':'0'}"></app-main> -->
+        <app-main class="app-main" ref="appMain" :style="{marginBottom:showSideBar?'20px':'0',minHeight:(height - 95)+'px',width:(showSideBar?'992px':'100%'),float:showSideBar?'left':'none',height:showSideBar?'calc(100% - 20px)':'100%',borderRadius:showSideBar?'6px':'0'}"></app-main>
     </div>
     <bottom-bar></bottom-bar>
   </div>
@@ -61,7 +62,7 @@ export default {
     },
     setCurrentHeight() {
       if (this.showSideBar) {
-        this.height = document.body.offsetHeight - 100
+        this.height = document.body.offsetHeight - 90
       } else {
         this.height = document.body.offsetHeight - 90
       }
@@ -93,5 +94,12 @@ export default {
     height: 100%;
     position: absolute;
     z-index: 999;
+  }
+</style>
+<style lang="scss">
+  .main-container{
+   .el-scrollbar__wrap {
+    overflow-x: hidden;
+  }
   }
 </style>

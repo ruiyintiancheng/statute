@@ -2,11 +2,11 @@
  * @Author: wk 
  * @Date: 2020-05-29 10:39:20 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-11-18 14:13:18
+ * @Last Modified time: 2020-11-20 14:22:57
  * @Description:  模型管理
  */
 <template>
-  <div class="model-management clearfix">
+  <div class="model-management clearfix" :style="{height:tableHeight+'px'}">
     <div class="root-tree">
       <header class="tree-header">
         <span class="tree-title">
@@ -147,6 +147,11 @@
 import { baseRequest } from '@/api/base'
 export default {
   name: 'modelManagement',
+  computed: {
+    tableHeight: function() {
+      return this.$store.state.app.containHeight - 100
+    }
+  },
   data() {
     return {
       nameType: '',

@@ -60,7 +60,7 @@ export default {
   },
   computed: {
     tableHeight() {
-      return this.$store.state.app.containHeight - 220
+      return this.$store.state.app.containHeight - 240
     }
   },
   methods: {

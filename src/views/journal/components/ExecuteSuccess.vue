@@ -1,8 +1,8 @@
 /*
  * @Author: lk 
  * @Date: 2020-02-26 15:34:09 
- * @Last Modified by: lk
- * @Last Modified time: 2020-04-13 14:30:55
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-11-20 14:00:44
  * @Description:  执行成功
  */
 <template>
@@ -120,7 +120,7 @@ export default {
   },
   computed: {
     tableHeight: function() {
-      return this.$store.state.app.containHeight - 360
+      return this.$store.state.app.containHeight - 400
     }
   },
   mounted() {

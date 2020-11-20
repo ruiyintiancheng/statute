@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-02-12 15:42:54 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-11-18 13:58:23
+ * @Last Modified time: 2020-11-20 13:55:02
  * @Description:  菜单管理
  */
 <template>
@@ -288,7 +288,7 @@ export default {
   },
   computed: {
     tableHeight: function() {
-      return this.$store.state.app.containHeight - 376
+      return this.$store.state.app.containHeight - 396
     }
   },
   data() {
@@ -377,7 +377,7 @@ export default {
   },
   created() {
     this.getOption()
-    this.containHeight = this.$store.state.app.containHeight - 100
+    this.containHeight = this.$store.state.app.containHeight - 120
   },
   watch: {
     filterText(val) {

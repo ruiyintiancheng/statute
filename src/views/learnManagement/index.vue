@@ -1,5 +1,5 @@
 <template>
-    <div class="learn-management clearfix">
+    <div class="learn-management clearfix" :style="{height:tableHeight+'px'}">
         <div class="root-tree">
           <header class="tree-header">
               <span class="tree-title">
@@ -93,6 +93,11 @@ export default {
       },
       currentId: null,
       oldOrder: null
+    }
+  },
+  computed: {
+    tableHeight: function() {
+      return this.$store.state.app.containHeight - 100
     }
   },
   methods: {

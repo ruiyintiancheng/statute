@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2019-10-17 19:59:27 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-11-18 13:50:32
+ * @Last Modified time: 2020-11-20 13:53:03
  * @Description:  用户管理
  */
 <template>
@@ -109,7 +109,7 @@
         <el-table :data="data"
                   v-show="tableToggle"
                   border
-                  :height="tableHeight">
+                  :height="tableHeight1">
           <el-table-column prop="userName"
                            label="用户名"
                            align="center"
@@ -371,7 +371,9 @@ export default {
     }
   },
   computed: {
-
+    tableHeight1: function() {
+      return this.$store.state.app.containHeight - 390
+    }
   },
   mounted() {
     this.searchOption()
