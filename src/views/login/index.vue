@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2018-08-11 11:43:38
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-11-19 10:36:29
+ * @Last Modified time: 2020-11-23 20:54:48
  * @Description:  登录页面
  */
 <template>
@@ -55,8 +55,9 @@
              <el-input class="login-item-input"  name="password"  :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="请输入密码"/>
           </el-form-item>
            <el-form-item class="login-item" prop="captcha">
-             <img class="login-item-icon" src="../../assets/images/login-dun.png" alt="">
-             <el-input class="login-item-input"  name="captcha" placeholder="请输入验证码" v-model="loginForm.captcha" @keyup.enter.native="handleLogin"/>
+             <img class="login-item-icon" src="../../assets/images/login-dun.png" alt="" >
+             <img class="verifyCode" :src="verifyCode" alt="" @click="handleCaptcha">
+             <el-input class="login-item-input verifyCode-input"  name="captcha" placeholder="请输入验证码" v-model="loginForm.captcha" @keyup.enter.native="handleLogin"/>
           </el-form-item>
         </el-form>
          <el-button class="login-button" type="primary" :loading="loading" @click.native.prevent="handleLogin">登&nbsp;&nbsp;录</el-button>
@@ -378,8 +379,22 @@ export default {
           height: 18px;
           width: 18px;
         }
+        .verifyCode{
+          position: absolute;
+          margin-top: -20px;
+          top: 50%;
+          right: 18px;
+          height: 40px;
+          cursor: pointer;
+          z-index: 9;
+        }
         .login-item-input{
           width: 485px;
+          &.verifyCode-input{
+           /deep/ .el-input__inner{
+            padding-right: 120px;
+           }
+          }
           /deep/ .el-input__inner{
             height: 56px;
             line-height: 56px;
