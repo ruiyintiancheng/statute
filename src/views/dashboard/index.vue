@@ -147,6 +147,7 @@ export default {
     background-size: cover;
     overflow: auto;
     background-position: 50% 50%;
+    background-color:$mainColor;
     .has-border{
       border-bottom:1px solid #243348;
     }

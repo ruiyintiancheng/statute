@@ -349,6 +349,7 @@ export default {
 .login{
   width: 100%;
   height: 100%;
+  background-color:$mainColor;
   background-image: url('../../assets/images/login-bg.png');
   background-repeat: no-repeat;
   background-size: cover;

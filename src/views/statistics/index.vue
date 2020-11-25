@@ -858,6 +858,7 @@ export default {
     background-position: 50% 50%;
     &.statistics-first{
       background-image: url('../../assets/images/gl-bg1.png');
+      background-color: $mainColor;
       height: 538px;
     }
     .statistics-result{
@@ -966,6 +967,7 @@ export default {
     }
     &.card2{
       background-image: url('../../assets/images/card2.png');
+      background-color: $mainColor;
       height: 575px;
     }
     &.card3{
@@ -974,6 +976,7 @@ export default {
     }
     &.card4{
       background-image: url('../../assets/images/card4.png');
+      background-color: $mainColor;
       height: 575px;
     }
 
