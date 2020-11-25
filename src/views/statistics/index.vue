@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 16:50:14 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-11-19 18:39:02
+ * @Last Modified time: 2020-11-25 10:28:07
  * @Description:  数据统计
  */
 <template>
@@ -857,7 +857,7 @@ export default {
     background-size: cover;
     background-position: 50% 50%;
     &.statistics-first{
-      background-image: url('../../assets/images/gl-bg1.png');
+      background-image: url('../../assets/images/gl-bg1.jpg');
       background-color: $mainColor;
       height: 538px;
     }

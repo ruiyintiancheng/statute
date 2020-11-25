@@ -42,7 +42,7 @@
   </div>
 </template>
 <script>
-import bj from '@/assets/images/bg.png'
+import bj from '@/assets/images/bg.jpg'
 import wline from '@/assets/images/wline.png'
 import all from '@/assets/images/all.png'
 import fenxi from '@/assets/images/fenxi.png'

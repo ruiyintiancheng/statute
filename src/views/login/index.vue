@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2018-08-11 11:43:38
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-11-23 20:54:48
+ * @Last Modified time: 2020-11-25 10:24:55
  * @Description:  登录页面
  */
 <template>
@@ -350,7 +350,7 @@ export default {
   width: 100%;
   height: 100%;
   background-color:$mainColor;
-  background-image: url('../../assets/images/login-bg.png');
+  background-image: url('../../assets/images/login-bg.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 50% 50%;
