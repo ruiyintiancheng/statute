@@ -505,8 +505,13 @@ export default {
       color: #fff;
       width: 99px;
     }
+    .el-input-group__append{
+      padding: 0;
+    }
     .search-btn{
       margin:0 auto;
+      height: 100%;
+      width: 115px;
     }
   }
 }
