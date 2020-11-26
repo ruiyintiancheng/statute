@@ -3,14 +3,16 @@
     <el-tabs v-model="activeName" style="width:125%;">
       <el-tab-pane label="内容对比" name="first">
         <div class="score clearfix">
-          <div v-if="uploadFileId" style="padding: 0 0 10px 0; line-height: 50px; margin: 0 136px;">
+          <div v-if="uploadFileId" class="clearfix" style="padding: 0 0 10px 0; line-height: 50px; margin-left: calc(60% - 180px);">
             <div class="score-mo" >
               <span class="score-label">分值: </span>
               <span class="score-value">{{fraction}}</span>
+            </div>
+            <div style="line-height: 36px;">
               <a class="score-back" @click="$router.go(-1)">返回</a>
             </div>
           </div>
-          <div v-else style="padding: 0 0 10px 0;  line-height: 50px; margin: 0 136px;">
+          <div v-else class="clearfix" style="padding: 0 0 10px 0;  line-height: 50px; margin: 0 136px;">
             <div class="score-mo" >
               <span class="score-label">系统分值: </span>
               <span class="score-value">{{score.system}}</span>

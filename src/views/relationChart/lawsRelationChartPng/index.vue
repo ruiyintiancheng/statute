@@ -17,7 +17,8 @@
 import { baseRequest } from '@/api/base'
 import Chart from '../lawsRelationChart/components/chart/index.js'
 import { handleData } from '../lawsRelationChart/components/data.js'
-
+// import { svgAsPngUri } from './util'
+import saveSvg from 'save-svg-as-png'
 export default {
   components: {},
   props: {},
@@ -100,9 +101,7 @@ export default {
      * 保存图片
      */
     savePng(callback) {
-      // this.graph.savePng(`${this.name}-政策法规关联分析`)
       const padding = 50
-
       var svg = this.graph.get('svg')
       const g = this.graph.get('g')
       const bg = g.node().getBBox()
@@ -113,40 +112,18 @@ export default {
 
       csvg.select('g.group').attr('transform', `translate(${padding - bg.x}, ${padding - bg.y})scale(1)`)
 
-      var serializer = new XMLSerializer()
-      var source = serializer.serializeToString(csvg.node())
-      source = '<?xml version="1.0" standalone="no"?>\r\n' + source
-      var image = new Image()
-      image.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(source)
-      image.width = width
-      image.height = height
-
-      var canvas = document.createElement('canvas')
-      canvas.width = width
-      canvas.height = height
-
-      var context = canvas.getContext('2d')
-
-      csvg.remove()
-
-      image.onload = () => {
-        context.drawImage(image, 0, 0)
-        let pic = canvas.toDataURL('image/png')
-        pic = pic.replace(/^data:image\/(png|jpg);base64,/, '')
-
-        const ids = []
-        const nodes = this.graph.get('data').nodes
-        nodes.forEach(d => {
-          if (d.isShow) {
-            ids.push(d.id)
-          }
+      saveSvg.svgAsPngUri(csvg.node(), { height: height, width: width })
+        .then(uri => {
+          const ids = []
+          const pic = uri.replace(/^data:image\/(png|jpg);base64,/, '')
+          const nodes = this.graph.get('data').nodes
+          nodes.forEach(d => {
+            if (d.isShow) {
+              ids.push(d.id)
+            }
+          })
+          callback(ids, pic)
         })
-        callback(ids, pic)
-        // var a = document.createElement('a')
-        // a.download = 'png'
-        // a.href = canvas.toDataURL('image/png')
-        // a.click()
-      }
     }
   }
 }

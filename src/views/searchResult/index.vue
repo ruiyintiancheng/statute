@@ -51,7 +51,7 @@
             <el-button :disabled="!item.modelAnalysis"
                        size="small"
                        @click="openChart(item, '2')">政策法规响应层级分析</el-button>
-            <el-button :disabled="!item.modelAnalysis"
+            <el-button v-show="item.isDownload && item.modelAnalysis"
                        :loading="downIndex === index && downloading === true"
                        size="small"
                        @click="download(item, index)">下载报告</el-button> 
@@ -203,6 +203,9 @@ export default {
         this.pageSize = response.data.item.pageSize
         if (response.data.item.list.length !== 0) {
           this.hasData = true
+          this.tabularData.forEach(d => {
+            d.isDownload = d.docType && this.isDocType(d.docType)
+          })
         } else {
           this.hasData = false
         }
@@ -214,6 +217,20 @@ export default {
         resourceType: '100',
         keyword: this.keyword
       })
+    },
+    isDocType(types) {
+      const list = [
+        'AA-003001000000000000-0001', // 法律法规
+        'AA-003002000000000000-0001', // 法律修订
+        'AA-003007000000000000-0001', //  政策文件
+        'AA-003008000000000000-0001' //  政策修订
+      ]
+      for (const value of list) {
+        if (types.indexOf(value) >= 0) {
+          return true
+        }
+      }
+      return false
     },
     getParams() {
       let param = {}

@@ -10,13 +10,13 @@
     <el-tabs v-model="activeName">
       <el-tab-pane label="内容对比" name="first">
         <div class="tab-main" style="margin: 0px 30px;">
-            <div v-if="uploadFileId" style="padding: 0 0 10px 0; line-height: 50px; margin: 0 136px;">
+            <div v-if="uploadFileId" class="clearfix" style="padding: 0 0 10px 0; line-height: 50px;">
               <div class="score-mo" >
                 <span class="score-label">分值: </span>
                 <span class="score-value">{{score.system}}</span>
               </div>
             </div>
-            <div v-else style="padding: 0 0 10px 0;  line-height: 50px; margin: 0 136px;">
+            <div v-else class="clearfix" style="padding: 0 0 10px 0;  line-height: 50px; margin: 0 136px;">
               <div class="score-mo" >
                 <span class="score-label">系统分值: </span>
                 <span class="score-value">{{score.system}}</span>
