@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2020-02-26 15:34:09 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-11-18 14:06:38
+ * @Last Modified time: 2020-12-14 10:11:43
  * @Description:  登录日志
  */
 <template>
@@ -267,7 +267,7 @@ export default {
     getChart() {
       this.chartOption = {
         title: {
-          subtext: '登陆人数'
+          subtext: '登录人数'
         },
         grid: {
           top: '50px',

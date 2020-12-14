@@ -1,11 +1,11 @@
 <template>
   <div class="operable-score">
-    <el-tabs v-model="activeName" style="width:125%;">
-      <el-tab-pane label="内容对比" name="first">
+    <el-tabs v-model="activeName">
+      <el-tab-pane label="内容对比" name="first" style="width:125%;">
         <div class="score clearfix">
           <div v-if="uploadFileId" class="clearfix" style="padding: 0 0 10px 0; line-height: 50px; margin-left: calc(60% - 180px);">
             <div class="score-mo" >
-              <span class="score-label">分值: </span>
+              <span class="score-label">分值1: </span>
               <span class="score-value">{{fraction}}</span>
             </div>
             <div style="line-height: 36px;">
@@ -254,6 +254,9 @@ export default {
 .operable-score{
   height: calc(100%);
   overflow: auto;
+  /deep/ .el-tabs__content{
+    overflow-x: auto;
+  }
 }
   .score-mo {
     float: left;
