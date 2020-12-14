@@ -9,12 +9,12 @@
           </div>
           <div class="score-container first">
             <div class="score-name">{{$route.params.sourceFileName}}</div>
-            <div>
+            <!-- <div>
               <div v-for="(item, i) in keywords" :key="i">
                 <span>{{`${i + 1}.${item}`}}</span>
               </div>
             </div>
-            <div class="line"></div>
+            <div class="line"></div> -->
             <div class="score-text" v-html="sourceContent"></div>
           </div>
         </div>    
