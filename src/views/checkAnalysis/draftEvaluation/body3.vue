@@ -5,6 +5,7 @@
             <h2 class="score-title">
                 分值: 
                 <span class="score-value">{{fraction}}</span>
+                <span style="margin-left: 20px;">此篇文章可操作性：<span style="color: #F56C6C;">{{getEffect(fraction)}}</span></span>
             </h2>
           </div>
           <div class="score-container first">
@@ -91,13 +92,24 @@ export default {
         const itemScore = (d.SCORE * 100).toFixed(2)
         sourceContent += sourceFile.substring(sourceIndex, d.OUT_SOURCE_START)
         const offsetLeft = 10
-        sourceContent += `<span style="color: rgb(3, 126, 251);position:relative;">${sourceFile.substring(d.OUT_SOURCE_START, d.OUT_SOURCE_END)}<span style="position: absolute;top: -4px;left: ${offsetLeft}px;width: ${containerWidth}px;height: 6px;border: 1px solid rgb(49, 100, 183);border-bottom: none;"><i style="font-size: 12px;position: absolute;right: -16px;color: #F56C6C;font-style:normal;"> ${itemScore}</i></span></span>`
+        sourceContent += `<span style="color: rgb(3, 126, 251);position:relative;">${sourceFile.substring(d.OUT_SOURCE_START, d.OUT_SOURCE_END)}<span style="position: absolute;top: -4px;left: ${offsetLeft}px;width: ${containerWidth}px;height: 6px;border: 1px solid rgb(49, 100, 183);border-bottom: none;"><i style="font-size: 12px;position: absolute;right: -36px;color: #F56C6C;font-style:normal;"> ${itemScore} 可操作性：${this.getEffect(itemScore)}</i></span></span>`
         sourceIndex = d.OUT_SOURCE_END
       })
       sourceContent += sourceFile.slice(sourceIndex)
       // targetContent += `<span style="opacity:0;">${sourceFile.slice(sourceIndex)}</span>`
       this.sourceContent = sourceContent
       // this.targetContent = targetContent
+    },
+    getEffect(fraction) {
+      let result = ''
+      if (fraction >= 75 && fraction <= 100) {
+        result = '高'
+      } else if (fraction >= 50 && fraction < 75) {
+        result = '中'
+      } else {
+        result = '低'
+      }
+      return result
     }
   }
 }

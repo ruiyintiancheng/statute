@@ -11,7 +11,7 @@
     <p>系统计算操作性总得分ss=avg(s’1,s’n);</p>
     <br/>  
     <p>综合评分公式：</p>
-    <p class="retract">综合分值(S) = 系统分值(ss) * 系数(s) + 人工分值(ps) * 系数(m) + 偏移度(x)</p>
+    <p class="retract">综合分值(S) = 系统分值(ss) * 系数(s) + 专家评分(ps) * 系数(m) + 偏移度(x)</p>
     <p>计算结果：</p>
     <p class="retract">{{synthesize}} = {{system}} * {{s}} + {{manualScore}} * {{m}} + {{x}}</p>
   </div>

@@ -15,6 +15,14 @@
               <el-col class="grid" :span="24">
                 <div style="font-size: 1.3em;">
                   总分值: <span class="score">{{compareScore.score}}</span>
+                  <el-popover
+                    style="margin-left: 10px;"
+                    placement="right-start"
+                    width="500"
+                    trigger="hover">
+                    <help />
+                    <span slot="reference"><svg-icon iconClass="tootip" style="color: #3365b5;" /></span>
+                  </el-popover>
                 </div>
               </el-col>
             </el-row>
@@ -23,7 +31,17 @@
                 <div style="text-align: center;">可行性评估</div>
               </el-col>
               <el-col class="col-cell grid" :span="12">
-                <div class="">矛盾性: <span class="score">{{compareScore.contradict}}</span></div>
+                <div class="">
+                  矛盾性: <span class="score">{{compareScore.contradict}}</span>
+                  <el-popover
+                    style="margin-left: 10px;"
+                    placement="right-start"
+                    width="500"
+                    trigger="hover">
+                    <help2 type="contradict" />
+                    <span slot="reference"><svg-icon iconClass="tootip" style="color: #3365b5;" /></span>
+                  </el-popover>
+                </div>
               </el-col>
               <el-col :span="6" class="grid">
                 <div style="text-align: center;">
@@ -39,12 +57,32 @@
               <el-col :span="12" class="col-cell">
                 <el-row>
                   <el-col :span="24" class="bottom-cell" style="line-height: 25px; padding: 0 20px;">
-                    <div>操作性: <span class="score">{{compareScore.fraction}}</span></div>
+                    <div>
+                      操作性: <span class="score">{{compareScore.fraction}}</span>
+                      <el-popover
+                        style="margin-left: 10px;"
+                        placement="right-start"
+                        width="500"
+                        trigger="hover">
+                        <help2 type="fraction" />
+                        <span slot="reference"><svg-icon iconClass="tootip" style="color: #3365b5;" /></span>
+                      </el-popover>
+                    </div>
                   </el-col>
                 </el-row>
                 <el-row>
                   <el-col :span="24" style="line-height: 25px; padding: 0 20px;">
-                    <div>时效性: <span class="score">{{compareScore.timeliness}}</span></div>
+                    <div>
+                      时效性: <span class="score">{{compareScore.timeliness}}</span>
+                      <el-popover
+                        style="margin-left: 10px;"
+                        placement="right-start"
+                        width="500"
+                        trigger="hover">
+                        <help2 type="timeliness" />
+                        <span slot="reference"><svg-icon iconClass="tootip" style="color: #3365b5;" /></span>
+                      </el-popover>
+                    </div>
                   </el-col>
                 </el-row>                
               </el-col>
@@ -74,10 +112,12 @@
 import { baseRequest } from '@/api/base'
 import searchTable from './components/searchTable'
 import help from './components/help'
+import help2 from './components/help2'
 export default {
   components: {
     searchTable,
-    help
+    help,
+    help2
   },
   props: {
 

@@ -26,7 +26,7 @@
                   <!-- <div id="compare_left_chart" class="compare_shade"></div> -->
                 </div>
               </div>
-              <div class="compare_col" :style="{width: '150px'}">
+              <div class="compare_col" :style="{width: '83px'}">
                 <div id="compare_middle_chart" style=""></div>
               </div>
               <div class="compare_col" :style="{width: `${textWidth}px`, 'background-color': '#ffffff'}">
@@ -96,7 +96,7 @@ export default {
     this.contrastFileId = this.$route.query.contrastFileId
 
     const width = document.querySelector('.tab-main').offsetWidth
-    this.textWidth = (width - 150 - 30) / 2 - 10
+    this.textWidth = (width - 83 - 30) / 2 - 10
     const height = document.querySelector('.app-main').offsetHeight
     this.mainHeight = height - 40
     this.textHeight = height - 100
@@ -513,6 +513,7 @@ export default {
 
   .compare_textarea {
     white-space: pre-line; 
+    word-break: break-word;
     font-size: 14px; 
     line-height: 150%;
     padding: 0 10px;

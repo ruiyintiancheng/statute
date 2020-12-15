@@ -22,12 +22,24 @@
                 <span class="score-value">{{score.system}}</span>
               </div>
               <div class="score-mo">
-                <span class="score-label">人工分值: </span>
+                <span class="score-label">专家评分: </span>
                 <el-input class="score-input" v-model="score.manualScore" @change="changeArtificial" />
               </div>
               <div class="score-mo">
                 <span class="score-label">综合分值: </span>
                 <span class="score-value">{{score.synthesize}}</span>
+              </div>
+              <div class="score-mo" style="padding-right: 10px;">
+                <el-popover
+                  placement="left-start"
+                  width="500"
+                  trigger="hover">
+                  <help :system="score.system" :manualScore="score.tempArtificial" 
+                    :synthesize="score.synthesize"
+                    :s="score.formula.s" :m="score.formula.m" 
+                    :x="score.formula.x"></help>
+                    <span slot="reference"><svg-icon iconClass="tootip" style="color: #3365b5;" /></span>
+                </el-popover>
               </div>
               <div style="line-height: 30px;">
                 <el-button class="menu" type="primary" size="small" @click="saveScore" style="width: 93px;">保存</el-button>
@@ -117,7 +129,7 @@ export default {
       score: {
         actionId: null,
         system: 0, // 系统分值
-        manualScore: 0, // 人工分值
+        manualScore: 0, // 专家评分
         tempArtificial: 0,
         synthesize: 0, // 综合分值
         formula: {
@@ -183,7 +195,7 @@ export default {
       const num = this.score.system * s + this.score.manualScore * m + x
       this.score.synthesize = num.toFixed(2)
     },
-    // 保存人工分值
+    // 保存专家评分
     saveScore() {
       const params = {
         sourceId: this.targetFileId,
@@ -194,13 +206,13 @@ export default {
         .then(response => {
           this.$message({
             showClose: true,
-            message: '人工分值保存成功',
+            message: '专家评分保存成功',
             type: 'success'
           })
         }, _ => {
           this.$message({
             showClose: true,
-            message: '人工分值保存失败',
+            message: '专家评分保存失败',
             type: 'error'
           })
         })
@@ -583,7 +595,8 @@ export default {
   }
 
   .compare_textarea {
-    white-space: pre-line; 
+    white-space: pre-line;
+    word-break: break-word; 
     font-size: 14px; 
     line-height: 150%;
     padding: 0 10px;

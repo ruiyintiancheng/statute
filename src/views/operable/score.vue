@@ -1,11 +1,11 @@
 <template>
   <div class="operable-score">
-    <el-tabs v-model="activeName">
-      <el-tab-pane label="内容对比" name="first" style="width:125%;">
-        <div class="score clearfix">
+    <el-tabs v-model="activeName" >
+      <el-tab-pane label="内容对比" name="first">
+        <div class="score clearfix" style="width:125%;">
           <div v-if="uploadFileId" class="clearfix" style="padding: 0 0 10px 0; line-height: 50px; margin-left: calc(60% - 180px);">
             <div class="score-mo" >
-              <span class="score-label">分值1: </span>
+              <span class="score-label">分值: </span>
               <span class="score-value">{{fraction}}</span>
             </div>
             <div style="line-height: 36px;">
@@ -18,16 +18,28 @@
               <span class="score-value">{{score.system}}</span>
             </div>
             <div class="score-mo">
-              <span class="score-label">人工分值: </span>
+              <span class="score-label">专家评分: </span>
               <el-input class="score-input" v-model="score.manualScore" @change="changeArtificial" />
             </div>
             <div class="score-mo">
               <span class="score-label">综合分值: </span>
               <span class="score-value">{{score.synthesize}}</span>
             </div>
+            <div class="score-mo" style="padding-right: 10px;">
+              <el-popover
+                placement="left-start"
+                width="500"
+                trigger="hover">
+                <help :system="score.system" :manualScore="score.tempArtificial" 
+                  :synthesize="score.synthesize"
+                  :s="score.formula.s" :m="score.formula.m" 
+                  :x="score.formula.x"></help>
+                  <span slot="reference"><svg-icon iconClass="tootip" style="color: #3365b5;" /></span>
+              </el-popover>
+            </div>
             <div style="line-height: 30px;">
-              <el-button class="menu" type="primary" size="small" @click="saveScore" style="width: 93px;">保存</el-button>
-              <a class="score-back" @click="$router.go(-1)">返回</a>
+              <el-button class="menu" type="primary" size="small" @click="saveScore" style="width: 93px; background-color: #3365b5; border-color: #3365b5;">保存</el-button>
+              <!-- <a class="score-back" @click="$router.go(-1)">返回</a> -->
             </div>
           </div>
           <!-- <el-scrollbar style="height:100%;" > -->
@@ -44,7 +56,7 @@
               <span style="color: red;">{{score.system}}</span>
             </div>
             <div class="score-mo">
-              <div style="float: left; padding-right: 10px;">人工分值: </div>
+              <div style="float: left; padding-right: 10px;">专家评分: </div>
               <div style="float: left; width: 70px">
                 <el-input v-model="score.manualScore" @change="changeArtificial"></el-input>
               </div>
@@ -98,7 +110,7 @@ export default {
       score: {
         actionId: null,
         system: 0, // 系统分值
-        manualScore: 0, // 人工分值
+        manualScore: 0, // 专家评分
         tempArtificial: 0,
         synthesize: 0, // 综合分值
         formula: {
@@ -217,7 +229,7 @@ export default {
         // if (/^\s/.test(d.OUT_SOURCE_CONTENT)) {
         //   offsetLeft = 40
         // }
-        sourceContent += `<span style="color: rgb(3, 126, 251);position:relative;">${sourceFile.substring(d.OUT_SOURCE_START, d.OUT_SOURCE_END)}<span style="position: absolute;top: -4px;left: ${offsetLeft}px;width: ${containerWidth}px;height: 6px;border: 1px solid rgb(49, 100, 183);border-bottom: none;"><i style="font-size: 12px;position: absolute;right: -16px;color: #F56C6C;font-style:normal;"> ${itemScore}</i></span></span>`
+        sourceContent += `<span style="color: rgb(3, 126, 251);position:relative;">${sourceFile.substring(d.OUT_SOURCE_START, d.OUT_SOURCE_END)}<span style="position: absolute;top: -4px;left: ${offsetLeft}px;width: ${containerWidth}px;height: 6px;border: 1px solid rgb(49, 100, 183);border-bottom: none;"><i style="font-size: 12px;position: absolute;right: -16px;color: #F56C6C;font-style:normal;"> ${itemScore} 可操作性：${this.getEffect(itemScore)}</i></span></span>`
         // targetContent += `<span style="color: rgb(3, 126, 251);position:relative;">${sourceFile.substring(d.OUT_SOURCE_START, d.OUT_SOURCE_END)}</span>`
         sourceIndex = d.OUT_SOURCE_END
       })
@@ -226,7 +238,7 @@ export default {
       this.sourceContent = sourceContent
       // this.targetContent = targetContent
     },
-    // 保存人工分值
+    // 保存专家评分
     saveScore() {
       const params = {
         sourceId: this.targetFileId,
@@ -236,16 +248,27 @@ export default {
         .then(response => {
           this.$message({
             showClose: true,
-            message: '人工分值保存成功',
+            message: '专家评分保存成功',
             type: 'success'
           })
         }, _ => {
           this.$message({
             showClose: true,
-            message: '人工分值保存失败',
+            message: '专家评分保存失败',
             type: 'error'
           })
         })
+    },
+    getEffect(fraction) {
+      let result = ''
+      if (fraction >= 75 && fraction <= 100) {
+        result = '高'
+      } else if (fraction >= 50 && fraction < 75) {
+        result = '中'
+      } else {
+        result = '低'
+      }
+      return result
     }
   }
 }
