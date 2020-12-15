@@ -5,38 +5,60 @@
       <router-link v-if="!item.children || item.children.length === 0" :to="item.path"
         :key="item.path">
           <el-menu-item class="item" :index="item.path" :class="{'submenu-title-noDropdown':!isNest}">
+            <!-- 自治性分析 -->
             <template v-if="item.meta&&item.meta.icon === 'zzx'">
-              <!-- <svg-icon v-if="$route.path.endsWith(item.path)" icon-class="zzxa"></svg-icon>
-              <svg-icon v-else icon-class="zzx"></svg-icon> -->
-              <img class="si-bt" v-if="$route.path.endsWith(item.path)" src="../../../assets/images/zzxfxa.png" alt="">
-              <img v-else src="../../../assets/images/zzxfx.png" alt="">
+              <template v-if="$route.path.endsWith(item.path) || $route.name ==='selfCompare'">
+                <img class="si-bt" src="../../../assets/images/zzxfxa.png" alt="">
+                <span class="sp-color" v-if="item.meta&&item.meta.title" slot="title">&nbsp;&nbsp;{{item.meta.title}}</span>
+              </template>
+              <template v-else >
+                <img src="../../../assets/images/zzxfx.png" alt="">
+                <span v-if="item.meta&&item.meta.title" slot="title">&nbsp;&nbsp;{{item.meta.title}}</span>
+              </template>
             </template>
+            <!-- 时效性分析 -->
             <template v-else-if="item.meta&&item.meta.icon === 'sxx'">
-              <!-- <svg-icon v-if="$route.path.endsWith(item.path)" icon-class="sxxa"></svg-icon>
-              <svg-icon v-else icon-class="sxx"></svg-icon> -->
               <img class="si-bt" v-if="$route.path.endsWith(item.path)" src="../../../assets/images/sxxfxa.png" alt="">
               <img v-else src="../../../assets/images/sxxfx.png" alt="">
+              <span v-if="item.meta&&item.meta.title" slot="title">&nbsp;&nbsp;{{item.meta.title}}</span>
             </template>
+            <!-- 可操作性分析 -->
             <template v-else-if="item.meta&&item.meta.icon === 'kcz'">
-              <!-- <svg-icon v-if="$route.path.endsWith(item.path)" icon-class="kcza"></svg-icon>
-              <svg-icon v-else icon-class="kcz"></svg-icon> -->
-              <img class="si-bt" v-if="$route.path.endsWith(item.path)" src="../../../assets/images/kczfxa.png" alt="">
-              <img v-else src="../../../assets/images/kczfx.png" alt="">
+              <template v-if="$route.path.endsWith(item.path) || $route.name==='score'">
+                <img class="si-bt" src="../../../assets/images/kczfxa.png" alt="">
+                <span class="sp-color" v-if="item.meta&&item.meta.title" slot="title">&nbsp;&nbsp;{{item.meta.title}}</span>
+              </template>
+              <template v-else >
+                <img src="../../../assets/images/kczfx.png" alt="">
+                <span v-if="item.meta&&item.meta.title" slot="title">&nbsp;&nbsp;{{item.meta.title}}</span>
+              </template>
             </template>
-            <template v-else-if="item.meta&&item.meta.icon === 'ac2'">
-              <!-- <svg-icon v-if="$route.path.endsWith(item.path)" icon-class="kcza"></svg-icon>
-              <svg-icon v-else icon-class="kcz"></svg-icon> -->
-              <img class="si-bt" v-if="$route.path.endsWith(item.path)" src="../../../assets/images/sjfzfxa.png" alt="">
-              <img v-else src="../../../assets/images/sjfzfx.png" alt="">
-            </template>
+            <!-- 文本评估分析 -->
             <template v-else-if="item.meta&&item.meta.icon === 'ac1'">
-              <!-- <svg-icon v-if="$route.path.endsWith(item.path)" icon-class="kcza"></svg-icon>
-              <svg-icon v-else icon-class="kcz"></svg-icon> -->
-              <img class="si-bt" v-if="$route.path.endsWith(item.path)" src="../../../assets/images/wbpgfxa.png" alt="">
-              <img v-else src="../../../assets/images/wbpgfx.png" alt="">
+              <template v-if="$route.path.endsWith(item.path) ||$route.name==='draft-index'||$route.name==='draft-body1'||$route.name==='draft-body2'||$route.name==='draft-body3'" >
+                <img class="si-bt" src="../../../assets/images/wbpgfxa.png" alt="">
+                <span class="sp-color" v-if="item.meta&&item.meta.title" slot="title">&nbsp;&nbsp;{{item.meta.title}}</span>
+              </template>
+              <template v-else>
+                <img src="../../../assets/images/wbpgfx.png" alt="">
+                <span v-if="item.meta&&item.meta.title" slot="title">&nbsp;&nbsp;{{item.meta.title}}</span>
+              </template>
             </template>
-            <svg-icon v-else-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
-            <span v-if="item.meta&&item.meta.title" slot="title">&nbsp;&nbsp;{{item.meta.title}}</span>
+            <!-- 事件仿真分析 -->
+            <template v-else-if="item.meta&&item.meta.icon === 'ac2'">
+              <template v-if="$route.path.endsWith(item.path)" >
+                <img class="si-bt" src="../../../assets/images/sjfzfxa.png" alt="">
+                <span class="sp-color" v-if="item.meta&&item.meta.title" slot="title">&nbsp;&nbsp;{{item.meta.title}}</span>
+              </template>
+              <template v-else>
+              <img src="../../../assets/images/sjfzfx.png" alt="">
+               <span v-if="item.meta&&item.meta.title" slot="title">&nbsp;&nbsp;{{item.meta.title}}</span>
+              </template>
+            </template>
+            <template v-else>
+              <svg-icon v-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></svg-icon>
+              <span v-if="item.meta&&item.meta.title" slot="title">&nbsp;&nbsp;{{item.meta.title}}</span>
+            </template>
           </el-menu-item>
       </router-link>
 
@@ -117,6 +139,10 @@ export default {
 // .left-menu-tooltip.el-tooltip__popper.is-dark{
 //   background-color: $menuBg;
 // }
+.sp-color{
+  color: rgb(51, 101, 181);
+  font-weight: bold;
+}
 </style>
 
 <style lang="scss">

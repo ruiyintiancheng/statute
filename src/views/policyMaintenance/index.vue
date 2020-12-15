@@ -2,11 +2,11 @@
  * @Author: wk 
  * @Date: 2020-05-29 17:02:49 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-11-20 14:01:43
+ * @Last Modified time: 2020-12-15 16:52:30
  * @Description:  政策数据维护
  */
 <template>
-  <div class="policy-main task list-comtainer">
+  <div class="policy-main task list-comtainer" v-loading="loading">
     <div class="">
       <div class="row-botton new clearfix">
         <div class="row-title">
@@ -29,14 +29,25 @@
                   @seacrHandle="seacrHandle"
                   @searchOperate="searchOperate"></search>
           <div class="search-button">
-            <el-button icon="el-icon-plus"
+            <!-- <el-button icon="el-icon-plus"
                        @click="addParent"
-                       plain>新增</el-button>
+                       plain>新增</el-button> -->
+            <el-upload ref="upload"
+                     action="/bDocBasic/uploadDoc"
+                     style="display: inline-block"
+                     :show-file-list="false"
+                     :http-request="sourceUploadRequestInside"
+                     :auto-upload="true">
+            <el-button slot="trigger"
+                       class="menu"
+                       >政策公文导入</el-button>
+
+          </el-upload>
             <!-- <el-button icon="el-icon-refresh"
                        plain
                        @click="openFullScreen"
                        type="info">同步运算</el-button> -->
-            <el-upload ref="upload"
+            <!-- <el-upload ref="upload"
                        action="/bDocBasic/upload"
                        style="display:inline-block;margin:0 5px; position: relative;"
                        :http-request="sourceUploadRequest"
@@ -46,7 +57,7 @@
                          plain
                          type="primary">批量导入</el-button>
               <div style="font-size:12px;color:#c9c9c9; position: absolute;bottom:-14px;left:5px;widht:60px">zip/doc/docx格式</div>
-            </el-upload>
+            </el-upload> -->
 
           </div>
         </div>
@@ -347,7 +358,7 @@
       </div>
     </div>
 
-    <add-modification ref="modification"></add-modification>
+    <add-modification ref="modification" @changeLoading="changeLoading" @searchOption="searchOption"></add-modification>
 
   </div>
 </template>
@@ -363,6 +374,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       searchParam: {},
       fileList: [], // 上传文件列表
       pageNo: 1,
@@ -402,6 +414,13 @@ export default {
     }
   },
   methods: {
+    sourceUploadRequestInside(content) {
+      this.$refs.modification.articleId = ''
+      this.$refs.modification.sourceUploadRequest(content)
+    },
+    changeLoading(boo) {
+      this.loading = boo
+    },
     modParent(data) {
       this.$refs.modification.maintainMod(data)
     },
@@ -423,8 +442,6 @@ export default {
       })
     },
     searchOperate(parmas) { // 高级搜索
-      console.log(parmas)
-
       this.searchParam = parmas
       this.searchOption()
     },

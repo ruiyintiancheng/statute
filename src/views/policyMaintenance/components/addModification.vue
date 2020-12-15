@@ -1,24 +1,25 @@
 /*
  * @Author: wk 
  * @Date: 2020-06-02 16:50:54 
- * @Last Modified by: wk
- * @Last Modified time: 2020-06-04 17:58:13
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2020-12-15 14:48:05
  * @Description:  添加修改
  */
 <template>
   <div v-if="pringBox">
-    <el-dialog :title="dialogTitle[operateStatus]"
+    <!-- <el-dialog :title="dialogTitle[operateStatus]" -->
+    <el-dialog title="政策公文"
                v-el-drag-dialog
                :visible.sync="pringBox"
                width="1100px"
                custom-class="dialog-default autoHeight">
       <div class="dialog-contant-default"
-           style="height:400px;overflow:auto">
+           style="height:500px;overflow:auto">
         <el-form :inline="true"
                  ref="formOutside"
                  :model="updateFormData"
                  label-width="125px">
-          <el-form-item label="居民融合相关度">
+          <el-form-item label="军民融合相关度">
             <el-select v-model="updateFormData.about"
                        clearable
                        style="width:200px"
@@ -115,7 +116,7 @@
           <el-form-item label="政策法规文号">
             <el-input class="form-input"
                       style="width:200px"
-                      v-model="updateFormData.docName"
+                      v-model="updateFormData.docNum"
                       clearable></el-input>
           </el-form-item>
           <el-form-item label="可操作性">
@@ -296,8 +297,8 @@
           </el-form-item>
         </el-form>
 
-        <div class="enclosure">
-          <span>文章名称:</span>
+        <!-- <div class="enclosure">
+          <span>政策公文:</span>
           <el-input v-model="wzName"
                     :disabled="true"
                     style="width: 500px;"
@@ -311,19 +312,19 @@
                      :auto-upload="true">
             <el-button slot="trigger"
                        class="menu"
-                       size="small">上传文章</el-button>
+                       size="small">上传</el-button>
 
           </el-upload>
-        </div>
+        </div> -->
         <div class="enclosure"
              v-for="(item,index) in form"
              :key="item+index">
-          <span>附件名称:</span>
+          <span>附件:</span>
           <el-input v-model="item.value"
                     :disabled="true"
                     style="width: 500px;"
                     placeholder=""></el-input>
-          <el-upload ref="upload"
+          <el-upload :ref="'upload'+index"
                      action="/bDocBasic/uploadAnnexDoc"
                      :on-change="(file, fileList)=>{sourceChange(file, fileList, index)} "
                      style=" display: inline-block"
@@ -348,7 +349,16 @@
       </div>
       <div slot="footer"
            class="dialog-footer">
-        <el-button @click="pringBox = false">取消</el-button>
+            <el-upload ref="upload"
+                     action="/bDocBasic/uploadDoc"
+                     style=" display: inline-block"
+                     :show-file-list="false"
+                     :http-request="sourceUploadRequest"
+                     :auto-upload="true">
+            <el-button slot="trigger"
+                      >重新上传</el-button>
+                       </el-upload>
+        <el-button type="danger" plain @click="deleteHandle">删除</el-button>
         <el-button type="primary"
                    @click="saveOperate()">保存</el-button>
       </div>
@@ -361,6 +371,7 @@ import { deepClone } from '@/utils'
 export default {
   data() {
     return {
+      articleId: '',
       value1: '',
       value2: '',
       value3: '',
@@ -421,7 +432,6 @@ export default {
   mounted() {
     baseRequest('/bCode/getOptionByFCodeId', { dfa: 32132132132132 }).then(response => {
       this.allDrop = response.data.item
-      // console.log(this.allDrop)
     })
     baseRequest('/bCode/getOrgOption').then(response => {
       this.organization = response.data.item
@@ -430,6 +440,11 @@ export default {
   methods: {
     saveOperate() {
       if (this.articleId) {
+        baseRequest(process.env.CHART_API + '/chart/updateGData', {}).then(_ => {
+          baseRequest(process.env.CHART_API + '/chart/updateGragh', {}).then(_ => {
+
+          })
+        })
         const params = deepClone(this.updateFormData)
         params.id = this.articleId
         params.docContentSys = params.docContentSys ? params.docContentSys.join(';') : ''
@@ -454,22 +469,34 @@ export default {
         return
       }
     },
-
+    deleteHandle() {
+      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        baseRequest('/bDocBasic/delete', { id: this.articleId }).then(response => {
+          this.$Message.success('操作成功')
+          this.pringBox = false
+          this.$emit('searchOption')
+        })
+      })
+    },
     maintainMod(data) {
       this.operateStatus = 2
       this.articleId = data.id
       baseRequest('/bDocBasic/select', { id: this.articleId }).then(response => {
         const updata = response.data.item
         this.updateFormData = response.data.item
-        this.updateFormData.docContentSys = updata.docContentSys.split(';')
-        this.updateFormData.docDomainType = updata.docDomainType.split(';')
-        this.updateFormData.docPositioning = updata.docPositioning.split(';')
-        this.updateFormData.docSys = updata.docSys.split(';')
-        this.updateFormData.docType = updata.docType.split(';')
-        this.updateFormData.docUseBroad = updata.docUseBroad.split(';')
-        this.updateFormData.fuseField = updata.fuseField.split(';')
-        this.updateFormData.issueOrgText = updata.issueOrgText.split(';')
-        this.updateFormData.issueOrgType = updata.issueOrgType.split(';')
+        this.updateFormData.docContentSys = updata.docContentSys ? updata.docContentSys.split(';') : ''
+        this.updateFormData.docDomainType = updata.docDomainType ? updata.docDomainType.split(';') : ''
+        this.updateFormData.docPositioning = updata.docPositioning ? updata.docPositioning.split(';') : ''
+        this.updateFormData.docSys = updata.docSys ? updata.docSys.split(';') : ''
+        this.updateFormData.docType = updata.docType ? updata.docType.split(';') : ''
+        this.updateFormData.docUseBroad = updata.docUseBroad ? updata.docUseBroad.split(';') : ''
+        this.updateFormData.fuseField = updata.fuseField ? updata.fuseField.split(';') : ''
+        this.updateFormData.issueOrgText = updata.issueOrgText ? updata.issueOrgText.split(';') : ''
+        this.updateFormData.issueOrgType = updata.issueOrgType ? updata.issueOrgType.split(';') : ''
         if (updata.docFile) {
           const w = updata.docFile.split(';')
           const z = []
@@ -483,6 +510,9 @@ export default {
           this.wzName = z[0].value
           z.shift()
           this.form = z
+          if (this.form.length <= 0) {
+            this.form = [{ value: '' }]
+          }
         } else {
           this.form = [{ value: '' }]
         }
@@ -492,8 +522,45 @@ export default {
             this.Dispatch = response.data.item
           })
         }
+        this.pringBox = true
+      }).finally(_ => {
+        // this.$emit('changeLoading', false)
       })
-      this.pringBox = true
+    },
+    resetFuJian(data) {
+      this.operateStatus = 2
+      this.articleId = data.id
+      baseRequest('/bDocBasic/select', { id: this.articleId }).then(response => {
+        const updata = response.data.item
+        if (updata.docFile) {
+          const w = updata.docFile.split(';')
+          const z = []
+          for (const item of w) {
+            if (item.lastIndexOf('/') !== -1) {
+              z.push({ value: item.slice(item.lastIndexOf('/')) })
+            } else {
+              z.push({ value: item.slice(0) })
+            }
+          }
+          this.wzName = z[0].value
+          z.shift()
+          this.form = z
+          if (this.form.length <= 0) {
+            this.form = [{ value: '' }]
+          }
+        } else {
+          this.form = [{ value: '' }]
+        }
+        if (updata.issueOrgText) {
+          const c = updata.issueOrgText.join(';')
+          baseRequest('/bCode/getTwoLevelOpt', { codeName: c }).then(response => {
+            this.Dispatch = response.data.item
+          })
+        }
+        this.pringBox = true
+      }).finally(_ => {
+        // this.$emit('changeLoading', false)
+      })
     },
     maintainAdd() {
       this.operateStatus = 1
@@ -517,12 +584,18 @@ export default {
         return
       }
       if (this.form[index].value) {
-        baseRequest('/bDocBasic/delAnnexDoc', { id: this.articleId, annexIndex: index + 1 }).then(response => {
-
+        this.$confirm('此操作将永久删除该附件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          baseRequest('/bDocBasic/delAnnexDoc', { id: this.articleId, annexIndex: index + 1 }).then(response => {
+            this.$message.success('附件删除成功')
+            this.maintainMod({ id: this.articleId })
+            // this.form.splice(index, 1)
+          })
         })
       }
-
-      this.form.splice(index, 1)
     },
     articleSelection(item) {
       // const checknodes = this.$refs.dispatch.getCheckedNodes()
@@ -560,7 +633,7 @@ export default {
     sourceUploadRequest(content) {
       const patt = new RegExp('.*\.(txt|doc|docx)$')
       if (!patt.test(content.file.name)) {
-        this.$refs.upload.clearFiles
+        // this.$refs.upload.clearFiles
         this.$message({
           showClose: true,
           message: '错误的文件类型,请选择txt/doc/docx文件上传',
@@ -580,32 +653,39 @@ export default {
       // }
       var form = new FormData()
       form.append('file', content.file)
-      form.append('id', this.articleId)
-      this.loading = true
+      form.append('id', this.articleId || '')
+      // this.loading = true
+      this.pringBox = false
+      this.$emit('changeLoading', true)
 
       baseUpload('/bDocBasic/uploadDoc', form).then((response) => {
         this.loading = false
         this.articleId = response.data.item.id
+        this.$emit('searchOption')
+        this.maintainMod({ id: this.articleId })
+        this.$message.success('导入成功')
       }, _ => {
-        this.$refs.upload.clearFiles()
+        // this.$refs.upload.clearFiles()
         this.loading = false
         this.$message({
           showClose: true,
           message: '上传失败',
           type: 'error'
         })
+      }).finally(_ => {
+        this.$emit('changeLoading', false)
       })
     },
     sourceUploadRequest1(content, index) { // 上传附件
       if (this.articleId) {
         const patt = new RegExp('.*\.(txt|doc|docx)$')
         if (!patt.test(content.file.name)) {
-          this.$refs.upload.clearFiles
           this.$message({
             showClose: true,
             message: '错误的文件类型,请选择txt/doc/docx文件上传',
             type: 'error'
           })
+          this.resetFuJian({ id: this.articleId })
           return
         }
         // const isLt100M = content.file.size / 1024 / 1024 < 100
@@ -626,10 +706,12 @@ export default {
 
         baseUpload('/bDocBasic/uploadAnnexDoc', form).then((response) => {
           this.loading = false
-          this.articleId = response.data.item.id
+          // this.articleId = response.data.item.id
+          this.resetFuJian({ id: this.articleId })
+          this.$message.success('附件添加成功')
         }, _ => {
-          this.$refs.upload.clearFiles()
           this.loading = false
+          this.resetFuJian({ id: this.articleId })
           this.$message({
             showClose: true,
             message: '上传失败',
@@ -646,7 +728,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .enclosure {
-  text-align: center;
+  // text-align: center;
   margin: 10px auto;
+  padding-left: 227px;
 }
 </style>
