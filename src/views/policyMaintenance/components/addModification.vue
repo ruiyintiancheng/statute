@@ -440,10 +440,7 @@ export default {
   methods: {
     saveOperate() {
       if (this.articleId) {
-        baseRequest(process.env.CHART_API + '/chart/updateGData', {}).then(_ => {
-          baseRequest(process.env.CHART_API + '/chart/updateGragh', {}).then(_ => {
-
-          })
+        baseRequest(process.env.CHART_API + '/chart/refresh', {}).then(_ => {
         })
         const params = deepClone(this.updateFormData)
         params.id = this.articleId
