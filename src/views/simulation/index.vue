@@ -1,7 +1,7 @@
 <template>
     <div class="simulation">
          <el-tabs v-model="activeName">
-            <el-tab-pane label="仿真分析" name="1">
+            <el-tab-pane label="类比分析" name="1">
                 <simulation v-show="!isDetail" @toDetail="toDetail"></simulation>
                 <policy v-if="isDetail"  :crawlConId="crawlConId" @backHandle="backHandle"></policy>
             </el-tab-pane>

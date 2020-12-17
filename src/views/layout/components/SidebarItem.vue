@@ -44,7 +44,7 @@
                 <span v-if="item.meta&&item.meta.title" slot="title">&nbsp;&nbsp;{{item.meta.title}}</span>
               </template>
             </template>
-            <!-- 事件仿真分析 -->
+            <!-- 事件类比分析 -->
             <template v-else-if="item.meta&&item.meta.icon === 'ac2'">
               <template v-if="$route.path.endsWith(item.path)" >
                 <img class="si-bt" src="../../../assets/images/sjfzfxa.png" alt="">
