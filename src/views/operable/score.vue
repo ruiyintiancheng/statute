@@ -2,6 +2,9 @@
   <div class="operable-score">
     <el-tabs v-model="activeName" >
       <el-tab-pane label="内容对比" name="first">
+        <div style="text-align: center; font-weight: bold; margin-bottom: 10px;">
+          <span>此篇文章可操作性为<span style="color: #db0b0b;">{{getEffect(score.synthesize)}}</span></span>
+        </div>
         <div class="score clearfix" style="width:125%;">
           <div v-if="uploadFileId" class="clearfix" style="padding: 0 0 10px 0; line-height: 50px; margin-left: calc(60% - 180px);">
             <div class="score-mo" >

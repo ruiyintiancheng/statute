@@ -79,7 +79,7 @@
                   size="small"
                   clearable>
         </el-input>
-        <span>+ 人工分值(m)</span>
+        <span>+ 专家评分(m)</span>
         <span class="xing">*</span>
         <el-input placeholder=""
                   style="width:80px"
