@@ -51,7 +51,7 @@
             <el-button :disabled="!item.modelAnalysis"
                        size="small"
                        @click="openChart(item, '2')">政策法规响应层级分析</el-button>
-            <el-button v-show="item.isDownload && item.modelAnalysis"
+            <el-button v-show="item.modelAnalysis && item.isDownload"
                        :loading="downIndex === index && downloading === true"
                        size="small"
                        @click="download(item, index)">下载报告</el-button> 
@@ -204,7 +204,8 @@ export default {
         if (response.data.item.list.length !== 0) {
           this.hasData = true
           this.tabularData.forEach(d => {
-            d.isDownload = d.docType && this.isDocType(d.docType)
+            d.isDownload = d.docFile && d.docFile.length > 0
+            // d.isDownload = d.docType &&  this.isDocType(d.docType)
           })
         } else {
           this.hasData = false

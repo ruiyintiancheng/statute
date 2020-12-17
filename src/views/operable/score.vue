@@ -3,17 +3,20 @@
     <el-tabs v-model="activeName" >
       <el-tab-pane label="内容对比" name="first">
         <div style="text-align: center; font-weight: bold; margin-bottom: 10px;">
-          <span>此篇文章可操作性为<span style="color: #db0b0b;">{{getEffect(score.synthesize)}}</span></span>
+          <span>此篇文章可操作性为
+            <span v-if="uploadFileId" style="color: #db0b0b;">{{getEffect(score.fraction)}}</span>
+            <span v-else style="color: #db0b0b;">{{getEffect(score.synthesize)}}</span>
+          </span>
         </div>
         <div class="score clearfix" style="width:125%;">
-          <div v-if="uploadFileId" class="clearfix" style="padding: 0 0 10px 0; line-height: 50px; margin-left: calc(60% - 180px);">
+          <div v-if="uploadFileId" class="clearfix" style="padding: 0 0 10px 0; line-height: 50px; margin-left: 20%">
             <div class="score-mo" >
               <span class="score-label">分值: </span>
               <span class="score-value">{{fraction}}</span>
             </div>
-            <div style="line-height: 36px;">
+            <!-- <div style="line-height: 36px;">
               <a class="score-back" @click="$router.go(-1)">返回</a>
-            </div>
+            </div> -->
           </div>
           <div v-else class="clearfix" style="padding: 0 0 10px 0;  line-height: 50px; margin: 0 136px;">
             <div class="score-mo" >
@@ -45,43 +48,10 @@
               <!-- <a class="score-back" @click="$router.go(-1)">返回</a> -->
             </div>
           </div>
-          <!-- <el-scrollbar style="height:100%;" > -->
-          <!-- <div v-if="uploadFileId" class="score-header">
-            <h2 class="score-title">
-                分值: 
-                <span class="score-value">{{fraction}}</span>
-                <a class="score-back" @click="$router.go(-1)">返回</a>
-            </h2>
-          </div>
-          <div v-else class="score-header2">
-            <div class="score-mo" >
-              <span>系统分值: </span>
-              <span style="color: red;">{{score.system}}</span>
-            </div>
-            <div class="score-mo">
-              <div style="float: left; padding-right: 10px;">专家评分: </div>
-              <div style="float: left; width: 70px">
-                <el-input v-model="score.manualScore" @change="changeArtificial"></el-input>
-              </div>
-            </div>
-            <div class="score-mo">
-              <span>综合分值: </span>
-              <span style="color: red;">{{score.synthesize}}</span>
-            </div>
-            <div>
-              <el-button class="score-save" type="primary" size="small" @click="saveScore">保存</el-button>
-              <a class="score-back" @click="$router.go(-1)">返回</a>
-            </div>
-          </div> -->
           <div class="score-container first">
             <div class="score-name">{{$route.query.sourceFileName}}</div>
             <div class="score-text" v-html="sourceContent"></div>
           </div>
-          <!-- <div class="score-container last" > -->
-            <!-- <div class="score-name">分值</div> -->
-            <!-- <div class="score-text" v-html="targetContent"></div> -->
-          <!-- </div> -->
-          <!-- </el-scrollbar> -->
         </div>
       </el-tab-pane>  
       <el-tab-pane label="帮助" name="third">
@@ -232,7 +202,7 @@ export default {
         // if (/^\s/.test(d.OUT_SOURCE_CONTENT)) {
         //   offsetLeft = 40
         // }
-        sourceContent += `<span style="color: rgb(3, 126, 251);position:relative;">${sourceFile.substring(d.OUT_SOURCE_START, d.OUT_SOURCE_END)}<span style="position: absolute;top: -4px;left: ${offsetLeft}px;width: ${containerWidth}px;height: 6px;border: 1px solid rgb(49, 100, 183);border-bottom: none;"><i style="font-size: 12px;position: absolute;right: -16px;color: #F56C6C;font-style:normal;"> ${itemScore} 可操作性：${this.getEffect(itemScore)}</i></span></span>`
+        sourceContent += `<span style="color: rgb(3, 126, 251);position:relative;">${sourceFile.substring(d.OUT_SOURCE_START, d.OUT_SOURCE_END)}<span style="position: absolute;top: -4px;left: ${offsetLeft}px;width: ${containerWidth}px;height: 6px;border: 1px solid rgb(49, 100, 183);border-bottom: none;"><i style="font-size: 12px;position: absolute;right: -56px;color: #F56C6C;font-style:normal;"> ${itemScore} 可操作性：${this.getEffect(itemScore)}</i></span></span>`
         // targetContent += `<span style="color: rgb(3, 126, 251);position:relative;">${sourceFile.substring(d.OUT_SOURCE_START, d.OUT_SOURCE_END)}</span>`
         sourceIndex = d.OUT_SOURCE_END
       })
@@ -396,6 +366,7 @@ export default {
             }
             .score-text{
               margin-top:10px;
+              word-break: break-word;
             }
         }
     }
