@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2020-05-29 17:02:49 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-12-15 16:52:30
+ * @Last Modified time: 2020-12-17 11:25:44
  * @Description:  政策数据维护
  */
 <template>
@@ -323,12 +323,12 @@
               {{scope.row.docDelete==='0'?"未删除":(scope.row.docDelete==='1'?"删除":'')}}
             </template>
           </el-table-column>
-          <el-table-column label="项目状态"
+          <!-- <el-table-column label="项目状态"
                            align="center"
                            prop="protStateStr"
                            min-width="200">
 
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column label="操作"
                            width="200"
                            fixed="right"
