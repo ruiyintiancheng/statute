@@ -3,9 +3,9 @@
             <div class="catalog" :style="{height:catalogHeight + 'px'}">
               <el-scrollbar wrapClass="scrollbar-wrapper" style="height:100%">
                     <template v-for="(it1,index1) in catalogData">
-                      <a v-if="it1.level === 1" :class="{'catalog-one':true}" :title="it1.catalog"  :key="it1+index1" :href="'#'+it1.size"><span class="catalog-name">{{it1.catalog}}</span></a>
-                      <a v-else-if="it1.level === 2" class="catalog-two" :title="it1.catalog" :key="it1+index1" :href="'#'+it1.size"><span class="catalog-name">{{it1.catalog}}</span></a>
-                      <a v-else-if="it1.level === 3" class="catalog-three" :title="it1.catalog" :key="it1+index1" :href="'#'+it1.size"><span class="catalog-name">{{it1.catalog}}</span></a>
+                      <a v-if="it1.level === 1" :class="{'catalog-one':true}" :title="it1.catalog"  :key="it1+index1" @click="menuHandle('#AAA'+it1.size)"><span class="catalog-name">{{it1.catalog}}</span></a>
+                      <a v-else-if="it1.level === 2" class="catalog-two" :title="it1.catalog" :key="it1+index1" @click="menuHandle('#AAA'+it1.size)"><span class="catalog-name">{{it1.catalog}}</span></a>
+                      <a v-else-if="it1.level === 3" class="catalog-three" :title="it1.catalog" :key="it1+index1" @click="menuHandle('#AAA'+it1.size)"><span class="catalog-name">{{it1.catalog}}</span></a>
                     </template>
               </el-scrollbar>
             </div>
@@ -17,7 +17,7 @@
             </div>
             <div class="read-article-content" >
               <p v-for="(item,index) in article" :key="item+index">
-                <a  :name="index+''">{{item}}</a>
+                <a  :id="'AAA'+index+''">{{item}}</a>
               </p>
             </div>
         </div>
@@ -68,6 +68,9 @@ export default {
       const appMainDom = document.querySelector('.app-main')
       const number = Number(index) - 1
       appMainDom.scrollTop = 37 + (number * 30.75)
+    },
+    menuHandle(url) {
+      document.querySelector(url).scrollIntoView(true)
     }
   }
 }
