@@ -2,7 +2,7 @@
  * @Author: lk 
  * @Date: 2019-12-24 16:50:14 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-11-25 10:28:07
+ * @Last Modified time: 2020-12-17 15:04:34
  * @Description:  数据统计
  */
 <template>
@@ -397,6 +397,8 @@ export default {
         this.policyLevelValue = response.data.item.policyLevelMap.seriesList
         this.policyLevelName = response.data.item.policyLevelMap.legendList
         this.policyLevelTittle = response.data.item.policyLevelMap.title
+        this.getChangeList(response.data.item.policyeRleaseTrendMap.seriesList, response.data.item.policyeRleaseTrendMap.xAxisList, this.publishStart)
+        this.getChangeList(response.data.item.policyeRleaseTrendMap.seriesList, response.data.item.policyeRleaseTrendMap.xAxisList, this.publishEnd)
         this.brokenLineDiagramValue = response.data.item.policyeRleaseTrendMap.seriesList
         this.brokenLineDiagramName = response.data.item.policyeRleaseTrendMap.xAxisList
         this.lineTittle = response.data.item.policyeRleaseTrendMap.title
@@ -501,7 +503,6 @@ export default {
       }
     },
     segment() {
-      console.log(this.publishEnd)
       if (this.publishStart && this.publishEnd) {
         // const name = ''
         if (this.brokenLineDiagramName.length === 1) {
@@ -669,7 +670,7 @@ export default {
           data: this.pieChartName,
           y: '85%'
         },
-        color: ['#13e0ee', '#6341c7', '#25c25c', '#d001fd', '#fd5f4e', '#ff9102', '#0267ff'],
+        color: ['#13e0ee', '#6341c7', '#25c25c', '#d001fd', '#fd5f4e', '#ff9102', '#0267ff', '#fdd900', '#a50283', '#abcd05'],
         series: [
           {
             name: '',
@@ -704,7 +705,7 @@ export default {
           trigger: 'item',
           formatter: '{a} {b} : {c} ({d}%)'
         },
-        color: ['#8d58ce', '#fd5f4e', '#25c25c', '#64f0f9', '#fda701', '#0267ff'],
+        color: ['#8d58ce', '#fd5f4e', '#25c25c', '#64f0f9', '#fda701', '#0267ff', '#fdd900', '#a50283', '#abcd05'],
         legend: {
           // orient: 'vertical',
           bottom: 'bottom',
@@ -747,7 +748,7 @@ export default {
           trigger: 'item',
           formatter: '{a} {b} : {c} ({d}%)'
         },
-        color: ['#8d58ce', '#fd5f4e', '#25c25c', '#64f0f9', '#fda701', '#0267ff'],
+        color: ['#8d58ce', '#fd5f4e', '#25c25c', '#64f0f9', '#fda701', '#0267ff', '#fdd900', '#a50283', '#abcd05'],
         legend: {
           // orient: 'vertical',
           bottom: 'bottom',
@@ -841,6 +842,27 @@ export default {
         this.cakeLike()
         this.roseShaped()
       })
+    },
+    // 把查询年份加入到结果列表中
+    getChangeList(seriesList, xAxisList, value) {
+      if (value && !xAxisList.includes(value)) {
+        let index = 0
+        if (value > xAxisList[xAxisList.length - 1]) {
+          index = xAxisList.length
+        }
+        for (let i = 0; i < xAxisList.length; i++) {
+          if (i > 0) {
+            console.log(value)
+            console.log(xAxisList[i], xAxisList[i + 1])
+            if (value > xAxisList[i] && value < xAxisList[i + 1]) {
+              index = i + 1
+              break
+            }
+          }
+        }
+        xAxisList.splice(index, 0, value)
+        seriesList.splice(index, 0, 0)
+      }
     }
   }
 }
