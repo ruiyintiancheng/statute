@@ -2,7 +2,7 @@
  * @Author: wk 
  * @Date: 2020-06-02 16:50:54 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-12-15 14:48:05
+ * @Last Modified time: 2020-12-18 17:18:18
  * @Description:  添加修改
  */
 <template>
@@ -18,7 +18,14 @@
         <el-form :inline="true"
                  ref="formOutside"
                  :model="updateFormData"
+                 :rules="rules"
                  label-width="125px">
+          <el-form-item label="政策法规名称" prop="docTittle">
+            <el-input class="form-input"
+                      style="width:200px"
+                      v-model="updateFormData.docTittle"
+                      clearable></el-input>
+          </el-form-item>
           <el-form-item label="军民融合相关度">
             <el-select v-model="updateFormData.about"
                        clearable
@@ -84,6 +91,17 @@
                             placeholder="">
             </el-date-picker>
           </el-form-item>
+          <el-form-item label="军民融合条款摘录">
+            <el-input type="textarea"
+                      style="width:539px"
+                      v-model="updateFormData.docSummary"></el-input>
+          </el-form-item>
+          <el-form-item label="关键词">
+            <el-input class="form-input"
+                      style="width:200px"
+                      v-model="updateFormData.docKeyWord"
+                      clearable></el-input>
+          </el-form-item>
           <el-form-item label="评估重点">
             <el-select v-model="updateFormData.docFocalPoint"
                        clearable
@@ -95,17 +113,6 @@
                          :value="item"></el-option>
 
             </el-select>
-          </el-form-item>
-          <el-form-item label="军民融合条款摘录">
-            <el-input type="textarea"
-                      style="width:539px"
-                      v-model="updateFormData.docSummary"></el-input>
-          </el-form-item>
-          <el-form-item label="关键词">
-            <el-input class="form-input"
-                      style="width:200px"
-                      v-model="updateFormData.docKeyWord"
-                      clearable></el-input>
           </el-form-item>
           <el-form-item label="政策原文名称">
             <el-input class="form-input"
@@ -170,12 +177,6 @@
                          :value="item"></el-option>
 
             </el-select>
-          </el-form-item>
-          <el-form-item label="政策法规名称">
-            <el-input class="form-input"
-                      style="width:200px"
-                      v-model="updateFormData.docTittle"
-                      clearable></el-input>
           </el-form-item>
           <el-form-item label="文章类型">
             <el-select v-model="updateFormData.docType "
@@ -426,6 +427,11 @@ export default {
         issueOrgType: '',
         issueType: '',
         newSituaTask: ''
+      },
+      rules: {
+        docTittle: [
+          { required: true, message: '请输入政策法规名称' }
+        ]
       }
     }
   },
@@ -439,32 +445,36 @@ export default {
   },
   methods: {
     saveOperate() {
-      if (this.articleId) {
-        baseRequest(process.env.CHART_API + '/chart/refresh', {}).then(_ => {
-        })
-        const params = deepClone(this.updateFormData)
-        params.id = this.articleId
-        params.docContentSys = params.docContentSys ? params.docContentSys.join(';') : ''
-        params.docDomainType = params.docDomainType ? params.docDomainType.join(';') : ''
-        params.docPositioning = params.docPositioning ? params.docPositioning.join(';') : ''
-        params.docSys = params.docSys ? params.docSys.join(';') : ''
-        params.docType = params.docType ? params.docType.join(';') : ''
-        params.docUseBroad = params.docUseBroad ? params.docUseBroad.join(';') : ''
-        params.fuseField = params.fuseField ? params.fuseField.join(';') : ''
-        // this.articleSelection(this.Dispatch)
+      this.$refs.formOutside.validate((valid) => {
+        if (valid) {
+          if (this.articleId) {
+            baseRequest(process.env.CHART_API + '/chart/refresh', {}).then(_ => {
+            })
+            const params = deepClone(this.updateFormData)
+            params.id = this.articleId
+            params.docContentSys = params.docContentSys ? params.docContentSys.join(';') : ''
+            params.docDomainType = params.docDomainType ? params.docDomainType.join(';') : ''
+            params.docPositioning = params.docPositioning ? params.docPositioning.join(';') : ''
+            params.docSys = params.docSys ? params.docSys.join(';') : ''
+            params.docType = params.docType ? params.docType.join(';') : ''
+            params.docUseBroad = params.docUseBroad ? params.docUseBroad.join(';') : ''
+            params.fuseField = params.fuseField ? params.fuseField.join(';') : ''
+            // this.articleSelection(this.Dispatch)
 
-        params.issueOrgText = params.issueOrgText ? params.issueOrgText.join(';') : ''
-        params.issueOrgType = params.issueOrgType ? params.issueOrgType.join(';') : ''
+            params.issueOrgText = params.issueOrgText ? params.issueOrgText.join(';') : ''
+            params.issueOrgType = params.issueOrgType ? params.issueOrgType.join(';') : ''
 
-        baseRequest('/bDocBasic/update', params).then(response => {
-          this.$parent.searchOption()
-          this.pringBox = false
-          this.$Message.success('操作成功')
-        })
-      } else {
-        this.$Message.warning('请先上传文章')
-        return
-      }
+            baseRequest('/bDocBasic/update', params).then(response => {
+              this.$parent.searchOption()
+              this.pringBox = false
+              this.$Message.success('操作成功')
+            })
+          } else {
+            this.$Message.warning('请先上传文章')
+            return
+          }
+        }
+      })
     },
     deleteHandle() {
       this.$confirm('此操作将永久删除, 是否继续?', '提示', {
